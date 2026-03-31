@@ -18,7 +18,8 @@ async function markLessonComplete(req, res) {
   const data = await engineService.markLessonComplete(
     req.user.userId,
     req.params.courseId,
-    req.params.lessonId
+    req.params.lessonId,
+    req.body.timeSpentSeconds || 0
   );
   res.json({ success: true, data });
 }

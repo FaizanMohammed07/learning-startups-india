@@ -12,7 +12,7 @@ const moduleQuizSchema = new mongoose.Schema(
         correctOption: { type: Number, required: true },
       },
     ],
-    passingScore: { type: Number, default: 70 },
+    passingScore: { type: Number, default: 75 },
     isActive: { type: Boolean, default: true },
   },
   { timestamps: true }

@@ -172,11 +172,17 @@ function buildModuleData(modules, lessons, quizzes, lessonProgress, quizAttempts
     return {
       ...mod,
       isUnlocked,
-      lessons: modLessons.map(l => ({
-        ...l,
-        isCompleted: !!lpMap[String(l._id)]?.isCompleted,
-        completedAt: lpMap[String(l._id)]?.completedAt || null,
-      })),
+      lessons: modLessons.map((l, li) => {
+        // Sequential lesson locking: first lesson always unlocked (if module is unlocked),
+        // subsequent lessons require previous lesson to be completed
+        const isLessonLocked = li > 0 ? !lpMap[String(modLessons[li - 1]._id)]?.isCompleted : false;
+        return {
+          ...l,
+          isCompleted: !!lpMap[String(l._id)]?.isCompleted,
+          completedAt: lpMap[String(l._id)]?.completedAt || null,
+          isLocked: isLessonLocked,
+        };
+      }),
       quiz: quiz
         ? {
             _id: quiz._id,
@@ -212,6 +218,23 @@ async function getLessonDetail(userId, courseId, lessonId) {
     throw new ApiError(403, 'Lesson does not belong to this course');
   }
 
+  // Sequential lesson locking: check if previous lesson in module is completed
+  const moduleLessons = await Lesson.find({ moduleId: lesson.moduleId })
+    .sort({ sortOrder: 1 })
+    .lean();
+  const lessonIndex = moduleLessons.findIndex(l => String(l._id) === lessonId);
+  if (lessonIndex > 0) {
+    const prevLesson = moduleLessons[lessonIndex - 1];
+    const prevProgress = await LessonProgress.findOne({
+      userId,
+      courseId,
+      lessonId: prevLesson._id,
+    }).lean();
+    if (!prevProgress?.isCompleted) {
+      throw new ApiError(403, 'Complete the previous lesson first to unlock this lesson');
+    }
+  }
+
   // Generate signed URL if S3 video
   let signedVideoUrl = lesson.videoUrl;
   if (lesson.videoUrl) {
@@ -233,13 +256,39 @@ async function getLessonDetail(userId, courseId, lessonId) {
 }
 
 // ─── MARK LESSON COMPLETE ──────────────────────────────────────
-async function markLessonComplete(userId, courseId, lessonId) {
+async function markLessonComplete(userId, courseId, lessonId, timeSpentSeconds = 0) {
   const lesson = await Lesson.findById(lessonId).lean();
   if (!lesson) throw new ApiError(404, 'Lesson not found');
 
   const mod = await Module.findById(lesson.moduleId).lean();
   if (!mod || String(mod.courseId) !== courseId) {
     throw new ApiError(403, 'Lesson does not belong to this course');
+  }
+
+  // Sequential lesson locking: verify previous lesson is completed
+  const moduleLessons = await Lesson.find({ moduleId: lesson.moduleId })
+    .sort({ sortOrder: 1 })
+    .lean();
+  const lessonIndex = moduleLessons.findIndex(l => String(l._id) === lessonId);
+  if (lessonIndex > 0) {
+    const prevLesson = moduleLessons[lessonIndex - 1];
+    const prevProgress = await LessonProgress.findOne({
+      userId,
+      courseId,
+      lessonId: prevLesson._id,
+    }).lean();
+    if (!prevProgress?.isCompleted) {
+      throw new ApiError(403, 'Complete the previous lesson first');
+    }
+  }
+
+  // Validate minimum time spent (90% of lesson duration required)
+  const minTimeSeconds = (lesson.durationMinutes || 0) * 60;
+  if (minTimeSeconds > 0 && timeSpentSeconds < minTimeSeconds * 0.9) {
+    throw new ApiError(
+      400,
+      `You need to spend at least ${Math.ceil((minTimeSeconds * 0.9) / 60)} minutes on this lesson`
+    );
   }
 
   const progress = await LessonProgress.findOneAndUpdate(

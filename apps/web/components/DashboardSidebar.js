@@ -13,6 +13,7 @@ export default function DashboardSidebar({ user, isPro = false }) {
     {
       id: 'main',
       items: [
+        { id: 'home', label: 'Home', path: '/', icon: 'home' },
         { id: 'dashboard', label: 'Dashboard', path: '/dashboard', icon: 'dashboard' },
         { id: 'courses', label: 'My Courses', path: '/dashboard/my-courses', icon: 'courses' },
         {
@@ -21,6 +22,7 @@ export default function DashboardSidebar({ user, isPro = false }) {
           path: '/dashboard/certificates',
           icon: 'certificates',
         },
+        { id: 'profile', label: 'My Profile', path: '/profile', icon: 'profile' },
       ],
     },
     {
@@ -30,10 +32,26 @@ export default function DashboardSidebar({ user, isPro = false }) {
     },
   ];
 
-  const isActive = path => pathname === path;
+  const isActive = path => {
+    if (path === '/') return pathname === '/';
+    return pathname === path || pathname.startsWith(path + '/');
+  };
 
   const renderIcon = icon => {
     const icons = {
+      home: (
+        <svg
+          width="18"
+          height="18"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="2"
+        >
+          <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" />
+          <polyline points="9 22 9 12 15 12 15 22" />
+        </svg>
+      ),
       dashboard: (
         <svg
           width="18"
@@ -89,6 +107,19 @@ export default function DashboardSidebar({ user, isPro = false }) {
         >
           <circle cx="12" cy="12" r="10" />
           <polygon points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76" />
+        </svg>
+      ),
+      profile: (
+        <svg
+          width="18"
+          height="18"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="2"
+        >
+          <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
+          <circle cx="12" cy="7" r="4" />
         </svg>
       ),
     };

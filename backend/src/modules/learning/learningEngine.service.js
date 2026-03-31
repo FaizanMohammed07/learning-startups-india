@@ -22,9 +22,17 @@ async function getCourseDashboard(userId, courseId) {
     };
   }
 
-  // Cohort check: if course hasn't started yet
+  // Cohort check: if course hasn't started yet (compare dates only, course is active on its startDate)
   const now = new Date();
-  if (course.startDate && now < new Date(course.startDate)) {
+  const todayStart = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+  const courseStart = course.startDate
+    ? new Date(
+        new Date(course.startDate).getFullYear(),
+        new Date(course.startDate).getMonth(),
+        new Date(course.startDate).getDate()
+      )
+    : null;
+  if (courseStart && todayStart < courseStart) {
     return {
       state: 'pre_start',
       course: sanitizeCourse(course),

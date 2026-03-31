@@ -1,0 +1,78 @@
+.certificate-page {
+  min-height: 100vh;
+  padding-top: 70px;
+  background-color: var(--bg-secondary);
+}
+
+.certificate-header {
+  background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-dark) 100%);
+  color: white;
+  padding: 48px 0;
+  margin-bottom: 32px;
+}
+
+.certificate-page-title {
+  font-size: 36px;
+  font-weight: 700;
+  margin-bottom: 8px;
+}
+
+.certificate-page-description {
+  font-size: 18px;
+  opacity: 0.9;
+}
+
+.certificates-grid {
+  display: grid;
+  gap: 32px;
+}
+
+.certificate-item {
+  background: white;
+  border-radius: var(--radius-lg);
+  padding: 32px;
+  box-shadow: var(--shadow-md);
+}
+
+.certificate-item-header {
+  margin-bottom: 24px;
+  padding-bottom: 16px;
+  border-bottom: 2px solid var(--border-color);
+}
+
+.certificate-course-name {
+  font-size: 24px;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin-bottom: 8px;
+}
+
+.certificate-issue-date {
+  font-size: 14px;
+  color: var(--text-secondary);
+}
+
+.certificate-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.submitted-text {
+  background-color: var(--bg-secondary);
+  padding: 16px;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--border-color);
+  line-height: 1.6;
+  color: var(--text-primary);
+}
+
+@media (max-width: 768px) {
+  .certificate-page-title {
+    font-size: 28px;
+  }
+
+  .certificate-item {
+    padding: 20px;
+  }
+}

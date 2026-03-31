@@ -1,0 +1,723 @@
+/* ==========================================
+   ABOUT US PAGE - MODERN DESIGN
+   Poppins Font | Centered Layout | Alternating Sections
+   ========================================== */
+
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&display=swap');
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+.about-page {
+  font-family: 'Poppins', sans-serif;
+  background: #ffffff;
+  overflow-x: hidden;
+}
+
+.container {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 0 32px;
+}
+
+/* ==========================================
+   HERO SECTION - LIGHT WITH GRADIENT
+   ========================================== */
+
+.about-hero {
+  min-height: 65vh;
+  display: flex;
+  align-items: center;
+  background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
+  padding: 100px 0 80px;
+  position: relative;
+}
+
+.about-hero::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: linear-gradient(90deg, #dc2626 0%, #991b1b 100%);
+}
+
+.hero-content {
+  text-align: center;
+  max-width: 750px;
+  margin: 0 auto;
+}
+
+.hero-title {
+  font-size: 68px;
+  font-weight: 900;
+  color: #0f172a;
+  letter-spacing: -2.5px;
+  margin-bottom: 24px;
+  line-height: 1.1;
+}
+
+.hero-tagline {
+  font-size: 22px;
+  font-weight: 500;
+  color: #dc2626;
+  letter-spacing: -0.3px;
+  line-height: 1.5;
+}
+
+/* ==========================================
+   COMMON ELEMENTS
+   ========================================== */
+
+.section-header {
+  text-align: center;
+  margin-bottom: 60px;
+}
+
+.section-label {
+  font-size: 14px;
+  font-weight: 600;
+  color: #dc2626;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  margin-bottom: 16px;
+}
+
+.section-title {
+  font-size: 48px;
+  font-weight: 700;
+  letter-spacing: -1.5px;
+  margin-bottom: 16px;
+}
+
+.section-description {
+  font-size: 18px;
+  font-weight: 400;
+  line-height: 1.7;
+  max-width: 700px;
+  margin: 0 auto;
+}
+
+/* ==========================================
+   WHO WE ARE - DARK
+   ========================================== */
+
+.who-section {
+  background: #0a0a0a;
+  padding: 120px 0;
+}
+
+.who-section .section-title {
+  color: #ffffff;
+}
+
+.who-content {
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+.who-description {
+  font-size: 20px;
+  font-weight: 400;
+  color: #cbd5e1;
+  line-height: 1.8;
+  margin-bottom: 40px;
+  text-align: center;
+}
+
+.who-highlight {
+  padding: 40px;
+  background: #1a1a1a;
+  border-left: 4px solid #dc2626;
+  border-radius: 12px;
+}
+
+.who-highlight p {
+  font-size: 20px;
+  font-weight: 500;
+  color: #ffffff;
+  line-height: 1.8;
+  font-style: italic;
+}
+
+/* ==========================================
+   WHAT WE STAND FOR - LIGHT
+   ========================================== */
+
+.stand-section {
+  background: #ffffff;
+  padding: 120px 0;
+}
+
+.stand-section .section-title {
+  color: #0a0a0a;
+}
+
+.stand-section .section-description {
+  color: #64748b;
+}
+
+.stand-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 24px;
+  margin-bottom: 60px;
+}
+
+.stand-card {
+  background: #fafafa;
+  padding: 40px 24px;
+  border-radius: 16px;
+  text-align: center;
+  border: 1px solid #e5e7eb;
+  transition: all 0.3s ease;
+}
+
+.stand-card:hover {
+  background: #ffffff;
+  border-color: #dc2626;
+  transform: translateY(-4px);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.08);
+}
+
+.stand-icon {
+  font-size: 48px;
+  margin-bottom: 20px;
+}
+
+.stand-card h3 {
+  font-size: 18px;
+  font-weight: 600;
+  color: #0a0a0a;
+  line-height: 1.4;
+}
+
+.stand-statement {
+  text-align: center;
+  padding: 32px;
+  background: #dc2626;
+  border-radius: 16px;
+  max-width: 700px;
+  margin: 0 auto;
+}
+
+.stand-statement p {
+  font-size: 20px;
+  font-weight: 500;
+  color: #ffffff;
+  margin: 0;
+}
+
+/* ==========================================
+   WHAT WE DO - DARK
+   ========================================== */
+
+.what-section {
+  background: #0a0a0a;
+  padding: 120px 0;
+}
+
+.what-section .section-title {
+  color: #ffffff;
+}
+
+.what-section .section-description {
+  color: #94a3b8;
+}
+
+.what-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 32px;
+}
+
+.what-card {
+  background: #1a1a1a;
+  padding: 40px;
+  border-radius: 16px;
+  border: 1px solid #2a2a2a;
+  transition: all 0.3s ease;
+}
+
+.what-card:hover {
+  border-color: #dc2626;
+  transform: translateY(-4px);
+}
+
+.what-number {
+  width: 56px;
+  height: 56px;
+  background: #dc2626;
+  color: #ffffff;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 24px;
+  font-weight: 700;
+  margin-bottom: 24px;
+}
+
+.what-card h3 {
+  font-size: 22px;
+  font-weight: 700;
+  color: #ffffff;
+  margin-bottom: 20px;
+  letter-spacing: -0.5px;
+}
+
+.what-card ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.what-card li {
+  font-size: 15px;
+  font-weight: 400;
+  color: #cbd5e1;
+  padding: 10px 0 10px 24px;
+  position: relative;
+  line-height: 1.6;
+}
+
+.what-card li::before {
+  content: '→';
+  position: absolute;
+  left: 0;
+  color: #dc2626;
+  font-weight: 700;
+}
+
+/* ==========================================
+   MISSION & VISION - LIGHT
+   ========================================== */
+
+.mission-section {
+  background: #ffffff;
+  padding: 120px 0;
+}
+
+.mission-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 40px;
+  max-width: 1000px;
+  margin: 0 auto;
+}
+
+.mission-card {
+  background: #fafafa;
+  padding: 48px 40px;
+  border-radius: 20px;
+  border: 2px solid #e5e7eb;
+  transition: all 0.3s ease;
+}
+
+.mission-card:hover {
+  background: #ffffff;
+  border-color: #dc2626;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.08);
+}
+
+.mission-icon {
+  font-size: 56px;
+  margin-bottom: 24px;
+}
+
+.mission-card h3 {
+  font-size: 28px;
+  font-weight: 700;
+  color: #0a0a0a;
+  margin-bottom: 20px;
+  letter-spacing: -0.5px;
+}
+
+.mission-card p {
+  font-size: 17px;
+  font-weight: 400;
+  color: #64748b;
+  line-height: 1.7;
+}
+
+/* ==========================================
+   ECOSYSTEM GROWTH - DARK
+   ========================================== */
+
+.ecosystem-section {
+  background: #0a0a0a;
+  padding: 120px 0;
+}
+
+.ecosystem-section .section-title {
+  color: #ffffff;
+}
+
+.ecosystem-section .section-description {
+  color: #94a3b8;
+}
+
+.ecosystem-flow {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+  flex-wrap: wrap;
+  margin-bottom: 60px;
+}
+
+.ecosystem-node {
+  background: #1a1a1a;
+  padding: 32px 24px;
+  border-radius: 16px;
+  text-align: center;
+  border: 1px solid #2a2a2a;
+  min-width: 180px;
+  transition: all 0.3s ease;
+}
+
+.ecosystem-node:hover {
+  border-color: #dc2626;
+  transform: scale(1.05);
+}
+
+.node-icon {
+  font-size: 40px;
+  margin-bottom: 16px;
+}
+
+.ecosystem-node h4 {
+  font-size: 14px;
+  font-weight: 600;
+  color: #ffffff;
+  line-height: 1.4;
+}
+
+.flow-connector {
+  font-size: 24px;
+  color: #dc2626;
+  font-weight: 700;
+}
+
+.ecosystem-statement {
+  text-align: center;
+  padding: 32px;
+  background: #1a1a1a;
+  border-radius: 16px;
+  max-width: 700px;
+  margin: 0 auto;
+  border: 1px solid #2a2a2a;
+}
+
+.ecosystem-statement p {
+  font-size: 20px;
+  font-weight: 500;
+  color: #ffffff;
+  margin: 0;
+}
+
+/* ==========================================
+   OUR APPROACH - LIGHT
+   ========================================== */
+
+.approach-section {
+  background: #ffffff;
+  padding: 120px 0;
+}
+
+.approach-section .section-title {
+  color: #0a0a0a;
+}
+
+.approach-section .section-description {
+  color: #64748b;
+}
+
+.approach-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 24px;
+  margin-bottom: 60px;
+}
+
+.approach-card {
+  background: #fafafa;
+  padding: 40px 24px;
+  border-radius: 16px;
+  text-align: center;
+  border: 1px solid #e5e7eb;
+  transition: all 0.3s ease;
+}
+
+.approach-card:hover {
+  background: #ffffff;
+  border-color: #dc2626;
+  transform: translateY(-4px);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.08);
+}
+
+.approach-icon {
+  font-size: 48px;
+  margin-bottom: 20px;
+}
+
+.approach-card h3 {
+  font-size: 18px;
+  font-weight: 700;
+  color: #0a0a0a;
+  margin-bottom: 8px;
+}
+
+.approach-card p {
+  font-size: 14px;
+  font-weight: 400;
+  color: #64748b;
+}
+
+.approach-statement {
+  text-align: center;
+  padding: 32px;
+  background: #0a0a0a;
+  border-radius: 16px;
+  max-width: 700px;
+  margin: 0 auto;
+}
+
+.approach-statement p {
+  font-size: 18px;
+  font-weight: 500;
+  color: #ffffff;
+  margin: 0;
+}
+
+/* ==========================================
+   WHY CHOOSE US - DARK
+   ========================================== */
+
+.why-section {
+  background: #0a0a0a;
+  padding: 120px 0;
+}
+
+.why-section .section-title {
+  color: #ffffff;
+}
+
+.why-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 24px;
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+.why-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 20px;
+  padding: 24px;
+  background: #1a1a1a;
+  border-radius: 12px;
+  border: 1px solid #2a2a2a;
+  transition: all 0.3s ease;
+}
+
+.why-item:hover {
+  border-color: #dc2626;
+  transform: translateX(8px);
+}
+
+.why-check {
+  width: 32px;
+  height: 32px;
+  background: #dc2626;
+  color: #ffffff;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+  font-weight: 700;
+  flex-shrink: 0;
+}
+
+.why-item p {
+  font-size: 16px;
+  font-weight: 500;
+  color: #cbd5e1;
+  line-height: 1.6;
+  margin: 0;
+}
+
+/* ==========================================
+   COMMITMENT - LIGHT
+   ========================================== */
+
+.commitment-section {
+  background: #ffffff;
+  padding: 120px 0;
+}
+
+.commitment-box {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 60px;
+  background: #fafafa;
+  border-radius: 20px;
+  border: 2px solid #e5e7eb;
+  text-align: center;
+}
+
+.commitment-box h2 {
+  font-size: 36px;
+  font-weight: 700;
+  color: #0a0a0a;
+  margin-bottom: 24px;
+  letter-spacing: -1px;
+}
+
+.commitment-box p {
+  font-size: 18px;
+  font-weight: 400;
+  color: #64748b;
+  line-height: 1.8;
+  margin-bottom: 20px;
+}
+
+.commitment-box p:last-child {
+  margin-bottom: 0;
+}
+
+/* ==========================================
+   CTA SECTION - DARK
+   ========================================== */
+
+.cta-section {
+  background: #0a0a0a;
+  padding: 120px 0;
+}
+
+.cta-content {
+  text-align: center;
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.cta-content h2 {
+  font-size: 40px;
+  font-weight: 700;
+  color: #ffffff;
+  margin-bottom: 20px;
+  letter-spacing: -1px;
+}
+
+.cta-content p {
+  font-size: 20px;
+  font-weight: 400;
+  color: #cbd5e1;
+  line-height: 1.7;
+  margin-bottom: 40px;
+}
+
+.cta-button {
+  padding: 20px 48px;
+  background: #dc2626;
+  color: #ffffff;
+  border: none;
+  border-radius: 12px;
+  font-size: 18px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-family: 'Poppins', sans-serif;
+  box-shadow: 0 8px 24px rgba(220, 38, 38, 0.3);
+}
+
+.cta-button:hover {
+  background: #b91c1c;
+  transform: translateY(-2px);
+  box-shadow: 0 12px 32px rgba(220, 38, 38, 0.4);
+}
+
+/* ==========================================
+   RESPONSIVE DESIGN
+   ========================================== */
+
+@media (max-width: 1024px) {
+  .stand-grid,
+  .approach-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .what-grid,
+  .mission-grid,
+  .why-grid {
+    grid-template-columns: 1fr;
+    max-width: 600px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .ecosystem-flow {
+    flex-direction: column;
+  }
+
+  .flow-connector {
+    transform: rotate(90deg);
+  }
+}
+
+@media (max-width: 768px) {
+  .container {
+    padding: 0 24px;
+  }
+
+  .hero-title {
+    font-size: 48px;
+  }
+
+  .hero-tagline {
+    font-size: 20px;
+  }
+
+  .section-title {
+    font-size: 36px;
+  }
+
+  .section-description {
+    font-size: 16px;
+  }
+
+  .stand-grid,
+  .approach-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .who-section,
+  .stand-section,
+  .what-section,
+  .mission-section,
+  .ecosystem-section,
+  .approach-section,
+  .why-section,
+  .commitment-section,
+  .cta-section {
+    padding: 80px 0;
+  }
+
+  .commitment-box {
+    padding: 40px 24px;
+  }
+
+  .cta-content h2 {
+    font-size: 32px;
+  }
+
+  .cta-content p {
+    font-size: 18px;
+  }
+}

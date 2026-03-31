@@ -1,0 +1,394 @@
+const adminService = require('./admin.service');
+
+// ─── ANALYTICS ──────────────────────────────────────────────────
+async function dashboard(req, res) {
+  const data = await adminService.getDashboardAnalytics();
+  res.json({ success: true, data });
+}
+
+async function monitoring(req, res) {
+  const data = await adminService.getMonitoringData();
+  res.json({ success: true, data });
+}
+
+// ─── USERS ──────────────────────────────────────────────────────
+async function getUsers(req, res) {
+  const { page, limit, search, role, sort } = req.query;
+  const data = await adminService.listUsers({
+    page: Number(page) || 1,
+    limit: Number(limit) || 20,
+    search,
+    role,
+    sort,
+  });
+  res.json({ success: true, data });
+}
+
+async function getUser(req, res) {
+  const data = await adminService.getUser(req.params.id);
+  res.json({ success: true, data });
+}
+
+async function updateUser(req, res) {
+  const data = await adminService.updateUser(req.params.id, req.body);
+  res.json({ success: true, data });
+}
+
+async function deleteUser(req, res) {
+  const data = await adminService.deleteUser(req.params.id);
+  res.json({ success: true, data });
+}
+
+// ─── COURSES ────────────────────────────────────────────────────
+async function getCourses(req, res) {
+  const { page, limit, search, status, sort } = req.query;
+  const data = await adminService.listCourses({
+    page: Number(page) || 1,
+    limit: Number(limit) || 20,
+    search,
+    status,
+    sort,
+  });
+  res.json({ success: true, data });
+}
+
+async function getCourse(req, res) {
+  const data = await adminService.getCourse(req.params.id);
+  res.json({ success: true, data });
+}
+
+async function updateCourse(req, res) {
+  const data = await adminService.updateCourse(req.params.id, req.body);
+  res.json({ success: true, data });
+}
+
+async function deleteCourse(req, res) {
+  const data = await adminService.deleteCourse(req.params.id);
+  res.json({ success: true, data });
+}
+
+// ─── COURSE CREATION ────────────────────────────────────────────
+async function createCourse(req, res) {
+  const data = await adminService.createCourse(req.body);
+  res.status(201).json({ success: true, data });
+}
+
+// ─── MODULES ────────────────────────────────────────────────────
+async function getModules(req, res) {
+  const data = await adminService.listModules(req.params.courseId);
+  res.json({ success: true, data });
+}
+
+async function createModule(req, res) {
+  const data = await adminService.createModule(req.body);
+  res.status(201).json({ success: true, data });
+}
+
+async function updateModule(req, res) {
+  const data = await adminService.updateModule(req.params.id, req.body);
+  res.json({ success: true, data });
+}
+
+async function deleteModule(req, res) {
+  const data = await adminService.deleteModule(req.params.id);
+  res.json({ success: true, data });
+}
+
+async function reorderModules(req, res) {
+  const data = await adminService.reorderModules(req.params.courseId, req.body.orderedIds);
+  res.json({ success: true, data });
+}
+
+// ─── LESSONS ────────────────────────────────────────────────────
+async function getLessons(req, res) {
+  const data = await adminService.listLessons(req.params.moduleId);
+  res.json({ success: true, data });
+}
+
+async function createLesson(req, res) {
+  const data = await adminService.createLesson(req.body);
+  res.status(201).json({ success: true, data });
+}
+
+async function updateLesson(req, res) {
+  const data = await adminService.updateLesson(req.params.id, req.body);
+  res.json({ success: true, data });
+}
+
+async function deleteLesson(req, res) {
+  const data = await adminService.deleteLesson(req.params.id);
+  res.json({ success: true, data });
+}
+
+// ─── QUIZZES ────────────────────────────────────────────────────
+async function getModuleQuiz(req, res) {
+  const data = await adminService.getModuleQuiz(req.params.moduleId);
+  res.json({ success: true, data });
+}
+
+async function upsertModuleQuiz(req, res) {
+  const data = await adminService.upsertModuleQuiz(req.body);
+  res.json({ success: true, data });
+}
+
+async function deleteModuleQuiz(req, res) {
+  const data = await adminService.deleteModuleQuiz(req.params.moduleId);
+  res.json({ success: true, data });
+}
+
+// ─── S3 UPLOAD ──────────────────────────────────────────────────
+async function getUploadUrl(req, res) {
+  const data = await adminService.getUploadUrl(req.body);
+  res.json({ success: true, data });
+}
+
+// ─── PAYMENTS ───────────────────────────────────────────────────
+async function getPayments(req, res) {
+  const { page, limit, status, sort } = req.query;
+  const data = await adminService.listPayments({
+    page: Number(page) || 1,
+    limit: Number(limit) || 20,
+    status,
+    sort,
+  });
+  res.json({ success: true, data });
+}
+
+async function refundPayment(req, res) {
+  const data = await adminService.refundPayment(req.params.id);
+  res.json({ success: true, data });
+}
+
+// ─── ENROLLMENTS ────────────────────────────────────────────────
+async function getEnrollments(req, res) {
+  const { page, limit, search, sort } = req.query;
+  const data = await adminService.listEnrollments({
+    page: Number(page) || 1,
+    limit: Number(limit) || 20,
+    search,
+    sort,
+  });
+  res.json({ success: true, data });
+}
+
+async function createEnrollment(req, res) {
+  const data = await adminService.createEnrollment(req.body);
+  res.status(201).json({ success: true, data });
+}
+
+// ─── CERTIFICATES ───────────────────────────────────────────────
+async function getCertificates(req, res) {
+  const { page, limit, sort } = req.query;
+  const data = await adminService.listCertificates({
+    page: Number(page) || 1,
+    limit: Number(limit) || 20,
+    sort,
+  });
+  res.json({ success: true, data });
+}
+
+async function revokeCertificate(req, res) {
+  const data = await adminService.revokeCertificate(req.params.id);
+  res.json({ success: true, data });
+}
+
+// ─── BLOG ───────────────────────────────────────────────────────
+async function getBlogPosts(req, res) {
+  const { page, limit, status, sort } = req.query;
+  const data = await adminService.listBlogPosts({
+    page: Number(page) || 1,
+    limit: Number(limit) || 20,
+    status,
+    sort,
+  });
+  res.json({ success: true, data });
+}
+
+async function createBlogPost(req, res) {
+  const data = await adminService.createBlogPost({ ...req.body, author: req.user.userId });
+  res.status(201).json({ success: true, data });
+}
+
+async function updateBlogPost(req, res) {
+  const data = await adminService.updateBlogPost(req.params.id, req.body);
+  res.json({ success: true, data });
+}
+
+async function deleteBlogPost(req, res) {
+  const data = await adminService.deleteBlogPost(req.params.id);
+  res.json({ success: true, data });
+}
+
+// ─── EVENTS ─────────────────────────────────────────────────────
+async function getEvents(req, res) {
+  const { page, limit, status, sort } = req.query;
+  const data = await adminService.listEvents({
+    page: Number(page) || 1,
+    limit: Number(limit) || 20,
+    status,
+    sort,
+  });
+  res.json({ success: true, data });
+}
+
+async function createEvent(req, res) {
+  const data = await adminService.createEvent({ ...req.body, createdBy: req.user.userId });
+  res.status(201).json({ success: true, data });
+}
+
+async function updateEvent(req, res) {
+  const data = await adminService.updateEvent(req.params.id, req.body);
+  res.json({ success: true, data });
+}
+
+async function deleteEvent(req, res) {
+  const data = await adminService.deleteEvent(req.params.id);
+  res.json({ success: true, data });
+}
+
+// ─── LEADS/CRM ──────────────────────────────────────────────────
+async function getLeads(req, res) {
+  const { page, limit, status, sort } = req.query;
+  const data = await adminService.listLeads({
+    page: Number(page) || 1,
+    limit: Number(limit) || 20,
+    status,
+    sort,
+  });
+  res.json({ success: true, data });
+}
+
+async function createLead(req, res) {
+  const data = await adminService.createLead(req.body);
+  res.status(201).json({ success: true, data });
+}
+
+async function updateLead(req, res) {
+  const data = await adminService.updateLead(req.params.id, req.body);
+  res.json({ success: true, data });
+}
+
+async function deleteLead(req, res) {
+  const data = await adminService.deleteLead(req.params.id);
+  res.json({ success: true, data });
+}
+
+// ─── TESTIMONIALS ───────────────────────────────────────────────
+async function getTestimonials(req, res) {
+  const { page, limit, status, sort } = req.query;
+  const data = await adminService.listTestimonials({
+    page: Number(page) || 1,
+    limit: Number(limit) || 20,
+    status,
+    sort,
+  });
+  res.json({ success: true, data });
+}
+
+async function createTestimonial(req, res) {
+  const data = await adminService.createTestimonial(req.body);
+  res.status(201).json({ success: true, data });
+}
+
+async function updateTestimonial(req, res) {
+  const data = await adminService.updateTestimonial(req.params.id, req.body);
+  res.json({ success: true, data });
+}
+
+async function deleteTestimonial(req, res) {
+  const data = await adminService.deleteTestimonial(req.params.id);
+  res.json({ success: true, data });
+}
+
+// ─── NOTIFICATIONS ──────────────────────────────────────────────
+async function getNotifications(req, res) {
+  const { page, limit, sort } = req.query;
+  const data = await adminService.listNotifications({
+    page: Number(page) || 1,
+    limit: Number(limit) || 20,
+    sort,
+  });
+  res.json({ success: true, data });
+}
+
+async function createNotification(req, res) {
+  const data = await adminService.createNotification({ ...req.body, sentBy: req.user.userId });
+  res.status(201).json({ success: true, data });
+}
+
+async function deleteNotification(req, res) {
+  const data = await adminService.deleteNotification(req.params.id);
+  res.json({ success: true, data });
+}
+
+// ─── SETTINGS ───────────────────────────────────────────────────
+async function getSettings(req, res) {
+  const data = await adminService.getSettings(req.query.category);
+  res.json({ success: true, data });
+}
+
+async function upsertSetting(req, res) {
+  const data = await adminService.upsertSetting({ ...req.body, updatedBy: req.user.userId });
+  res.json({ success: true, data });
+}
+
+async function deleteSetting(req, res) {
+  const data = await adminService.deleteSetting(req.params.key);
+  res.json({ success: true, data });
+}
+
+module.exports = {
+  dashboard,
+  monitoring,
+  getUsers,
+  getUser,
+  updateUser,
+  deleteUser,
+  getCourses,
+  getCourse,
+  createCourse,
+  updateCourse,
+  deleteCourse,
+  // Course Builder
+  getModules,
+  createModule,
+  updateModule,
+  deleteModule,
+  reorderModules,
+  getLessons,
+  createLesson,
+  updateLesson,
+  deleteLesson,
+  getModuleQuiz,
+  upsertModuleQuiz,
+  deleteModuleQuiz,
+  getUploadUrl,
+  getPayments,
+  refundPayment,
+  getEnrollments,
+  createEnrollment,
+  getCertificates,
+  revokeCertificate,
+  getBlogPosts,
+  createBlogPost,
+  updateBlogPost,
+  deleteBlogPost,
+  getEvents,
+  createEvent,
+  updateEvent,
+  deleteEvent,
+  getLeads,
+  createLead,
+  updateLead,
+  deleteLead,
+  getTestimonials,
+  createTestimonial,
+  updateTestimonial,
+  deleteTestimonial,
+  getNotifications,
+  createNotification,
+  deleteNotification,
+  getSettings,
+  upsertSetting,
+  deleteSetting,
+};

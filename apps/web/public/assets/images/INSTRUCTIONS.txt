@@ -1,0 +1,67 @@
+========================================
+  IMAGE REPLACEMENT INSTRUCTIONS
+========================================
+
+📁 Location: /public/assets/images/
+
+🎯 Required Images:
+
+1. LOGO IMAGE
+   ├─ Filename: logo.png (or logo.svg)
+   ├─ Size: 200x60px recommended
+   ├─ Format: PNG with transparent background or SVG
+   ├─ Usage: Header logo
+   └─ Tips: Make sure text is readable at small sizes
+
+2. HERO IMAGE
+   ├─ Filename: hero-image.png (or hero-image.jpg)
+   ├─ Size: 600x500px recommended
+   ├─ Format: PNG or JPG
+   ├─ Usage: Homepage hero section (right side)
+   └─ Tips: Use high-quality image of student/person with laptop
+
+========================================
+  HOW TO ADD YOUR IMAGES
+========================================
+
+Step 1: Prepare your images
+   - Logo: Export as PNG (transparent) or SVG
+   - Hero: Export as PNG or JPG (high quality)
+
+Step 2: Name your files exactly as:
+   - logo.png (or logo.svg)
+   - hero-image.png (or hero-image.jpg)
+
+Step 3: Place files in this folder:
+   /public/assets/images/
+
+Step 4: Refresh your browser
+   - Images will automatically load
+   - If image fails, fallback will show
+
+========================================
+  CURRENT STATUS
+========================================
+
+✅ Image paths configured
+✅ Fallback system in place
+⏳ Waiting for your images
+
+Replace the placeholder files and your images will appear!
+
+========================================
+  TROUBLESHOOTING
+========================================
+
+❌ Image not showing?
+   - Check filename matches exactly
+   - Check file is in correct folder
+   - Check file format (PNG, JPG, SVG)
+   - Try hard refresh (Ctrl+Shift+R)
+
+❌ Image looks stretched?
+   - Use recommended dimensions
+   - Maintain aspect ratio
+   - Use high resolution (2x for retina)
+
+========================================

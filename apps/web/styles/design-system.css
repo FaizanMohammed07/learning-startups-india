@@ -1,0 +1,289 @@
+/* ============================================
+   ENTERPRISE DESIGN SYSTEM
+   Fluid, Viewport-Responsive System
+   Maintains proportions across all screen sizes
+   ============================================ */
+
+:root {
+  /* ========================================
+     VIEWPORT-BASED SCALING
+     These scale proportionally with screen size
+     ======================================== */
+  
+  /* Base viewport units (scale with screen) */
+  --viewport-unit: 1vw;
+  --viewport-height: 1vh;
+  
+  /* Scaling factors based on standard desktop (1920px) */
+  --scale-factor: calc(100vw / 1920);
+  --scale-factor-height: calc(100vh / 1080);
+  
+  /* ========================================
+     FLUID TYPOGRAPHY
+     Auto-scales between min and max values
+     ======================================== */
+  
+  /* Hero & Display Text */
+  --text-hero: clamp(2rem, 3.333vw, 4rem);           /* 32px - 64px */
+  --text-display: clamp(1.75rem, 2.5vw, 3rem);       /* 28px - 48px */
+  
+  /* Headings */
+  --text-h1: clamp(1.75rem, 2.083vw, 2.5rem);        /* 28px - 40px */
+  --text-h2: clamp(1.5rem, 1.875vw, 2.25rem);        /* 24px - 36px */
+  --text-h3: clamp(1.25rem, 1.458vw, 1.75rem);       /* 20px - 28px */
+  --text-h4: clamp(1.125rem, 1.25vw, 1.5rem);        /* 18px - 24px */
+  
+  /* Body Text */
+  --text-xl: clamp(1.125rem, 1.042vw, 1.25rem);      /* 18px - 20px */
+  --text-lg: clamp(1rem, 0.938vw, 1.125rem);         /* 16px - 18px */
+  --text-base: clamp(0.875rem, 0.833vw, 1rem);       /* 14px - 16px */
+  --text-sm: clamp(0.8125rem, 0.729vw, 0.875rem);    /* 13px - 14px */
+  --text-xs: clamp(0.75rem, 0.625vw, 0.8125rem);     /* 12px - 13px */
+  
+  /* ========================================
+     FLUID SPACING
+     Scales proportionally with viewport
+     ======================================== */
+  
+  /* Layout Spacing */
+  --space-3xl: clamp(4rem, 5.208vw, 6.25rem);        /* 64px - 100px */
+  --space-2xl: clamp(3rem, 4.167vw, 5rem);           /* 48px - 80px */
+  --space-xl: clamp(2.5rem, 3.125vw, 3.75rem);       /* 40px - 60px */
+  --space-lg: clamp(2rem, 2.5vw, 3rem);              /* 32px - 48px */
+  --space-md: clamp(1.5rem, 2.083vw, 2.5rem);        /* 24px - 40px */
+  --space-sm: clamp(1rem, 1.25vw, 1.5rem);           /* 16px - 24px */
+  --space-xs: clamp(0.75rem, 0.833vw, 1rem);         /* 12px - 16px */
+  --space-2xs: clamp(0.5rem, 0.521vw, 0.625rem);     /* 8px - 10px */
+  
+  /* ========================================
+     FLUID SIZING
+     Buttons, cards, icons scale with viewport
+     ======================================== */
+  
+  /* Button Padding */
+  --btn-padding-y: clamp(0.875rem, 0.938vw, 1.125rem);  /* 14px - 18px */
+  --btn-padding-x: clamp(1.5rem, 2.083vw, 2.5rem);      /* 24px - 40px */
+  
+  /* Icon Sizes */
+  --icon-xs: clamp(1rem, 0.833vw, 1.25rem);          /* 16px - 20px */
+  --icon-sm: clamp(1.25rem, 1.25vw, 1.5rem);         /* 20px - 24px */
+  --icon-md: clamp(1.5rem, 1.667vw, 2rem);           /* 24px - 32px */
+  --icon-lg: clamp(2rem, 2.5vw, 3rem);               /* 32px - 48px */
+  --icon-xl: clamp(2.5rem, 3.333vw, 4rem);           /* 40px - 64px */
+  
+  /* Card Padding */
+  --card-padding: clamp(1.25rem, 1.667vw, 2rem);     /* 20px - 32px */
+  --card-gap: clamp(1rem, 1.25vw, 1.5rem);           /* 16px - 24px */
+  
+  /* Border Radius */
+  --radius-sm: clamp(0.375rem, 0.417vw, 0.5rem);     /* 6px - 8px */
+  --radius-md: clamp(0.5rem, 0.625vw, 0.75rem);      /* 8px - 12px */
+  --radius-lg: clamp(0.75rem, 0.833vw, 1rem);        /* 12px - 16px */
+  --radius-xl: clamp(1rem, 1.042vw, 1.25rem);        /* 16px - 20px */
+  
+  /* ========================================
+     CONTAINER WIDTHS
+     Max widths scale with viewport
+     ======================================== */
+  
+  --container-xs: min(100%, 40rem);                   /* 640px */
+  --container-sm: min(100%, 48rem);                   /* 768px */
+  --container-md: min(100%, 64rem);                   /* 1024px */
+  --container-lg: min(100%, 76.25rem);                /* 1220px */
+  --container-xl: min(100%, 90rem);                   /* 1440px */
+  --container-full: 100%;
+  
+  /* Dynamic padding based on viewport */
+  --container-padding: clamp(1rem, 2.083vw, 2.5rem);  /* 16px - 40px */
+  
+  /* ========================================
+     COLORS
+     ======================================== */
+  
+  --color-primary: #e63946;
+  --color-primary-light: #ff6b6b;
+  --color-primary-dark: #d62839;
+  
+  --color-bg-primary: #FFECEC;
+  --color-bg-white: #ffffff;
+  --color-bg-gray: #f9fafb;
+  
+  --color-text-primary: #0a0a0a;
+  --color-text-secondary: #555555;
+  --color-text-muted: #999999;
+  
+  --color-border: #e0e0e0;
+  --color-border-light: rgba(230, 57, 70, 0.2);
+  
+  /* ========================================
+     SHADOWS
+     ======================================== */
+  
+  --shadow-sm: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.05);
+  --shadow-md: 0 0.25rem 0.75rem rgba(0, 0, 0, 0.08);
+  --shadow-lg: 0 0.625rem 1.875rem rgba(0, 0, 0, 0.12);
+  --shadow-xl: 0 1rem 2.5rem rgba(0, 0, 0, 0.15);
+  
+  --shadow-primary: 0 0.625rem 1.875rem rgba(230, 57, 70, 0.3);
+  --shadow-primary-hover: 0 1rem 2.5rem rgba(230, 57, 70, 0.4);
+  
+  /* ========================================
+     TRANSITIONS
+     ======================================== */
+  
+  --transition-fast: 0.15s ease;
+  --transition-base: 0.3s ease;
+  --transition-slow: 0.5s ease;
+  --transition-smooth: 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  
+  /* ========================================
+     Z-INDEX LAYERS
+     ======================================== */
+  
+  --z-base: 1;
+  --z-dropdown: 100;
+  --z-sticky: 200;
+  --z-fixed: 300;
+  --z-modal-backdrop: 400;
+  --z-modal: 500;
+  --z-popover: 600;
+  --z-tooltip: 700;
+}
+
+/* ========================================
+   RESPONSIVE ADJUSTMENTS
+   Adjust scaling for different screen sizes
+   ======================================== */
+
+/* Small laptops (1366px and below) - 18 inch screens */
+@media (max-width: 85.375rem) {
+  :root {
+    /* Slightly increase base sizes for better readability on small laptops */
+    --scale-factor: calc(100vw / 1366);
+    
+    /* Adjust minimum sizes to ensure readability */
+    --text-hero: clamp(2.25rem, 4vw, 4rem);
+    --text-h1: clamp(1.875rem, 2.5vw, 2.5rem);
+  }
+}
+
+/* Tablets (1024px and below) */
+@media (max-width: 64rem) {
+  :root {
+    --scale-factor: calc(100vw / 1024);
+    
+    /* Larger minimum sizes for tablets */
+    --text-hero: clamp(2.5rem, 5vw, 3.5rem);
+    --space-3xl: clamp(3rem, 6vw, 5rem);
+  }
+}
+
+/* Mobile (768px and below) */
+@media (max-width: 48rem) {
+  :root {
+    --scale-factor: calc(100vw / 768);
+    
+    /* Optimize for mobile screens */
+    --text-hero: clamp(2rem, 6vw, 3rem);
+    --text-h1: clamp(1.5rem, 4vw, 2rem);
+    
+    --space-3xl: clamp(2.5rem, 8vw, 4rem);
+    --space-2xl: clamp(2rem, 6vw, 3rem);
+    
+    --container-padding: clamp(1rem, 4vw, 1.5rem);
+  }
+}
+
+/* Small mobile (480px and below) */
+@media (max-width: 30rem) {
+  :root {
+    --scale-factor: calc(100vw / 480);
+    
+    /* Minimum readable sizes */
+    --text-hero: clamp(1.75rem, 7vw, 2.5rem);
+    --text-h1: clamp(1.375rem, 5vw, 1.75rem);
+    --text-base: clamp(0.875rem, 3.5vw, 1rem);
+    
+    --space-2xl: clamp(1.5rem, 5vw, 2.5rem);
+    --container-padding: clamp(1rem, 5vw, 1.25rem);
+  }
+}
+
+/* ========================================
+   UTILITY CLASSES
+   Apply design system values easily
+   ======================================== */
+
+/* Typography */
+.text-hero { font-size: var(--text-hero); }
+.text-display { font-size: var(--text-display); }
+.text-h1 { font-size: var(--text-h1); }
+.text-h2 { font-size: var(--text-h2); }
+.text-h3 { font-size: var(--text-h3); }
+.text-h4 { font-size: var(--text-h4); }
+.text-xl { font-size: var(--text-xl); }
+.text-lg { font-size: var(--text-lg); }
+.text-base { font-size: var(--text-base); }
+.text-sm { font-size: var(--text-sm); }
+.text-xs { font-size: var(--text-xs); }
+
+/* Spacing */
+.space-top-3xl { padding-top: var(--space-3xl); }
+.space-top-2xl { padding-top: var(--space-2xl); }
+.space-top-xl { padding-top: var(--space-xl); }
+.space-top-lg { padding-top: var(--space-lg); }
+.space-top-md { padding-top: var(--space-md); }
+
+.space-bottom-3xl { padding-bottom: var(--space-3xl); }
+.space-bottom-2xl { padding-bottom: var(--space-2xl); }
+.space-bottom-xl { padding-bottom: var(--space-xl); }
+.space-bottom-lg { padding-bottom: var(--space-lg); }
+.space-bottom-md { padding-bottom: var(--space-md); }
+
+.gap-lg { gap: var(--space-lg); }
+.gap-md { gap: var(--space-md); }
+.gap-sm { gap: var(--space-sm); }
+.gap-xs { gap: var(--space-xs); }
+
+/* Container */
+.container-fluid {
+  width: 100%;
+  max-width: var(--container-lg);
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: var(--container-padding);
+  padding-right: var(--container-padding);
+}
+
+/* Ensure smooth scaling */
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
+html {
+  /* Enable smooth rem-based scaling */
+  font-size: 100%; /* 16px base */
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  min-width: 320px;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Responsive images */
+img, picture, video, canvas, svg {
+  display: block;
+  max-width: 100%;
+  height: auto;
+}
+
+/* Smooth scrolling */
+@media (prefers-reduced-motion: no-preference) {
+  html {
+    scroll-behavior: smooth;
+  }
+}

@@ -1,0 +1,1252 @@
+'use client';
+
+import { useState, useEffect, useCallback } from 'react';
+import { apiGet, apiPost, apiPatch, apiDelete } from '@/lib/api';
+
+export default function AdminCoursesPage() {
+  const [courses, setCourses] = useState([]);
+  const [total, setTotal] = useState(0);
+  const [page, setPage] = useState(1);
+  const [pages, setPages] = useState(1);
+  const [search, setSearch] = useState('');
+  const [statusFilter, setStatusFilter] = useState('');
+  const [loading, setLoading] = useState(true);
+  const [editCourse, setEditCourse] = useState(null);
+  const [showCreate, setShowCreate] = useState(false);
+  const [builderCourse, setBuilderCourse] = useState(null);
+  const [form, setForm] = useState({});
+
+  const load = useCallback(async () => {
+    setLoading(true);
+    const params = new URLSearchParams({ page, limit: 20 });
+    if (search) params.set('search', search);
+    if (statusFilter) params.set('status', statusFilter);
+    const { data } = await apiGet(`/api/v1/admin/courses?${params}`);
+    if (data) {
+      setCourses(data.courses || []);
+      setTotal(data.total || 0);
+      setPages(data.pages || 1);
+    }
+    setLoading(false);
+  }, [page, search, statusFilter]);
+
+  useEffect(() => {
+    load();
+  }, [load]);
+
+  const handleTogglePublish = async course => {
+    const action = course.isPublished ? 'unpublish' : 'publish';
+    if (!confirm(`Are you sure you want to ${action} "${course.title}"?`)) return;
+    await apiPatch(`/api/v1/admin/courses/${course._id}`, { isPublished: !course.isPublished });
+    load();
+  };
+
+  const handleDelete = async id => {
+    if (!confirm('Delete this course and all its modules/lessons permanently?')) return;
+    await apiDelete(`/api/v1/admin/courses/${id}`);
+    load();
+  };
+
+  const handleEdit = course => {
+    setEditCourse(course);
+    setForm({
+      title: course.title,
+      subtitle: course.subtitle || '',
+      description: course.description || '',
+      priceInr: course.priceInr || 0,
+      originalPriceInr: course.originalPriceInr || 0,
+      category: course.category || '',
+      level: course.level || '',
+      difficultyLevel: course.difficultyLevel || 'beginner',
+      durationWeeks: course.durationWeeks || 0,
+      startDate: course.startDate ? course.startDate.slice(0, 10) : '',
+      endDate: course.endDate ? course.endDate.slice(0, 10) : '',
+      preStartMessage: course.preStartMessage || '',
+      enrollmentStatus: course.enrollmentStatus || 'open',
+      thumbnailUrl: course.thumbnailUrl || '',
+    });
+  };
+
+  const handleSave = async () => {
+    if (!editCourse) return;
+    if (!confirm(`Save changes to "${editCourse.title}"?`)) return;
+    const payload = { ...form };
+    if (payload.startDate) payload.startDate = new Date(payload.startDate).toISOString();
+    else payload.startDate = null;
+    if (payload.endDate) payload.endDate = new Date(payload.endDate).toISOString();
+    else payload.endDate = null;
+    await apiPatch(`/api/v1/admin/courses/${editCourse._id}`, payload);
+    setEditCourse(null);
+    load();
+  };
+
+  const handleCreate = async () => {
+    if (!form.title) return alert('Course title is required.');
+    if (!confirm(`Create new course "${form.title}"?`)) return;
+    const payload = { ...form };
+    if (payload.startDate) payload.startDate = new Date(payload.startDate).toISOString();
+    else payload.startDate = null;
+    if (payload.endDate) payload.endDate = new Date(payload.endDate).toISOString();
+    else payload.endDate = null;
+    const { data, error } = await apiPost('/api/v1/admin/courses', payload);
+    if (error) return alert(error.message);
+    setShowCreate(false);
+    setForm({});
+    load();
+  };
+
+  // If builder is open, show full course builder
+  if (builderCourse) {
+    return (
+      <CourseBuilder
+        courseId={builderCourse._id}
+        courseTitle={builderCourse.title}
+        onBack={() => {
+          setBuilderCourse(null);
+          load();
+        }}
+      />
+    );
+  }
+
+  const courseFormFields = (
+    <>
+      <div className="admin-form-group">
+        <label>Title *</label>
+        <input
+          value={form.title || ''}
+          onChange={e => setForm({ ...form, title: e.target.value })}
+        />
+      </div>
+      <div className="admin-form-group">
+        <label>Subtitle</label>
+        <input
+          value={form.subtitle || ''}
+          onChange={e => setForm({ ...form, subtitle: e.target.value })}
+        />
+      </div>
+      <div className="admin-form-group">
+        <label>Description</label>
+        <textarea
+          rows={3}
+          value={form.description || ''}
+          onChange={e => setForm({ ...form, description: e.target.value })}
+          style={{ width: '100%', resize: 'vertical' }}
+        />
+      </div>
+      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12 }}>
+        <div className="admin-form-group">
+          <label>Price (INR)</label>
+          <input
+            type="number"
+            value={form.priceInr || 0}
+            onChange={e => setForm({ ...form, priceInr: Number(e.target.value) })}
+          />
+        </div>
+        <div className="admin-form-group">
+          <label>Original Price (INR)</label>
+          <input
+            type="number"
+            value={form.originalPriceInr || 0}
+            onChange={e => setForm({ ...form, originalPriceInr: Number(e.target.value) })}
+          />
+        </div>
+      </div>
+      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12 }}>
+        <div className="admin-form-group">
+          <label>Category</label>
+          <input
+            value={form.category || ''}
+            onChange={e => setForm({ ...form, category: e.target.value })}
+          />
+        </div>
+        <div className="admin-form-group">
+          <label>Difficulty</label>
+          <select
+            value={form.difficultyLevel || 'beginner'}
+            onChange={e => setForm({ ...form, difficultyLevel: e.target.value })}
+          >
+            <option value="beginner">Beginner</option>
+            <option value="intermediate">Intermediate</option>
+            <option value="advanced">Advanced</option>
+          </select>
+        </div>
+      </div>
+      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12 }}>
+        <div className="admin-form-group">
+          <label>Duration (weeks)</label>
+          <input
+            type="number"
+            value={form.durationWeeks || 0}
+            onChange={e => setForm({ ...form, durationWeeks: Number(e.target.value) })}
+          />
+        </div>
+        <div className="admin-form-group">
+          <label>Enrollment Status</label>
+          <select
+            value={form.enrollmentStatus || 'open'}
+            onChange={e => setForm({ ...form, enrollmentStatus: e.target.value })}
+          >
+            <option value="open">Open</option>
+            <option value="closed">Closed</option>
+            <option value="coming_soon">Coming Soon</option>
+          </select>
+        </div>
+      </div>
+      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12 }}>
+        <div className="admin-form-group">
+          <label>Cohort Start Date</label>
+          <input
+            type="date"
+            value={form.startDate || ''}
+            onChange={e => setForm({ ...form, startDate: e.target.value })}
+          />
+        </div>
+        <div className="admin-form-group">
+          <label>Cohort End Date</label>
+          <input
+            type="date"
+            value={form.endDate || ''}
+            onChange={e => setForm({ ...form, endDate: e.target.value })}
+          />
+        </div>
+      </div>
+      <div className="admin-form-group">
+        <label>Pre-Start Welcome Message</label>
+        <textarea
+          rows={2}
+          value={form.preStartMessage || ''}
+          onChange={e => setForm({ ...form, preStartMessage: e.target.value })}
+          style={{ width: '100%', resize: 'vertical' }}
+        />
+      </div>
+      <div className="admin-form-group">
+        <label>Thumbnail URL</label>
+        <input
+          value={form.thumbnailUrl || ''}
+          onChange={e => setForm({ ...form, thumbnailUrl: e.target.value })}
+        />
+      </div>
+    </>
+  );
+
+  return (
+    <div className="admin-page">
+      <div
+        className="admin-topbar"
+        style={{
+          margin: '-28px -28px 24px',
+          padding: '18px 28px',
+          background: '#fff',
+          borderBottom: '1px solid #e2e8f0',
+          display: 'flex',
+          justifyContent: 'space-between',
+          alignItems: 'center',
+        }}
+      >
+        <div>
+          <h1 style={{ fontSize: 20, fontWeight: 800, margin: 0 }}>Course Management</h1>
+          <span style={{ fontSize: 13, color: '#64748b' }}>{total} courses</span>
+        </div>
+        <button
+          className="btn btn-primary"
+          onClick={() => {
+            setShowCreate(true);
+            setForm({ difficultyLevel: 'beginner', enrollmentStatus: 'open' });
+          }}
+        >
+          + Create Course
+        </button>
+      </div>
+
+      <div style={{ display: 'flex', gap: 10, marginBottom: 20, flexWrap: 'wrap' }}>
+        <input
+          type="text"
+          placeholder="Search courses..."
+          value={search}
+          onChange={e => {
+            setSearch(e.target.value);
+            setPage(1);
+          }}
+          style={{
+            padding: '8px 14px',
+            border: '1px solid #e2e8f0',
+            borderRadius: 8,
+            fontSize: 13,
+            width: 280,
+            outline: 'none',
+          }}
+        />
+        <select
+          value={statusFilter}
+          onChange={e => {
+            setStatusFilter(e.target.value);
+            setPage(1);
+          }}
+          style={{
+            padding: '8px 14px',
+            border: '1px solid #e2e8f0',
+            borderRadius: 8,
+            fontSize: 13,
+            outline: 'none',
+          }}
+        >
+          <option value="">All Status</option>
+          <option value="published">Published</option>
+          <option value="draft">Draft</option>
+        </select>
+      </div>
+
+      {loading ? (
+        <div className="admin-loading">
+          <div className="admin-spinner" />
+        </div>
+      ) : (
+        <div className="admin-table-wrap">
+          <table className="admin-table">
+            <thead>
+              <tr>
+                <th>Title</th>
+                <th>Category</th>
+                <th>Price</th>
+                <th>Cohort</th>
+                <th>Status</th>
+                <th>Enrolled</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              {courses.map(c => (
+                <tr key={c._id}>
+                  <td style={{ fontWeight: 600, maxWidth: 220 }}>{c.title}</td>
+                  <td style={{ color: '#64748b' }}>{c.category || '-'}</td>
+                  <td style={{ fontWeight: 600 }}>
+                    {c.priceInr ? `₹${c.priceInr.toLocaleString()}` : 'Free'}
+                  </td>
+                  <td style={{ fontSize: 12, color: '#64748b' }}>
+                    {c.startDate ? new Date(c.startDate).toLocaleDateString() : '-'}
+                  </td>
+                  <td>
+                    <span className={`badge ${c.isPublished ? 'badge-green' : 'badge-yellow'}`}>
+                      {c.isPublished ? 'Published' : 'Draft'}
+                    </span>
+                  </td>
+                  <td>{c.enrolledCount || 0}</td>
+                  <td>
+                    <div style={{ display: 'flex', gap: 6 }}>
+                      <button
+                        className="btn btn-primary btn-sm"
+                        onClick={() => setBuilderCourse(c)}
+                      >
+                        Builder
+                      </button>
+                      <button className="btn btn-secondary btn-sm" onClick={() => handleEdit(c)}>
+                        Edit
+                      </button>
+                      <button
+                        className="btn btn-sm"
+                        style={{
+                          background: c.isPublished ? '#fef3c7' : '#d1fae5',
+                          color: c.isPublished ? '#b45309' : '#059669',
+                        }}
+                        onClick={() => handleTogglePublish(c)}
+                      >
+                        {c.isPublished ? 'Unpublish' : 'Publish'}
+                      </button>
+                      <button className="btn btn-danger btn-sm" onClick={() => handleDelete(c._id)}>
+                        Delete
+                      </button>
+                    </div>
+                  </td>
+                </tr>
+              ))}
+              {courses.length === 0 && (
+                <tr>
+                  <td colSpan={7} style={{ textAlign: 'center', padding: 40, color: '#94a3b8' }}>
+                    No courses found
+                  </td>
+                </tr>
+              )}
+            </tbody>
+          </table>
+          {pages > 1 && (
+            <div className="admin-pagination">
+              <span>
+                Page {page} of {pages}
+              </span>
+              <div className="pagination-btns">
+                <button disabled={page <= 1} onClick={() => setPage(p => p - 1)}>
+                  Previous
+                </button>
+                <button disabled={page >= pages} onClick={() => setPage(p => p + 1)}>
+                  Next
+                </button>
+              </div>
+            </div>
+          )}
+        </div>
+      )}
+
+      {/* Create Course Modal */}
+      {showCreate && (
+        <div className="admin-modal-overlay" onClick={() => setShowCreate(false)}>
+          <div className="admin-modal" onClick={e => e.stopPropagation()} style={{ maxWidth: 600 }}>
+            <div className="admin-modal-header">
+              <h2>Create New Course</h2>
+              <button className="admin-modal-close" onClick={() => setShowCreate(false)}>
+                ✕
+              </button>
+            </div>
+            <div className="admin-modal-body" style={{ maxHeight: '70vh', overflowY: 'auto' }}>
+              {courseFormFields}
+            </div>
+            <div className="admin-modal-footer">
+              <button className="btn btn-secondary" onClick={() => setShowCreate(false)}>
+                Cancel
+              </button>
+              <button className="btn btn-primary" onClick={handleCreate} disabled={!form.title}>
+                Create Course
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Edit Course Modal */}
+      {editCourse && (
+        <div className="admin-modal-overlay" onClick={() => setEditCourse(null)}>
+          <div className="admin-modal" onClick={e => e.stopPropagation()} style={{ maxWidth: 600 }}>
+            <div className="admin-modal-header">
+              <h2>Edit Course</h2>
+              <button className="admin-modal-close" onClick={() => setEditCourse(null)}>
+                ✕
+              </button>
+            </div>
+            <div className="admin-modal-body" style={{ maxHeight: '70vh', overflowY: 'auto' }}>
+              {courseFormFields}
+            </div>
+            <div className="admin-modal-footer">
+              <button className="btn btn-secondary" onClick={() => setEditCourse(null)}>
+                Cancel
+              </button>
+              <button className="btn btn-primary" onClick={handleSave}>
+                Save Changes
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+    </div>
+  );
+}
+
+// ──────────────────────────────────────────────────────────────────
+// COURSE BUILDER COMPONENT — Modules, Lessons, Quizzes, S3 Upload
+// ──────────────────────────────────────────────────────────────────
+function CourseBuilder({ courseId, courseTitle, onBack }) {
+  const [modules, setModules] = useState([]);
+  const [lessons, setLessons] = useState({});
+  const [quizzes, setQuizzes] = useState({});
+  const [loading, setLoading] = useState(true);
+  const [activeModule, setActiveModule] = useState(null);
+  const [showModuleForm, setShowModuleForm] = useState(false);
+  const [showLessonForm, setShowLessonForm] = useState(false);
+  const [showQuizForm, setShowQuizForm] = useState(false);
+  const [editModule, setEditModule] = useState(null);
+  const [editLesson, setEditLesson] = useState(null);
+  const [moduleForm, setModuleForm] = useState({});
+  const [lessonForm, setLessonForm] = useState({});
+  const [quizForm, setQuizForm] = useState({
+    title: 'Module Quiz',
+    passingScore: 70,
+    questions: [],
+  });
+  const [uploading, setUploading] = useState(false);
+
+  const loadModules = useCallback(async () => {
+    setLoading(true);
+    const { data } = await apiGet(`/api/v1/admin/courses/${courseId}/modules`);
+    const mods = data || [];
+    setModules(mods);
+
+    const lessonMap = {};
+    const quizMap = {};
+    for (const mod of mods) {
+      const lRes = await apiGet(`/api/v1/admin/modules/${mod._id}/lessons`);
+      lessonMap[mod._id] = lRes.data || [];
+      const qRes = await apiGet(`/api/v1/admin/modules/${mod._id}/quiz`);
+      quizMap[mod._id] = qRes.data || null;
+    }
+    setLessons(lessonMap);
+    setQuizzes(quizMap);
+    if (mods.length > 0 && !activeModule) setActiveModule(mods[0]);
+    setLoading(false);
+  }, [courseId]);
+
+  useEffect(() => {
+    loadModules();
+  }, [loadModules]);
+
+  // ── Module CRUD ──
+  const handleCreateModule = async () => {
+    if (!moduleForm.title) return alert('Module title is required.');
+    if (!confirm(`Create module "${moduleForm.title}"?`)) return;
+    const { error } = await apiPost('/api/v1/admin/modules', { ...moduleForm, courseId });
+    if (error) return alert(error.message);
+    setShowModuleForm(false);
+    setModuleForm({});
+    loadModules();
+  };
+
+  const handleUpdateModule = async () => {
+    if (!editModule) return;
+    if (!confirm(`Save changes to module "${moduleForm.title || editModule.title}"?`)) return;
+    await apiPatch(`/api/v1/admin/modules/${editModule._id}`, moduleForm);
+    setEditModule(null);
+    setModuleForm({});
+    loadModules();
+  };
+
+  const handleDeleteModule = async id => {
+    if (!confirm('Delete this module and all its lessons?')) return;
+    await apiDelete(`/api/v1/admin/modules/${id}`);
+    if (activeModule?._id === id) setActiveModule(null);
+    loadModules();
+  };
+
+  // ── Lesson CRUD ──
+  const handleCreateLesson = async () => {
+    if (!activeModule) return;
+    if (!lessonForm.title) return alert('Lesson title is required.');
+    if (!confirm(`Create lesson "${lessonForm.title}"?`)) return;
+    const { error } = await apiPost('/api/v1/admin/lessons', {
+      ...lessonForm,
+      moduleId: activeModule._id,
+    });
+    if (error) return alert(error.message);
+    setShowLessonForm(false);
+    setLessonForm({});
+    loadModules();
+  };
+
+  const handleUpdateLesson = async () => {
+    if (!editLesson) return;
+    if (!confirm(`Save changes to lesson "${lessonForm.title || editLesson.title}"?`)) return;
+    await apiPatch(`/api/v1/admin/lessons/${editLesson._id}`, lessonForm);
+    setEditLesson(null);
+    setLessonForm({});
+    loadModules();
+  };
+
+  const handleDeleteLesson = async id => {
+    if (!confirm('Delete this lesson?')) return;
+    await apiDelete(`/api/v1/admin/lessons/${id}`);
+    loadModules();
+  };
+
+  // ── S3 Video Upload ──
+  const handleVideoUpload = async (file, lessonId) => {
+    if (!file) return;
+    if (!confirm(`Upload video "${file.name}" to this lesson?`)) return;
+    setUploading(true);
+    try {
+      const { data, error } = await apiPost('/api/v1/admin/upload-url', {
+        folder: `courses/${courseId}/videos`,
+        filename: file.name,
+        contentType: file.type || 'video/mp4',
+      });
+      if (error) {
+        alert(error.message);
+        return;
+      }
+
+      await fetch(data.uploadUrl, {
+        method: 'PUT',
+        body: file,
+        headers: { 'Content-Type': file.type || 'video/mp4' },
+      });
+
+      await apiPatch(`/api/v1/admin/lessons/${lessonId}`, { videoUrl: data.fileUrl });
+      loadModules();
+    } catch (err) {
+      alert('Upload failed: ' + err.message);
+    } finally {
+      setUploading(false);
+    }
+  };
+
+  // ── Quiz CRUD ──
+  const handleSaveQuiz = async () => {
+    if (!activeModule) return;
+    if (quizForm.questions.length === 0) return alert('Add at least one question.');
+    if (!confirm(`Save quiz with ${quizForm.questions.length} question(s) for this module?`))
+      return;
+    const { error } = await apiPost('/api/v1/admin/quizzes', {
+      moduleId: activeModule._id,
+      ...quizForm,
+    });
+    if (error) return alert(error.message);
+    setShowQuizForm(false);
+    loadModules();
+  };
+
+  const handleDeleteQuiz = async moduleId => {
+    if (!confirm('Delete this quiz?')) return;
+    await apiDelete(`/api/v1/admin/modules/${moduleId}/quiz`);
+    loadModules();
+  };
+
+  const addQuestion = () => {
+    setQuizForm(prev => ({
+      ...prev,
+      questions: [...prev.questions, { question: '', options: ['', '', '', ''], correctOption: 0 }],
+    }));
+  };
+
+  const updateQuestion = (qi, field, value) => {
+    setQuizForm(prev => {
+      const q = [...prev.questions];
+      q[qi] = { ...q[qi], [field]: value };
+      return { ...prev, questions: q };
+    });
+  };
+
+  const updateOption = (qi, oi, value) => {
+    setQuizForm(prev => {
+      const q = [...prev.questions];
+      const opts = [...q[qi].options];
+      opts[oi] = value;
+      q[qi] = { ...q[qi], options: opts };
+      return { ...prev, questions: q };
+    });
+  };
+
+  const removeQuestion = qi => {
+    setQuizForm(prev => ({
+      ...prev,
+      questions: prev.questions.filter((_, i) => i !== qi),
+    }));
+  };
+
+  if (loading)
+    return (
+      <div className="admin-loading">
+        <div className="admin-spinner" />
+      </div>
+    );
+
+  const activeLessons = activeModule ? lessons[activeModule._id] || [] : [];
+  const activeQuiz = activeModule ? quizzes[activeModule._id] || null : null;
+
+  return (
+    <div className="admin-page">
+      {/* Header */}
+      <div
+        style={{
+          margin: '-28px -28px 24px',
+          padding: '18px 28px',
+          background: '#fff',
+          borderBottom: '1px solid #e2e8f0',
+          display: 'flex',
+          justifyContent: 'space-between',
+          alignItems: 'center',
+        }}
+      >
+        <div style={{ display: 'flex', alignItems: 'center', gap: 16 }}>
+          <button className="btn btn-secondary btn-sm" onClick={onBack}>
+            ← Back
+          </button>
+          <div>
+            <h1 style={{ fontSize: 20, fontWeight: 800, margin: 0 }}>Course Builder</h1>
+            <span style={{ fontSize: 13, color: '#64748b' }}>{courseTitle}</span>
+          </div>
+        </div>
+      </div>
+
+      <div
+        style={{ display: 'grid', gridTemplateColumns: '300px 1fr', gap: 24, minHeight: '60vh' }}
+      >
+        {/* Module Sidebar */}
+        <div
+          style={{
+            background: '#fff',
+            borderRadius: 12,
+            border: '1px solid #e2e8f0',
+            overflow: 'hidden',
+          }}
+        >
+          <div
+            style={{
+              padding: '14px 16px',
+              borderBottom: '1px solid #e2e8f0',
+              display: 'flex',
+              justifyContent: 'space-between',
+              alignItems: 'center',
+            }}
+          >
+            <span style={{ fontWeight: 700, fontSize: 14 }}>Modules ({modules.length})</span>
+            <button
+              className="btn btn-primary btn-sm"
+              onClick={() => {
+                setShowModuleForm(true);
+                setModuleForm({});
+              }}
+            >
+              + Add
+            </button>
+          </div>
+          {modules.map((mod, i) => (
+            <div
+              key={mod._id}
+              onClick={() => setActiveModule(mod)}
+              style={{
+                padding: '12px 16px',
+                cursor: 'pointer',
+                borderBottom: '1px solid #f1f5f9',
+                background: activeModule?._id === mod._id ? '#eff6ff' : '#fff',
+                borderLeft:
+                  activeModule?._id === mod._id ? '3px solid #3b82f6' : '3px solid transparent',
+              }}
+            >
+              <div style={{ fontWeight: 600, fontSize: 13, color: '#1e293b' }}>
+                Week {mod.weekNumber}: {mod.title}
+              </div>
+              <div style={{ fontSize: 11, color: '#94a3b8', marginTop: 2 }}>
+                {(lessons[mod._id] || []).length} lessons {quizzes[mod._id] ? '• Quiz ✓' : ''}
+                {mod.unlockAfterDays > 0 ? ` • Unlocks day ${mod.unlockAfterDays}` : ''}
+              </div>
+              <div style={{ display: 'flex', gap: 4, marginTop: 6 }}>
+                <button
+                  className="btn btn-secondary"
+                  style={{ padding: '2px 8px', fontSize: 11 }}
+                  onClick={e => {
+                    e.stopPropagation();
+                    setEditModule(mod);
+                    setModuleForm({
+                      title: mod.title,
+                      weekNumber: mod.weekNumber,
+                      description: mod.description,
+                      unlockAfterDays: mod.unlockAfterDays || 0,
+                      durationHours: mod.durationHours || 0,
+                    });
+                  }}
+                >
+                  Edit
+                </button>
+                <button
+                  className="btn btn-danger"
+                  style={{ padding: '2px 8px', fontSize: 11 }}
+                  onClick={e => {
+                    e.stopPropagation();
+                    handleDeleteModule(mod._id);
+                  }}
+                >
+                  Del
+                </button>
+              </div>
+            </div>
+          ))}
+          {modules.length === 0 && (
+            <div style={{ padding: 24, textAlign: 'center', color: '#94a3b8', fontSize: 13 }}>
+              No modules yet. Click + Add.
+            </div>
+          )}
+        </div>
+
+        {/* Main Content Area */}
+        <div
+          style={{ background: '#fff', borderRadius: 12, border: '1px solid #e2e8f0', padding: 24 }}
+        >
+          {activeModule ? (
+            <>
+              <div
+                style={{
+                  display: 'flex',
+                  justifyContent: 'space-between',
+                  alignItems: 'center',
+                  marginBottom: 20,
+                }}
+              >
+                <h2 style={{ fontSize: 18, fontWeight: 700, margin: 0 }}>
+                  Week {activeModule.weekNumber}: {activeModule.title}
+                </h2>
+              </div>
+
+              {/* Lessons Section */}
+              <div style={{ marginBottom: 28 }}>
+                <div
+                  style={{
+                    display: 'flex',
+                    justifyContent: 'space-between',
+                    alignItems: 'center',
+                    marginBottom: 12,
+                  }}
+                >
+                  <h3 style={{ fontSize: 15, fontWeight: 700, margin: 0 }}>
+                    Lessons ({activeLessons.length})
+                  </h3>
+                  <button
+                    className="btn btn-primary btn-sm"
+                    onClick={() => {
+                      setShowLessonForm(true);
+                      setLessonForm({ contentType: 'video' });
+                    }}
+                  >
+                    + Add Lesson
+                  </button>
+                </div>
+                {activeLessons.map((lesson, li) => (
+                  <div
+                    key={lesson._id}
+                    style={{
+                      padding: '12px 16px',
+                      border: '1px solid #e2e8f0',
+                      borderRadius: 8,
+                      marginBottom: 8,
+                      display: 'flex',
+                      justifyContent: 'space-between',
+                      alignItems: 'center',
+                    }}
+                  >
+                    <div>
+                      <div style={{ fontWeight: 600, fontSize: 14 }}>
+                        {li + 1}. {lesson.title}
+                      </div>
+                      <div style={{ fontSize: 12, color: '#64748b', marginTop: 2 }}>
+                        {lesson.contentType}{' '}
+                        {lesson.durationMinutes ? `• ${lesson.durationMinutes} min` : ''}
+                        {lesson.videoUrl ? ' • 🎥 Video attached' : ''}
+                        {lesson.isPreview ? ' • Preview' : ''}
+                      </div>
+                    </div>
+                    <div style={{ display: 'flex', gap: 6, alignItems: 'center' }}>
+                      <label
+                        className="btn btn-secondary btn-sm"
+                        style={{ cursor: 'pointer', position: 'relative' }}
+                      >
+                        {uploading ? '...' : '📤 Upload'}
+                        <input
+                          type="file"
+                          accept="video/*"
+                          style={{ position: 'absolute', opacity: 0, width: 0, height: 0 }}
+                          onChange={e => handleVideoUpload(e.target.files[0], lesson._id)}
+                        />
+                      </label>
+                      <button
+                        className="btn btn-secondary btn-sm"
+                        onClick={() => {
+                          setEditLesson(lesson);
+                          setLessonForm({
+                            title: lesson.title,
+                            description: lesson.description || '',
+                            contentType: lesson.contentType,
+                            durationMinutes: lesson.durationMinutes || 0,
+                            isPreview: lesson.isPreview || false,
+                            videoUrl: lesson.videoUrl || '',
+                          });
+                        }}
+                      >
+                        Edit
+                      </button>
+                      <button
+                        className="btn btn-danger btn-sm"
+                        onClick={() => handleDeleteLesson(lesson._id)}
+                      >
+                        Del
+                      </button>
+                    </div>
+                  </div>
+                ))}
+                {activeLessons.length === 0 && (
+                  <div style={{ textAlign: 'center', padding: 20, color: '#94a3b8', fontSize: 13 }}>
+                    No lessons yet.
+                  </div>
+                )}
+              </div>
+
+              {/* Quiz Section */}
+              <div>
+                <div
+                  style={{
+                    display: 'flex',
+                    justifyContent: 'space-between',
+                    alignItems: 'center',
+                    marginBottom: 12,
+                  }}
+                >
+                  <h3 style={{ fontSize: 15, fontWeight: 700, margin: 0 }}>Module Quiz</h3>
+                  {!activeQuiz && (
+                    <button
+                      className="btn btn-primary btn-sm"
+                      onClick={() => {
+                        setShowQuizForm(true);
+                        setQuizForm({ title: 'Module Quiz', passingScore: 70, questions: [] });
+                      }}
+                    >
+                      + Create Quiz
+                    </button>
+                  )}
+                </div>
+                {activeQuiz ? (
+                  <div
+                    style={{
+                      padding: 16,
+                      border: '1px solid #e2e8f0',
+                      borderRadius: 8,
+                      background: '#f8fafc',
+                    }}
+                  >
+                    <div style={{ fontWeight: 600 }}>{activeQuiz.title}</div>
+                    <div style={{ fontSize: 13, color: '#64748b', marginTop: 4 }}>
+                      {activeQuiz.questions?.length || 0} questions • Passing:{' '}
+                      {activeQuiz.passingScore}%
+                    </div>
+                    <div style={{ display: 'flex', gap: 8, marginTop: 8 }}>
+                      <button
+                        className="btn btn-secondary btn-sm"
+                        onClick={() => {
+                          setShowQuizForm(true);
+                          setQuizForm({
+                            title: activeQuiz.title,
+                            passingScore: activeQuiz.passingScore,
+                            questions: activeQuiz.questions || [],
+                          });
+                        }}
+                      >
+                        Edit Quiz
+                      </button>
+                      <button
+                        className="btn btn-danger btn-sm"
+                        onClick={() => handleDeleteQuiz(activeModule._id)}
+                      >
+                        Delete Quiz
+                      </button>
+                    </div>
+                  </div>
+                ) : (
+                  <div style={{ textAlign: 'center', padding: 20, color: '#94a3b8', fontSize: 13 }}>
+                    No quiz configured for this module.
+                  </div>
+                )}
+              </div>
+            </>
+          ) : (
+            <div style={{ textAlign: 'center', padding: 60, color: '#94a3b8' }}>
+              Select a module from the left
+            </div>
+          )}
+        </div>
+      </div>
+
+      {/* Module Create/Edit Modal */}
+      {(showModuleForm || editModule) && (
+        <div
+          className="admin-modal-overlay"
+          onClick={() => {
+            setShowModuleForm(false);
+            setEditModule(null);
+          }}
+        >
+          <div className="admin-modal" onClick={e => e.stopPropagation()} style={{ maxWidth: 480 }}>
+            <div className="admin-modal-header">
+              <h2>{editModule ? 'Edit Module' : 'Add Module'}</h2>
+              <button
+                className="admin-modal-close"
+                onClick={() => {
+                  setShowModuleForm(false);
+                  setEditModule(null);
+                }}
+              >
+                ✕
+              </button>
+            </div>
+            <div className="admin-modal-body">
+              <div className="admin-form-group">
+                <label>Title *</label>
+                <input
+                  value={moduleForm.title || ''}
+                  onChange={e => setModuleForm({ ...moduleForm, title: e.target.value })}
+                />
+              </div>
+              <div className="admin-form-group">
+                <label>Week Number</label>
+                <input
+                  type="number"
+                  value={moduleForm.weekNumber || ''}
+                  onChange={e =>
+                    setModuleForm({ ...moduleForm, weekNumber: Number(e.target.value) })
+                  }
+                />
+              </div>
+              <div className="admin-form-group">
+                <label>Description</label>
+                <textarea
+                  rows={2}
+                  value={moduleForm.description || ''}
+                  onChange={e => setModuleForm({ ...moduleForm, description: e.target.value })}
+                  style={{ width: '100%' }}
+                />
+              </div>
+              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12 }}>
+                <div className="admin-form-group">
+                  <label>Unlock After Days</label>
+                  <input
+                    type="number"
+                    value={moduleForm.unlockAfterDays || 0}
+                    onChange={e =>
+                      setModuleForm({ ...moduleForm, unlockAfterDays: Number(e.target.value) })
+                    }
+                  />
+                </div>
+                <div className="admin-form-group">
+                  <label>Duration (hours)</label>
+                  <input
+                    type="number"
+                    value={moduleForm.durationHours || 0}
+                    onChange={e =>
+                      setModuleForm({ ...moduleForm, durationHours: Number(e.target.value) })
+                    }
+                  />
+                </div>
+              </div>
+            </div>
+            <div className="admin-modal-footer">
+              <button
+                className="btn btn-secondary"
+                onClick={() => {
+                  setShowModuleForm(false);
+                  setEditModule(null);
+                }}
+              >
+                Cancel
+              </button>
+              <button
+                className="btn btn-primary"
+                onClick={editModule ? handleUpdateModule : handleCreateModule}
+                disabled={!moduleForm.title}
+              >
+                {editModule ? 'Save' : 'Create Module'}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Lesson Create/Edit Modal */}
+      {(showLessonForm || editLesson) && (
+        <div
+          className="admin-modal-overlay"
+          onClick={() => {
+            setShowLessonForm(false);
+            setEditLesson(null);
+          }}
+        >
+          <div className="admin-modal" onClick={e => e.stopPropagation()} style={{ maxWidth: 480 }}>
+            <div className="admin-modal-header">
+              <h2>{editLesson ? 'Edit Lesson' : 'Add Lesson'}</h2>
+              <button
+                className="admin-modal-close"
+                onClick={() => {
+                  setShowLessonForm(false);
+                  setEditLesson(null);
+                }}
+              >
+                ✕
+              </button>
+            </div>
+            <div className="admin-modal-body">
+              <div className="admin-form-group">
+                <label>Title *</label>
+                <input
+                  value={lessonForm.title || ''}
+                  onChange={e => setLessonForm({ ...lessonForm, title: e.target.value })}
+                />
+              </div>
+              <div className="admin-form-group">
+                <label>Description</label>
+                <textarea
+                  rows={2}
+                  value={lessonForm.description || ''}
+                  onChange={e => setLessonForm({ ...lessonForm, description: e.target.value })}
+                  style={{ width: '100%' }}
+                />
+              </div>
+              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12 }}>
+                <div className="admin-form-group">
+                  <label>Type</label>
+                  <select
+                    value={lessonForm.contentType || 'video'}
+                    onChange={e => setLessonForm({ ...lessonForm, contentType: e.target.value })}
+                  >
+                    <option value="video">Video</option>
+                    <option value="reading">Reading</option>
+                    <option value="assignment">Assignment</option>
+                    <option value="resource">Resource</option>
+                  </select>
+                </div>
+                <div className="admin-form-group">
+                  <label>Duration (minutes)</label>
+                  <input
+                    type="number"
+                    value={lessonForm.durationMinutes || 0}
+                    onChange={e =>
+                      setLessonForm({ ...lessonForm, durationMinutes: Number(e.target.value) })
+                    }
+                  />
+                </div>
+              </div>
+              <div className="admin-form-group">
+                <label>Video URL (or upload after creating)</label>
+                <input
+                  value={lessonForm.videoUrl || ''}
+                  onChange={e => setLessonForm({ ...lessonForm, videoUrl: e.target.value })}
+                />
+              </div>
+              <div className="admin-form-group">
+                <label style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+                  <input
+                    type="checkbox"
+                    checked={lessonForm.isPreview || false}
+                    onChange={e => setLessonForm({ ...lessonForm, isPreview: e.target.checked })}
+                  />
+                  Free Preview Lesson
+                </label>
+              </div>
+            </div>
+            <div className="admin-modal-footer">
+              <button
+                className="btn btn-secondary"
+                onClick={() => {
+                  setShowLessonForm(false);
+                  setEditLesson(null);
+                }}
+              >
+                Cancel
+              </button>
+              <button
+                className="btn btn-primary"
+                onClick={editLesson ? handleUpdateLesson : handleCreateLesson}
+                disabled={!lessonForm.title}
+              >
+                {editLesson ? 'Save' : 'Create Lesson'}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Quiz Builder Modal */}
+      {showQuizForm && (
+        <div className="admin-modal-overlay" onClick={() => setShowQuizForm(false)}>
+          <div className="admin-modal" onClick={e => e.stopPropagation()} style={{ maxWidth: 640 }}>
+            <div className="admin-modal-header">
+              <h2>Quiz Builder</h2>
+              <button className="admin-modal-close" onClick={() => setShowQuizForm(false)}>
+                ✕
+              </button>
+            </div>
+            <div className="admin-modal-body" style={{ maxHeight: '65vh', overflowY: 'auto' }}>
+              <div
+                style={{
+                  display: 'grid',
+                  gridTemplateColumns: '1fr 1fr',
+                  gap: 12,
+                  marginBottom: 16,
+                }}
+              >
+                <div className="admin-form-group">
+                  <label>Quiz Title</label>
+                  <input
+                    value={quizForm.title || ''}
+                    onChange={e => setQuizForm({ ...quizForm, title: e.target.value })}
+                  />
+                </div>
+                <div className="admin-form-group">
+                  <label>Passing Score (%)</label>
+                  <input
+                    type="number"
+                    value={quizForm.passingScore || 70}
+                    onChange={e =>
+                      setQuizForm({ ...quizForm, passingScore: Number(e.target.value) })
+                    }
+                  />
+                </div>
+              </div>
+              {quizForm.questions.map((q, qi) => (
+                <div
+                  key={qi}
+                  style={{
+                    border: '1px solid #e2e8f0',
+                    borderRadius: 8,
+                    padding: 14,
+                    marginBottom: 12,
+                    background: '#f8fafc',
+                  }}
+                >
+                  <div
+                    style={{
+                      display: 'flex',
+                      justifyContent: 'space-between',
+                      alignItems: 'center',
+                      marginBottom: 8,
+                    }}
+                  >
+                    <span style={{ fontWeight: 600, fontSize: 13 }}>Question {qi + 1}</span>
+                    <button
+                      className="btn btn-danger"
+                      style={{ padding: '2px 8px', fontSize: 11 }}
+                      onClick={() => removeQuestion(qi)}
+                    >
+                      Remove
+                    </button>
+                  </div>
+                  <div className="admin-form-group">
+                    <input
+                      placeholder="Question text"
+                      value={q.question || ''}
+                      onChange={e => updateQuestion(qi, 'question', e.target.value)}
+                    />
+                  </div>
+                  {q.options.map((opt, oi) => (
+                    <div
+                      key={oi}
+                      style={{ display: 'flex', gap: 8, alignItems: 'center', marginBottom: 6 }}
+                    >
+                      <input
+                        type="radio"
+                        name={`correct-${qi}`}
+                        checked={q.correctOption === oi}
+                        onChange={() => updateQuestion(qi, 'correctOption', oi)}
+                      />
+                      <input
+                        placeholder={`Option ${oi + 1}`}
+                        value={opt}
+                        onChange={e => updateOption(qi, oi, e.target.value)}
+                        style={{ flex: 1 }}
+                      />
+                    </div>
+                  ))}
+                </div>
+              ))}
+              <button className="btn btn-secondary" onClick={addQuestion} style={{ width: '100%' }}>
+                + Add Question
+              </button>
+            </div>
+            <div className="admin-modal-footer">
+              <button className="btn btn-secondary" onClick={() => setShowQuizForm(false)}>
+                Cancel
+              </button>
+              <button
+                className="btn btn-primary"
+                onClick={handleSaveQuiz}
+                disabled={quizForm.questions.length === 0}
+              >
+                Save Quiz
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+    </div>
+  );
+}

@@ -1,0 +1,466 @@
+/* ==========================================
+   PREMIUM STATS OVERVIEW - Real-time Metrics
+   ========================================== */
+
+.premium-stats-overview {
+  background: #ffffff;
+  border-radius: 16px;
+  border: 1px solid #e5e7eb;
+  padding: 14px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+}
+
+/* Header with Live Badge */
+.stats-header-premium {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 24px;
+  flex-wrap: wrap;
+}
+
+.stats-title-premium {
+  font-size: 18px;
+  font-weight: 700;
+  color: #111827;
+  margin: 0;
+  flex-shrink: 0;
+}
+
+.stats-badge-live {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 10px;
+  background: #dcfce7;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 600;
+  color: #166534;
+  flex-shrink: 0;
+  white-space: nowrap;
+}
+
+.live-dot {
+  width: 6px;
+  height: 6px;
+  background: #22c55e;
+  border-radius: 50%;
+  animation: pulse-dot 2s ease-in-out infinite;
+}
+
+@keyframes pulse-dot {
+  0%, 100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.5;
+    transform: scale(1.2);
+  }
+}
+
+/* ==========================================
+   STAT CARDS
+   ========================================== */
+
+.stat-card-premium {
+  background: #f9fafb;
+  border: 1px solid #e5e7eb;
+  border-radius: 12px;
+  padding: 16px;
+  margin-bottom: 16px;
+  transition: all 0.2s;
+}
+
+.stat-card-premium:last-child {
+  margin-bottom: 0;
+}
+
+.stat-card-premium:hover {
+  background: #ffffff;
+  border-color: #d1d5db;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+  /* transform: translateY(-2px); */
+}
+
+/* Card Header */
+.stat-card-header {
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+  margin-bottom: 3px;
+}
+
+.stat-icon-premium {
+  width: 44px;
+  height: 44px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.stat-icon-premium.courses {
+  background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+  color: white;
+}
+
+.stat-icon-premium.certificates {
+  background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+  color: white;
+}
+
+.stat-icon-premium.hours {
+  background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+  color: white;
+}
+
+.stat-icon-premium.progress {
+  background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+  color: white;
+}
+
+.stat-icon-premium.modules {
+  background: linear-gradient(135deg, #8b5cf6 0%, #7c3aed 100%);
+  color: white;
+}
+
+.stat-card-info {
+  flex: 1;
+  min-width: 0;
+}
+
+.stat-label-premium {
+  font-size: 13px;
+  font-weight: 500;
+  color: #6b7280;
+  margin-bottom: 6px;
+}
+
+.stat-value-premium {
+  display: flex;
+  align-items: baseline;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+
+.stat-number {
+  font-size: 28px;
+  font-weight: 700;
+  color: #111827;
+  line-height: 1;
+}
+
+.stat-divider {
+  font-size: 24px;
+  font-weight: 400;
+  color: #d1d5db;
+}
+
+.stat-total {
+  font-size: 20px;
+  font-weight: 600;
+  color: #6b7280;
+}
+
+.stat-number-large {
+  font-size: 32px;
+  font-weight: 700;
+  color: #111827;
+  line-height: 1;
+}
+
+.stat-unit {
+  font-size: 13px;
+  font-weight: 500;
+  color: #9ca3af;
+}
+
+/* Progress Bar */
+.stat-progress-bar {
+  width: 100%;
+  height: 6px;
+  background: #e5e7eb;
+  border-radius: 10px;
+  overflow: hidden;
+  margin-bottom: 10px;
+}
+
+.stat-progress-fill {
+  height: 100%;
+  border-radius: 10px;
+  transition: width 0.6s ease;
+}
+
+.stat-progress-fill.courses-fill {
+  background: linear-gradient(90deg, #3b82f6 0%, #2563eb 100%);
+}
+
+.stat-progress-fill.progress-fill {
+  background: linear-gradient(90deg, #10b981 0%, #059669 100%);
+}
+
+/* Footer */
+.stat-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.stat-percentage {
+  font-size: 12px;
+  font-weight: 600;
+  color: #3b82f6;
+}
+
+.stat-description {
+  font-size: 12px;
+  font-weight: 500;
+  color: #6b7280;
+}
+
+.stat-streak {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12px;
+  font-weight: 600;
+  color: #f59e0b;
+}
+
+.stat-streak svg {
+  color: #f59e0b;
+}
+
+.stat-streak-inline {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 11px;
+  font-weight: 600;
+  color: #f59e0b;
+  margin-left: 8px;
+}
+
+.stat-streak-inline svg {
+  color: #f59e0b;
+}
+
+/* ==========================================
+   RESPONSIVE
+   ========================================== */
+
+@media (max-width: 1200px) {
+  .stat-number {
+    font-size: 24px;
+  }
+
+  .stat-number-large {
+    font-size: 28px;
+  }
+
+  .stat-total {
+    font-size: 18px;
+  }
+}
+
+@media (max-width: 768px) {
+  .premium-stats-overview {
+    padding: 14px;
+  }
+
+  .stats-header-premium {
+    margin-bottom: 14px;
+    gap: 8px;
+  }
+
+  .stats-title-premium {
+    font-size: 15px;
+  }
+
+  .stats-badge-live {
+    font-size: 10px;
+    padding: 3px 8px;
+  }
+
+  .live-dot {
+    width: 5px;
+    height: 5px;
+  }
+
+  .stat-card-premium {
+    padding: 10px;
+    margin-bottom: 10px;
+  }
+
+  .stat-card-header {
+    gap: 8px;
+    margin-bottom: 8px;
+  }
+
+  .stat-icon-premium {
+    width: 32px;
+    height: 32px;
+  }
+
+  .stat-icon-premium svg {
+    width: 16px;
+    height: 16px;
+  }
+
+  .stat-label-premium {
+    font-size: 11px;
+    margin-bottom: 3px;
+  }
+
+  .stat-value-premium {
+    gap: 4px;
+  }
+
+  .stat-number {
+    font-size: 18px;
+  }
+
+  .stat-number-large {
+    font-size: 22px;
+  }
+
+  .stat-divider {
+    font-size: 16px;
+  }
+
+  .stat-total {
+    font-size: 14px;
+  }
+
+  .stat-unit {
+    font-size: 10px;
+  }
+
+  .stat-progress-bar {
+    height: 4px;
+    margin-bottom: 6px;
+  }
+
+  .stat-footer {
+    font-size: 10px;
+  }
+
+  .stat-percentage,
+  .stat-description {
+    font-size: 10px;
+  }
+
+  .stat-streak {
+    font-size: 10px;
+    gap: 3px;
+  }
+
+  .stat-streak svg {
+    width: 11px;
+    height: 11px;
+  }
+}
+
+@media (max-width: 480px) {
+  .premium-stats-overview {
+    padding: 12px;
+  }
+
+  .stat-card-premium {
+    padding: 10px;
+  }
+
+  .stat-icon-premium {
+    width: 32px;
+    height: 32px;
+  }
+
+  .stat-number {
+    font-size: 18px;
+  }
+
+  .stat-number-large {
+    font-size: 22px;
+  }
+}
+
+/* ==========================================
+   DARK MODE SUPPORT (Optional)
+   ========================================== */
+
+@media (prefers-color-scheme: dark) {
+  .premium-stats-overview {
+    background: #1f2937;
+    border-color: #374151;
+  }
+
+  .stats-title-premium {
+    color: #f9fafb;
+  }
+
+  .stat-card-premium {
+    background: #111827;
+    border-color: #374151;
+  }
+
+  .stat-card-premium:hover {
+    background: #1f2937;
+    border-color: #4b5563;
+  }
+
+  .stat-label-premium {
+    color: #9ca3af;
+  }
+
+  .stat-number,
+  .stat-number-large {
+    color: #f9fafb;
+  }
+
+  .stat-total {
+    color: #9ca3af;
+  }
+
+  .stat-progress-bar {
+    background: #374151;
+  }
+
+  .stat-description {
+    color: #9ca3af;
+  }
+}
+
+/* ==========================================
+   ANIMATIONS
+   ========================================== */
+
+@keyframes stat-card-enter {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.stat-card-premium {
+  animation: stat-card-enter 0.3s ease-out;
+}
+
+.stat-card-premium:nth-child(2) {
+  animation-delay: 0.1s;
+}
+
+.stat-card-premium:nth-child(3) {
+  animation-delay: 0.2s;
+}
+
+.stat-card-premium:nth-child(4) {
+  animation-delay: 0.3s;
+}

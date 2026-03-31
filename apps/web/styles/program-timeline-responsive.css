@@ -1,0 +1,238 @@
+/* ==========================================
+   PROGRAM TIMELINE SECTION - ENTERPRISE RESPONSIVE
+   Desktop: Animated glowing dots, traveling particles, sequential activation
+   Mobile: Simple white-bordered cards, NO animations
+   ========================================== */
+
+@import './program-timeline.css';
+
+/* ========================================
+   MOBILE OVERRIDES (768px and below)
+   Simple white-bordered cards, NO animations
+   ======================================== */
+@media (max-width: 48rem) {
+  /* Hide timeline line */
+  .timeline-line,
+  .timeline-line-progress {
+    display: none !important;
+  }
+
+  /* MOBILE: Simple white dot (NO animation or glow) */
+  .timeline-dot {
+    top: -1.25rem;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 1rem;
+    height: 1rem;
+  }
+
+  .dot-inner {
+    background: rgba(255, 255, 255, 0.4) !important;
+    box-shadow: none !important;
+    animation: none !important;
+  }
+
+  .dot-ring {
+    display: none;
+  }
+
+  /* Disable traveling dots */
+  .week-card-wrapper::after {
+    display: none !important;
+  }
+
+  /* MOBILE: Simple white-bordered cards */
+  .week-glass-card {
+    background: rgba(255, 255, 255, 0.05) !important;
+    border: 2px solid rgba(255, 255, 255, 0.15) !important;
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+    margin-top: 2.5rem;
+    min-height: auto;
+    padding: 1.5rem;
+    box-shadow: none !important;
+    animation: none !important;
+  }
+
+  .week-glass-card:hover {
+    transform: none;
+    border-color: rgba(255, 255, 255, 0.25) !important;
+    box-shadow: none !important;
+  }
+
+  /* Disable all card glow effects */
+  .week-card-glow {
+    display: none;
+  }
+
+  /* Hide vertical connector */
+  .week-glass-card::before,
+  .week-glass-card::after {
+    display: none !important;
+  }
+
+  /* MOBILE: White icon */
+  .week-icon {
+    background: rgba(255, 255, 255, 0.1) !important;
+    border-color: rgba(255, 255, 255, 0.15) !important;
+    color: #ffffff !important;
+  }
+
+  .week-glass-card:hover .week-icon {
+    transform: none;
+    box-shadow: none !important;
+  }
+
+  .week-icon::after {
+    display: none;
+  }
+
+  /* MOBILE: White text for WEEK labels */
+  .week-number {
+    color: rgba(255, 255, 255, 0.6) !important;
+  }
+
+  /* MOBILE: White card titles (NO animation) */
+  .week-title {
+    color: #ffffff !important;
+    font-size: 1.125rem;
+    animation: none !important;
+  }
+
+  .week-description {
+    color: rgba(255, 255, 255, 0.6);
+    font-size: 0.875rem;
+  }
+
+  /* MOBILE: White highlight tags */
+  .highlight-tag {
+    background: rgba(255, 255, 255, 0.05) !important;
+    border-color: rgba(255, 255, 255, 0.1) !important;
+    color: rgba(255, 255, 255, 0.7) !important;
+  }
+
+  .highlight-tag svg {
+    color: rgba(255, 255, 255, 0.5) !important;
+  }
+
+  /* MOBILE: White number badge */
+  .week-number-badge {
+    background: rgba(255, 255, 255, 0.05) !important;
+    border-color: rgba(255, 255, 255, 0.1) !important;
+    color: rgba(255, 255, 255, 0.4) !important;
+    width: 2.5rem;
+    height: 2.5rem;
+    font-size: 0.875rem;
+  }
+
+  .week-glass-card:hover .week-number-badge {
+    transform: none;
+    background: rgba(255, 255, 255, 0.08) !important;
+    border-color: rgba(255, 255, 255, 0.15) !important;
+    color: rgba(255, 255, 255, 0.6) !important;
+  }
+
+  /* Disable all activation animations */
+  .animate-timeline .week-card-wrapper .dot-inner,
+  .animate-timeline .week-card-wrapper .dot-ring,
+  .animate-timeline .week-card-wrapper::after,
+  .animate-timeline .week-card-wrapper .week-glass-card,
+  .animate-timeline .week-card-wrapper .week-glass-card::before,
+  .animate-timeline .week-card-wrapper .week-glass-card::after,
+  .animate-timeline .week-card-wrapper .week-title {
+    animation: none !important;
+  }
+
+  /* Timeline spacing */
+  .timeline-weeks {
+    gap: 2.5rem;
+  }
+
+  /* CTA button */
+  .curriculum-btn {
+    width: 100%;
+    justify-content: center;
+    padding: 1rem 1.5rem;
+    font-size: 0.9375rem;
+  }
+
+  .cta-note {
+    font-size: 0.8125rem;
+    padding: 0 1rem;
+  }
+
+  /* Reduce background gradient opacity */
+  .timeline-bg-gradient {
+    opacity: 0.04;
+  }
+}
+
+/* Small mobile (480px and below) */
+@media (max-width: 30rem) {
+  .program-timeline-section {
+    padding: 3rem 0;
+  }
+
+  .timeline-container {
+    padding: 0 1rem;
+  }
+
+  .timeline-header {
+    margin-bottom: 2rem;
+  }
+
+  .timeline-title {
+    font-size: 1.75rem;
+  }
+
+  .timeline-subtitle {
+    font-size: 0.875rem;
+  }
+
+  .timeline-weeks {
+    gap: 2rem;
+  }
+
+  .week-glass-card {
+    padding: 1.25rem;
+    margin-top: 2rem;
+    border-width: 1.5px !important;
+  }
+
+  .timeline-dot {
+    width: 0.875rem;
+    height: 0.875rem;
+    top: -1rem;
+  }
+
+  .week-icon {
+    width: 3rem !important;
+    height: 3rem !important;
+  }
+
+  .week-title {
+    font-size: 1rem;
+  }
+
+  .week-description {
+    font-size: 0.8125rem;
+  }
+
+  .highlight-tag {
+    padding: 0.375rem 0.625rem;
+    font-size: 0.6875rem;
+  }
+
+  .week-number-badge {
+    width: 2.25rem;
+    height: 2.25rem;
+    font-size: 0.8125rem;
+    top: 1.25rem;
+    right: 1.25rem;
+  }
+
+  .curriculum-btn {
+    padding: 0.875rem 1.25rem;
+    font-size: 0.875rem;
+  }
+}

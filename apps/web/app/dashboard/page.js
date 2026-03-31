@@ -148,9 +148,11 @@ export default function DashboardPage() {
         @keyframes tickerScroll { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
         @keyframes blobFloat { 0%,100% { transform: translate(0,0) scale(1); } 50% { transform: translate(30px,-30px) scale(1.08); } }
         @keyframes scanline { 0% { top: -60px; opacity:0; } 10% { opacity:1; } 90% { opacity:1; } 100% { top: calc(100% + 60px); opacity:0; } }
-        @keyframes glowPulse { 0% { box-shadow:0 0 0 0 rgba(197,151,91,0.45); } 70% { box-shadow:0 0 0 18px rgba(197,151,91,0); } 100% { box-shadow:0 0 0 0 rgba(197,151,91,0); } }
-        @keyframes borderGlow { 0%,100% { border-color: rgba(197,151,91,0.2); } 50% { border-color: rgba(197,151,91,0.5); } }
+        @keyframes glowPulse { 0% { box-shadow:0 0 0 0 rgba(122,31,43,0.5); } 70% { box-shadow:0 0 0 18px rgba(122,31,43,0); } 100% { box-shadow:0 0 0 0 rgba(122,31,43,0); } }
+        @keyframes borderGlow { 0%,100% { border-color: rgba(122,31,43,0.15); } 50% { border-color: rgba(122,31,43,0.4); } }
         @keyframes insightReveal { from { opacity:0; transform:translateY(8px); filter:blur(4px); } to { opacity:1; transform:translateY(0); filter:blur(0); } }
+        @keyframes redPulse { 0%,100% { opacity:0.6; } 50% { opacity:1; } }
+        @keyframes shimmer { 0% { background-position: -200% 0; } 100% { background-position: 200% 0; } }
 
         .da { animation: fadeUp .5s cubic-bezier(0.16,1,0.3,1) both; }
         .da1 { animation-delay:0.05s; } .da2 { animation-delay:0.12s; } .da3 { animation-delay:0.18s; } .da4 { animation-delay:0.24s; } .da5 { animation-delay:0.3s; } .da6 { animation-delay:0.36s; }
@@ -158,16 +160,16 @@ export default function DashboardPage() {
         .dcard { background:#fff; border-radius:20px; border:1px solid rgba(0,0,0,0.05); box-shadow:0 2px 8px rgba(0,0,0,0.03); transition:all .3s cubic-bezier(.4,0,.2,1); }
         .dcard:hover { box-shadow:0 14px 35px -10px rgba(0,0,0,0.1); transform:translateY(-4px); border-color:rgba(197,151,91,0.25); }
 
-        .ticker-wrap { width:100%; overflow:hidden; background:#0a0a0a; border-radius:12px; margin-bottom:20px; border:1px solid rgba(197,151,91,0.15); display:flex; align-items:center; box-shadow:0 4px 16px rgba(0,0,0,0.15); }
-        .ticker-label { background:linear-gradient(90deg,#111,#1a1a1a); color:#C5975B; padding:10px 18px; font-weight:800; font-size:0.72rem; letter-spacing:0.1em; display:flex; align-items:center; gap:8px; z-index:2; border-right:1px solid rgba(197,151,91,0.2); white-space:nowrap; flex-shrink:0; }
+        .ticker-wrap { width:100%; overflow:hidden; background:linear-gradient(90deg, #7A1F2B, #922538, #7A1F2B); border-radius:14px; margin-bottom:20px; border:1px solid rgba(255,255,255,0.1); display:flex; align-items:center; box-shadow:0 4px 20px rgba(122,31,43,0.25); }
+        .ticker-label { background:linear-gradient(90deg,#5c1520,#7A1F2B); color:#fff; padding:10px 18px; font-weight:800; font-size:0.72rem; letter-spacing:0.1em; display:flex; align-items:center; gap:8px; z-index:2; border-right:1px solid rgba(255,255,255,0.15); white-space:nowrap; flex-shrink:0; }
         .ticker-track { flex:1; overflow:hidden; position:relative; }
         .ticker-inner { display:inline-flex; animation:tickerScroll 40s linear infinite; white-space:nowrap; }
-        .ticker-item { color:#a1a1aa; font-size:0.78rem; font-weight:500; font-family:'SF Mono','Fira Code',monospace; padding:10px 0; display:inline-flex; align-items:center; gap:6px; }
+        .ticker-item { color:rgba(255,255,255,0.9); font-size:0.78rem; font-weight:500; font-family:'SF Mono','Fira Code',monospace; padding:10px 0; display:inline-flex; align-items:center; gap:6px; }
         .ticker-dot { color:#C5975B; font-size:0.5rem; margin:0 12px; }
 
-        .ai-glass { background:rgba(14,14,14,0.92); backdrop-filter:blur(24px); border:1px solid rgba(197,151,91,0.2); border-radius:20px; overflow:hidden; position:relative; box-shadow:0 12px 40px rgba(0,0,0,0.25); transition:all .35s; animation:borderGlow 4s ease-in-out infinite; padding:1.5rem 1.75rem; margin-bottom:24px; }
-        .ai-glass:hover { box-shadow:0 18px 50px rgba(197,151,91,0.12); border-color:rgba(197,151,91,0.45); }
-        .ai-scan { position:absolute; left:0; width:100%; height:50px; background:linear-gradient(to bottom,transparent,rgba(197,151,91,0.08),transparent); animation:scanline 5s linear infinite; pointer-events:none; z-index:5; }
+        .ai-glass { background:linear-gradient(135deg, #fff 0%, #fef7f0 50%, #fff5f5 100%); backdrop-filter:blur(24px); border:1px solid rgba(122,31,43,0.12); border-radius:20px; overflow:hidden; position:relative; box-shadow:0 8px 30px rgba(122,31,43,0.08); transition:all .35s; animation:borderGlow 4s ease-in-out infinite; padding:1.5rem 1.75rem; margin-bottom:24px; }
+        .ai-glass:hover { box-shadow:0 14px 40px rgba(122,31,43,0.12); border-color:rgba(122,31,43,0.3); }
+        .ai-scan { position:absolute; left:0; width:100%; height:50px; background:linear-gradient(to bottom,transparent,rgba(122,31,43,0.04),transparent); animation:scanline 5s linear infinite; pointer-events:none; z-index:5; }
 
         .ai-badge { animation:popIn .4s cubic-bezier(0.16,1,0.3,1) both; transition:all .3s; }
         .ai-badge:hover { transform:translateY(-3px) scale(1.04); }
@@ -189,7 +191,7 @@ export default function DashboardPage() {
       {/* ═══════ LIVE ECOSYSTEM TICKER ═══════ */}
       <div className="da da1 ticker-wrap">
         <div className="ticker-label">
-          <Icons.trendUp size={15} color="#C5975B" /> LIVE
+          <Icons.trendUp size={15} color="#fff" /> LIVE
         </div>
         <div className="ticker-track">
           <div className="ticker-inner">
@@ -224,21 +226,22 @@ export default function DashboardPage() {
 
       {/* ═══════ AI HOLOGLASS BANNER ═══════ */}
       <div className="da da2" style={{
-        background: '#0a0a0a',
+        background: 'linear-gradient(135deg, #7A1F2B 0%, #922538 30%, #5c1520 70%, #3d0e16 100%)',
         borderRadius: 24,
         padding: '2.5rem 2.5rem',
         marginBottom: 24,
         position: 'relative',
         overflow: 'hidden',
-        border: '1px solid #1f1f1f',
-        boxShadow: '0 20px 50px rgba(0,0,0,0.35)',
+        border: '1px solid rgba(255,255,255,0.08)',
+        boxShadow: '0 20px 50px rgba(122,31,43,0.3)',
       }}>
         {/* Animated blobs */}
-        <div style={{ position:'absolute', top:-80, left:-50, width:280, height:280, background:'radial-gradient(circle, rgba(122,31,43,0.25) 0%, transparent 70%)', filter:'blur(50px)', animation:'blobFloat 8s ease-in-out infinite' }} />
-        <div style={{ position:'absolute', bottom:-60, right:-40, width:240, height:240, background:'radial-gradient(circle, rgba(197,151,91,0.18) 0%, transparent 70%)', filter:'blur(50px)', animation:'blobFloat 10s ease-in-out infinite reverse' }} />
+        <div style={{ position:'absolute', top:-80, left:-50, width:280, height:280, background:'radial-gradient(circle, rgba(255,255,255,0.08) 0%, transparent 70%)', filter:'blur(50px)', animation:'blobFloat 8s ease-in-out infinite' }} />
+        <div style={{ position:'absolute', bottom:-60, right:-40, width:240, height:240, background:'radial-gradient(circle, rgba(197,151,91,0.2) 0%, transparent 70%)', filter:'blur(50px)', animation:'blobFloat 10s ease-in-out infinite reverse' }} />
+        <div style={{ position:'absolute', top:'50%', left:'50%', transform:'translate(-50%,-50%)', width:400, height:400, background:'radial-gradient(circle, rgba(255,80,80,0.1) 0%, transparent 60%)', filter:'blur(60px)', animation:'redPulse 4s ease-in-out infinite' }} />
 
         {/* Tech grid pattern */}
-        <div style={{ position:'absolute', inset:0, backgroundImage:'linear-gradient(rgba(255,255,255,0.02) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.02) 1px, transparent 1px)', backgroundSize:'28px 28px', zIndex:0 }} />
+        <div style={{ position:'absolute', inset:0, backgroundImage:'linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px)', backgroundSize:'28px 28px', zIndex:0 }} />
 
         <div className="banner-inner" style={{ position:'relative', zIndex:1, display:'flex', alignItems:'center', justifyContent:'space-between', gap:'2rem', flexWrap:'wrap' }}>
           <div>
@@ -248,13 +251,13 @@ export default function DashboardPage() {
               <span style={{ fontSize:'0.72rem', fontWeight:800, color:'#C5975B', letterSpacing:'0.14em', textTransform:'uppercase' }}>
                 System Online
               </span>
-              <span style={{ width:1, height:12, background:'rgba(255,255,255,0.15)', margin:'0 4px' }} />
-              <span style={{ fontSize:'0.72rem', fontWeight:600, color:'rgba(255,255,255,0.4)', letterSpacing:'0.06em', textTransform:'uppercase' }}>
+              <span style={{ width:1, height:12, background:'rgba(255,255,255,0.25)', margin:'0 4px' }} />
+              <span style={{ fontSize:'0.72rem', fontWeight:600, color:'rgba(255,255,255,0.65)', letterSpacing:'0.06em', textTransform:'uppercase' }}>
                 {getGreeting()}
               </span>
             </div>
 
-            <h1 style={{ fontSize:'2.2rem', fontWeight:900, color:'#fff', margin:'0 0 0.6rem', letterSpacing:'-0.03em', textShadow:'0 2px 12px rgba(0,0,0,0.5)' }}>
+            <h1 style={{ fontSize:'2.4rem', fontWeight:900, color:'#fff', margin:'0 0 0.6rem', letterSpacing:'-0.03em', textShadow:'0 2px 20px rgba(0,0,0,0.3)' }}>
               {user?.fullName || 'Founder'}
             </h1>
 
@@ -262,31 +265,33 @@ export default function DashboardPage() {
             <div style={{ display:'flex', alignItems:'center', gap:'10px', flexWrap:'wrap' }}>
               <span style={{
                 display:'inline-flex', alignItems:'center', gap:'6px',
-                background:'rgba(255,255,255,0.07)', padding:'6px 14px', borderRadius:20,
-                fontSize:'0.75rem', color:'#e0d5c8', border:'1px solid rgba(255,255,255,0.1)',
+                background:'rgba(255,255,255,0.12)', padding:'7px 16px', borderRadius:20,
+                fontSize:'0.75rem', color:'#fff', border:'1px solid rgba(255,255,255,0.2)',
+                backdropFilter:'blur(8px)',
               }}>
                 <Icons.network size={14} color="#C5975B" />
-                Phase: <strong style={{ color: phaseColors[phase] || '#fff' }}>{phase}</strong>
+                Phase: <strong style={{ color:'#C5975B' }}>{phase}</strong>
               </span>
               <span style={{
                 display:'inline-flex', alignItems:'center', gap:'6px',
-                background:'rgba(122,31,43,0.25)', padding:'6px 14px', borderRadius:20,
-                fontSize:'0.75rem', color:'#ffb3b3', border:'1px solid rgba(122,31,43,0.4)',
+                background:'rgba(255,255,255,0.15)', padding:'7px 16px', borderRadius:20,
+                fontSize:'0.75rem', color:'#fff', border:'1px solid rgba(255,255,255,0.2)',
+                backdropFilter:'blur(8px)',
               }}>
-                <Icons.target size={14} color="#ff8080" />
-                Readiness: <strong style={{ color:'#fff' }}>{earnedBadges.length >= 3 ? 'Top 5%' : earnedBadges.length >= 1 ? 'Top 20%' : 'Calibrating'}</strong>
+                <Icons.target size={14} color="#C5975B" />
+                Readiness: <strong style={{ color:'#C5975B' }}>{earnedBadges.length >= 3 ? 'Top 5%' : earnedBadges.length >= 1 ? 'Top 20%' : 'Calibrating'}</strong>
               </span>
             </div>
           </div>
 
           {/* Velocity Tracker + Streak Reactor */}
           <div className="banner-right" style={{
-            background:'rgba(18,18,18,0.7)',
-            border:'1px solid rgba(197,151,91,0.25)',
+            background:'rgba(255,255,255,0.08)',
+            border:'1px solid rgba(255,255,255,0.15)',
             borderRadius:20, padding:'1.25rem 1.5rem',
             display:'flex', alignItems:'center', gap:'1.5rem',
-            backdropFilter:'blur(12px)',
-            boxShadow:'0 0 30px rgba(197,151,91,0.08) inset',
+            backdropFilter:'blur(16px)',
+            boxShadow:'0 0 30px rgba(0,0,0,0.1) inset',
           }}>
             {/* Velocity bars */}
             <div style={{ display:'flex', flexDirection:'column', alignItems:'center', gap:'0.5rem' }}>
@@ -296,23 +301,23 @@ export default function DashboardPage() {
                   <div key={i} style={{ display:'flex', flexDirection:'column', alignItems:'center', gap:'0.3rem' }}>
                     <div style={{
                       width:24, height:6, borderRadius:3,
-                      background: d.active ? '#C5975B' : '#333',
-                      boxShadow: d.active ? '0 0 10px rgba(197,151,91,0.6)' : 'none',
+                      background: d.active ? '#C5975B' : 'rgba(255,255,255,0.2)',
+                      boxShadow: d.active ? '0 0 12px rgba(197,151,91,0.7)' : 'none',
                       transition:'all 0.3s',
                     }} />
-                    <span style={{ fontSize:'0.55rem', color: d.isToday ? '#fff' : '#555', fontWeight: d.isToday ? 800 : 500 }}>{d.label}</span>
+                    <span style={{ fontSize:'0.55rem', color: d.isToday ? '#fff' : 'rgba(255,255,255,0.45)', fontWeight: d.isToday ? 800 : 500 }}>{d.label}</span>
                   </div>
                 ))}
               </div>
             </div>
 
-            <div style={{ width:1, height:40, background:'rgba(255,255,255,0.08)' }} />
+            <div style={{ width:1, height:40, background:'rgba(255,255,255,0.15)' }} />
 
             {/* Streak reactor */}
             <div style={{ display:'flex', alignItems:'center', gap:'12px' }}>
               <div style={{
                 width:50, height:50, borderRadius:'50%',
-                background:'rgba(197,151,91,0.08)',
+                background:'rgba(255,255,255,0.1)',
                 border:'2px solid #C5975B',
                 display:'flex', alignItems:'center', justifyContent:'center',
                 animation:'glowPulse 2s infinite',
@@ -334,18 +339,19 @@ export default function DashboardPage() {
         <div style={{ display:'flex', alignItems:'center', gap:'1.25rem', position:'relative', zIndex:1 }}>
           <div style={{
             width:52, height:52, borderRadius:16, flexShrink:0,
-            background:'linear-gradient(135deg, rgba(197,151,91,0.15), rgba(122,31,43,0.15))',
-            border:'1px solid rgba(197,151,91,0.35)',
+            background:'linear-gradient(135deg, #7A1F2B, #922538)',
+            border:'none',
             display:'flex', alignItems:'center', justifyContent:'center',
+            boxShadow:'0 6px 20px rgba(122,31,43,0.25)',
           }}>
-            <Icons.cpu size={26} color="#C5975B" />
+            <Icons.cpu size={26} color="#fff" />
           </div>
           <div style={{ flex:1 }}>
-            <h3 style={{ margin:'0 0 0.3rem', color:'#C5975B', fontSize:'0.75rem', fontWeight:800, letterSpacing:'0.12em', textTransform:'uppercase', display:'flex', alignItems:'center', gap:'0.4rem' }}>
-              <Icons.sparkles size={13} color="#C5975B" /> AI Mentor Intelligence
+            <h3 style={{ margin:'0 0 0.3rem', color:'#7A1F2B', fontSize:'0.75rem', fontWeight:800, letterSpacing:'0.12em', textTransform:'uppercase', display:'flex', alignItems:'center', gap:'0.4rem' }}>
+              <Icons.sparkles size={13} color="#7A1F2B" /> AI Mentor Intelligence
             </h3>
             <p style={{
-              margin:0, color:'#d4cfc5', fontSize:'0.92rem', fontWeight:500, lineHeight:1.6,
+              margin:0, color:'#555', fontSize:'0.92rem', fontWeight:500, lineHeight:1.6,
               opacity: insightVisible ? 1 : 0,
               transform: insightVisible ? 'translateY(0)' : 'translateY(8px)',
               filter: insightVisible ? 'blur(0)' : 'blur(4px)',

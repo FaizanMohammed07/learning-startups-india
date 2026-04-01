@@ -22,10 +22,17 @@ export async function signIn(email, password) {
 }
 
 export async function signUp(email, password, fullName) {
-  return apiFetch('/api/v1/auth/signup', {
+  const result = await apiFetch('/api/v1/auth/signup', {
     method: 'POST',
     body: JSON.stringify({ email, password, fullName }),
   });
+  if (result.data?.session?.access_token) {
+    localStorage.setItem('access_token', result.data.session.access_token);
+    if (result.data.session.refresh_token) {
+      localStorage.setItem('refresh_token', result.data.session.refresh_token);
+    }
+  }
+  return result;
 }
 
 // Renders Google's official sign-in button into a DOM element.

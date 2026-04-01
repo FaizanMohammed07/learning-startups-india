@@ -24,6 +24,14 @@ export default function LoginPage() {
   const [currentSlide, setCurrentSlide] = useState(0);
   const googleBtnRef = useRef(null);
 
+  // Redirect if already logged in
+  useEffect(() => {
+    const token = localStorage.getItem('access_token');
+    if (token) {
+      router.replace('/dashboard');
+    }
+  }, [router]);
+
   // Carousel auto-rotation
   useEffect(() => {
     const interval = setInterval(() => {
@@ -54,14 +62,6 @@ export default function LoginPage() {
       }
     });
   }, [currentSlide]);
-
-  // Redirect if already logged in
-  useEffect(() => {
-    const token = localStorage.getItem('access_token');
-    if (token) {
-      router.replace('/dashboard');
-    }
-  }, [router]);
 
   // Render Google Sign-In button
   useEffect(() => {

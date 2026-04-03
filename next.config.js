@@ -1,4 +1,6 @@
 /** @type {import('next').NextConfig} */
+const path = require('path');
+
 const nextConfig = {
   images: {
     remotePatterns: [
@@ -18,21 +20,30 @@ const nextConfig = {
     formats: ['image/avif', 'image/webp'],
     minimumCacheTTL: 60 * 60 * 24,
   },
-  // Optimize for production
   swcMinify: true,
   reactStrictMode: true,
-  // Better for Netlify deployment
   compiler: {
     removeConsole: process.env.NODE_ENV === 'production',
   },
-  // Production optimizations
   productionBrowserSourceMaps: false,
   poweredByHeader: false,
-  // Enable compression
   compress: true,
-  // Experimental optimizations
+  webpack: (config, { isServer }) => {
+    config.cache = {
+      type: 'filesystem',
+      cacheDirectory: path.resolve('.next/cache'),
+      buildDependencies: {
+        config: [__filename],
+      },
+    };
+    return config;
+  },
   experimental: {
     optimizeCss: false,
+  },
+  onDemandEntries: {
+    maxInactiveAge: 60 * 60 * 1000,
+    pagesBufferLength: 5,
   },
 };
 

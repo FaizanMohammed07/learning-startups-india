@@ -14,7 +14,11 @@
 .carousel-bg-gradient {
   position: absolute;
   inset: 0;
-  background: radial-gradient(ellipse 80% 50% at 50% -20%, rgba(239, 68, 68, 0.25) 0%, transparent 60%);
+  background: radial-gradient(
+    ellipse 80% 50% at 50% -20%,
+    rgba(239, 68, 68, 0.25) 0%,
+    transparent 60%
+  );
   pointer-events: none;
   z-index: 1;
 }
@@ -68,16 +72,16 @@
 
 .particle-red {
   background: rgba(239, 68, 68, 0.9);
-  box-shadow: 
-    0 0 15px rgba(239, 68, 68, 1), 
+  box-shadow:
+    0 0 15px rgba(239, 68, 68, 1),
     0 0 25px rgba(239, 68, 68, 0.7),
     0 0 35px rgba(239, 68, 68, 0.4);
 }
 
 .particle-white {
   background: rgba(255, 255, 255, 1);
-  box-shadow: 
-    0 0 12px rgba(255, 255, 255, 1), 
+  box-shadow:
+    0 0 12px rgba(255, 255, 255, 1),
     0 0 20px rgba(255, 255, 255, 0.7),
     0 0 30px rgba(255, 255, 255, 0.4);
 }
@@ -86,7 +90,7 @@
 .grid-lines {
   position: absolute;
   inset: 0;
-  background-image: 
+  background-image:
     linear-gradient(rgba(239, 68, 68, 0.05) 1px, transparent 1px),
     linear-gradient(90deg, rgba(239, 68, 68, 0.05) 1px, transparent 1px);
   background-size: 50px 50px;
@@ -96,51 +100,106 @@
 }
 
 @keyframes grid-move {
-  0% { transform: translate(0, 0); }
-  100% { transform: translate(50px, 50px); }
+  0% {
+    transform: translate(0, 0);
+  }
+  100% {
+    transform: translate(50px, 50px);
+  }
 }
 
 @keyframes float-diagonal {
-  0%, 100% { transform: translate(0, 0); }
-  50% { transform: translate(30px, -30px); }
+  0%,
+  100% {
+    transform: translate(0, 0);
+  }
+  50% {
+    transform: translate(30px, -30px);
+  }
 }
 
 @keyframes float-reverse {
-  0%, 100% { transform: translate(0, 0); }
-  50% { transform: translate(-50px, -50px); }
+  0%,
+  100% {
+    transform: translate(0, 0);
+  }
+  50% {
+    transform: translate(-50px, -50px);
+  }
 }
 
 @keyframes float-random {
-  0%, 100% { transform: translate(0, 0); }
-  25% { transform: translate(-30px, 30px); }
-  50% { transform: translate(30px, -30px); }
-  75% { transform: translate(-20px, -40px); }
+  0%,
+  100% {
+    transform: translate(0, 0);
+  }
+  25% {
+    transform: translate(-30px, 30px);
+  }
+  50% {
+    transform: translate(30px, -30px);
+  }
+  75% {
+    transform: translate(-20px, -40px);
+  }
 }
 
 @keyframes float-circle {
-  0%, 100% { transform: translate(0, 0); }
-  25% { transform: translate(40px, 20px); }
-  50% { transform: translate(0, 40px); }
-  75% { transform: translate(-40px, 20px); }
+  0%,
+  100% {
+    transform: translate(0, 0);
+  }
+  25% {
+    transform: translate(40px, 20px);
+  }
+  50% {
+    transform: translate(0, 40px);
+  }
+  75% {
+    transform: translate(-40px, 20px);
+  }
 }
 
 @keyframes float-wave {
-  0%, 100% { transform: translate(0, 0); }
-  33% { transform: translate(30px, 30px); }
-  66% { transform: translate(-30px, -30px); }
+  0%,
+  100% {
+    transform: translate(0, 0);
+  }
+  33% {
+    transform: translate(30px, 30px);
+  }
+  66% {
+    transform: translate(-30px, -30px);
+  }
 }
 
 @keyframes float-zigzag {
-  0%, 100% { transform: translate(0, 0); }
-  20% { transform: translate(20px, 20px); }
-  40% { transform: translate(-20px, 40px); }
-  60% { transform: translate(30px, 60px); }
-  80% { transform: translate(-10px, 40px); }
+  0%,
+  100% {
+    transform: translate(0, 0);
+  }
+  20% {
+    transform: translate(20px, 20px);
+  }
+  40% {
+    transform: translate(-20px, 40px);
+  }
+  60% {
+    transform: translate(30px, 60px);
+  }
+  80% {
+    transform: translate(-10px, 40px);
+  }
 }
 
 @keyframes float-smooth {
-  0%, 100% { transform: translate(0, 0); }
-  50% { transform: translate(50px, 50px); }
+  0%,
+  100% {
+    transform: translate(0, 0);
+  }
+  50% {
+    transform: translate(50px, 50px);
+  }
 }
 
 /* Floating Mini Cards - Fade In/Out Animation */
@@ -164,7 +223,7 @@
   -webkit-backdrop-filter: blur(12px);
   border: 1px solid rgba(255, 255, 255, 0.15);
   border-radius: 12px;
-  box-shadow: 
+  box-shadow:
     0 8px 32px rgba(0, 0, 0, 0.3),
     inset 0 1px 0 rgba(255, 255, 255, 0.1);
   transition: all 0.3s ease;
@@ -189,7 +248,8 @@
 }
 
 @keyframes shine {
-  0%, 20% {
+  0%,
+  20% {
     left: -100%;
     opacity: 0;
   }
@@ -201,7 +261,8 @@
     left: 100%;
     opacity: 1;
   }
-  40%, 100% {
+  40%,
+  100% {
     left: 100%;
     opacity: 0;
   }
@@ -211,7 +272,7 @@
   background: rgba(255, 255, 255, 0.12);
   border-color: rgba(255, 255, 255, 0.25);
   transform: translateY(-4px);
-  box-shadow: 
+  box-shadow:
     0 12px 40px rgba(0, 0, 0, 0.4),
     inset 0 1px 0 rgba(255, 255, 255, 0.15);
 }
@@ -818,14 +879,30 @@
   transform: scale(1.1);
 }
 
-.asset-0 { background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%); }
-.asset-1 { background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%); }
-.asset-2 { background: linear-gradient(135deg, #8b5cf6 0%, #7c3aed 100%); }
-.asset-3 { background: linear-gradient(135deg, #06b6d4 0%, #0891b2 100%); }
-.asset-4 { background: linear-gradient(135deg, #ec4899 0%, #db2777 100%); }
-.asset-5 { background: linear-gradient(135deg, #6366f1 0%, #4f46e5 100%); }
-.asset-6 { background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%); }
-.asset-7 { background: linear-gradient(135deg, #10b981 0%, #059669 100%); }
+.asset-0 {
+  background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+}
+.asset-1 {
+  background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+}
+.asset-2 {
+  background: linear-gradient(135deg, #8b5cf6 0%, #7c3aed 100%);
+}
+.asset-3 {
+  background: linear-gradient(135deg, #06b6d4 0%, #0891b2 100%);
+}
+.asset-4 {
+  background: linear-gradient(135deg, #ec4899 0%, #db2777 100%);
+}
+.asset-5 {
+  background: linear-gradient(135deg, #6366f1 0%, #4f46e5 100%);
+}
+.asset-6 {
+  background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+}
+.asset-7 {
+  background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+}
 
 /* Stats Section */
 .ecosystem-stats-section {
@@ -1555,8 +1632,15 @@
 }
 
 @keyframes pulse-dot {
-  0%, 100% { opacity: 1; transform: scale(1); }
-  50% { opacity: 0.6; transform: scale(1.2); }
+  0%,
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.6;
+    transform: scale(1.2);
+  }
 }
 
 .masonry-count {
@@ -1619,8 +1703,15 @@
 }
 
 @keyframes pulse-live {
-  0%, 100% { opacity: 1; box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.7); }
-  50% { opacity: 1; box-shadow: 0 0 0 6px rgba(16, 185, 129, 0); }
+  0%,
+  100% {
+    opacity: 1;
+    box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.7);
+  }
+  50% {
+    opacity: 1;
+    box-shadow: 0 0 0 6px rgba(16, 185, 129, 0);
+  }
 }
 
 /* Responsive Design */

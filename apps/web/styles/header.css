@@ -5,56 +5,6 @@
   z-index: 1000;
 }
 
-/* Contact Stripe */
-.contact-stripe {
-  background: linear-gradient(135deg, #e63946 0%, #d62828 100%);
-  color: white;
-  padding: 10px 0;
-  font-size: 14px;
-}
-
-.contact-stripe .container {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  max-width: 1220px;
-  margin: 0 auto;
-  padding: 0 40px;
-}
-
-.contact-info {
-  display: flex;
-  gap: 30px;
-}
-
-.contact-item {
-  font-weight: 400;
-}
-
-.contact-item strong {
-  font-weight: 600;
-  margin-right: 5px;
-}
-
-.social-links {
-  display: flex;
-  gap: 15px;
-}
-
-.social-icon {
-  color: white;
-  width: 24px;
-  height: 24px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: opacity 0.3s ease;
-}
-
-.social-icon:hover {
-  opacity: 0.8;
-}
-
 /* Main Header */
 .main-header {
   background: #f5f5f5;
@@ -201,30 +151,18 @@
   .main-header .container {
     padding: 0 20px;
   }
-  
+
   .header-search {
     max-width: 350px;
   }
 }
 
 @media (max-width: 768px) {
-  .contact-stripe .container {
-    flex-direction: column;
-    gap: 10px;
-    padding: 0 20px;
-  }
-  
-  .contact-info {
-    flex-direction: column;
-    gap: 5px;
-    text-align: center;
-  }
-  
   .main-header .container {
     flex-wrap: wrap;
     gap: 15px;
   }
-  
+
   .header-logo {
     font-size: 24px;
   }
@@ -237,17 +175,17 @@
   .logo-fallback {
     font-size: 20px;
   }
-  
+
   .header-search {
     order: 3;
     width: 100%;
     max-width: 100%;
   }
-  
+
   .header-actions {
     order: 2;
   }
-  
+
   .btn-header {
     padding: 8px 20px;
     font-size: 14px;
@@ -256,18 +194,6 @@
 
 /* Extra small mobile devices */
 @media (max-width: 480px) {
-  .contact-stripe {
-    padding: 6px 0;
-  }
-
-  .contact-stripe .container {
-    padding: 0 16px;
-  }
-
-  .contact-item {
-    font-size: 11px;
-  }
-
   .main-header .container {
     padding: 0 16px;
   }
@@ -378,7 +304,7 @@
   margin-top: 0;
   background: #ffffff;
   border-radius: 12px;
-  box-shadow: 
+  box-shadow:
     0 10px 40px rgba(0, 0, 0, 0.12),
     0 0 0 1px rgba(0, 0, 0, 0.05);
   padding: 8px;
@@ -705,10 +631,6 @@
 }
 
 @media (max-width: 768px) {
-  .contact-stripe {
-    display: none;
-  }
-
   .main-header {
     padding: 12px 0;
   }

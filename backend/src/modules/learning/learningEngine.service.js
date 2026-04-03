@@ -9,6 +9,16 @@ const { ApiError } = require('../../utils/apiError');
 const { extractS3Key, generateDownloadUrl } = require('../../utils/s3');
 const { cacheGet, cacheSet, cacheDel } = require('../../infrastructure/cache/redis');
 
+const DOWNLOAD_URL_EXPIRY_SECONDS = 3600;
+
+async function signS3Url(fileUrl, explicitKey = null) {
+  const key = explicitKey || extractS3Key(fileUrl);
+  if (!key) return fileUrl;
+
+  const signed = await generateDownloadUrl(key, DOWNLOAD_URL_EXPIRY_SECONDS);
+  return signed || fileUrl;
+}
+
 // ─── COURSE DASHBOARD ──────────────────────────────────────────
 async function getCourseDashboard(userId, courseId) {
   const course = await Course.findById(courseId).lean();
@@ -18,7 +28,7 @@ async function getCourseDashboard(userId, courseId) {
   if (!enrollment) {
     return {
       state: 'not_enrolled',
-      course: sanitizeCourse(course),
+      course: await sanitizeCourse(course),
     };
   }
 
@@ -35,7 +45,7 @@ async function getCourseDashboard(userId, courseId) {
   if (courseStart && todayStart < courseStart) {
     return {
       state: 'pre_start',
-      course: sanitizeCourse(course),
+      course: await sanitizeCourse(course),
       enrollment,
       preStartMessage: course.preStartMessage || 'Welcome! The course will begin shortly.',
       startDate: course.startDate,
@@ -87,7 +97,7 @@ async function getCourseDashboard(userId, courseId) {
 
   const dashboardResult = {
     state: 'active',
-    course: sanitizeCourse(course),
+    course: await sanitizeCourse(course),
     enrollment: { ...enrollment, progress: overallProgress },
     modules: moduleData,
     progress: {
@@ -244,19 +254,19 @@ async function getLessonDetail(userId, courseId, lessonId) {
   }
 
   // Generate signed URL if S3 video
-  let signedVideoUrl = lesson.videoUrl;
-  if (lesson.videoUrl) {
-    const key = extractS3Key(lesson.videoUrl);
-    if (key) {
-      const signed = await generateDownloadUrl(key, 600);
-      if (signed) signedVideoUrl = signed;
-    }
-  }
+  const signedVideoUrl = await signS3Url(lesson.videoUrl, lesson.videoKey);
+  const signedAttachments = await Promise.all(
+    (lesson.attachments || []).map(async attachment => ({
+      ...attachment,
+      downloadUrl: await signS3Url(attachment.fileUrl, attachment.key),
+    }))
+  );
 
   const lp = await LessonProgress.findOne({ userId, courseId, lessonId }).lean();
 
   return {
     ...lesson,
+    attachments: signedAttachments,
     videoUrl: signedVideoUrl,
     isCompleted: !!lp?.isCompleted,
     completedAt: lp?.completedAt || null,
@@ -426,14 +436,14 @@ async function submitModuleQuiz(userId, courseId, moduleId, answers) {
 }
 
 // ─── HELPERS ───────────────────────────────────────────────────
-function sanitizeCourse(course) {
+async function sanitizeCourse(course) {
   return {
     _id: course._id,
     slug: course.slug,
     title: course.title,
     subtitle: course.subtitle,
     description: course.description,
-    thumbnailUrl: course.thumbnailUrl,
+    thumbnailUrl: await signS3Url(course.thumbnailUrl, course.thumbnailKey),
     videoIntroUrl: course.videoIntroUrl,
     priceInr: course.priceInr,
     originalPriceInr: course.originalPriceInr,

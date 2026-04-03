@@ -1,16 +1,22 @@
-const { S3Client, PutObjectCommand, GetObjectCommand } = require('@aws-sdk/client-s3');
+const {
+  S3Client,
+  PutObjectCommand,
+  GetObjectCommand,
+  HeadObjectCommand,
+  DeleteObjectCommand,
+} = require('@aws-sdk/client-s3');
 const { getSignedUrl } = require('@aws-sdk/s3-request-presigner');
-const crypto = require('crypto');
-const path = require('path');
 const env = require('../config/env');
 
 let s3Client = null;
 
 function getS3Client() {
   if (s3Client) return s3Client;
+
   if (!env.AWS_ACCESS_KEY_ID || !env.AWS_SECRET_ACCESS_KEY || !env.AWS_S3_BUCKET) {
     return null;
   }
+
   s3Client = new S3Client({
     region: env.AWS_REGION,
     credentials: {
@@ -18,38 +24,53 @@ function getS3Client() {
       secretAccessKey: env.AWS_SECRET_ACCESS_KEY,
     },
   });
+
   return s3Client;
 }
 
-async function generateUploadUrl({ folder, filename, contentType }) {
+function ensureS3Client() {
   const client = getS3Client();
+
   if (!client) {
     throw new Error(
       'AWS S3 is not configured. Set AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY, and AWS_S3_BUCKET in .env'
     );
   }
 
-  const ext = path.extname(filename) || '';
-  const uniqueName = `${crypto.randomUUID()}${ext}`;
-  const key = `${folder}/${uniqueName}`;
+  return client;
+}
 
+function buildS3FileUrl(key) {
+  return `https://${env.AWS_S3_BUCKET}.s3.${env.AWS_REGION}.amazonaws.com/${key}`;
+}
+
+async function generateUploadUrl({ key, contentType, expiresIn = 300 }) {
+  if (!key) {
+    throw new Error('key is required for upload URL generation');
+  }
+
+  const client = ensureS3Client();
   const command = new PutObjectCommand({
     Bucket: env.AWS_S3_BUCKET,
     Key: key,
-    ContentType: contentType || 'video/mp4',
+    ContentType: contentType || 'application/octet-stream',
   });
 
-  const uploadUrl = await getSignedUrl(client, command, { expiresIn: 3600 });
-  const fileUrl = `https://${env.AWS_S3_BUCKET}.s3.${env.AWS_REGION}.amazonaws.com/${key}`;
+  const uploadUrl = await getSignedUrl(client, command, { expiresIn });
 
-  return { uploadUrl, fileUrl, key };
+  return {
+    uploadUrl,
+    fileUrl: buildS3FileUrl(key),
+    key,
+    expiresIn,
+  };
 }
 
-async function generateDownloadUrl(key, expiresIn = 600) {
+async function generateDownloadUrl(key, expiresIn = 3600) {
+  if (!key) return null;
+
   const client = getS3Client();
-  if (!client) {
-    return null;
-  }
+  if (!client) return null;
 
   const command = new GetObjectCommand({
     Bucket: env.AWS_S3_BUCKET,
@@ -59,14 +80,62 @@ async function generateDownloadUrl(key, expiresIn = 600) {
   return getSignedUrl(client, command, { expiresIn });
 }
 
-function extractS3Key(url) {
-  if (!url) return null;
+async function headObject(key) {
+  if (!key) {
+    throw new Error('key is required for headObject');
+  }
+
+  const client = ensureS3Client();
+
+  return client.send(
+    new HeadObjectCommand({
+      Bucket: env.AWS_S3_BUCKET,
+      Key: key,
+    })
+  );
+}
+
+async function deleteObject(key) {
+  if (!key) {
+    throw new Error('key is required for deleteObject');
+  }
+
+  const client = ensureS3Client();
+
+  await client.send(
+    new DeleteObjectCommand({
+      Bucket: env.AWS_S3_BUCKET,
+      Key: key,
+    })
+  );
+}
+
+function extractS3Key(urlOrKey) {
+  if (!urlOrKey || typeof urlOrKey !== 'string') return null;
+
+  if (!urlOrKey.startsWith('http://') && !urlOrKey.startsWith('https://')) {
+    return urlOrKey;
+  }
+
   try {
-    const u = new URL(url);
-    return u.pathname.startsWith('/') ? u.pathname.slice(1) : u.pathname;
+    const parsed = new URL(urlOrKey);
+    const host = parsed.hostname.toLowerCase();
+    const isAmazonAwsHost = host.includes('amazonaws.com');
+    if (!isAmazonAwsHost) {
+      return null;
+    }
+    return parsed.pathname.startsWith('/') ? parsed.pathname.slice(1) : parsed.pathname;
   } catch {
     return null;
   }
 }
 
-module.exports = { generateUploadUrl, generateDownloadUrl, extractS3Key };
+module.exports = {
+  buildS3FileUrl,
+  deleteObject,
+  extractS3Key,
+  generateDownloadUrl,
+  generateUploadUrl,
+  getS3Client,
+  headObject,
+};

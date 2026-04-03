@@ -2,6 +2,8 @@
 
 import { useState, useEffect, useCallback } from 'react';
 import { apiGet, apiPost, apiPatch, apiDelete } from '@/lib/api';
+import UploadProgressPanel from '@/components/admin/UploadProgressPanel';
+import { deleteUploadedFile, resolveUploadFolder, useS3DirectUpload } from '@/lib/s3Upload';
 
 export default function AdminCoursesPage() {
   const [courses, setCourses] = useState([]);
@@ -461,7 +463,7 @@ function CourseBuilder({ courseId, courseTitle, onBack }) {
     passingScore: 70,
     questions: [],
   });
-  const [uploading, setUploading] = useState(false);
+  const { uploadState, startUpload, retryUpload, resetUploadState } = useS3DirectUpload();
 
   const loadModules = useCallback(async () => {
     setLoading(true);
@@ -469,17 +471,25 @@ function CourseBuilder({ courseId, courseTitle, onBack }) {
     const mods = data || [];
     setModules(mods);
 
+    const lessonResponses = await Promise.all(
+      mods.map(mod => apiGet(`/api/v1/admin/modules/${mod._id}/lessons`))
+    );
+    const quizResponses = await Promise.all(
+      mods.map(mod => apiGet(`/api/v1/admin/modules/${mod._id}/quiz`))
+    );
+
     const lessonMap = {};
     const quizMap = {};
-    for (const mod of mods) {
-      const lRes = await apiGet(`/api/v1/admin/modules/${mod._id}/lessons`);
-      lessonMap[mod._id] = lRes.data || [];
-      const qRes = await apiGet(`/api/v1/admin/modules/${mod._id}/quiz`);
-      quizMap[mod._id] = qRes.data || null;
-    }
+    mods.forEach((mod, index) => {
+      lessonMap[mod._id] = lessonResponses[index]?.data || [];
+      quizMap[mod._id] = quizResponses[index]?.data || null;
+    });
+
     setLessons(lessonMap);
     setQuizzes(quizMap);
-    if (mods.length > 0 && !activeModule) setActiveModule(mods[0]);
+    if (mods.length > 0) {
+      setActiveModule(prev => prev || mods[0]);
+    }
     setLoading(false);
   }, [courseId]);
 
@@ -514,16 +524,244 @@ function CourseBuilder({ courseId, courseTitle, onBack }) {
     loadModules();
   };
 
+  const getVideoDuration = file =>
+    new Promise((resolve, reject) => {
+      if (!file) return resolve(0);
+      const url = URL.createObjectURL(file);
+      const video = document.createElement('video');
+      video.preload = 'metadata';
+      video.src = url;
+      video.onloadedmetadata = () => {
+        URL.revokeObjectURL(url);
+        resolve(video.duration);
+      };
+      video.onerror = err => {
+        URL.revokeObjectURL(url);
+        reject(err);
+      };
+    });
+
+  const formatDuration = seconds => {
+    if (!seconds || Number.isNaN(Number(seconds))) return '';
+    const totalSec = Math.round(seconds);
+    const mins = Math.floor(totalSec / 60);
+    const secs = totalSec % 60;
+    return `${mins}m ${secs}s`;
+  };
+
+  const formatFileSize = bytes => {
+    if (!bytes) return '0 B';
+    if (bytes < 1024) return `${bytes} B`;
+    if (bytes < 1024 * 1024) return `${(bytes / 1024).toFixed(1)} KB`;
+    return `${(bytes / (1024 * 1024)).toFixed(1)} MB`;
+  };
+
+  const handleVideoFileSelect = async file => {
+    if (!file) return;
+    try {
+      const durationSec = await getVideoDuration(file);
+      const durationMin = Math.ceil(durationSec / 60);
+      setLessonForm(prev => ({
+        ...prev,
+        videoFile: file,
+        videoFileName: file.name,
+        videoDurationSeconds: Math.round(durationSec),
+        durationMinutes: durationMin,
+        contentType: 'video',
+      }));
+    } catch (err) {
+      console.warn('Could not read video duration', err);
+      setLessonForm(prev => ({
+        ...prev,
+        videoFile: file,
+        videoFileName: file.name,
+        contentType: 'video',
+      }));
+    }
+  };
+
   // ── Lesson CRUD ──
+  const handleCourseThumbnailUpload = async file => {
+    if (!file) return;
+    if (!confirm(`Upload image "${file.name}" as the course thumbnail?`)) return;
+
+    try {
+      await startUpload({
+        file,
+        folder: 'images',
+        courseId,
+        label: 'course thumbnail',
+        onUploaded: async uploadedFile => {
+          const { error } = await apiPatch(`/api/v1/admin/courses/${courseId}`, {
+            thumbnailUrl: uploadedFile.fileUrl,
+            thumbnailKey: uploadedFile.key,
+          });
+
+          if (error) {
+            throw new Error(error.message);
+          }
+        },
+      });
+
+      await loadModules();
+    } catch (err) {
+      alert(`Thumbnail upload failed: ${err.message}`);
+    }
+  };
+
+  const uploadLessonVideo = async ({ file, lessonId, moduleId }) => {
+    const durationSec =
+      lessonForm.videoDurationSeconds || Math.round((await getVideoDuration(file)) || 0);
+    const durationMin = Math.ceil(durationSec / 60);
+
+    const uploadedFile = await startUpload({
+      file,
+      folder: 'videos',
+      courseId,
+      moduleId,
+      label: 'lesson video',
+      onUploaded: async confirmedUpload => {
+        const { error } = await apiPatch(`/api/v1/admin/lessons/${lessonId}`, {
+          videoUrl: confirmedUpload.fileUrl,
+          videoKey: confirmedUpload.key,
+          videoDurationSeconds: durationSec,
+          durationMinutes: durationMin,
+        });
+
+        if (error) {
+          throw new Error(error.message);
+        }
+      },
+    });
+
+    setLessonForm(prev => ({
+      ...prev,
+      videoUrl: uploadedFile.fileUrl,
+      videoKey: uploadedFile.key,
+      videoDurationSeconds: durationSec,
+      durationMinutes: durationMin,
+    }));
+  };
+
+  const handleVideoUpload = async (file, lessonId, options = {}) => {
+    if (!file) return;
+
+    if (!options.skipConfirm && !confirm(`Upload video "${file.name}" to this lesson?`)) {
+      return;
+    }
+
+    try {
+      const targetModuleId = options.moduleId || activeModule?._id;
+      await uploadLessonVideo({ file, lessonId, moduleId: targetModuleId });
+      await loadModules();
+    } catch (err) {
+      alert(`Upload failed: ${err.message}`);
+    }
+  };
+
+  const handleLessonResourceUpload = async (file, lesson) => {
+    if (!file || !lesson) return;
+    if (!confirm(`Upload "${file.name}" as a lesson resource?`)) return;
+
+    const currentAttachments = Array.isArray(lesson.attachments) ? lesson.attachments : [];
+    const folder = resolveUploadFolder(file);
+
+    try {
+      const uploadedFile = await startUpload({
+        file,
+        folder,
+        courseId,
+        moduleId: lesson.moduleId || activeModule?._id,
+        label: 'lesson resource',
+        onUploaded: async confirmedUpload => {
+          const nextAttachments = [
+            ...currentAttachments,
+            {
+              label: file.name,
+              fileUrl: confirmedUpload.fileUrl,
+              key: confirmedUpload.key,
+              fileType: confirmedUpload.fileType,
+              size: confirmedUpload.size,
+            },
+          ];
+
+          const { error } = await apiPatch(`/api/v1/admin/lessons/${lesson._id}`, {
+            attachments: nextAttachments,
+          });
+
+          if (error) {
+            throw new Error(error.message);
+          }
+        },
+      });
+
+      if (editLesson?._id === lesson._id) {
+        setLessonForm(prev => ({
+          ...prev,
+          attachments: [
+            ...(Array.isArray(prev.attachments) ? prev.attachments : []),
+            {
+              label: file.name,
+              fileUrl: uploadedFile.fileUrl,
+              key: uploadedFile.key,
+              fileType: uploadedFile.fileType,
+              size: uploadedFile.size,
+            },
+          ],
+        }));
+      }
+
+      await loadModules();
+    } catch (err) {
+      alert(`Resource upload failed: ${err.message}`);
+    }
+  };
+
+  const removeAttachmentFromDraft = async attachment => {
+    if (!attachment?.key) return;
+
+    setLessonForm(prev => ({
+      ...prev,
+      attachments: (prev.attachments || []).filter(item => item.key !== attachment.key),
+    }));
+
+    if (!editLesson?._id) {
+      try {
+        await deleteUploadedFile({
+          key: attachment.key,
+          courseId,
+          moduleId: activeModule?._id,
+        });
+      } catch (error) {
+        console.warn('Could not delete unattached resource after removal', error);
+      }
+    }
+  };
+
   const handleCreateLesson = async () => {
     if (!activeModule) return;
     if (!lessonForm.title) return alert('Lesson title is required.');
     if (!confirm(`Create lesson "${lessonForm.title}"?`)) return;
-    const { error } = await apiPost('/api/v1/admin/lessons', {
-      ...lessonForm,
+
+    const { videoFile, videoFileName, ...lessonData } = lessonForm;
+    const payload = {
+      ...lessonData,
       moduleId: activeModule._id,
-    });
+      videoDurationSeconds: lessonForm.videoDurationSeconds || 0,
+      durationMinutes: lessonForm.durationMinutes || 0,
+      attachments: lessonForm.attachments || [],
+    };
+
+    const { data, error } = await apiPost('/api/v1/admin/lessons', payload);
     if (error) return alert(error.message);
+
+    if (lessonForm.videoFile && data && data._id) {
+      await handleVideoUpload(lessonForm.videoFile, data._id, {
+        skipConfirm: true,
+        moduleId: activeModule._id,
+      });
+    }
+
     setShowLessonForm(false);
     setLessonForm({});
     loadModules();
@@ -532,7 +770,22 @@ function CourseBuilder({ courseId, courseTitle, onBack }) {
   const handleUpdateLesson = async () => {
     if (!editLesson) return;
     if (!confirm(`Save changes to lesson "${lessonForm.title || editLesson.title}"?`)) return;
-    await apiPatch(`/api/v1/admin/lessons/${editLesson._id}`, lessonForm);
+
+    if (lessonForm.videoFile) {
+      await handleVideoUpload(lessonForm.videoFile, editLesson._id, {
+        skipConfirm: true,
+        moduleId: activeModule?._id,
+      });
+    }
+
+    const { videoFile, videoFileName, ...lessonData } = lessonForm;
+    const { error } = await apiPatch(`/api/v1/admin/lessons/${editLesson._id}`, {
+      ...lessonData,
+      videoDurationSeconds: lessonForm.videoDurationSeconds || 0,
+      durationMinutes: lessonForm.durationMinutes || 0,
+      attachments: lessonForm.attachments || [],
+    });
+    if (error) return alert(error.message);
     setEditLesson(null);
     setLessonForm({});
     loadModules();
@@ -545,35 +798,6 @@ function CourseBuilder({ courseId, courseTitle, onBack }) {
   };
 
   // ── S3 Video Upload ──
-  const handleVideoUpload = async (file, lessonId) => {
-    if (!file) return;
-    if (!confirm(`Upload video "${file.name}" to this lesson?`)) return;
-    setUploading(true);
-    try {
-      const { data, error } = await apiPost('/api/v1/admin/upload-url', {
-        folder: `courses/${courseId}/videos`,
-        filename: file.name,
-        contentType: file.type || 'video/mp4',
-      });
-      if (error) {
-        alert(error.message);
-        return;
-      }
-
-      await fetch(data.uploadUrl, {
-        method: 'PUT',
-        body: file,
-        headers: { 'Content-Type': file.type || 'video/mp4' },
-      });
-
-      await apiPatch(`/api/v1/admin/lessons/${lessonId}`, { videoUrl: data.fileUrl });
-      loadModules();
-    } catch (err) {
-      alert('Upload failed: ' + err.message);
-    } finally {
-      setUploading(false);
-    }
-  };
 
   // ── Quiz CRUD ──
   const handleSaveQuiz = async () => {
@@ -661,7 +885,25 @@ function CourseBuilder({ courseId, courseTitle, onBack }) {
             <span style={{ fontSize: 13, color: '#64748b' }}>{courseTitle}</span>
           </div>
         </div>
+        <label
+          className="btn btn-secondary btn-sm"
+          style={{ cursor: 'pointer', position: 'relative' }}
+        >
+          Upload Course Image
+          <input
+            type="file"
+            accept="image/*"
+            style={{ position: 'absolute', opacity: 0, width: 0, height: 0 }}
+            onChange={e => handleCourseThumbnailUpload(e.target.files?.[0])}
+          />
+        </label>
       </div>
+
+      <UploadProgressPanel
+        uploadState={uploadState}
+        onRetry={() => retryUpload().catch(err => alert(`Upload failed: ${err.message}`))}
+        onDismiss={resetUploadState}
+      />
 
       <div
         style={{ display: 'grid', gridTemplateColumns: '300px 1fr', gap: 24, minHeight: '60vh' }}
@@ -789,7 +1031,7 @@ function CourseBuilder({ courseId, courseTitle, onBack }) {
                     className="btn btn-primary btn-sm"
                     onClick={() => {
                       setShowLessonForm(true);
-                      setLessonForm({ contentType: 'video' });
+                      setLessonForm({ contentType: 'video', attachments: [] });
                     }}
                   >
                     + Add Lesson
@@ -814,22 +1056,52 @@ function CourseBuilder({ courseId, courseTitle, onBack }) {
                       </div>
                       <div style={{ fontSize: 12, color: '#64748b', marginTop: 2 }}>
                         {lesson.contentType}{' '}
-                        {lesson.durationMinutes ? `• ${lesson.durationMinutes} min` : ''}
-                        {lesson.videoUrl ? ' • 🎥 Video attached' : ''}
+                        {lesson.videoDurationSeconds
+                          ? `• ${formatDuration(lesson.videoDurationSeconds)}`
+                          : ''}
+                        {lesson.durationMinutes && !lesson.videoDurationSeconds
+                          ? `• ${lesson.durationMinutes} min`
+                          : ''}
+                        {lesson.videoUrl ? ' • Video attached' : ''}
+                        {lesson.attachments?.length ? ` • ${lesson.attachments.length} resources` : ''}
                         {lesson.isPreview ? ' • Preview' : ''}
                       </div>
+                      {lesson.attachments?.length ? (
+                        <div style={{ fontSize: 11, color: '#94a3b8', marginTop: 4 }}>
+                          {lesson.attachments
+                            .map(
+                              item =>
+                                `${item.label || item.fileType || 'Resource'} (${formatFileSize(item.size)})`
+                            )
+                            .join(' • ')}
+                        </div>
+                      ) : null}
                     </div>
                     <div style={{ display: 'flex', gap: 6, alignItems: 'center' }}>
                       <label
                         className="btn btn-secondary btn-sm"
                         style={{ cursor: 'pointer', position: 'relative' }}
                       >
-                        {uploading ? '...' : '📤 Upload'}
+                        {uploadState.status === 'uploading' || uploadState.status === 'verifying'
+                          ? 'Uploading...'
+                          : 'Video'}
                         <input
                           type="file"
                           accept="video/*"
                           style={{ position: 'absolute', opacity: 0, width: 0, height: 0 }}
-                          onChange={e => handleVideoUpload(e.target.files[0], lesson._id)}
+                          onChange={e => handleVideoUpload(e.target.files?.[0], lesson._id)}
+                        />
+                      </label>
+                      <label
+                        className="btn btn-secondary btn-sm"
+                        style={{ cursor: 'pointer', position: 'relative' }}
+                      >
+                        Resource
+                        <input
+                          type="file"
+                          accept="application/pdf,image/*"
+                          style={{ position: 'absolute', opacity: 0, width: 0, height: 0 }}
+                          onChange={e => handleLessonResourceUpload(e.target.files?.[0], lesson)}
                         />
                       </label>
                       <button
@@ -843,6 +1115,8 @@ function CourseBuilder({ courseId, courseTitle, onBack }) {
                             durationMinutes: lesson.durationMinutes || 0,
                             isPreview: lesson.isPreview || false,
                             videoUrl: lesson.videoUrl || '',
+                            videoKey: lesson.videoKey || '',
+                            attachments: lesson.attachments || [],
                           });
                         }}
                       >
@@ -1102,6 +1376,67 @@ function CourseBuilder({ courseId, courseTitle, onBack }) {
                   onChange={e => setLessonForm({ ...lessonForm, videoUrl: e.target.value })}
                 />
               </div>
+              <div className="admin-form-group">
+                <label>Upload Video File</label>
+                <input
+                  type="file"
+                  accept="video/*"
+                  onChange={e => {
+                    const file = e.target.files?.[0];
+                    if (file) handleVideoFileSelect(file);
+                  }}
+                />
+                {lessonForm.videoFileName ? (
+                  <div style={{ marginTop: 8, fontSize: 12, color: '#475569' }}>
+                    Selected file: {lessonForm.videoFileName}
+                  </div>
+                ) : null}
+                {lessonForm.videoDurationSeconds ? (
+                  <div style={{ marginTop: 4, fontSize: 12, color: '#0f766e' }}>
+                    Detected duration: {formatDuration(lessonForm.videoDurationSeconds)} (
+                    {lessonForm.durationMinutes} minutes)
+                  </div>
+                ) : null}
+              </div>
+              {lessonForm.attachments?.length ? (
+                <div className="admin-form-group">
+                  <label>Attached Resources</label>
+                  <div style={{ display: 'grid', gap: 8 }}>
+                    {lessonForm.attachments.map(attachment => (
+                      <div
+                        key={attachment.key}
+                        style={{
+                          display: 'flex',
+                          justifyContent: 'space-between',
+                          alignItems: 'center',
+                          gap: 12,
+                          padding: '10px 12px',
+                          border: '1px solid #e2e8f0',
+                          borderRadius: 8,
+                          background: '#f8fafc',
+                        }}
+                      >
+                        <div>
+                          <div style={{ fontSize: 12, fontWeight: 600, color: '#0f172a' }}>
+                            {attachment.label || attachment.fileType || 'Resource'}
+                          </div>
+                          <div style={{ fontSize: 11, color: '#64748b', marginTop: 2 }}>
+                            {attachment.fileType || 'application/octet-stream'} •{' '}
+                            {formatFileSize(attachment.size)}
+                          </div>
+                        </div>
+                        <button
+                          type="button"
+                          className="btn btn-danger btn-sm"
+                          onClick={() => removeAttachmentFromDraft(attachment)}
+                        >
+                          Remove
+                        </button>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              ) : null}
               <div className="admin-form-group">
                 <label style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
                   <input

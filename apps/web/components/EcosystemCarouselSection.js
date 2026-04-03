@@ -15,10 +15,10 @@ const carouselData = [
     cardContent: {
       type: 'mentorship',
       stats: [
-        { icon: '👨‍💼', label: 'Industry Experts', value: '500+', color: '#3b82f6' },
-        { icon: '🎯', label: 'Success Rate', value: '95%', color: '#10b981' },
-        { icon: '⏱️', label: 'Avg Response', value: '24hrs', color: '#f59e0b' },
-        { icon: '📈', label: 'Growth Rate', value: '3.5x', color: '#ef4444' },
+        { icon: 'industry', label: 'Industry Experts', value: '500+', color: '#3b82f6' },
+        { icon: 'target', label: 'Success Rate', value: '95%', color: '#10b981' },
+        { icon: 'clock', label: 'Avg Response', value: '24hrs', color: '#f59e0b' },
+        { icon: 'chart', label: 'Growth Rate', value: '3.5x', color: '#ef4444' },
       ],
       highlight: 'One-on-one sessions with startup founders who have raised $100M+',
     },
@@ -53,12 +53,12 @@ const carouselData = [
       type: 'learning',
       totalCourses: '259+',
       categories: [
-        { icon: '💼', name: 'Business', count: 45, color: '#3b82f6' },
-        { icon: '💻', name: 'Technology', count: 62, color: '#8b5cf6' },
-        { icon: '📊', name: 'Analytics', count: 38, color: '#10b981' },
-        { icon: '🎨', name: 'Design', count: 29, color: '#ec4899' },
-        { icon: '🚀', name: 'Marketing', count: 51, color: '#ef4444' },
-        { icon: '📱', name: 'Product', count: 34, color: '#06b6d4' },
+        { icon: '', name: 'Business', count: 45, color: '#3b82f6' },
+        { icon: '', name: 'Technology', count: 62, color: '#8b5cf6' },
+        { icon: '', name: 'Analytics', count: 38, color: '#10b981' },
+        { icon: '', name: 'Design', count: 29, color: '#ec4899' },
+        { icon: '', name: 'Marketing', count: 51, color: '#ef4444' },
+        { icon: '', name: 'Product', count: 34, color: '#06b6d4' },
       ],
       highlight: 'Live workshops every week',
     },
@@ -351,9 +351,30 @@ export default function EcosystemCarouselSection() {
             exit={{ opacity: 0, y: 20 }}
             transition={{ duration: 0.3 }}
           >
-            <span className="badge-icon">🚀</span>
+            <span className="badge-icon">
+              <svg
+                width="16"
+                height="16"
+                viewBox="0 0 24 24"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <circle cx="12" cy="12" r="10" stroke="#fff" strokeWidth="1.5" />
+                <path
+                  d="M8 12l2 2 4-4"
+                  stroke="#fff"
+                  strokeWidth="1.5"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                />
+              </svg>
+            </span>
             <span className="badge-text">{activeCard.badge}</span>
           </motion.div>
+
+          <div className="secondary-badge">
+            <span>India’s #1 Startup Learning Platform</span>
+          </div>
         </AnimatePresence>
 
         {/* Dynamic Headline */}
@@ -390,15 +411,47 @@ export default function EcosystemCarouselSection() {
 
               <div className="key-highlights">
                 <div className="highlight-item">
-                  <span className="highlight-icon">🚀</span>
+                  <span className="highlight-icon">
+                    <svg
+                      width="12"
+                      height="12"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <path d="M5 12h14" stroke="#fff" strokeWidth="1.8" strokeLinecap="round" />
+                      <path d="M12 5v14" stroke="#fff" strokeWidth="1.8" strokeLinecap="round" />
+                    </svg>
+                  </span>
                   <span className="highlight-text">Fast-Track 1 Month Program</span>
                 </div>
                 <div className="highlight-item">
-                  <span className="highlight-icon">💰</span>
+                  <span className="highlight-icon">
+                    <svg
+                      width="12"
+                      height="12"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <path d="M4 12h16" stroke="#fff" strokeWidth="1.8" strokeLinecap="round" />
+                      <path d="M12 4v16" stroke="#fff" strokeWidth="1.8" strokeLinecap="round" />
+                    </svg>
+                  </span>
                   <span className="highlight-text">Grants & Funding Support</span>
                 </div>
                 <div className="highlight-item">
-                  <span className="highlight-icon">👥</span>
+                  <span className="highlight-icon">
+                    <svg
+                      width="12"
+                      height="12"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <circle cx="12" cy="12" r="4" stroke="#fff" strokeWidth="1.8" />
+                    </svg>
+                  </span>
                   <span className="highlight-text">200+ Experts Mentors</span>
                 </div>
                 {/* <div className="highlight-item">
@@ -460,7 +513,6 @@ export default function EcosystemCarouselSection() {
                           ))}
                         </div>
                         <div className="premium-highlight">
-                          <span className="highlight-icon">✨</span>
                           {card.cardContent.highlight}
                         </div>
                       </div>
@@ -470,7 +522,7 @@ export default function EcosystemCarouselSection() {
                     {card.cardContent.type === 'funding' && (
                       <div className="card-content-premium">
                         <div className="premium-main-stat">
-                          <div className="main-stat-icon">💰</div>
+                          <div className="main-stat-icon"></div>
                           <div className="main-stat-content">
                             <div className="main-stat-label">{card.cardContent.mainLabel}</div>
                             <div className="main-stat-value">{card.cardContent.mainValue}</div>

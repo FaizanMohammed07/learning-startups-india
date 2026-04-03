@@ -11,8 +11,39 @@ const { Testimonial } = require('../../models/Testimonial');
 const { Notification } = require('../../models/Notification');
 const { Settings } = require('../../models/Settings');
 const { ApiError } = require('../../utils/apiError');
-const { generateUploadUrl } = require('../../utils/s3');
+const mediaService = require('../media/media.service');
+const { Media } = require('../media/media.model');
 const { cacheDel, cacheFlushPattern } = require('../../infrastructure/cache/redis');
+const { extractS3Key } = require('../../utils/s3');
+
+function normalizeAttachments(attachments = []) {
+  if (!Array.isArray(attachments)) return [];
+
+  return attachments
+    .filter(Boolean)
+    .map(item => ({
+      label: item.label || item.originalName || item.fileName || 'Attachment',
+      fileUrl: item.fileUrl || item.url || '',
+      key: item.key || extractS3Key(item.fileUrl || item.url || ''),
+      fileType: item.fileType || item.contentType || 'application/octet-stream',
+      size: Number(item.size || 0),
+    }))
+    .filter(item => item.fileUrl && item.key);
+}
+
+function collectLessonMediaKeys(lesson) {
+  if (!lesson) return [];
+
+  const keys = [];
+  const videoKey = lesson.videoKey || extractS3Key(lesson.videoUrl || '');
+  if (videoKey) keys.push(videoKey);
+
+  for (const attachment of normalizeAttachments(lesson.attachments || [])) {
+    keys.push(attachment.key);
+  }
+
+  return [...new Set(keys)];
+}
 
 // ─── ANALYTICS ──────────────────────────────────────────────────
 async function getDashboardAnalytics() {
@@ -173,6 +204,9 @@ async function getCourse(id) {
 }
 
 async function updateCourse(id, updates) {
+  const existingCourse = await Course.findById(id).lean();
+  if (!existingCourse) throw new ApiError(404, 'Course not found');
+
   const allowed = [
     'title',
     'slug',
@@ -185,6 +219,7 @@ async function updateCourse(id, updates) {
     'category',
     'level',
     'thumbnailUrl',
+    'thumbnailKey',
     'videoIntroUrl',
     'difficultyLevel',
     'language',
@@ -206,8 +241,16 @@ async function updateCourse(id, updates) {
     const existing = await Course.findOne({ slug: filtered.slug, _id: { $ne: id } });
     if (existing) throw new ApiError(409, 'A course with this slug already exists');
   }
+
   const course = await Course.findByIdAndUpdate(id, filtered, { new: true });
-  if (!course) throw new ApiError(404, 'Course not found');
+
+  if (existingCourse.thumbnailKey && existingCourse.thumbnailKey !== course.thumbnailKey) {
+    await mediaService.deleteMediaByKey(null, existingCourse.thumbnailKey, {
+      courseId: id,
+      reason: 'course.thumbnail.replaced',
+    });
+  }
+
   // Invalidate course caches
   cacheDel('courses:all', `course:${id}`, `course:${course.slug}`, `course:${id}:modules`).catch(
     () => {}
@@ -236,6 +279,7 @@ async function createCourse(data) {
     category: data.category || '',
     level: data.level || '',
     thumbnailUrl: data.thumbnailUrl || '',
+    thumbnailKey: data.thumbnailKey || '',
     videoIntroUrl: data.videoIntroUrl || '',
     difficultyLevel: data.difficultyLevel || 'beginner',
     language: data.language || 'English',
@@ -253,16 +297,38 @@ async function createCourse(data) {
 }
 
 async function deleteCourse(id) {
-  const course = await Course.findByIdAndDelete(id);
+  const course = await Course.findById(id).lean();
   if (!course) throw new ApiError(404, 'Course not found');
-  // Cascade: delete modules, lessons, quizzes, and enrollments for this course
+
   const modules = await Module.find({ courseId: id }).select('_id').lean();
   const moduleIds = modules.map(m => m._id);
+
+  const lessons = moduleIds.length
+    ? await Lesson.find({ moduleId: { $in: moduleIds } }).select('videoKey videoUrl attachments').lean()
+    : [];
+
+  const lessonMediaKeys = lessons.flatMap(collectLessonMediaKeys);
+  const courseMediaKeys = await Media.find({ courseId: id }).select('key fileKey').lean();
+  const keysToDelete = [
+    course.thumbnailKey,
+    ...lessonMediaKeys,
+    ...courseMediaKeys.map(item => item.key || item.fileKey),
+  ].filter(Boolean);
+
+  if (keysToDelete.length > 0) {
+    await mediaService.deleteMediaByKeys(null, keysToDelete, {
+      courseId: id,
+      reason: 'course.deleted',
+    });
+  }
+
+  // Cascade: delete modules, lessons, quizzes, and enrollments for this course
   if (moduleIds.length > 0) {
     await Lesson.deleteMany({ moduleId: { $in: moduleIds } });
     await ModuleQuiz.deleteMany({ moduleId: { $in: moduleIds } });
   }
   await Module.deleteMany({ courseId: id });
+  await Course.findByIdAndDelete(id);
   // Invalidate course caches
   cacheDel('courses:all', `course:${id}`, `course:${course.slug}`, `course:${id}:modules`).catch(
     () => {}
@@ -812,11 +878,23 @@ async function updateModule(id, updates) {
 }
 
 async function deleteModule(id) {
-  const mod = await Module.findByIdAndDelete(id);
+  const mod = await Module.findById(id).lean();
   if (!mod) throw new ApiError(404, 'Module not found');
+
+  const lessons = await Lesson.find({ moduleId: id }).select('videoKey videoUrl attachments').lean();
+  const mediaKeys = lessons.flatMap(collectLessonMediaKeys);
+  if (mediaKeys.length > 0) {
+    await mediaService.deleteMediaByKeys(null, mediaKeys, {
+      courseId: mod.courseId,
+      moduleId: id,
+      reason: 'module.deleted',
+    });
+  }
+
   // Delete associated lessons and quiz
   await Lesson.deleteMany({ moduleId: id });
   await ModuleQuiz.deleteMany({ moduleId: id });
+  await Module.findByIdAndDelete(id);
   cacheDel(`course:${mod.courseId}:modules`, `module:${id}:lessons`).catch(() => {});
   return { deleted: true };
 }
@@ -850,9 +928,11 @@ async function createLesson(data) {
     description: data.description || '',
     contentType: data.contentType || 'video',
     videoUrl: data.videoUrl || '',
+    videoKey: data.videoKey || '',
     videoDurationSeconds: data.videoDurationSeconds || 0,
     readingContent: data.readingContent || '',
     readingTimeMinutes: data.readingTimeMinutes || 0,
+    attachments: normalizeAttachments(data.attachments || []),
     isPreview: data.isPreview || false,
     isMandatory: data.isMandatory !== false,
     durationMinutes: data.durationMinutes || 0,
@@ -863,14 +943,19 @@ async function createLesson(data) {
 }
 
 async function updateLesson(id, updates) {
+  const existingLesson = await Lesson.findById(id).lean();
+  if (!existingLesson) throw new ApiError(404, 'Lesson not found');
+
   const allowed = [
     'title',
     'description',
     'contentType',
     'videoUrl',
+    'videoKey',
     'videoDurationSeconds',
     'readingContent',
     'readingTimeMinutes',
+    'attachments',
     'isPreview',
     'isMandatory',
     'durationMinutes',
@@ -881,15 +966,45 @@ async function updateLesson(id, updates) {
   for (const key of allowed) {
     if (updates[key] !== undefined) filtered[key] = updates[key];
   }
+
+  if (filtered.attachments !== undefined) {
+    filtered.attachments = normalizeAttachments(filtered.attachments);
+  }
+
   const lesson = await Lesson.findByIdAndUpdate(id, filtered, { new: true });
-  if (!lesson) throw new ApiError(404, 'Lesson not found');
+
+  const previousKeys = collectLessonMediaKeys(existingLesson);
+  const nextKeys = collectLessonMediaKeys(lesson);
+  const removedKeys = previousKeys.filter(key => !nextKeys.includes(key));
+
+  if (removedKeys.length > 0) {
+    const mod = await Module.findById(lesson.moduleId).select('courseId').lean();
+    await mediaService.deleteMediaByKeys(null, removedKeys, {
+      courseId: mod?.courseId || null,
+      moduleId: lesson.moduleId,
+      reason: 'lesson.media.replaced',
+    });
+  }
+
   cacheDel(`module:${lesson.moduleId}:lessons`).catch(() => {});
   return lesson;
 }
 
 async function deleteLesson(id) {
-  const lesson = await Lesson.findByIdAndDelete(id);
+  const lesson = await Lesson.findById(id).lean();
   if (!lesson) throw new ApiError(404, 'Lesson not found');
+
+  const mediaKeys = collectLessonMediaKeys(lesson);
+  if (mediaKeys.length > 0) {
+    const mod = await Module.findById(lesson.moduleId).select('courseId').lean();
+    await mediaService.deleteMediaByKeys(null, mediaKeys, {
+      courseId: mod?.courseId || null,
+      moduleId: lesson.moduleId,
+      reason: 'lesson.deleted',
+    });
+  }
+
+  await Lesson.findByIdAndDelete(id);
   cacheDel(`module:${lesson.moduleId}:lessons`).catch(() => {});
   return { deleted: true };
 }
@@ -925,12 +1040,9 @@ async function deleteModuleQuiz(moduleId) {
 }
 
 // ─── S3 UPLOAD URL ──────────────────────────────────────────────
-async function getUploadUrl({ folder, filename, contentType }) {
-  return generateUploadUrl({
-    folder: folder || 'courses/videos',
-    filename,
-    contentType: contentType || 'video/mp4',
-  });
+async function getUploadUrl(data, userId = null) {
+  // Admin endpoint can create upload URL for any instructor/admin
+  return mediaService.requestUploadUrl(userId, data);
 }
 
 module.exports = {

@@ -1,20 +1,42 @@
 const { Course, Module, Lesson } = require('./course.model');
 const { Progress, Quiz, QuizResponse, QuizAttempt } = require('../learning/learning.model');
+const { extractS3Key, generateDownloadUrl } = require('../../utils/s3');
+
+const DOWNLOAD_URL_EXPIRY_SECONDS = 3600;
+
+async function signFileUrl(fileUrl, explicitKey = null, expiresIn = DOWNLOAD_URL_EXPIRY_SECONDS) {
+  const key = explicitKey || extractS3Key(fileUrl);
+  if (!key) return fileUrl;
+
+  const signedUrl = await generateDownloadUrl(key, expiresIn);
+  return signedUrl || fileUrl;
+}
+
+async function decorateCourseMedia(course) {
+  if (!course) return course;
+
+  return {
+    ...course,
+    thumbnailUrl: await signFileUrl(course.thumbnailUrl, course.thumbnailKey),
+    price: course.priceInr || 0,
+  };
+}
 
 async function listCourses(slug) {
   const filter = { isPublished: true };
   if (slug) {
     filter.slug = String(slug);
   }
+
   const courses = await Course.find(filter).sort({ createdAt: -1 }).lean();
-  // Add price field for frontend compatibility
-  return courses.map(c => ({ ...c, price: c.priceInr || 0 }));
+  return Promise.all(courses.map(decorateCourseMedia));
 }
 
 async function getCourseById(id) {
   const course = await Course.findById(id).lean();
   if (!course) return null;
-  return { ...course, price: course.priceInr || 0 };
+
+  return decorateCourseMedia(course);
 }
 
 async function listModulesByCourse(courseId) {
@@ -81,10 +103,10 @@ async function submitQuiz(userId, { responses, courseId }) {
 }
 
 module.exports = {
-  listCourses,
   getCourseById,
-  listModulesByCourse,
+  listCourses,
   listLessonsByModule,
-  trackProgress,
+  listModulesByCourse,
   submitQuiz,
+  trackProgress,
 };

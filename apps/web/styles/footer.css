@@ -3,7 +3,7 @@
 .footer-wrapper {
   position: relative;
   width: 100%;
-  background: 
+  background:
     linear-gradient(135deg, rgba(139, 0, 0, 0.15) 0%, transparent 50%, rgba(220, 20, 60, 0.1) 100%),
     linear-gradient(180deg, #0d0404 0%, #0a0303 20%, #080202 40%, #050101 70%, #020000 100%);
   overflow: hidden;
@@ -14,7 +14,7 @@
   content: '';
   position: absolute;
   inset: 0;
-  background: 
+  background:
     radial-gradient(circle at 15% 25%, rgba(220, 20, 60, 0.2) 0%, transparent 30%),
     radial-gradient(circle at 85% 45%, rgba(139, 0, 0, 0.18) 0%, transparent 35%),
     radial-gradient(circle at 50% 75%, rgba(220, 20, 60, 0.15) 0%, transparent 40%),
@@ -34,12 +34,12 @@
     url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' /%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.03'/%3E%3C/svg%3E"),
     /* Moving grid */
     repeating-linear-gradient(
-      90deg,
-      rgba(255, 255, 255, 0.02) 0px,
-      transparent 1px,
-      transparent 60px,
-      rgba(255, 255, 255, 0.02) 61px
-    ),
+        90deg,
+        rgba(255, 255, 255, 0.02) 0px,
+        transparent 1px,
+        transparent 60px,
+        rgba(255, 255, 255, 0.02) 61px
+      ),
     repeating-linear-gradient(
       0deg,
       rgba(255, 255, 255, 0.02) 0px,
@@ -49,12 +49,12 @@
     ),
     /* Diagonal lines */
     repeating-linear-gradient(
-      45deg,
-      transparent 0px,
-      transparent 80px,
-      rgba(220, 20, 60, 0.015) 80px,
-      rgba(220, 20, 60, 0.015) 81px
-    );
+        45deg,
+        transparent 0px,
+        transparent 80px,
+        rgba(220, 20, 60, 0.015) 80px,
+        rgba(220, 20, 60, 0.015) 81px
+      );
   opacity: 0.5;
   animation: gridMove 25s linear infinite;
   pointer-events: none;
@@ -337,6 +337,39 @@
   width: 16px;
   height: 16px;
   color: #10b981;
+}
+
+/* Contact Info */
+.footer-contact {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  margin-top: 24px;
+  padding-top: 24px;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.footer-contact-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+}
+
+.footer-contact-label {
+  color: rgba(255, 255, 255, 0.6);
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.footer-contact-text {
+  color: rgba(255, 255, 255, 0.8);
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+
+.footer-contact-text:hover {
+  color: #ffffff;
 }
 
 /* Links Columns */

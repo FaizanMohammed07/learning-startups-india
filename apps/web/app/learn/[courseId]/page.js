@@ -119,6 +119,13 @@ const CheckIcon = ({ size = 16, color = 'currentColor' }) => (
     <polyline points="20 6 9 17 4 12" />
   </svg>
 );
+
+function formatFileSize(bytes) {
+  if (!bytes) return '0 B';
+  if (bytes < 1024) return `${bytes} B`;
+  if (bytes < 1024 * 1024) return `${(bytes / 1024).toFixed(1)} KB`;
+  return `${(bytes / (1024 * 1024)).toFixed(1)} MB`;
+}
 const LockIcon = ({ size = 16, color = 'currentColor' }) => (
   <svg
     width={size}
@@ -366,22 +373,13 @@ export default function CourseLearnPage() {
   }, [lessonDetail]);
 
   /* ── Auto-complete for reading/resource when 90% time is reached ── */
-  useEffect(() => {
-    if (isTimerDone && lessonDetail && !lessonDetail.isCompleted && !completing) {
-      const ct = lessonDetail.contentType;
-      if (ct === 'reading' || ct === 'resource') {
-        doAutoComplete(lessonDetail._id);
-      }
-    }
-  }, [isTimerDone, lessonDetail, completing]);
-
   const toggleModule = modId => {
     setExpandedModules(prev => ({ ...prev, [modId]: !prev[modId] }));
     selectedModuleRef.current = modId;
     setSelectedModule(modId);
   };
 
-  const openLesson = async (lessonId, lessonData) => {
+  const openLesson = useCallback(async (lessonId, lessonData) => {
     if (lessonData?.isLocked) return;
     setLessonLoading(true);
     setQuizResult(null);
@@ -402,9 +400,9 @@ export default function CourseLearnPage() {
     setActiveLesson(lessonId);
     setLessonLoading(false);
     if (window.innerWidth < 768) setSidebarOpen(false);
-  };
+  }, [courseId, router]);
 
-  const doAutoComplete = async lessonId => {
+  const doAutoComplete = useCallback(async lessonId => {
     setCompleting(true);
     const { error } = await apiPost(`/api/v1/learn/${courseId}/lesson/${lessonId}/complete`, {
       timeSpentSeconds: timeSpentRef.current,
@@ -425,7 +423,16 @@ export default function CourseLearnPage() {
         setTimeout(() => openLesson(all[idx + 1]._id, all[idx + 1]), 1200);
       }
     }
-  };
+  }, [courseId, openLesson]);
+
+  useEffect(() => {
+    if (isTimerDone && lessonDetail && !lessonDetail.isCompleted && !completing) {
+      const ct = lessonDetail.contentType;
+      if (ct === 'reading' || ct === 'resource') {
+        doAutoComplete(lessonDetail._id);
+      }
+    }
+  }, [isTimerDone, lessonDetail, completing, doAutoComplete]);
 
   /* ── Video: track how much user watched, auto-complete at 90% ── */
   const handleVideoTimeUpdate = () => {
@@ -2269,6 +2276,79 @@ export default function CourseLearnPage() {
                   </p>
                 </div>
               )}
+
+              {lessonDetail.attachments?.length ? (
+                <div
+                  style={{
+                    marginTop: 20,
+                    background: '#fff',
+                    border: '1px solid #f0e8e0',
+                    borderRadius: 16,
+                    padding: '1.25rem 1.5rem',
+                  }}
+                >
+                  <div
+                    style={{
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'space-between',
+                      gap: 12,
+                      marginBottom: 12,
+                      flexWrap: 'wrap',
+                    }}
+                  >
+                    <h3 style={{ margin: 0, fontSize: '1rem', fontWeight: 800, color: '#1a1a1a' }}>
+                      Lesson Resources
+                    </h3>
+                    <span style={{ fontSize: '0.75rem', color: '#64748b', fontWeight: 600 }}>
+                      {lessonDetail.attachments.length} file
+                      {lessonDetail.attachments.length > 1 ? 's' : ''}
+                    </span>
+                  </div>
+
+                  <div style={{ display: 'grid', gap: 10 }}>
+                    {lessonDetail.attachments.map(attachment => (
+                      <a
+                        key={attachment.key || attachment.fileUrl}
+                        href={attachment.downloadUrl || attachment.fileUrl}
+                        target="_blank"
+                        rel="noreferrer"
+                        style={{
+                          display: 'flex',
+                          justifyContent: 'space-between',
+                          gap: 12,
+                          alignItems: 'center',
+                          padding: '12px 14px',
+                          borderRadius: 12,
+                          border: '1px solid #f1e6db',
+                          background: '#fdfaf7',
+                          textDecoration: 'none',
+                        }}
+                      >
+                        <div>
+                          <div
+                            style={{
+                              color: '#1f2937',
+                              fontSize: '0.88rem',
+                              fontWeight: 700,
+                              marginBottom: 4,
+                            }}
+                          >
+                            {attachment.label || 'Download resource'}
+                          </div>
+                          <div style={{ color: '#7c6f64', fontSize: '0.75rem' }}>
+                            {attachment.fileType || 'application/octet-stream'} •{' '}
+                            {formatFileSize(attachment.size)}
+                          </div>
+                        </div>
+                        <span style={{ color: '#7A1F2B', fontSize: '0.8rem', fontWeight: 800 }}>
+                          Open
+                        </span>
+                      </a>
+                    ))}
+                  </div>
+                </div>
+              ) : null}
 
               {/* Description */}
               {lessonDetail.description && (

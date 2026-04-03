@@ -9,6 +9,7 @@ const { learningRouter } = require('../modules/learning/learning.routes');
 const { learnRouter } = require('../modules/learning/learningEngine.routes');
 const { dataRouter } = require('../modules/data/data.routes');
 const { adminRouter } = require('../modules/admin/admin.routes');
+const { mediaRouter } = require('../modules/media/media.routes');
 const { asyncHandler } = require('../utils/asyncHandler');
 const { authRequired } = require('../middlewares/authMiddleware');
 const { getActivities } = require('../utils/activityLogger');
@@ -24,6 +25,24 @@ function registerRoutes(app) {
   app.use('/api/v1/learning', learningRouter);
   app.use('/api/v1/learn', learnRouter);
   app.use('/api/v1/admin', adminRouter);
+  app.use('/api/v1/media', mediaRouter);
+
+  // Public upload URL endpoint (alias to media/upload-url)
+  const mediaController = require('../modules/media/media.controller');
+  const { requireRole } = require('../middlewares/authMiddleware');
+  app.post(
+    '/api/v1/upload-url',
+    authRequired,
+    requireRole('admin', 'instructor'),
+    asyncHandler(mediaController.getUploadUrl)
+  );
+  app.post(
+    '/api/v1/upload-complete',
+    authRequired,
+    requireRole('admin', 'instructor'),
+    asyncHandler(mediaController.completeUpload)
+  );
+
   // Legacy compatibility endpoint kept for transitional clients.
   app.use('/api/v1/data', dataRouter);
 

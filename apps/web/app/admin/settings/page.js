@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { apiGet, apiPost, apiDelete } from '@/lib/api';
 
 export default function AdminSettingsPage() {
@@ -10,17 +10,17 @@ export default function AdminSettingsPage() {
   const [showModal, setShowModal] = useState(false);
   const [form, setForm] = useState({ key: '', value: '', category: 'general', description: '' });
 
-  const load = async () => {
+  const load = useCallback(async () => {
     setLoading(true);
     const params = category ? `?category=${category}` : '';
     const { data } = await apiGet(`/api/v1/admin/settings${params}`);
     if (data) setSettings(Array.isArray(data) ? data : []);
     setLoading(false);
-  };
+  }, [category]);
 
   useEffect(() => {
     load();
-  }, [category]);
+  }, [load]);
 
   const handleSave = async () => {
     if (!form.key) return;

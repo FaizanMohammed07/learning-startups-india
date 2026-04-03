@@ -138,7 +138,7 @@ async function deleteModuleQuiz(req, res) {
 
 // ─── S3 UPLOAD ──────────────────────────────────────────────────
 async function getUploadUrl(req, res) {
-  const data = await adminService.getUploadUrl(req.body);
+  const data = await adminService.getUploadUrl(req.body, req.user.userId);
   res.json({ success: true, data });
 }
 

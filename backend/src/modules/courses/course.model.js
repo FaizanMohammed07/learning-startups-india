@@ -13,6 +13,7 @@ const courseSchema = new mongoose.Schema(
     category: { type: String, trim: true },
     level: { type: String, trim: true },
     thumbnailUrl: { type: String, trim: true },
+    thumbnailKey: { type: String, trim: true },
     videoIntroUrl: { type: String, trim: true },
     difficultyLevel: {
       type: String,
@@ -76,6 +77,7 @@ const lessonSchema = new mongoose.Schema(
       required: true,
     },
     videoUrl: { type: String },
+    videoKey: { type: String },
     videoDurationSeconds: { type: Number, default: 0 },
     readingContent: { type: String },
     readingTimeMinutes: { type: Number, default: 0 },

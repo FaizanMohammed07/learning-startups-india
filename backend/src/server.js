@@ -24,7 +24,7 @@ async function bootstrap() {
   await seedAdmin();
   await warmCache();
 
-  server = app.listen(env.PORT, () => {
+  server = app.listen(env.PORT, '0.0.0.0', () => {
     logger.info('Backend listening', {
       port: env.PORT,
       worker: workerId,

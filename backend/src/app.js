@@ -49,15 +49,37 @@ app.use((req, res, next) => {
   next();
 });
 
+// app.use(
+//   cors({
+//     origin: env.CORS_ORIGIN ? env.CORS_ORIGIN.split(',') : '*',
+//     credentials: true,
+//     methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE'],
+//     allowedHeaders: ['Content-Type', 'Authorization', 'X-Request-Id'],
+//     maxAge: 86400,
+//   })
+// );
+
+const allowedOrigins = env.CORS_ORIGIN ? env.CORS_ORIGIN.split(',') : [];
+
 app.use(
   cors({
-    origin: env.CORS_ORIGIN ? env.CORS_ORIGIN.split(',') : '*',
+    origin: function (origin, callback) {
+      // allow server-to-server or Postman
+      if (!origin) return callback(null, true);
+
+      if (allowedOrigins.includes(origin)) {
+        callback(null, true);
+      } else {
+        callback(new Error('Not allowed by CORS'));
+      }
+    },
     credentials: true,
     methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE'],
     allowedHeaders: ['Content-Type', 'Authorization', 'X-Request-Id'],
     maxAge: 86400,
   })
 );
+
 app.disable('x-powered-by');
 app.set('trust proxy', env.NODE_ENV === 'production' ? 1 : false);
 

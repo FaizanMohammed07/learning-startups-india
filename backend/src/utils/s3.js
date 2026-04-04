@@ -54,6 +54,7 @@ async function generateUploadUrl({ key, contentType, expiresIn = 300 }) {
     Bucket: env.AWS_S3_BUCKET,
     Key: key,
     ContentType: contentType || 'application/octet-stream',
+    ChecksumAlgorithm: undefined,
   });
 
   const uploadUrl = await getSignedUrl(client, command, { expiresIn });

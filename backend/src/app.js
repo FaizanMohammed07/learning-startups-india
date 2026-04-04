@@ -51,7 +51,7 @@ app.use((req, res, next) => {
 
 app.use(
   cors({
-    origin: env.CORS_ORIGIN,
+    origin: env.CORS_ORIGIN.split(','),
     credentials: true,
     methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE'],
     allowedHeaders: ['Content-Type', 'Authorization', 'X-Request-Id'],

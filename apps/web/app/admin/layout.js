@@ -198,7 +198,10 @@ export default function AdminLayout({ children }) {
         const refreshToken = localStorage.getItem('refresh_token');
         if (refreshToken) {
           try {
-            const API_BASE = process.env.NEXT_PUBLIC_API_BASE_URL || 'http://localhost:5000';
+            const API_BASE =
+              process.env.NEXT_PUBLIC_API_BASE_URL ||
+              process.env.NEXT_PUBLIC_API_URL ||
+              'http://localhost:5000';
             const res = await fetch(`${API_BASE}/api/v1/auth/refresh`, {
               method: 'POST',
               headers: { 'Content-Type': 'application/json' },
@@ -301,7 +304,11 @@ export default function AdminLayout({ children }) {
         </nav>
 
         <div className="sidebar-footer">
-          <button className="nav-item" onClick={() => setShowLogoutModal(true)} style={{ color: '#f87171' }}>
+          <button
+            className="nav-item"
+            onClick={() => setShowLogoutModal(true)}
+            style={{ color: '#f87171' }}
+          >
             <span className="nav-icon">
               <NavIcon name="log-out" />
             </span>
@@ -317,29 +324,54 @@ export default function AdminLayout({ children }) {
       {showLogoutModal && (
         <div
           style={{
-            position: 'fixed', inset: 0, zIndex: 9999,
-            background: 'rgba(0,0,0,0.5)', backdropFilter: 'blur(6px)',
-            display: 'flex', alignItems: 'center', justifyContent: 'center',
+            position: 'fixed',
+            inset: 0,
+            zIndex: 9999,
+            background: 'rgba(0,0,0,0.5)',
+            backdropFilter: 'blur(6px)',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
           }}
           onClick={() => setShowLogoutModal(false)}
         >
           <div
             style={{
-              background: '#1e1e2e', borderRadius: 16, padding: '36px 32px 28px',
-              width: 380, maxWidth: '90vw', textAlign: 'center',
-              boxShadow: '0 20px 60px rgba(0,0,0,0.4)', position: 'relative',
+              background: '#1e1e2e',
+              borderRadius: 16,
+              padding: '36px 32px 28px',
+              width: 380,
+              maxWidth: '90vw',
+              textAlign: 'center',
+              boxShadow: '0 20px 60px rgba(0,0,0,0.4)',
+              position: 'relative',
               border: '1px solid rgba(255,255,255,0.08)',
               animation: 'adminLogoutIn 0.25s ease-out',
             }}
             onClick={e => e.stopPropagation()}
           >
-            <div style={{
-              width: 56, height: 56, borderRadius: '50%',
-              background: 'linear-gradient(135deg, rgba(248,113,113,0.15), rgba(239,68,68,0.2))',
-              display: 'flex', alignItems: 'center', justifyContent: 'center',
-              margin: '0 auto 20px',
-            }}>
-              <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#f87171" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+            <div
+              style={{
+                width: 56,
+                height: 56,
+                borderRadius: '50%',
+                background: 'linear-gradient(135deg, rgba(248,113,113,0.15), rgba(239,68,68,0.2))',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                margin: '0 auto 20px',
+              }}
+            >
+              <svg
+                width="28"
+                height="28"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="#f87171"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              >
                 <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" />
                 <polyline points="16 17 21 12 16 7" />
                 <line x1="21" y1="12" x2="9" y2="12" />
@@ -355,38 +387,60 @@ export default function AdminLayout({ children }) {
               <button
                 onClick={() => setShowLogoutModal(false)}
                 style={{
-                  flex: 1, padding: '12px 0', borderRadius: 10,
-                  border: '1.5px solid rgba(255,255,255,0.1)', background: 'transparent',
-                  fontSize: 14, fontWeight: 600, color: '#cbd5e1',
-                  cursor: 'pointer', transition: 'all 0.2s',
+                  flex: 1,
+                  padding: '12px 0',
+                  borderRadius: 10,
+                  border: '1.5px solid rgba(255,255,255,0.1)',
+                  background: 'transparent',
+                  fontSize: 14,
+                  fontWeight: 600,
+                  color: '#cbd5e1',
+                  cursor: 'pointer',
+                  transition: 'all 0.2s',
                 }}
-                onMouseEnter={e => { e.target.style.background = 'rgba(255,255,255,0.05)'; e.target.style.borderColor = 'rgba(255,255,255,0.2)'; }}
-                onMouseLeave={e => { e.target.style.background = 'transparent'; e.target.style.borderColor = 'rgba(255,255,255,0.1)'; }}
+                onMouseEnter={e => {
+                  e.target.style.background = 'rgba(255,255,255,0.05)';
+                  e.target.style.borderColor = 'rgba(255,255,255,0.2)';
+                }}
+                onMouseLeave={e => {
+                  e.target.style.background = 'transparent';
+                  e.target.style.borderColor = 'rgba(255,255,255,0.1)';
+                }}
               >
                 Cancel
               </button>
               <button
                 onClick={handleLogout}
                 style={{
-                  flex: 1, padding: '12px 0', borderRadius: 10,
-                  border: 'none', background: 'linear-gradient(135deg, #ef4444, #dc2626)',
-                  fontSize: 14, fontWeight: 600, color: '#fff',
-                  cursor: 'pointer', transition: 'all 0.2s',
+                  flex: 1,
+                  padding: '12px 0',
+                  borderRadius: 10,
+                  border: 'none',
+                  background: 'linear-gradient(135deg, #ef4444, #dc2626)',
+                  fontSize: 14,
+                  fontWeight: 600,
+                  color: '#fff',
+                  cursor: 'pointer',
+                  transition: 'all 0.2s',
                   boxShadow: '0 2px 8px rgba(239,68,68,0.3)',
                 }}
-                onMouseEnter={e => e.target.style.opacity = '0.9'}
-                onMouseLeave={e => e.target.style.opacity = '1'}
+                onMouseEnter={e => (e.target.style.opacity = '0.9')}
+                onMouseLeave={e => (e.target.style.opacity = '1')}
               >
                 Yes, Sign Out
               </button>
             </div>
           </div>
-          <style dangerouslySetInnerHTML={{ __html: `
+          <style
+            dangerouslySetInnerHTML={{
+              __html: `
             @keyframes adminLogoutIn {
               from { opacity: 0; transform: scale(0.9) translateY(10px); }
               to { opacity: 1; transform: scale(1) translateY(0); }
             }
-          `}} />
+          `,
+            }}
+          />
         </div>
       )}
 

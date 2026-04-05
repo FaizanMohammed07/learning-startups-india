@@ -49,7 +49,7 @@ app.use((req, res, next) => {
   next();
 });
 
-app.use('trust proxy', 1); // Trust first proxy for correct client IPs (if behind a proxy)
+app.set('trust proxy', 1); // Trust first proxy for correct client IPs (if behind a proxy)
 
 // app.use(
 //   cors({

@@ -110,14 +110,14 @@ app.use(metricsMiddleware);
 app.use(
   rateLimit({
     windowMs: 60 * 1000,
-    max: 120,
+    max: 1000,
     standardHeaders: true,
     legacyHeaders: false,
   })
 );
 
 // Redis-backed rate limiter (100 req/min per IP, graceful fallback to in-memory above)
-app.use(redisRateLimit({ windowSeconds: 60, max: 100, prefix: 'rl:global' }));
+app.use(redisRateLimit({ windowSeconds: 60, max: 500, prefix: 'rl:global' }));
 
 app.get('/health', (req, res) => {
   const mongoState = mongoose.connection.readyState; // 0=disconnected,1=connected,2=connecting,3=disconnecting
@@ -145,17 +145,30 @@ app.get('/metrics', (req, res) => {
   res.json({ success: true, data: getMetricsSnapshot() });
 });
 
+const authLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000,
+  max: 20,
+  standardHeaders: true,
+  legacyHeaders: false,
+  message: { success: false, message: 'Too many attempts, please try again later' },
+});
+
+// Apply ONLY to sensitive routes
+app.use('/api/v1/auth/login', authLimiter);
+app.use('/api/v1/auth/signup', authLimiter);
+app.use('/api/v1/auth/forgot-password', authLimiter);
+
 // Stricter rate limiting on auth endpoints to prevent brute-force attacks
-app.use(
-  '/api/v1/auth',
-  rateLimit({
-    windowMs: 15 * 60 * 1000,
-    max: 20,
-    standardHeaders: true,
-    legacyHeaders: false,
-    message: { success: false, message: 'Too many attempts, please try again later' },
-  })
-);
+// app.use(
+//   '/api/v1/auth',
+//   rateLimit({
+//     windowMs: 15 * 60 * 1000,
+//     max: 20,
+//     standardHeaders: true,
+//     legacyHeaders: false,
+//     message: { success: false, message: 'Too many attempts, please try again later' },
+//   })
+// );
 
 registerRoutes(app);
 app.use(errorMiddleware);

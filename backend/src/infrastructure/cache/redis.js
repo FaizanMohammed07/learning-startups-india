@@ -24,6 +24,7 @@ async function connectRedis() {
   client = createClient({
     url,
     socket: {
+      tls: true, // Use TLS for secure connection (rediss://)
       reconnectStrategy(retries) {
         if (retries > 10) {
           logger.warn('Redis: max reconnect attempts reached, giving up', { worker: workerId });

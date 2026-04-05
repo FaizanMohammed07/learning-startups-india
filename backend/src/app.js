@@ -59,18 +59,26 @@ app.use((req, res, next) => {
 //   })
 // );
 
-const allowedOrigins = env.CORS_ORIGIN ? env.CORS_ORIGIN.split(',') : [];
+const allowedOrigins = [
+  'https://learning-startups-india.vercel.app',
+  'https://www.innovationandentrepreneurshipcouncil.org',
+  'https://innovationandentrepreneurshipcouncil.org',
+  'http://localhost:3000',
+  // local dev (optional)
+];
+
+console.log('mohammed sufiyan');
 
 app.use(
   cors({
     origin: function (origin, callback) {
-      // allow server-to-server or Postman
+      // allow requests with no origin (like Postman / mobile apps)
       if (!origin) return callback(null, true);
 
       if (allowedOrigins.includes(origin)) {
-        callback(null, true);
+        return callback(null, true);
       } else {
-        callback(new Error('Not allowed by CORS'));
+        return callback(new Error('Not allowed by CORS'));
       }
     },
     credentials: true,

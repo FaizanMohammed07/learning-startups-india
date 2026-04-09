@@ -2,141 +2,141 @@
 
 import { useRouter, usePathname } from 'next/navigation';
 import Link from 'next/link';
-import { useState } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { signOut } from '@/lib/auth';
+import Icon from '@/components/Icon';
+import '@/styles/sidebar-accordion.css';
+
+const navigation = [
+  {
+    id: 'core',
+    label: 'CORE',
+    items: [
+      { id: 'dashboard', label: 'Dashboard', path: '/dashboard', icon: 'dashboard' },
+      { id: 'my-learning', label: 'My Learning', path: '/my-learning', icon: 'book' },
+    ],
+  },
+  {
+    id: 'courses',
+    label: 'COURSES',
+    items: [
+      { id: 'all-courses', label: 'Explore Courses', path: '/courses', icon: 'compass' },
+      { id: 'enrolled', label: 'Enrolled Courses', path: '/enrolled-courses', icon: 'books' },
+      { id: 'wishlist', label: 'Wishlist', path: '/wishlist', icon: 'rocket' },
+      { id: 'completed', label: 'Completed Courses', path: '/completed-courses', icon: 'checkCircle' },
+    ],
+  },
+  {
+    id: 'experience',
+    label: 'LEARNING EXPERIENCE',
+    items: [
+      { id: 'live', label: 'Live Classes', path: '/live', icon: 'live' },
+      { id: 'recorded', label: 'Recorded Sessions', path: '/recorded', icon: 'recorded' },
+      { id: 'notes', label: 'Notes / Bookmarks', path: '/notes', icon: 'bookmark' },
+    ],
+  },
+  {
+    id: 'assessments',
+    label: 'QUIZ HUB',
+    items: [
+      { id: 'quizzes', label: 'Quizzes', path: '/assessments', icon: 'helpCircle' },
+      { id: 'assignments', label: 'Assignments', path: '/assignments', icon: 'pencil' },
+      { id: 'exams', label: 'Exams', path: '/exams', icon: 'fileText' },
+      { id: 'results', label: 'Results', path: '/results', icon: 'barChart' },
+    ],
+  },
+  {
+    id: 'analytics',
+    label: 'ANALYTICS',
+    items: [
+      { id: 'progress', label: 'Progress Overview', path: '/analytics/progress', icon: 'trendUp' },
+      { id: 'performance', label: 'Performance Analytics', path: '/analytics/performance', icon: 'pieChart' },
+      { id: 'time', label: 'Learning Time', path: '/analytics/time', icon: 'clock' },
+      { id: 'skill', label: 'Skill Graph', path: '/analytics/skills', icon: 'pieChart' },
+    ],
+  },
+  {
+    id: 'achievements',
+    label: 'ACHIEVEMENTS',
+    items: [
+      { id: 'certificates', label: 'Certificates', path: '/certificates', icon: 'certificate' },
+      { id: 'badges', label: 'Badges', path: '/badges', icon: 'badge' },
+      { id: 'leaderboard', label: 'Leaderboard', path: '/leaderboard', icon: 'leaderboard' },
+    ],
+  },
+  {
+    id: 'community',
+    label: 'COMMUNITY',
+    items: [
+      { id: 'discussions', label: 'Discussions', path: '/community/discussions', icon: 'message' },
+      { id: 'groups', label: 'Groups', path: '/community/groups', icon: 'userPlus' },
+      { id: 'doubts', label: 'Doubts / Q&A', path: '/community/doubts', icon: 'alertCircle' },
+    ],
+  },
+  {
+    id: 'payments',
+    label: 'PAYMENTS',
+    items: [
+      { id: 'purchases', label: 'My Purchases', path: '/payments/purchases', icon: 'creditCard' },
+      { id: 'billing', label: 'Billing History', path: '/payments/billing', icon: 'receipt' },
+      { id: 'subscriptions', label: 'Subscriptions', path: '/payments/subscriptions', icon: 'refresh' },
+    ],
+  },
+  {
+    id: 'settings',
+    label: 'SETTINGS',
+    items: [
+      { id: 'profile', label: 'Profile', path: '/profile', icon: 'user' },
+      { id: 'account', label: 'Account Settings', path: '/settings', icon: 'settings' },
+      { id: 'notifications', label: 'Notifications', path: '/settings/notifications', icon: 'bell' },
+      { id: 'privacy', label: 'Privacy', path: '/settings/privacy', icon: 'lock' },
+    ],
+  },
+];
 
 export default function DashboardSidebar({ user, isPro = false }) {
   const router = useRouter();
   const pathname = usePathname();
   const [showLogoutModal, setShowLogoutModal] = useState(false);
+  const [expandedSections, setExpandedSections] = useState(['core']);
 
-  const navigation = [
-    {
-      id: 'main',
-      items: [
-        { id: 'home', label: 'Home', path: '/', icon: 'home' },
-        { id: 'dashboard', label: 'Dashboard', path: '/dashboard', icon: 'dashboard' },
-        { id: 'courses', label: 'My Courses', path: '/dashboard/my-courses', icon: 'courses' },
-        {
-          id: 'certificates',
-          label: 'My Certificates',
-          path: '/dashboard/certificates',
-          icon: 'certificates',
-        },
-        { id: 'profile', label: 'My Profile', path: '/profile', icon: 'profile' },
-      ],
-    },
-    {
-      id: 'learn',
-      label: 'Learn',
-      items: [{ id: 'explore', label: 'Explore all', path: '/dashboard/explore', icon: 'explore' }],
-    },
-  ];
-
-  const isActive = path => {
+  const isActive = useCallback(path => {
+    if (path === '/dashboard') return pathname === '/dashboard';
     if (path === '/') return pathname === '/';
     return pathname === path || pathname.startsWith(path + '/');
+  }, [pathname]);
+
+  // Auto-expand section based on current path
+  useEffect(() => {
+    navigation.forEach(section => {
+      const isChildActive = section.items.some(item => isActive(item.path));
+      if (isChildActive && !expandedSections.includes(section.id)) {
+        setExpandedSections(prev => [...prev, section.id]);
+      }
+    });
+  }, [expandedSections, isActive]);
+
+  const toggleSection = id => {
+    setExpandedSections(prev =>
+      prev.includes(id) ? prev.filter(s => s !== id) : [...prev, id]
+    );
   };
 
-  const renderIcon = icon => {
-    const icons = {
-      home: (
-        <svg
-          width="18"
-          height="18"
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          strokeWidth="2"
-        >
-          <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" />
-          <polyline points="9 22 9 12 15 12 15 22" />
-        </svg>
-      ),
-      dashboard: (
-        <svg
-          width="18"
-          height="18"
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          strokeWidth="2"
-        >
-          <rect x="3" y="3" width="7" height="7" />
-          <rect x="14" y="3" width="7" height="7" />
-          <rect x="14" y="14" width="7" height="7" />
-          <rect x="3" y="14" width="7" height="7" />
-        </svg>
-      ),
-      courses: (
-        <svg
-          width="18"
-          height="18"
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          strokeWidth="2"
-        >
-          <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z" />
-          <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z" />
-        </svg>
-      ),
-      certificates: (
-        <svg
-          width="18"
-          height="18"
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          strokeWidth="2"
-        >
-          <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
-          <polyline points="14 2 14 8 20 8" />
-          <line x1="16" y1="13" x2="8" y2="13" />
-          <line x1="16" y1="17" x2="8" y2="17" />
-          <polyline points="10 9 9 9 8 9" />
-        </svg>
-      ),
-      explore: (
-        <svg
-          width="18"
-          height="18"
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          strokeWidth="2"
-        >
-          <circle cx="12" cy="12" r="10" />
-          <polygon points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76" />
-        </svg>
-      ),
-      profile: (
-        <svg
-          width="18"
-          height="18"
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          strokeWidth="2"
-        >
-          <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
-          <circle cx="12" cy="7" r="4" />
-        </svg>
-      ),
-    };
-    return icons[icon] || null;
-  };
+  const renderIcon = icon => (
+    <div className="icon-frame">
+      <Icon name={icon} size={20} color="currentColor" stroke={1.8} />
+    </div>
+  );
 
   return (
-    <aside className="premium-sidebar">
-      {/* Logo */}
+    <aside className="premium-sidebar light-theme">
+      {/* Sidebar Header */}
       <div className="sidebar-header">
         <Link href="/dashboard" className="sidebar-logo">
           <img
             src="/assets/images/logo.png"
-            alt="Startups India Logo"
+            alt="Startups India"
             className="sidebar-logo-img"
-            style={{ height: '40px', width: 'auto' }}
           />
         </Link>
       </div>
@@ -144,84 +144,51 @@ export default function DashboardSidebar({ user, isPro = false }) {
       {/* Navigation */}
       <nav className="sidebar-nav">
         {navigation.map(section => (
-          <div key={section.id} className="nav-section">
-            {section.label && <div className="nav-section-label">{section.label}</div>}
-            <div className="nav-items">
-              {section.items.map(item => (
-                <Link
-                  key={item.id}
-                  href={item.path}
-                  className={`nav-item ${isActive(item.path) ? 'active' : ''}`}
-                  prefetch={true}
-                >
-                  <span className="nav-item-icon">{renderIcon(item.icon)}</span>
-                  <span className="nav-item-label">{item.label}</span>
-                </Link>
-              ))}
+          <div key={section.id} className="nav-section-container">
+            <button
+              className={`nav-section-header ${expandedSections.includes(section.id) ? 'expanded' : ''}`}
+              onClick={() => toggleSection(section.id)}
+            >
+              <span>{section.label}</span>
+              <svg 
+                className={`toggle-chevron ${expandedSections.includes(section.id) ? 'expanded' : ''}`}
+                width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"
+              >
+                <polyline points="6 9 12 15 18 9" />
+              </svg>
+            </button>
+            
+            <div 
+              className="nav-items-wrapper"
+              style={{
+                maxHeight: expandedSections.includes(section.id) ? `${section.items.length * 60}px` : '0px'
+              }}
+            >
+              {section.items.map(item => {
+                const active = isActive(item.path);
+                return (
+                  <Link
+                    key={item.id}
+                    href={item.path}
+                    className={`nav-item-row ${active ? 'active' : ''}`}
+                    prefetch={true}
+                  >
+                    <div className="nav-item-left">
+                      <div className="icon-frame">
+                        {renderIcon(item.icon)}
+                      </div>
+                      <span className="nav-item-label">{item.label}</span>
+                    </div>
+                    {item.badge && <span className="badge-pill">{item.badge}</span>}
+                  </Link>
+                );
+              })}
             </div>
           </div>
         ))}
       </nav>
 
-      {/* Bottom Actions */}
-      <div className="sidebar-bottom">
-        <div className="bottom-actions">
-          <Link href="/dashboard/settings" className="bottom-action">
-            <svg
-              width="18"
-              height="18"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="2"
-            >
-              <circle cx="12" cy="12" r="3" />
-              <path d="M12 1v6m0 6v6" />
-              <path d="m4.93 4.93 4.24 4.24m5.66 5.66 4.24 4.24" />
-              <path d="M1 12h6m6 0h6" />
-              <path d="m4.93 19.07 4.24-4.24m5.66-5.66 4.24-4.24" />
-            </svg>
-            <span>Account Settings</span>
-          </Link>
-
-          <button
-            className="bottom-action"
-            onClick={() => setShowLogoutModal(true)}
-          >
-            <svg
-              width="18"
-              height="18"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="2"
-            >
-              <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" />
-              <polyline points="16 17 21 12 16 7" />
-              <line x1="21" y1="12" x2="9" y2="12" />
-            </svg>
-            <span>Logout</span>
-          </button>
-
-          <Link href="/dashboard/contact" className="bottom-action">
-            <svg
-              width="18"
-              height="18"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="2"
-            >
-              <circle cx="12" cy="12" r="10" />
-              <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3" />
-              <line x1="12" y1="17" x2="12.01" y2="17" />
-            </svg>
-            <span>Contact Support</span>
-          </Link>
-        </div>
-      </div>
-
-      {/* Logout Confirmation Modal */}
+      {/* Logout buttons removed as requested by previous UI cleanup */}
       {showLogoutModal && (
         <div
           style={{
@@ -236,67 +203,36 @@ export default function DashboardSidebar({ user, isPro = false }) {
               background: '#fff', borderRadius: 16, padding: '36px 32px 28px',
               width: 380, maxWidth: '90vw', textAlign: 'center',
               boxShadow: '0 20px 60px rgba(0,0,0,0.15)', position: 'relative',
-              animation: 'logoutModalIn 0.25s ease-out',
             }}
             onClick={e => e.stopPropagation()}
           >
             <div style={{
               width: 56, height: 56, borderRadius: '50%',
-              background: 'linear-gradient(135deg, #fee2e2, #fecaca)',
+              background: 'rgba(235, 35, 39, 0.1)',
               display: 'flex', alignItems: 'center', justifyContent: 'center',
               margin: '0 auto 20px',
             }}>
-              <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#dc2626" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" />
-                <polyline points="16 17 21 12 16 7" />
-                <line x1="21" y1="12" x2="9" y2="12" />
+              <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#eb2327" strokeWidth="2">
+                <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" /><polyline points="16 17 21 12 16 7" /><line x1="21" y1="12" x2="9" y2="12" />
               </svg>
             </div>
-            <h3 style={{ margin: '0 0 8px', fontSize: 20, fontWeight: 700, color: '#111' }}>
-              Sign Out?
-            </h3>
-            <p style={{ margin: '0 0 28px', fontSize: 14, color: '#6b7280', lineHeight: 1.5 }}>
-              Are you sure you want to sign out? You will need to log in again to access your dashboard.
-            </p>
+            <h3 style={{ margin: '0 0 8px', fontSize: 20, fontWeight: 700, color: '#111' }}>Sign Out?</h3>
+            <p style={{ margin: '0 0 28px', fontSize: 14, color: '#6b7280' }}>Are you sure you want to sign out?</p>
             <div style={{ display: 'flex', gap: 12 }}>
-              <button
+              <button 
                 onClick={() => setShowLogoutModal(false)}
-                style={{
-                  flex: 1, padding: '12px 0', borderRadius: 10,
-                  border: '1.5px solid #e5e7eb', background: '#fff',
-                  fontSize: 14, fontWeight: 600, color: '#374151',
-                  cursor: 'pointer', transition: 'all 0.2s',
-                }}
-                onMouseEnter={e => { e.target.style.background = '#f9fafb'; e.target.style.borderColor = '#d1d5db'; }}
-                onMouseLeave={e => { e.target.style.background = '#fff'; e.target.style.borderColor = '#e5e7eb'; }}
+                style={{ flex: 1, padding: '12px', borderRadius: 10, border: '1px solid #e5e7eb', background: '#fff' }}
               >
                 Cancel
               </button>
-              <button
-                onClick={async () => {
-                  await signOut();
-                  window.location.replace('/login');
-                }}
-                style={{
-                  flex: 1, padding: '12px 0', borderRadius: 10,
-                  border: 'none', background: 'linear-gradient(135deg, #7A1F2B, #9B3040)',
-                  fontSize: 14, fontWeight: 600, color: '#fff',
-                  cursor: 'pointer', transition: 'all 0.2s',
-                  boxShadow: '0 2px 8px rgba(122,31,43,0.3)',
-                }}
-                onMouseEnter={e => e.target.style.opacity = '0.9'}
-                onMouseLeave={e => e.target.style.opacity = '1'}
+              <button 
+                onClick={async () => { await signOut(); window.location.replace('/login'); }}
+                style={{ flex: 1, padding: '12px', borderRadius: 10, border: 'none', background: '#eb2327', color: '#fff' }}
               >
                 Yes, Sign Out
               </button>
             </div>
           </div>
-          <style dangerouslySetInnerHTML={{ __html: `
-            @keyframes logoutModalIn {
-              from { opacity: 0; transform: scale(0.9) translateY(10px); }
-              to { opacity: 1; transform: scale(1) translateY(0); }
-            }
-          `}} />
         </div>
       )}
     </aside>

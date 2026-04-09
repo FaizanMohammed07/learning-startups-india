@@ -10,7 +10,7 @@ import { useState, useEffect, useRef } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import Image from 'next/image';
-import { signUp, initGoogleSignIn, resendVerificationEmail } from '@/lib/auth';
+import { signUp, initGoogleSignIn, resendVerificationEmail, getCurrentUser } from '@/lib/auth';
 import '@/styles/signup.css';
 // import '@/styles/signup-responsive.css';
 
@@ -41,12 +41,18 @@ export default function SignupPage() {
   const [currentSlide, setCurrentSlide] = useState(0);
   const googleBtnRef = useRef(null);
 
-  // Redirect if already logged in
+  // Redirect if already logged in with a VALID token
   useEffect(() => {
-    const token = localStorage.getItem('access_token');
-    if (token) {
-      router.replace('/dashboard');
+    async function checkExistingAuth() {
+      const token = localStorage.getItem('access_token');
+      if (!token) return;
+      
+      const { data } = await getCurrentUser();
+      if (data?.user) {
+        router.replace('/dashboard');
+      }
     }
+    checkExistingAuth();
   }, [router]);
 
   // Carousel auto-rotation

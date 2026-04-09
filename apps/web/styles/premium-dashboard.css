@@ -194,6 +194,15 @@
   background: #f9fafb;
 }
 
+.learning-mode .dashboard-main {
+  margin-left: 0 !important;
+}
+
+.learning-mode .dashboard-content {
+  margin-top: 0 !important;
+  padding-top: 0 !important;
+}
+
 /* Top Header - Fixed at Top */
 .dashboard-header {
   background: #ffffff;

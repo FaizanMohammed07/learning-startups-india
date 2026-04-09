@@ -80,32 +80,8 @@ export default function DashboardNavbar({ user }) {
 
         {/* Right Section */}
         <div className="navbar-right">
-          {/* Navigation Links */}
+          {/* Navigation Links Removed to keep dashboard focused */}
           <nav className="navbar-nav">
-            <Link href="/" className="nav-link">
-              Home
-            </Link>
-            <Link href="/about" className="nav-link">
-              About Us
-            </Link>
-            <Link href="/programs" className="nav-link">
-              Our Programs
-            </Link>
-            <Link href="/events" className="nav-link">
-              Events
-            </Link>
-            <Link href="/mentors" className="nav-link">
-              Mentors
-            </Link>
-            <Link href="/investors" className="nav-link">
-              Investors
-            </Link>
-            <Link href="/market-access" className="nav-link">
-              Market Access
-            </Link>
-            <Link href="/resources" className="nav-link">
-              Source
-            </Link>
           </nav>
 
           {/* Notifications */}

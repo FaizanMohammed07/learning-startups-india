@@ -1,4 +1,4 @@
-﻿'use client';
+'use client';
 
 import { useState, useEffect } from 'react';
 import { getCurrentUser } from '@/lib/auth';
@@ -116,9 +116,9 @@ export default function MentorDashboardPage() {
             >
               <p style={{ fontSize: '0.85rem', color: '#166534', fontWeight: 500 }}>
                 {mentorProfile.status === 'approved'
-                  ? '✅ Your mentor profile is approved and visible to students.'
+                  ? '? Your mentor profile is approved and visible to students.'
                   : mentorProfile.status === 'pending'
-                    ? '⏳ Your application is under review.'
+                    ? '? Your application is under review.'
                     : `Status: ${mentorProfile.status}`}
               </p>
             </div>
@@ -143,7 +143,7 @@ export default function MentorDashboardPage() {
                   textDecoration: 'none',
                 }}
               >
-                Apply Now →
+                Apply Now ?
               </Link>
             </div>
           )}
@@ -157,9 +157,9 @@ export default function MentorDashboardPage() {
             gap: '1rem',
           }}
         >
-          <FeatureCard icon="📋" title="My Sessions" desc="View and manage mentoring sessions" />
-          <FeatureCard icon="👥" title="My Mentees" desc="Track your mentees' progress" />
-          <FeatureCard icon="📊" title="Analytics" desc="View your mentoring impact" />
+          <FeatureCard icon="??" title="My Sessions" desc="View and manage mentoring sessions" />
+          <FeatureCard icon="??" title="My Mentees" desc="Track your mentees' progress" />
+          <FeatureCard icon="??" title="Analytics" desc="View your mentoring impact" />
         </div>
       </div>
     </div>

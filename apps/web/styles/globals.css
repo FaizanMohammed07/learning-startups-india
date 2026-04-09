@@ -26,84 +26,55 @@ html {
 
 :root {
   /* ── Brand Palette (Startups India) ── */
-  --primary-color: #7a1f2b;
-  --primary-dark: #5c1520;
-  --primary-light: #9b3544;
-  --primary-50: #fdf2f4;
-  --primary-100: #fbe6ea;
-  --primary-200: #f5c0ca;
-  --primary-500: #7a1f2b;
-  --primary-600: #5c1520;
-  --primary-700: #4a1019;
-  --secondary-color: #10b981;
+  --brand-red: #E92222;
+  --primary-color: #E92222;
+  --primary-dark: #B91C1C;
+  --primary-light: #FCA5A5;
+  --primary-50: #FEF2F2;
+  --primary-100: #FEE2E2;
+  --primary-200: #FECACA;
+  --secondary-color: #10B981;
   --accent-gold: #c5975b;
-  --accent-gold-light: #e8d5b5;
   --danger-color: #ef4444;
   --warning-color: #f59e0b;
 
-  /* Text Colors */
-  --text-primary: #111827;
-  --text-secondary: #6b7280;
-  --text-light: #9ca3af;
+  /* Text Colors (High Contrast) */
+  --text-primary: #0F172A;
+  --text-secondary: #475569;
+  --text-light: #94A3B8;
 
   /* Background Colors */
   --bg-primary: #ffffff;
-  --bg-secondary: #f8f9fa;
-  --bg-tertiary: #f3f4f6;
-  --border-color: #e5e7eb;
+  --bg-secondary: #FAFAFA;
+  --bg-tertiary: #F1F5F9;
+  --border-color: #E2E8F0;
 
-  /* Shadows */
-  --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
-  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.07), 0 2px 4px -2px rgba(0, 0, 0, 0.05);
-  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.08), 0 4px 6px -4px rgba(0, 0, 0, 0.05);
-  --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.08), 0 8px 10px -6px rgba(0, 0, 0, 0.04);
+  /* Premium Radii (Booking Perfect) */
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 20px;
+  --radius-xl: 24px;
+  --radius-full: 9999px;
 
-  /* Border Radius */
-  --radius-sm: 4px;
-  --radius-md: 8px;
-  --radius-lg: 12px;
-  --radius-xl: 16px;
-
-  /* Course Player Red/Black Theme */
-  --red-primary: #7a1f2b;
-  --red-accent: #9b3544;
-  --red-dark: #5c1520;
-  --red-darker: #4a1019;
-  --black-bg: #0a0a0a;
-  --black-card: #0f0f0f;
-  --black-elevated: #151515;
-  --white: #ffffff;
-  --white-secondary: #f5f5f5;
-  --glass-bg: rgba(122, 31, 43, 0.05);
-  --glass-border: rgba(122, 31, 43, 0.15);
-
-  /* Primary font with optimized fallback stack */
-  --font-primary:
-    var(--font-poppins, 'Poppins'), system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI',
-    Roboto, 'Helvetica Neue', Arial, sans-serif;
+  /* Typography Stacks (User Requested) */
+  --font-primary: var(--font-poppins, 'Poppins'), ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+  --font-serif: 'Times New Roman', Times, serif;
+  /* Next.js specific mapping */
+  --main-font: var(--font-primary);
 }
 
 body {
   margin: 0;
   padding: 0;
-  /* Poppins with system font fallbacks */
-  font-family: 'Poppins', var(--font-primary);
+  font-family: var(--main-font);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-rendering: optimizeLegibility;
-  font-feature-settings: 'kern' 1;
-  font-kerning: normal;
-  /* Critical: Prevent font scaling issues across browsers */
-  text-size-adjust: 100%;
-  -webkit-text-size-adjust: 100%;
-  -moz-text-size-adjust: 100%;
   color: var(--text-primary);
   background-color: var(--bg-secondary);
   line-height: 1.6;
-  letter-spacing: normal; /* Poppins default spacing */
   min-height: 100vh;
   overflow-x: hidden;
-  /* Ensure smooth font rendering during load */
   font-display: swap;
 }
 
@@ -139,18 +110,64 @@ select {
   padding: 0 40px;
 }
 
-/* Buttons */
-.btn {
-  padding: 12px 24px;
-  border-radius: var(--radius-md);
-  font-size: 16px;
-  font-weight: 600;
-  transition: all 0.3s ease;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
-  text-align: center;
+/* Premium Contrast Font (User Requested) */
+.font-serif {
+  font-family: var(--font-serif) !important;
+  font-style: italic;
+  letter-spacing: 0.02em;
+}
+
+/* Premium High-Fidelity Utilities (Booking Perfect) */
+.text-enterprise {
+  font-weight: 950 !important;
+  letter-spacing: -0.04em !important;
+  line-height: 1.05 !important;
+}
+
+.glassy-card {
+  background: rgba(255, 255, 255, 0.75) !important;
+  backdrop-filter: blur(25px) !important;
+  border: 1px solid rgba(235, 35, 39, 0.06) !important;
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.02) !important;
+  border-radius: var(--radius-2xl) !important;
+}
+
+.red-glass {
+  background: rgba(233, 34, 34, 0.03) !important;
+  backdrop-filter: blur(20px) !important;
+  border: 1px solid rgba(233, 34, 34, 0.08) !important;
+}
+
+/* Refined Hover lifting for Booking Perfect */
+.hover-lift {
+  transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1) !important;
+}
+
+.hover-lift:hover {
+  transform: translateY(-8px) scale(1.01) !important;
+  box-shadow: 0 40px 80px rgba(233, 34, 34, 0.08) !important;
+}
+
+@keyframes red-shimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+
+.animate-shimmer {
+  background: linear-gradient(90deg, transparent, rgba(235,35,39,0.05), transparent);
+  background-size: 200% 100%;
+  animation: red-shimmer 3s infinite linear;
+}
+
+/* Update standard components to use these utilities */
+.card, .platform-card, .platform-card-v {
+  border-radius: var(--radius-xl);
+  transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+}
+
+.card:hover, .platform-card:hover, .platform-card-v:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 40px 80px rgba(235, 35, 39, 0.06) !important;
 }
 
 .btn-primary {
@@ -535,3 +552,41 @@ select {
   text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
   transform: rotate(-45deg);
 }
+
+/* Session Hub Hover Effects */
+.platform-card-v .play-btn-overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(0,0,0,0.3);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  transition: all 0.3s ease;
+  backdrop-filter: blur(2px);
+  z-index: 5;
+}
+
+.platform-card-v:hover .play-btn-overlay {
+  opacity: 1;
+}
+
+.play-btn-circle {
+  width: 54px;
+  height: 54px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.25);
+  backdrop-filter: blur(12px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid rgba(255,255,255,0.4);
+  color: #fff;
+  transform: scale(0.9);
+  transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.platform-card-v:hover .play-btn-circle {
+  transform: scale(1);
+}
+

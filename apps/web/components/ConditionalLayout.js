@@ -13,30 +13,44 @@ export default function ConditionalLayout({ children }) {
     return <>{children}</>;
   }
   
-  // Pages that should NOT have Header/Footer
   const authPages = ['/login', '/signup', '/signin'];
   const isAuthPage = authPages.includes(pathname);
+
+  // Pages that SHOULD have Header/Footer (Marketing/Landing pages)
+  const websitePages = [
+    '/', '/about', '/team', '/events', '/mentors', '/investors', 
+    '/market-access', '/programs', '/source', '/verify', '/cookies', 
+    '/privacy', '/refund', '/terms', '/contact-us', '/help', '/faqs'
+  ];
+  const isWebsitePage = websitePages.includes(pathname);
   
-  // Dashboard pages should NOT have Header/Footer
-  const isDashboardPage = pathname?.startsWith('/dashboard');
+  // Also check if it's a dynamic route that is definitely NOT a dashboard one
+  // For now, let's stick to the previous logic but add the new catch-all.
   
-  // Course detail pages should NOT have Header/Footer (they have their own navigation)
-  const isCourseDetailPage = pathname?.startsWith('/courses/') && pathname !== '/courses';
+  const dashboardPaths = [
+    '/dashboard', '/my-learning', '/leaderboard', '/analytics', '/community', 
+    '/assessments', '/assignments', '/certificates', '/badges', '/settings', 
+    '/profile', '/wishlist', '/completed-courses', '/enrolled-courses', '/live', 
+    '/recorded', '/notes', '/payments', '/results', '/exams', '/contact', '/courses'
+  ];
+  const isDashboardPage = dashboardPaths.some(path => pathname === path || pathname?.startsWith(path + '/'));
   
-  // Learn pages should NOT have Header/Footer
   const isLearnPage = pathname?.startsWith('/learn');
-  
-  // Checkout page should NOT have Header/Footer
   const isCheckoutPage = pathname?.startsWith('/checkout');
-  
-  // Mentor DASHBOARD should NOT have Header/Footer (but /mentors page should have it)
   const isMentorDashboard = pathname?.startsWith('/mentor/dashboard');
-  
-  // Admin pages should NOT have Header/Footer (completely standalone)
   const isAdminPage = pathname?.startsWith('/admin');
+
+  // Learn, Checkout, Admin, Auth should always hide root layout
+  const isExcluded = isAuthPage || isLearnPage || isCheckoutPage || isMentorDashboard || isAdminPage;
+
+  // HIDE HEADDER/FOOTER IF:
+  // 1. It's a dashboard page OR excluded system page
+  // 2. AND it's NOT a dynamic root-level course page (website landing page)
+  const isDynamicRootPage = pathname?.split('/').length === 2 && !isDashboardPage && !isExcluded && !isWebsitePage;
   
-  // If it's an auth page, dashboard page, course detail, learn, checkout, mentor dashboard, or admin page, render without Header/Footer
-  if (isAuthPage || isDashboardPage || isCourseDetailPage || isLearnPage || isCheckoutPage || isMentorDashboard || isAdminPage) {
+  const shouldHide = (isDashboardPage || isExcluded || !isWebsitePage) && !isDynamicRootPage;
+  
+  if (shouldHide && pathname !== '/') {
     return <>{children}</>;
   }
   

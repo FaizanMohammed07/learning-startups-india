@@ -24,21 +24,21 @@
      ======================================== */
   
   /* Hero & Display Text */
-  --text-hero: clamp(2rem, 3.333vw, 4rem);           /* 32px - 64px */
-  --text-display: clamp(1.75rem, 2.5vw, 3rem);       /* 28px - 48px */
+  --text-hero: clamp(1.75rem, 3vw, 3.25rem);           /* 28px - 52px (Was up to 64px) */
+  --text-display: clamp(1.5rem, 2.2vw, 2.5rem);        /* 24px - 40px */
   
   /* Headings */
-  --text-h1: clamp(1.75rem, 2.083vw, 2.5rem);        /* 28px - 40px */
-  --text-h2: clamp(1.5rem, 1.875vw, 2.25rem);        /* 24px - 36px */
-  --text-h3: clamp(1.25rem, 1.458vw, 1.75rem);       /* 20px - 28px */
-  --text-h4: clamp(1.125rem, 1.25vw, 1.5rem);        /* 18px - 24px */
+  --text-h1: clamp(1.5rem, 2vw, 2.25rem);              /* 24px - 36px */
+  --text-h2: clamp(1.25rem, 1.7vw, 1.875rem);          /* 20px - 30px */
+  --text-h3: clamp(1.1rem, 1.4vw, 1.5rem);             /* 17.6px - 24px */
+  --text-h4: clamp(1rem, 1.2vw, 1.25rem);              /* 16px - 20px */
   
   /* Body Text */
-  --text-xl: clamp(1.125rem, 1.042vw, 1.25rem);      /* 18px - 20px */
-  --text-lg: clamp(1rem, 0.938vw, 1.125rem);         /* 16px - 18px */
-  --text-base: clamp(0.875rem, 0.833vw, 1rem);       /* 14px - 16px */
-  --text-sm: clamp(0.8125rem, 0.729vw, 0.875rem);    /* 13px - 14px */
-  --text-xs: clamp(0.75rem, 0.625vw, 0.8125rem);     /* 12px - 13px */
+  --text-xl: clamp(1rem, 1vw, 1.15rem);                /* 16px - 18.4px */
+  --text-lg: clamp(0.9375rem, 0.9vw, 1.0625rem);       /* 15px - 17px */
+  --text-base: clamp(0.8125rem, 0.8vw, 0.9375rem);     /* 13px - 15px */
+  --text-sm: clamp(0.75rem, 0.7vw, 0.8125rem);         /* 12px - 13px */
+  --text-xs: clamp(0.6875rem, 0.6vw, 0.75rem);         /* 11px - 12px */
   
   /* ========================================
      FLUID SPACING

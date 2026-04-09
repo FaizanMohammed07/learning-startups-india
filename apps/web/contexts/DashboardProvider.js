@@ -11,6 +11,7 @@ export function DashboardProvider({ children, authUser }) {
   const [courses, setCourses] = useState([]);
   const [certificates, setCertificates] = useState([]);
   const [activities, setActivities] = useState([]);
+  const [wishlist, setWishlist] = useState(new Set());
   const [isLoading, setIsLoading] = useState(true);
 
   const refresh = useCallback(async () => {
@@ -34,12 +35,23 @@ export function DashboardProvider({ children, authUser }) {
     refresh();
   }, [refresh]);
 
+  const toggleWishlist = useCallback((id) => {
+    setWishlist(prev => {
+      const next = new Set(prev);
+      if (next.has(id)) next.delete(id);
+      else next.add(id);
+      return next;
+    });
+  }, []);
+
   const value = {
     user,
     courses,
     enrolledCourses,
     certificates,
     activities,
+    wishlist,
+    toggleWishlist,
     isLoading,
     refresh,
   };

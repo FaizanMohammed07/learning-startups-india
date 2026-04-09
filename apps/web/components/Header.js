@@ -67,6 +67,8 @@ export default function Header() {
     setMobileMenuOpen(false);
   };
 
+  if (pathname?.startsWith('/learn')) return null;
+
   return (
     <header className="site-header">
       {/* Main Header */}

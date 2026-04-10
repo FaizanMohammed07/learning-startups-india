@@ -8,7 +8,7 @@
   right: 32px;
   width: 48px;
   height: 48px;
-  background: #111827;
+  background: #ef4444;
   border: none;
   border-radius: 50%;
   display: flex;
@@ -16,14 +16,14 @@
   justify-content: center;
   cursor: pointer;
   z-index: 9999;
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2), 0 1px 4px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 4px 16px rgba(239, 68, 68, 0.3), 0 1px 4px rgba(239, 68, 68, 0.2);
   transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
   color: #ffffff;
 }
 
 .scroll-to-top-btn:hover {
-  background: #F97316;
-  box-shadow: 0 8px 24px rgba(249, 115, 22, 0.35);
+  background: #dc2626;
+  box-shadow: 0 8px 24px rgba(220, 38, 38, 0.4);
   transform: translateY(-2px);
 }
 

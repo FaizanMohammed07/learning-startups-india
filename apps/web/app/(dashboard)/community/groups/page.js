@@ -1,402 +1,314 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useMemo } from 'react';
 import Icon from '@/components/Icon';
+import { motion, AnimatePresence } from 'framer-motion';
 
 export default function GroupsPage() {
-  const [activeNav, setActiveNav] = useState('Explore Groups');
-  const [activeCategory, setActiveCategory] = useState('All');
-  const [showModal, setShowModal] = useState(false);
-  const [selectedGroup, setSelectedGroup] = useState(null);
-  const [joinedGroups, setJoinedGroups] = useState(new Set([2]));
-  const [activeTab, setActiveTab] = useState('Posts');
+  const [view, setView] = useState('chat'); // 'chat' or 'expert-directory'
+  const [activeChannel, setActiveChannel] = useState('marketing-growth');
+  const [isRightPanelOpen, setIsRightPanelOpen] = useState(false);
+  const [hasJoined, setHasJoined] = useState(true);
+  const [messageText, setMessageText] = useState('');
 
-  const categories = ['All', 'Tech', 'Design', 'Business', 'AI', 'Beginner'];
+  const [expertGroups, setExpertGroups] = useState([
+    { id: 'Elite Founders', name: 'Elite Founders Circle', avatar: 'EF', members: '42', description: 'Curated group for Series A+ founders and veteran mentors.', host: 'Deepak S.' },
+    { id: 'Venture Capital', name: 'Venture Capital Insider', avatar: 'VC', members: '150', description: 'Direct access to institutional investors and deal-flow discussions.', host: 'Sarah J.' },
+    { id: 'Product Growth', name: 'Product Growth Masters', avatar: 'PG', members: '88', description: 'Deep dives into PLG, retention hacks, and scaling systems.', host: 'Alex K.' },
+  ]);
 
-  const groups = [
-    {
-      id: 1,
-      name: 'AI Innovators India',
-      avatar: 'AI',
-      privacy: 'Public',
-      description: 'Discussing the latest in Generative AI, LLMs, and building AI-first startups in the Indian ecosystem.',
-      tags: ['AI', 'Tech', 'Future'],
-      members: '1.2k',
-      activeNow: 120,
-      activity: '45 posts/week',
-      banner: 'linear-gradient(135deg, #FBE4D8 0%, #F7D9C6 100%)',
-      about: 'Welcome to the largest group for AI innovators. We share research, tool stack advice, and collaborate on open-source AI projects.',
-      rules: ['No spam', 'Stay helpful', 'Respect privacy'],
-      memberList: [
-        { name: 'Aryan Sharma', role: 'Admin', avatar: 'AS' },
-        { name: 'Priya Verma', role: 'Member', avatar: 'PV' }
-      ]
-    },
-    {
-      id: 2,
-      name: 'UI/UX Design Systems',
-      avatar: 'UI',
-      privacy: 'Public',
-      description: 'Mastering Figma design systems and advanced prototyping for premium startup interfaces.',
-      tags: ['Design', 'UI/UX', 'Figma'],
-      members: '850',
-      activeNow: 45,
-      activity: '28 posts/week',
-      banner: 'linear-gradient(135deg, #E0F2FE 0%, #BAE6FD 100%)',
-      about: 'A dedicated space for designers to push the boundaries of UI/UX in digital products.',
-      rules: ['Share your work', 'Provide constructive feedback only'],
-      memberList: [
-        { name: 'Rahul Gupta', role: 'Admin', avatar: 'RG' }
-      ]
-    },
-    {
-      id: 3,
-      name: 'FinTech Founders Hub',
-      avatar: 'FT',
-      privacy: 'Private',
-      description: 'A private group for founders in the fintech space to discuss regulations and growth.',
-      tags: ['Business', 'FinTech', 'Legal'],
-      members: '320',
-      activeNow: 12,
-      activity: '15 posts/week',
-      banner: 'linear-gradient(135deg, #F3F4F6 0%, #E5E7EB 100%)',
-      about: 'Confidential space for high-level fintech founders.',
-      rules: ['NDA required', 'Strict confidentiality'],
-      memberList: [
-        { name: 'Neha Kapoor', role: 'Admin', avatar: 'NK' }
-      ]
-    }
+  const [joinedGroupIds, setJoinedGroupIds] = useState(['marketing-growth', 'fundraising-qa', 'main-floor']);
+
+  const yourTribesList = useMemo(() => [
+    { id: 'marketing-growth', label: 'marketing-growth', icon: 'megaphone' },
+    { id: 'fundraising-qa', label: 'fundraising-qa', icon: 'rocket' },
+    { id: 'main-floor', label: 'main-floor', icon: 'hash' },
+    { id: 'Elite Founders', label: 'elite-founders', icon: 'star' },
+    { id: 'Venture Capital', label: 'vc-insider', icon: 'briefcase' },
+    { id: 'Product Growth', label: 'growth-masters', icon: 'trendingUp' },
+  ], []);
+
+  const joinedTribes = useMemo(() => yourTribesList.filter(t => joinedGroupIds.includes(t.id)), [joinedGroupIds, yourTribesList]);
+
+  const [messages, setMessages] = useState([
+    { id: 1, user: 'John Dorsey', time: '10:42 AM', content: "Has anyone tried the new LinkedIn collaborative articles for growth? We're seeing some interesting organic reach numbers but I'm curious about the conversion quality.", type: 'other', avatar: 'JD' },
+    { id: 2, user: 'Sarah K.', time: '10:45 AM', content: "I've seen the same! It feels like LinkedIn is prioritizing those heavily in the algorithm right now. We managed to get a 'Top Voice' badge in a week by being consistent there.", type: 'other', avatar: 'SK' },
+    { id: 3, user: 'You', time: '10:48 AM', content: "That's huge Sarah! We should definitely look into that for the 'Venture Flow' launch. @John, do you have any specific metrics on the conversion side yet? Even just soft leads?", type: 'me', avatar: 'ME' },
+  ]);
+
+  const founders = [
+    { name: 'Marcus Thorne', role: 'Group Host', status: 'online', avatar: 'MT', isHost: true },
+    { name: 'Lila Vance', role: 'Growth Strategist', status: 'online', avatar: 'LV' },
+    { name: 'Erik Jenson', role: 'Solo Founder', status: 'offline', avatar: 'EJ' },
   ];
 
-  const sidebarNav = [
-    { label: 'Explore Groups', icon: 'compass' },
-    { label: 'My Groups', icon: 'users' },
-    { label: 'Trending Groups', icon: 'trendUp' },
-    { label: 'Course Groups', icon: 'book' },
-  ];
-
-  const toggleJoin = (id) => {
-    setJoinedGroups(prev => {
-      const next = new Set(prev);
-      if (next.has(id)) next.delete(id);
-      else next.add(id);
-      return next;
-    });
+  const handleSendMessage = () => {
+    if (!messageText.trim()) return;
+    const newMessage = {
+      id: Date.now(),
+      user: 'You',
+      time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+      content: messageText,
+      type: 'me',
+      avatar: 'ME'
+    };
+    setMessages([...messages, newMessage]);
+    setMessageText('');
   };
 
-  if (selectedGroup) {
-    return (
-      <div className="min-h-screen bg-[#F9FAFB] p-6 lg:p-8">
-        <div className="max-w-[1280px] mx-auto">
-          <button 
-            onClick={() => setSelectedGroup(null)}
-            className="flex items-center gap-2 text-[#6B7280] font-semibold mb-6 hover:text-[#F97316] transition-colors"
-          >
-            <Icon name="arrowLeft" size={20} /> Back to groups
-          </button>
-
-          <div className="bg-white rounded-[24px] overflow-hidden border border-[#E5E7EB] shadow-sm mb-6">
-             <div className="h-48 md:h-64" style={{ background: selectedGroup.banner }}></div>
-             <div className="px-8 pb-4 relative">
-                <div className="absolute -top-12 left-8">
-                   <div className="w-24 h-24 rounded-[24px] bg-white p-1 shadow-md">
-                      <div className="w-full h-full rounded-[20px] bg-[#F97316] text-white flex items-center justify-center font-black text-2xl">
-                         {selectedGroup.avatar}
-                      </div>
-                   </div>
-                </div>
-                <div className="pt-16 flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
-                   <div>
-                      <div className="flex items-center gap-3">
-                        <h1 className="text-2xl font-black text-[#111827] tracking-tight">{selectedGroup.name}</h1>
-                        <span className={`px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-wider ${selectedGroup.privacy === 'Public' ? 'bg-[#ECFDF5] text-[#10B981]' : 'bg-[#F3F4F6] text-[#6B7280]'}`}>
-                           {selectedGroup.privacy}
-                        </span>
-                      </div>
-                      <p className="text-[#6B7280] font-bold mt-1">{selectedGroup.members} members • {selectedGroup.activeNow} online</p>
-                   </div>
-                   <button 
-                    onClick={() => toggleJoin(selectedGroup.id)}
-                    className={`px-8 py-3 rounded-[12px] font-black transition-all ${joinedGroups.has(selectedGroup.id) ? 'bg-[#F3F4F6] text-[#111827]' : 'bg-[#F97316] text-white shadow-lg'}`}
-                   >
-                     {joinedGroups.has(selectedGroup.id) ? 'Leave Group' : 'Join Group'}
-                   </button>
-                </div>
-             </div>
-             
-             {/* Tabs */}
-             <div className="flex px-8 border-t border-[#F3F4F6] mt-4">
-                {['Posts', 'Members', 'About'].map(tab => (
-                   <button
-                    key={tab}
-                    onClick={() => setActiveTab(tab)}
-                    className={`px-6 py-4 font-bold text-sm transition-all border-b-2 ${activeTab === tab ? 'border-[#F97316] text-[#F97316]' : 'border-transparent text-[#6B7280]'}`}
-                   >
-                      {tab}
-                   </button>
-                ))}
-             </div>
-          </div>
-
-          <div className="grid grid-cols-1 lg:grid-cols-[1fr_320px] gap-6 items-start">
-             <div>
-                {activeTab === 'Posts' && (
-                   <div className="space-y-4">
-                      {/* Interaction placeholder */}
-                      <div className="bg-white rounded-[16px] border border-[#E5E7EB] p-4 flex gap-4 items-center">
-                         <div className="w-10 h-10 rounded-full bg-[#F3F4F6] text-[#F97316] flex items-center justify-center font-bold">U</div>
-                         <input placeholder="Share something with the group..." className="flex-1 bg-[#F9FAFB] border-none outline-none p-3 rounded-[10px] font-medium" />
-                      </div>
-                      <p className="text-center py-10 text-[#9CA3AF] font-bold">No posts in this group yet. Be the first!</p>
-                   </div>
-                )}
-                {activeTab === 'Members' && (
-                   <div className="bg-white rounded-[16px] border border-[#E5E7EB] p-6 space-y-4">
-                      <h3 className="font-black text-[#111827] mb-4">Group Members</h3>
-                      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                        {selectedGroup.memberList.map(m => (
-                           <div key={m.name} className="flex items-center gap-3 p-3 border border-[#F3F4F6] rounded-[12px]">
-                              <div className="w-10 h-10 rounded-full bg-[#F97316] text-white flex items-center justify-center font-bold">{m.avatar}</div>
-                              <div>
-                                 <div className="font-bold text-[#111827]">{m.name}</div>
-                                 <div className="text-xs font-black text-[#F97316]">{m.role}</div>
-                              </div>
-                           </div>
-                        ))}
-                      </div>
-                   </div>
-                )}
-                {activeTab === 'About' && (
-                   <div className="bg-white rounded-[16px] border border-[#E5E7EB] p-8 space-y-8">
-                     <div>
-                        <h3 className="font-black text-[#111827] mb-2 uppercase text-xs tracking-widest text-[#9CA3AF]">DESCRIPTION</h3>
-                        <p className="text-[#374151] font-medium leading-relaxed">{selectedGroup.about}</p>
-                     </div>
-                     <div>
-                        <h3 className="font-black text-[#111827] mb-4 uppercase text-xs tracking-widest text-[#9CA3AF]">GROUP RULES</h3>
-                        <div className="space-y-3">
-                           {selectedGroup.rules.map((rule, i) => (
-                              <div key={i} className="flex gap-3 items-start">
-                                 <div className="w-5 h-5 rounded-full bg-[#FFF7ED] text-[#F97316] flex items-center justify-center font-bold text-[10px] flex-shrink-0 mt-0.5">{i+1}</div>
-                                 <p className="text-sm font-bold text-[#4B5563]">{rule}</p>
-                              </div>
-                           ))}
-                        </div>
-                     </div>
-                   </div>
-                )}
-             </div>
-             <div className="space-y-6">
-                <div className="bg-white rounded-[16px] border border-[#E5E7EB] p-6">
-                   <h4 className="font-black text-sm text-[#111827] mb-4 tracking-tight uppercase">GROUP STATS</h4>
-                   <div className="space-y-4">
-                      <div className="flex justify-between items-center text-sm font-bold">
-                         <span className="text-[#6B7280]">Total Members</span>
-                         <span className="text-[#111827]">{selectedGroup.members}</span>
-                      </div>
-                      <div className="flex justify-between items-center text-sm font-bold">
-                         <span className="text-[#6B7280]">Active Now</span>
-                         <div className="flex items-center gap-2">
-                           <div className="w-2 h-2 rounded-full bg-[#10B981]"></div>
-                           <span className="text-[#111827]">{selectedGroup.activeNow}</span>
-                         </div>
-                      </div>
-                      <div className="flex justify-between items-center text-sm font-bold">
-                         <span className="text-[#6B7280]">Weekly Activity</span>
-                         <span className="text-[#111827]">{selectedGroup.activity}</span>
-                      </div>
-                   </div>
-                </div>
-             </div>
-          </div>
-        </div>
-      </div>
-    );
-  }
+  const handleJoinGroup = (groupId) => {
+    if (!joinedGroupIds.includes(groupId)) {
+      setJoinedGroupIds([...joinedGroupIds, groupId]);
+    }
+    setActiveChannel(groupId);
+    setView('chat');
+    setHasJoined(true);
+    setIsRightPanelOpen(true);
+  };
 
   return (
-    <div className="min-h-screen bg-[#F9FAFB] p-6 lg:p-8">
-      <div className="max-w-[1280px] mx-auto grid grid-cols-1 lg:grid-cols-[200px_1fr_320px] gap-6 items-start">
-        
-        {/* LEFT SIDEBAR */}
-        <aside className="hidden lg:block sticky top-8 space-y-1">
-          {sidebarNav.map(item => (
-            <button
-              key={item.label}
-              onClick={() => setActiveNav(item.label)}
-              className={`w-full flex items-center gap-2.5 px-3 py-2.5 rounded-[12px] font-bold transition-all duration-200 ${
-                activeNav === item.label 
-                ? 'bg-[#F97316] text-white shadow-md' 
-                : 'text-[#6B7280] hover:bg-[#F3F4F6]'
-              }`}
-            >
-              <Icon name={item.icon} size={18} />
-              <span className="text-[0.95rem]">{item.label}</span>
-            </button>
-          ))}
-          <div className="pt-4 mt-4 border-t border-[#E5E7EB]">
-            <button 
-              onClick={() => setShowModal(true)}
-              className="w-full flex items-center gap-2.5 px-3 py-2.5 rounded-[12px] font-bold text-[#F97316] hover:bg-[#FFF7ED]"
-            >
-              <Icon name="plus" size={18} />
-              <span className="text-[0.95rem]">Create Group</span>
-            </button>
-          </div>
-        </aside>
+    <div className="flex bg-white overflow-hidden" style={{ height: 'calc(100vh - 4.5rem)', fontFamily: "'Poppins', sans-serif" }}>
+      
+      {/* ── 1. TRIBE CHANNELS SIDEBAR ── */}
+      <aside style={{ width: 280, background: '#f9fafb', borderRight: '1px solid #e5e7eb', display: 'flex', flexDirection: 'column', height: '100%' }}>
+        <header style={{ padding: '2rem', borderBottom: '1px solid #f1f5f9', background: '#fff' }}>
+            <h2 style={{ fontSize: '1rem', fontWeight: 950, color: '#0f172a', margin: 0, letterSpacing: '-0.02em' }}>Tribe Channels</h2>
+        </header>
 
-        {/* MAIN CONTENT */}
-        <main className="space-y-6">
-           {/* Top Bar */}
-           <div className="space-y-6">
-              <div className="flex flex-col md:flex-row gap-4">
-                <div className="flex-1 relative">
-                  <div className="absolute left-4 top-1/2 -translate-y-1/2 text-[#9CA3AF]">
-                    <Icon name="search" size={20} />
-                  </div>
-                  <input 
-                    type="text" 
-                    placeholder="Search groups, skills, or topics..." 
-                    className="w-full pl-12 pr-4 py-3 rounded-[12px] border border-[#E5E7EB] outline-none transition-all focus:ring-2 focus:ring-[#F97316] text-[#111827] font-medium"
-                  />
-                </div>
+        <div style={{ flex: 1, padding: '1.5rem 1rem', overflowY: 'auto' }} className="hide-scrollbar">
+            
+            {/* EXPLORE GROUPS BUTTON (TOP) */}
+            <div style={{ marginBottom: '2rem' }}>
                 <button 
-                  onClick={() => setShowModal(true)}
-                  className="bg-[#F97316] text-white px-6 py-3 rounded-[12px] font-black shadow-[0px_8px_20px_rgba(249,115,22,0.15)] hover:translate-y-[-1px] transition-all"
+                    onClick={() => setView('expert-directory')}
+                    style={{ 
+                        width: '100%', display: 'flex', alignItems: 'center', gap: '12px', padding: '14px 18px', 
+                        border: 'none', background: view === 'expert-directory' ? '#0f172a' : '#ef4444',
+                        color: '#fff', borderRadius: '14px', cursor: 'pointer', transition: 'all 0.2s',
+                        fontSize: '0.85rem', fontWeight: 950,
+                        boxShadow: '0 8px 20px rgba(239, 68, 68, 0.2)'
+                    }}
                 >
-                  Create Group
+                    <Icon name="search" size={16} color="#fff" stroke={3} />
+                    EXPLORE TRIBES
                 </button>
-              </div>
-
-              {/* Category Chips */}
-              <div className="flex flex-wrap gap-2">
-                 {categories.map(cat => (
-                    <button
-                      key={cat}
-                      onClick={() => setActiveCategory(cat)}
-                      className={`px-5 py-2 rounded-full text-xs font-black transition-all ${activeCategory === cat ? 'bg-[#F97316] text-white' : 'bg-[#F3F4F6] text-[#4B5563] hover:bg-[#E5E7EB]'}`}
-                    >
-                       {cat}
-                    </button>
-                 ))}
-              </div>
-           </div>
-
-           {/* Group Grid */}
-           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              {groups.map(group => (
-                 <div 
-                   key={group.id} 
-                   onClick={() => setSelectedGroup(group)}
-                   className="group bg-white rounded-[20px] border border-[#E5E7EB] p-5 cursor-pointer transition-all duration-200 hover:translate-y-[-2px] hover:shadow-[0px_12px_30px_rgba(0,0,0,0.08)]"
-                 >
-                    <div className="flex justify-between items-start mb-4">
-                       <div className="w-14 h-14 rounded-[16px] bg-[#F97316] text-white flex items-center justify-center font-black text-xl">
-                          {group.avatar}
-                       </div>
-                       <span className={`px-2.5 py-1 rounded-full text-[9px] font-black uppercase tracking-wider ${group.privacy === 'Public' ? 'bg-[#ECFDF5] text-[#10B981]' : 'bg-[#F3F4F6] text-[#6B7280]'}`}>
-                          {group.privacy}
-                       </span>
-                    </div>
-                    
-                    <h3 className="text-lg font-black text-[#111827] mb-2 group-hover:text-[#F97316] transition-colors">{group.name}</h3>
-                    <p className="text-sm text-[#6B7280] font-bold line-clamp-2 mb-4 leading-relaxed">{group.description}</p>
-                    
-                    <div className="flex flex-wrap gap-2 mb-6">
-                       {group.tags.map(tag => (
-                          <span key={tag} className="bg-[#FFF7ED] text-[#F97316] px-3 py-1 rounded-full text-[10px] font-black">{tag}</span>
-                       ))}
-                    </div>
-
-                    <div className="flex items-center gap-4 text-xs font-black text-[#9CA3AF] mb-6">
-                       <span className="flex items-center gap-1.5"><Icon name="users" size={14} /> {group.members}</span>
-                       <span className="flex items-center gap-1.5 text-[#10B981]"><div className="w-1.5 h-1.5 rounded-full bg-[#10B981]"></div> {group.activeNow}</span>
-                       <span className="flex items-center gap-1.5"><Icon name="trendUp" size={14} /> {group.activity}</span>
-                    </div>
-
-                    <button 
-                      onClick={(e) => { e.stopPropagation(); toggleJoin(group.id); }}
-                      className={`w-full py-3 rounded-[12px] font-black transition-all ${joinedGroups.has(group.id) ? 'bg-[#F3F4F6] text-[#111827]' : 'bg-[#F97316] text-white shadow-md'}`}
-                    >
-                       {joinedGroups.has(group.id) ? 'View Group' : 'Join Group'}
-                    </button>
-                 </div>
-              ))}
-           </div>
-        </main>
-
-        {/* RIGHT SIDEBAR */}
-        <aside className="hidden lg:block space-y-6">
-           <div className="bg-white rounded-[16px] border border-[#E5E7EB] p-5 shadow-sm">
-             <h4 className="font-black text-xs text-[#111827] mb-4 tracking-tight uppercase">TRENDING GROUPS</h4>
-             <div className="space-y-4">
-               {groups.slice(0, 2).map(g => (
-                  <div key={g.name} className="flex items-center gap-3 cursor-pointer group">
-                     <div className="w-8 h-8 rounded-[8px] bg-[#FFF7ED] text-[#F97316] flex items-center justify-center font-black text-xs">{g.avatar}</div>
-                     <div className="flex-1">
-                        <div className="text-xs font-black text-[#111827] group-hover:text-[#F97316]">{g.name}</div>
-                        <div className="text-[10px] font-bold text-[#9CA3AF]">{g.members} members</div>
-                     </div>
-                  </div>
-               ))}
-             </div>
-           </div>
-
-           <div className="bg-white rounded-[16px] border border-[#E5E7EB] p-5 shadow-sm">
-             <h4 className="font-black text-xs text-[#111827] mb-4 tracking-tight uppercase">RECENT ACTIVITY</h4>
-             <div className="space-y-3">
-               <div className="text-[11px] font-bold text-[#6B7280]">
-                 <span className="text-[#111827] font-black">Rahul G.</span> joined <span className="text-[#F97316] font-black">AI Innovators</span>
-               </div>
-               <div className="text-[11px] font-bold text-[#6B7280]">
-                 New resource shared in <span className="text-[#111827] font-black">UI Design Systems</span>
-               </div>
-             </div>
-           </div>
-        </aside>
-      </div>
-
-      {/* CREATE GROUP MODAL */}
-      {showModal && (
-        <div className="fixed inset-0 bg-[#0F172A44] backdrop-blur-sm flex items-center justify-center z-[100] p-4">
-          <div className="bg-white w-full max-w-[520px] rounded-[24px] p-8 shadow-2xl animate-in zoom-in-95 duration-200">
-            <div className="flex justify-between items-center mb-6">
-               <h3 className="text-2xl font-black text-[#111827] tracking-tight">Create Community</h3>
-               <button onClick={() => setShowModal(false)} className="w-9 h-9 flex items-center justify-center rounded-full bg-[#F3F4F6] text-[#6B7280] hover:text-[#111827]">
-                 <Icon name="x" size={20} />
-               </button>
             </div>
-            <div className="space-y-5">
-               <div>
-                  <label className="block text-xs font-black text-[#4B5563] mb-2 uppercase tracking-widest">GROUP NAME</label>
-                  <input placeholder="e.g. Next.js Builders" className="w-full px-4 py-3 rounded-[12px] border border-[#E5E7EB] outline-none font-bold focus:ring-2 focus:ring-[#F97316]" />
-               </div>
-               <div>
-                  <label className="block text-xs font-black text-[#4B5563] mb-2 uppercase tracking-widest">DESCRIPTION</label>
-                  <textarea rows={3} placeholder="What is this community about?" className="w-full px-4 py-3 rounded-[12px] border border-[#E5E7EB] outline-none font-bold resize-none focus:ring-2 focus:ring-[#F97316]" />
-               </div>
-               <div className="grid grid-cols-2 gap-4">
-                  <div>
-                    <label className="block text-xs font-black text-[#4B5563] mb-2 uppercase tracking-widest">CATEGORY</label>
-                    <select className="w-full px-4 py-3 rounded-[12px] border border-[#E5E7EB] bg-white font-bold outline-none cursor-pointer">
-                       {categories.map(c => <option key={c}>{c}</option>)}
-                    </select>
-                  </div>
-                  <div>
-                    <label className="block text-xs font-black text-[#4B5563] mb-2 uppercase tracking-widest">PRIVACY</label>
-                    <select className="w-full px-4 py-3 rounded-[12px] border border-[#E5E7EB] bg-white font-bold outline-none cursor-pointer">
-                       <option>Public</option>
-                       <option>Private</option>
-                    </select>
-                  </div>
-               </div>
-               <button className="w-full bg-[#F97316] text-white py-4 rounded-[16px] font-black text-lg shadow-[0px_8px_25px_rgba(249,115,22,0.25)] hover:translate-y-[-1px] transition-all">
-                  Launch Group
-               </button>
+
+            {/* EXPERT GROUPS SECTION (PROMINENT AT TOP) */}
+            <div style={{ marginBottom: '2.5rem' }}>
+                <div style={{ fontSize: '0.65rem', fontWeight: 950, color: '#94a3b8', letterSpacing: '0.12em', padding: '0 1rem', marginBottom: '1.25rem' }}>EXPERT GROUPS</div>
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '4px' }}>
+                    {expertGroups.map(group => (
+                        <button 
+                            key={group.id}
+                            onClick={() => {
+                                setView('expert-directory');
+                                setHasJoined(joinedGroupIds.includes(group.id));
+                                setIsRightPanelOpen(false);
+                            }}
+                            style={{ 
+                                display: 'flex', alignItems: 'center', gap: '12px', padding: '10px 16px', 
+                                border: 'none', background: (view === 'expert-directory' && !joinedGroupIds.includes(group.id)) ? 'rgba(239, 68, 68, 0.05)' : 'transparent',
+                                borderRadius: '12px', cursor: 'pointer', transition: 'all 0.2s',
+                                fontSize: '0.8rem', fontWeight: 700, color: (view === 'expert-directory' && !joinedGroupIds.includes(group.id)) ? '#ef4444' : '#64748b'
+                            }}
+                            className="hover-bg"
+                        >
+                            <div style={{ width: 24, height: 24, borderRadius: '8px', background: '#fef2f2', color: '#ef4444', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '0.55rem', fontWeight: 950 }}>{group.avatar}</div>
+                            {group.name}
+                        </button>
+                    ))}
+                </div>
             </div>
-          </div>
+
+            {/* YOUR GROUPS SECTION */}
+            <div style={{ marginBottom: '2.5rem' }}>
+                <div style={{ fontSize: '0.65rem', fontWeight: 950, color: '#94a3b8', letterSpacing: '0.12em', padding: '0 1rem', marginBottom: '1.25rem' }}>YOUR GROUPS</div>
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '4px' }}>
+                    {joinedTribes.map(ch => (
+                        <button 
+                            key={ch.id}
+                            onClick={() => {
+                                setView('chat');
+                                setActiveChannel(ch.id);
+                                setHasJoined(true);
+                            }}
+                            style={{ 
+                                display: 'flex', alignItems: 'center', gap: '12px', padding: '10px 16px', 
+                                border: 'none', background: (view === 'chat' && activeChannel === ch.id) ? '#fff' : 'transparent',
+                                borderRadius: '14px', cursor: 'pointer', transition: 'all 0.2s',
+                                fontSize: '0.8rem', fontWeight: (view === 'chat' && activeChannel === ch.id) ? 900 : 700,
+                                color: (view === 'chat' && activeChannel === ch.id) ? '#ef4444' : '#64748b',
+                                boxShadow: (view === 'chat' && activeChannel === ch.id) ? '0 4px 12px rgba(0,0,0,0.05)' : 'none'
+                            }}
+                        >
+                            <Icon name={ch.icon} size={14} color={(view === 'chat' && activeChannel === ch.id) ? '#ef4444' : '#94a3b8'} stroke={2.5} />
+                            {ch.label}
+                        </button>
+                    ))}
+                </div>
+            </div>
         </div>
-      )}
+      </aside>
+
+      {/* ── 2. MAIN AREA ── */}
+      <main style={{ flex: 1, background: '#fff', display: 'flex', flexDirection: 'column', borderRight: '1px solid #e5e7eb' }}>
+        
+        {view === 'chat' ? (
+            <>
+                {/* CHAT HEADER */}
+                <header 
+                    onClick={() => setIsRightPanelOpen(!isRightPanelOpen)}
+                    style={{ padding: '0.85rem 2.5rem', borderBottom: '1px solid #f1f5f9', display: 'flex', justifyContent: 'space-between', alignItems: 'center', cursor: 'pointer' }}
+                    className="hover-header"
+                >
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+                        <div style={{ width: 36, height: 36, borderRadius: '10px', background: '#fef2f2', color: '#ef4444', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 950, fontSize: '0.9rem' }}>{activeChannel.charAt(0).toUpperCase()}</div>
+                        <div>
+                            <h3 style={{ margin: 0, fontSize: '0.85rem', fontWeight: 950, color: '#0f172a' }}>{activeChannel}</h3>
+                            <div style={{ display: 'flex', alignItems: 'center', gap: '8px', fontSize: '0.65rem', color: '#94a3b8', fontWeight: 850, marginTop: '2px' }}>
+                                <span style={{ color: '#ef4444' }}>Host: Marcus Thorne</span>
+                                <span>• 24 members</span>
+                                <span style={{ color: '#ef4444', textDecoration: 'underline', cursor: 'pointer', opacity: 0.8 }}>view all members</span>
+                            </div>
+                        </div>
+                    </div>
+                </header>
+
+                {/* FEED AREA */}
+                <div style={{ flex: 1, padding: '1.25rem 2.5rem', overflowY: 'auto', display: 'flex', flexDirection: 'column', gap: '1.25rem' }} className="custom-scrollbar">
+                    {messages.map((m) => (
+                        <div key={m.id} style={{ display: 'flex', flexDirection: 'column', alignItems: m.type === 'me' ? 'flex-end' : 'flex-start' }}>
+                            <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '3px' }}>
+                                {m.type === 'other' && (
+                                    <div style={{ width: 24, height: 24, borderRadius: '6px', background: '#fef2f2', color: '#ef4444', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '0.65rem', fontWeight: 950 }}>{m.avatar}</div>
+                                )}
+                                <span style={{ fontSize: '0.7rem', fontWeight: 950, color: m.type === 'me' ? '#ef4444' : '#0f172a' }}>{m.user}</span>
+                                <span style={{ fontSize: '0.6rem', color: '#cbd5e1', fontWeight: 700 }}>{m.time}</span>
+                            </div>
+                            
+                            <div style={{ 
+                                maxWidth: '75%', padding: '0.85rem 1rem', borderRadius: '16px',
+                                background: m.type === 'me' ? '#ef4444' : '#f8fafc',
+                                color: m.type === 'me' ? '#fff' : '#475569',
+                                fontWeight: 650, fontSize: '0.78rem', lineHeight: 1.5,
+                                borderBottomRightRadius: m.type === 'me' ? '4px' : '16px',
+                                borderBottomLeftRadius: m.type === 'other' ? '4px' : '16px',
+                                boxShadow: m.type === 'me' ? '0 6px 20px rgba(239, 68, 68, 0.1)' : 'none',
+                                border: m.type === 'other' ? '1px solid #f1f5f9' : 'none'
+                            }}>
+                                {m.content}
+                            </div>
+                        </div>
+                    ))}
+                </div>
+
+                {/* INPUT AREA */}
+                <footer style={{ padding: '1rem 2.5rem', borderTop: '1px solid #f1f5f9' }}>
+                    <div style={{ background: '#f8fafc', borderRadius: '24px', padding: '4px 8px', display: 'flex', alignItems: 'center', border: '1px solid #e5e7eb' }}>
+                        <div style={{ width: 36, height: 36, borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer' }}>
+                            <Icon name="plus" size={16} color="#94a3b8" />
+                        </div>
+                        <input 
+                            value={messageText}
+                            onChange={(e) => setMessageText(e.target.value)}
+                            onKeyDown={(e) => { if (e.key === 'Enter') handleSendMessage(); }}
+                            placeholder={`Message #${activeChannel}`} 
+                            style={{ flex: 1, background: 'transparent', border: 'none', padding: '0 10px', fontSize: '0.78rem', fontWeight: 750, color: '#0f172a', outline: 'none' }}
+                        />
+                        <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+                            <Icon name="smile" size={18} color="#94a3b8" pointer />
+                            <div 
+                                onClick={handleSendMessage}
+                                style={{ width: 32, height: 32, borderRadius: '50%', background: '#ef4444', display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer', boxShadow: '0 4px 12px rgba(239, 68, 68, 0.2)' }}
+                            >
+                                <Icon name="send" size={14} color="#fff" stroke={2.5} />
+                            </div>
+                        </div>
+                    </div>
+                </footer>
+            </>
+        ) : (
+            /* POPULAR TRIBES DISCOVERY VIEW */
+            <div style={{ flex: 1, padding: '2.5rem 4rem', overflowY: 'auto' }}>
+                <div style={{ marginBottom: '2rem' }}>
+                    <h2 style={{ fontSize: '1.25rem', fontWeight: 950, color: '#0f172a', margin: 0, letterSpacing: '-0.03em' }}>Popular Tribes</h2>
+                    <p style={{ color: '#94a3b8', fontWeight: 750, marginTop: '6px', fontSize: '0.8rem' }}>Collaborate with the top 1% of founders and mentors.</p>
+                </div>
+                
+                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
+                    {expertGroups.map(group => (
+                        <div key={group.id} style={{ background: '#fff', borderRadius: '20px', padding: '1.5rem', border: '1px solid #f1f5f9', boxShadow: '0 4px 12px rgba(0,0,0,0.01)' }}>
+                            <div style={{ width: 40, height: 40, borderRadius: '12px', background: '#fef2f2', color: '#ef4444', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '1rem', fontWeight: 950, marginBottom: '14px' }}>{group.avatar}</div>
+                            <h3 style={{ margin: 0, fontSize: '0.9rem', fontWeight: 950, color: '#0f172a' }}>{group.name}</h3>
+                            <p style={{ fontSize: '0.72rem', color: '#64748b', margin: '8px 0 14px', lineHeight: 1.5, fontWeight: 700 }}>{group.description}</p>
+                            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                                <span style={{ fontSize: '0.65rem', fontWeight: 900, color: '#94a3b8' }}>{group.members} Members</span>
+                                <button 
+                                    onClick={() => handleJoinGroup(group.id)}
+                                    style={{ background: joinedGroupIds.includes(group.id) ? '#f1f5f9' : '#fef2f2', color: joinedGroupIds.includes(group.id) ? '#cbd5e1' : '#ef4444', border: 'none', padding: '6px 16px', borderRadius: '8px', fontSize: '0.7rem', fontWeight: 950, cursor: joinedGroupIds.includes(group.id) ? 'default' : 'pointer' }}
+                                >
+                                    {joinedGroupIds.includes(group.id) ? 'Already Joined' : 'Join Tribe'}
+                                </button>
+                            </div>
+                        </div>
+                    ))}
+                </div>
+            </div>
+        )}
+      </main>
+
+      {/* ── 3. DYNAMIC CONTEXT PANEL ── */}
+      <AnimatePresence>
+        {isRightPanelOpen && (
+          <motion.aside 
+            initial={{ width: 0, opacity: 0 }}
+            animate={{ width: 320, opacity: 1 }}
+            exit={{ width: 0, opacity: 0 }}
+            style={{ background: '#f9fafb', display: 'flex', flexDirection: 'column', height: '100%', overflow: 'hidden' }}
+          >
+            <div style={{ minWidth: 320, padding: '2rem 1.75rem', overflowY: 'auto' }} className="hide-scrollbar">
+                
+                {/* ABOUT BOX */}
+                <div style={{ background: '#fff', borderRadius: '20px', padding: '1.25rem', border: '1px solid #f1f5f9', marginBottom: '1.75rem' }}>
+                    <h4 style={{ margin: 0, fontSize: '0.8rem', fontWeight: 950, color: '#0f172a', marginBottom: '10px' }}>About {activeChannel}</h4>
+                    <p style={{ fontSize: '0.7rem', color: '#64748b', lineHeight: 1.55, fontWeight: 700 }}>
+                        A premium environment for strategic high-level discussions among verified founders.
+                    </p>
+                </div>
+
+                {/* FOUNDERS LIST */}
+                <div>
+                    <div style={{ fontSize: '0.6rem', fontWeight: 950, color: '#94a3b8', letterSpacing: '0.12em', padding: '0 0.25rem', marginBottom: '1.25rem' }}>FOUNDERS HERE</div>
+                    <div style={{ display: 'flex', flexDirection: 'column', gap: '1.25rem' }}>
+                        {founders.map(f => (
+                            <div key={f.name} style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+                                <div style={{ width: 32, height: 32, borderRadius: '10px', background: f.isHost ? '#fef2f2' : (f.status === 'online' ? '#f0fdf4' : '#f1f5f9'), color: f.isHost ? '#ef4444' : (f.status === 'online' ? '#10b981' : '#94a3b8'), display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '0.7rem', fontWeight: 950, position: 'relative' }}>
+                                    {f.avatar}
+                                    {f.status === 'online' && !f.isHost && <div style={{ position: 'absolute', right: -1, bottom: -1, width: 8, height: 8, borderRadius: '50%', background: '#10b981', border: '2px solid #f9fafb' }} />}
+                                    {f.isHost && <div style={{ position: 'absolute', right: -3, top: -3, width: 12, height: 12, background: '#ef4444', borderRadius: '3px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}><Icon name="star" size={6} color="#fff" /></div>}
+                                </div>
+                                <div>
+                                    <h5 style={{ margin: 0, fontSize: '0.75rem', fontWeight: 950, color: '#0f172a' }}>{f.name}</h5>
+                                    <p style={{ margin: 0, fontSize: '0.6rem', color: '#94a3b8', fontWeight: 800 }}>{f.role}</p>
+                                </div>
+                            </div>
+                        ))}
+                    </div>
+                </div>
+            </div>
+          </motion.aside>
+        )}
+      </AnimatePresence>
+
+      <style jsx global>{`
+        .hover-bg:hover { background: rgba(239, 68, 68, 0.05) !important; }
+        .hover-header:hover { background: #fafafa; }
+        ::-webkit-scrollbar { width: 3px; }
+        ::-webkit-scrollbar-thumb { background: #e2e8f0; border-radius: 10px; }
+        .custom-scrollbar { scroll-behavior: smooth; }
+        .hide-scrollbar::-webkit-scrollbar { display: none; }
+      `}</style>
     </div>
   );
 }

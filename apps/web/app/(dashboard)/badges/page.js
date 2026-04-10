@@ -1,121 +1,189 @@
 'use client';
 
-import { motion } from 'framer-motion';
+import { useState } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
 import Icon from '@/components/Icon';
+
+const FlippableBadge = ({ badge }) => {
+  const [isFlipped, setIsFlipped] = useState(false);
+
+  return (
+    <div 
+      onClick={() => setIsFlipped(!isFlipped)}
+      style={{ 
+        perspective: '1000px', 
+        cursor: 'pointer',
+        height: '340px'
+      }}
+    >
+      <motion.div
+        animate={{ rotateY: isFlipped ? 180 : 0 }}
+        transition={{ type: 'spring', stiffness: 260, damping: 20 }}
+        style={{ 
+          width: '100%', 
+          height: '100%', 
+          position: 'relative', 
+          transformStyle: 'preserve-3d' 
+        }}
+      >
+        {/* Front Side */}
+        <div style={{ 
+          position: 'absolute', inset: 0, backfaceVisibility: 'hidden',
+          background: '#fff', borderRadius: '32px', padding: '2.5rem 1.5rem', textAlign: 'center',
+          boxShadow: '0 10px 30px rgba(0,0,0,0.04)', border: '1px solid #f1f5f9',
+          display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center'
+        }}>
+          <div style={{ 
+            width: '90px', height: '90px', borderRadius: '24px', background: badge.color,
+            display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: '1.5rem',
+            boxShadow: `0 15px 30px ${badge.color}33`,
+            transform: 'rotate(-5deg)'
+          }}>
+            <Icon name={badge.icon} size={40} color="#fff" />
+          </div>
+          <div style={{ fontSize: '0.65rem', fontWeight: 800, color: badge.color, textTransform: 'uppercase', letterSpacing: '0.1em', marginBottom: '8px' }}>{badge.rarity}</div>
+          <h3 style={{ fontSize: '1.2rem', fontWeight: 900, color: '#0f172a', margin: '0 0 4px' }}>{badge.title}</h3>
+          <p style={{ fontSize: '0.8rem', color: '#94a3b8', fontWeight: 600 }}>Click to view details</p>
+        </div>
+
+        {/* Back Side */}
+        <div style={{ 
+          position: 'absolute', inset: 0, backfaceVisibility: 'hidden',
+          background: '#0f172a', borderRadius: '32px', padding: '2.5rem 1.5rem', textAlign: 'center',
+          transform: 'rotateY(180deg)', color: '#fff',
+          display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center'
+        }}>
+          <h3 style={{ fontSize: '1.1rem', fontWeight: 900, marginBottom: '1rem', color: badge.color }}>{badge.title}</h3>
+          <p style={{ fontSize: '0.85rem', color: 'rgba(255,255,255,0.7)', fontWeight: 500, lineHeight: 1.6, margin: 0 }}>
+            {badge.desc}
+          </p>
+          <div style={{ marginTop: '2rem', fontSize: '0.7rem', fontWeight: 800, opacity: 0.5, textTransform: 'uppercase' }}>
+            Earned March 10, 2026
+          </div>
+        </div>
+      </motion.div>
+    </div>
+  );
+};
 
 export default function BadgesPage() {
   const earnedBadges = [
-    { title: 'Momentum Builder', desc: 'Maintained a 7-day learning streak', icon: 'zap', color: 'var(--brand-red)' },
-    { title: 'Early Adopter', desc: 'Joined among the first 1000 builders', icon: 'star', color: 'var(--brand-orange)' },
-    { title: 'MVP Master', desc: 'Completed the core product module', icon: 'monitor', color: '#8B5CF6' },
-    { title: 'Certified Scout', desc: 'Successfully validated 5 market ideas', icon: 'search', color: '#10B981' },
+    { id: 'b1', title: 'Momentum Builder', desc: 'Maintained a 7-day learning streak by completing at least one lesson every single day without interruption.', icon: 'zap', color: '#ef4444', rarity: 'Epic' },
+    { id: 'b2', title: 'Web Collaborative', desc: 'Successfully authored a high-fidelity startup platform with Web, bridging the gap between design and interactive code.', icon: 'globe', color: '#f59e0b', rarity: 'Rare' },
+    { id: 'b3', title: 'MVP Master', desc: 'Successfully built and launched a Minimum Viable Product that passed the initial market validation test.', icon: 'monitor', color: '#8B5CF6', rarity: 'Legendary' },
+    { id: 'b4', title: 'Certified Scout', desc: 'Conducted 5 deep-dive market research sessions and validated the core problem-solution fit for your startup.', icon: 'search', color: '#10B981', rarity: 'Common' },
   ];
 
   const lockedBadges = [
-    { title: 'Seed Expert', desc: 'Secure fake seed funding in simulator', icon: 'award' },
-    { title: 'Global Builder', desc: 'Connect with a mentor from another region', icon: 'globe' },
-    { title: 'Elite Founder', desc: 'Rank in top 100 on Global Leaderboard', icon: 'shield' },
+    { title: 'Featured Architect', requirement: 'Composed & Instructed: Already featured in the global gallery for structural excellence and platform modeling.', icon: 'award' },
+    { title: 'Seed Expert', requirement: 'Secure simulated seed funding from the virtual investor panel after pitch deck submission.', icon: 'box' },
+    { title: 'Global Builder', requirement: 'Connect with an international mentor from the mentor network and attend a one-on-one strategy call.', icon: 'globe' },
+    { title: 'Elite Founder', requirement: 'Reach the Top 100 ranking on the Global Leaderboard by accumulating builder points through courses.', icon: 'shield' },
+    { title: 'Series A Pilot', requirement: 'Scale your simulated startup user base to 10,000 active users through effective marketing loops.', icon: 'rocket' },
   ];
 
   return (
-    <div className="platform-page">
-      <header className="platform-page-header">
+    <div className="platform-page" style={{ padding: '3rem 4rem', background: '#f8fafc', minHeight: '100vh' }}>
+      <header style={{ marginBottom: '4rem', display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end' }}>
         <div>
-          <h1 className="platform-page-title">Unlocked Badges</h1>
-          <p className="platform-page-subtitle">Visual chronicles of your startup genesis and evolution milestones.</p>
+          <h1 style={{ fontSize: '2.5rem', fontWeight: 950, color: '#0f172a', marginBottom: '0.5rem' }}>Achievement Vault</h1>
+          <p style={{ color: '#64748b', fontSize: '1.1rem', fontWeight: 600 }}>Decipher your milestones and unlock the builder odyssey.</p>
+        </div>
+        <div style={{ textAlign: 'right' }}>
+            <div style={{ fontSize: '0.8rem', fontWeight: 800, color: '#ef4444', textTransform: 'uppercase', letterSpacing: '0.1em', marginBottom: '4px' }}>Odyssey Progress</div>
+            <div style={{ fontSize: '1.5rem', fontWeight: 900, color: '#0f172a' }}>16.7% Complete</div>
         </div>
       </header>
 
-      {/* Progress Odyssey Section */}
-      <div className="glass-card" style={{ 
-        padding: '3rem', 
-        background: 'linear-gradient(135deg, rgba(235,35,39,0.02), rgba(0,0,0,0.02))', 
-        borderRadius: '40px', 
-        border: '1px solid rgba(235,35,39,0.1)', 
-        marginBottom: '4rem',
-        position: 'relative',
-        overflow: 'hidden'
-      }}>
-        <div style={{ position: 'relative', zIndex: 1 }}>
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end', marginBottom: '1.5rem' }}>
-                <div>
-                    <h2 style={{ fontSize: '1.75rem', fontWeight: 950, marginBottom: '0.5rem', color: 'var(--brand-black)' }}>Founder Odyssey</h2>
-                    <p style={{ color: 'var(--slate-400)', fontWeight: 700, margin: 0 }}>4 / 24 Milestones achieved • <span style={{ color: 'var(--brand-red)' }}>Silver Rank</span></p>
-                </div>
-                <div style={{ textAlign: 'right' }}>
-                    <span style={{ display: 'block', fontSize: '1.5rem', fontWeight: 950, color: 'var(--brand-black)' }}>16.7%</span>
-                    <span style={{ fontSize: '0.65rem', fontWeight: 900, color: 'var(--slate-400)', textTransform: 'uppercase' }}>Completion</span>
-                </div>
-            </div>
-            <div className="prog-bar-track" style={{ height: '12px', background: 'rgba(0,0,0,0.05)', borderRadius: '20px' }}>
-                <motion.div 
-                    initial={{ width: 0 }}
-                    animate={{ width: '16.7%' }}
-                    transition={{ duration: 1.5, ease: "easeOut" }}
-                    className="prog-bar-fill" 
-                    style={{ background: 'var(--brand-red)', borderRadius: '20px', boxShadow: '0 0 15px rgba(235,35,39,0.3)' }}
-                />
-            </div>
-        </div>
-        {/* Decorative background flare */}
-        <div style={{ position: 'absolute', top: -100, right: -100, width: 300, height: 300, borderRadius: '50%', background: 'rgba(235,35,39,0.05)', filter: 'blur(80px)' }} />
-      </div>
-
-      <div className="platform-section-label" style={{ marginBottom: '2.5rem' }}>EPIC MILESTONES <span className="platform-section-count">ACTIVE</span></div>
-      
-      <div className="platform-grid" style={{ gridTemplateColumns: 'repeat(4, 1fr)', gap: '2.5rem', marginBottom: '5rem' }}>
-        {earnedBadges.map((badge, idx) => (
+      {/* Progress Bar Container */}
+      <div style={{ width: '100%', height: '8px', background: '#e2e8f0', borderRadius: '4px', marginBottom: '5rem', position: 'relative', overflow: 'hidden' }}>
           <motion.div 
-            key={idx} 
-            whileHover={{ 
-                rotateY: 20, 
-                rotateX: -10,
-                scale: 1.05,
-                boxShadow: '0 30px 60px rgba(0,0,0,0.1)'
-            }}
-            transition={{ type: "spring", stiffness: 300, damping: 20 }}
-            className="glass-card" 
-            style={{ 
-                textAlign: 'center', 
-                padding: '3rem 2rem', 
-                perspective: '1000px',
-                cursor: 'pointer',
-                background: '#fff',
-                border: '1px solid rgba(0,0,0,0.03)'
-            }}
-          >
-            <div style={{ 
-              width: 90, height: 90, borderRadius: '24px', background: badge.color, 
-              display: 'flex', alignItems: 'center', justifyContent: 'center', 
-              margin: '0 auto 2rem', 
-              boxShadow: `0 15px 30px -5px ${badge.color}44`,
-              transform: 'rotate(5deg)'
-            }}>
-              <Icon name={badge.icon} size={40} color="#fff" />
-            </div>
-            <h3 style={{ margin: '0 0 12px', fontSize: '1.15rem', fontWeight: 950, color: 'var(--brand-black)' }}>{badge.title}</h3>
-            <p style={{ margin: 0, fontSize: '0.8rem', color: 'var(--slate-500)', lineHeight: 1.5, fontWeight: 700 }}>{badge.desc}</p>
-          </motion.div>
-        ))}
+            initial={{ width: 0 }}
+            animate={{ width: '16.7%' }}
+            transition={{ duration: 1, delay: 0.5 }}
+            style={{ height: '100%', background: '#ef4444', boxShadow: '0 0 20px rgba(239, 68, 68, 0.4)' }}
+          />
       </div>
 
-      <div className="platform-section-label" style={{ marginBottom: '2.5rem' }}>LOCKED POTENTIAL <span className="platform-section-count">20 REMAINING</span></div>
-      
-      <div className="platform-grid" style={{ gridTemplateColumns: 'repeat(4, 1fr)', gap: '2.5rem' }}>
-        {lockedBadges.map((badge, idx) => (
-          <div key={idx} className="glass-card" style={{ textAlign: 'center', padding: '2.5rem 1.5rem', opacity: 0.4, background: 'rgba(0,0,0,0.01)', borderStyle: 'dashed' }}>
-            <div style={{ 
-              width: 70, height: 70, borderRadius: '50%', background: 'rgba(0,0,0,0.05)', 
-              display: 'flex', alignItems: 'center', justifyContent: 'center', 
-              margin: '0 auto 1.5rem'
-            }}>
-              <Icon name="lock" size={24} color="var(--slate-400)" />
-            </div>
-            <h3 style={{ margin: '0 0 8px', fontSize: '1rem', fontWeight: 950, color: 'var(--slate-400)' }}>{badge.title}</h3>
-            <p style={{ margin: 0, fontSize: '0.75rem', color: 'var(--slate-400)', lineHeight: 1.4, fontWeight: 700 }}>{badge.desc}</p>
+      <div style={{ marginBottom: '6rem' }}>
+          <div style={{ fontSize: '0.75rem', fontWeight: 900, color: '#94a3b8', textTransform: 'uppercase', letterSpacing: '0.2em', marginBottom: '2.5rem' }}>
+            UNLOCKED ACHIEVEMENTS <span style={{ marginLeft: '12px', color: '#ef4444' }}>GRID MODE</span>
           </div>
-        ))}
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '2rem' }}>
+            {earnedBadges.map((badge) => (
+              <FlippableBadge key={badge.id} badge={badge} />
+            ))}
+          </div>
       </div>
+
+      {/* LOCKED SECTION: SCROLLABLE LOG */}
+      <div style={{ 
+        background: '#fff', 
+        borderRadius: '40px', 
+        padding: '3rem', 
+        border: '1px solid #e2e8f0',
+        boxShadow: '0 20px 50px rgba(0,0,0,0.02)'
+      }}>
+          <div style={{ fontSize: '0.75rem', fontWeight: 900, color: '#94a3b8', textTransform: 'uppercase', letterSpacing: '0.2em', marginBottom: '2.5rem', display: 'flex', alignItems: 'center', gap: '12px' }}>
+             <Icon name="lock" size={18} /> BUILDER MILESTONE LOG <span style={{ marginLeft: '12px', color: '#64748b' }}>SCROLLABLE PATHWAY</span>
+          </div>
+          
+          <div style={{ 
+            maxHeight: '500px', 
+            overflowY: 'auto', 
+            paddingRight: '1.5rem',
+            display: 'flex',
+            flexDirection: 'column',
+            gap: '1.5rem'
+          }} className="milestone-log">
+            {lockedBadges.map((badge, idx) => (
+              <div 
+                key={idx}
+                style={{ 
+                  background: '#f8fafc', 
+                  borderRadius: '24px', 
+                  padding: '1.75rem 2.5rem', 
+                  display: 'flex', 
+                  alignItems: 'center', 
+                  gap: '2.5rem',
+                  border: '1px solid #f1f5f9',
+                  transition: 'all 0.2s',
+                  cursor: 'default'
+                }}
+              >
+                 <div style={{ width: '60px', height: '60px', borderRadius: '18px', background: '#fff', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0, boxShadow: '0 8px 16px rgba(0,0,0,0.03)' }}>
+                    <Icon name={badge.icon || 'lock'} size={24} color="#cbd5e1" />
+                 </div>
+                 <div style={{ flex: 1 }}>
+                    <h4 style={{ fontSize: '1rem', fontWeight: 900, color: '#0f172a', margin: '0 0 4px' }}>{badge.title}</h4>
+                    <p style={{ fontSize: '0.85rem', color: '#64748b', fontWeight: 600, margin: 0, lineHeight: 1.5 }}>{badge.requirement}</p>
+                 </div>
+                 <div style={{ 
+                   padding: '10px 20px', 
+                   borderRadius: '12px', 
+                   background: '#fff', 
+                   border: '1px solid #e2e8f0', 
+                   fontSize: '0.7rem', 
+                   fontWeight: 900, 
+                   color: '#94a3b8',
+                   display: 'flex',
+                   alignItems: 'center',
+                   gap: '8px'
+                 }}>
+                    <Icon name="target" size={14} color="#cbd5e1" /> LOCKED
+                 </div>
+              </div>
+            ))}
+          </div>
+      </div>
+
+      <style jsx global>{`
+        .milestone-log::-webkit-scrollbar { width: 4px; }
+        .milestone-log::-webkit-scrollbar-track { background: transparent; }
+        .milestone-log::-webkit-scrollbar-thumb { background: #e2e8f0; border-radius: 10px; }
+        .milestone-log::-webkit-scrollbar-thumb:hover { background: #cbd5e1; }
+      `}</style>
+
     </div>
   );
 }

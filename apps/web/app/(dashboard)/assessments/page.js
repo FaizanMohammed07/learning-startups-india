@@ -13,10 +13,10 @@ const ASSESSMENTS = [
   { id:'a6', title:'Lean Canvas Assignment',        course:'Lean Startup',         type:'Assignment',  questions:3,  duration:'90 min', due:'Mar 15', status:'completed',score:74,    pass:70 },
 ];
 
-const TYPE_COLORS = { Quiz:'tag-blue', Assignment:'tag-orange', Exam:'tag-red' };
+const TYPE_COLORS = { Quiz:'tag-red', Assignment:'tag-red', Exam:'tag-red' };
 const STATUS_STYLE = {
-  pending:   { bg:'var(--orange-50)', tc:'var(--brand-orange)', label:'Pending' },
-  overdue:   { bg:'var(--red-50)',    tc:'var(--brand-red)',    label:'Overdue' },
+  pending:   { bg:'rgba(235,35,39,0.05)', tc:'var(--brand-red)', label:'Pending' },
+  overdue:   { bg:'rgba(235,35,39,0.1)',    tc:'var(--brand-red)',    label:'Overdue' },
   completed: { bg:'#f0fdf4',         tc:'#059669',             label:'Completed' },
 };
 
@@ -35,25 +35,6 @@ export default function AssessmentsPage() {
         </div>
       </div>
 
-      {/* Stats */}
-      <div className="platform-stats-grid">
-        {[
-          { label:'Total',     val:ASSESSMENTS.length, icon:'fileText', bg:'rgba(255,255,255,0.4)',  tc:'var(--brand-black)', border:'rgba(0,0,0,0.05)' },
-          { label:'Pending',   val:ASSESSMENTS.filter(a=>a.status==='pending').length,   icon:'clock',       bg:'rgba(235,35,39,0.05)', tc:'var(--brand-red)', border:'rgba(235,35,39,0.1)' },
-          { label:'Overdue',   val:ASSESSMENTS.filter(a=>a.status==='overdue').length,   icon:'zap',         bg:'rgba(235,35,39,0.08)',    tc:'var(--brand-red)',    border:'rgba(235,35,39,0.2)' },
-          { label:'Completed', val:ASSESSMENTS.filter(a=>a.status==='completed').length, icon:'checkCircle', bg:'rgba(16,185,129,0.05)',         tc:'#059669',            border:'rgba(16,185,129,0.1)' },
-        ].map((s,i) => (
-          <div key={i} className="platform-stat-card glass-card" style={{ background:s.bg, border: `1px solid ${s.border}` }}>
-            <div className="platform-stat-label" style={{ color: s.tc, fontWeight: 850 }}>
-              {s.label}
-              <div style={{ width:32, height:32, borderRadius:10, background:'#fff', display:'flex', alignItems:'center', justifyContent:'center', boxShadow: '0 4px 10px rgba(0,0,0,0.05)' }}>
-                <Icon name={s.icon} size={16} color={s.tc} />
-              </div>
-            </div>
-            <span className="platform-stat-value" style={{ color:'var(--brand-black)', fontSize: '1.75rem' }}>{s.val}</span>
-          </div>
-        ))}
-      </div>
 
       <div className="platform-tabs">
         <button className={`platform-tab ${tab==='pending'?'active':''}`} onClick={()=>setTab('pending')}>Upcoming</button>
@@ -65,8 +46,8 @@ export default function AssessmentsPage() {
           const st = STATUS_STYLE[a.status];
           return (
             <div key={a.id} className="platform-info-card glass-card" style={{ display:'grid', gridTemplateColumns:'50px 1fr auto', alignItems:'center', gap:'1.5rem', padding:'1.25rem 1.5rem', borderRadius: '24px' }}>
-              <div className={`icon-box-${a.type==='Quiz'?'blue':a.type==='Assignment'?'orange':'red'}`} style={{ borderRadius: '16px', width: 50, height: 50, display: 'flex', alignItems: 'center', justifyContent: 'center', background: 'var(--slate-50)' }}>
-                <Icon name={a.type==='Quiz'?'helpCircle':a.type==='Assignment'?'pencil':'fileText'} size={22} color={a.type==='Quiz'?'#2563eb':a.type==='Assignment'?'#f59e0b':'var(--brand-red)'} />
+              <div className="icon-box-red" style={{ borderRadius: '16px', width: 50, height: 50, display: 'flex', alignItems: 'center', justifyContent: 'center', background: 'var(--slate-50)' }}>
+                <Icon name={a.type==='Quiz'?'helpCircle':a.type==='Assignment'?'pencil':'fileText'} size={22} color="var(--brand-red)" />
               </div>
               <div style={{ flex: 1 }}>
                 <div style={{ display:'flex', alignItems:'center', gap:'0.75rem', marginBottom:6, flexWrap:'wrap' }}>
@@ -78,14 +59,14 @@ export default function AssessmentsPage() {
                   <span style={{ fontSize:'0.75rem', color:'var(--slate-500)', fontWeight:800 }}>{a.course}</span>
                   <span style={{ fontSize:'0.75rem', color:'var(--slate-400)', fontWeight:800, display:'flex', alignItems:'center', gap:4 }}><Icon name="helpCircle" size={12} color="var(--slate-400)" />{a.questions} Qs</span>
                   <span style={{ fontSize:'0.75rem', color:'var(--slate-400)', fontWeight:800, display:'flex', alignItems:'center', gap:4 }}><Icon name="clock" size={12} color="var(--slate-400)" />{a.duration}</span>
-                  {a.status!=='completed' && <span style={{ fontSize:'0.75rem', color:a.status==='overdue'?'var(--brand-red)':'#f59e0b', fontWeight:900 }}>Due: {a.due}</span>}
+                  {a.status!=='completed' && <span style={{ fontSize:'0.75rem', color:a.status==='overdue'?'var(--brand-red)':'var(--brand-red)', fontWeight:900 }}>Due: {a.due}</span>}
                   {a.score!==null && <span style={{ fontSize:'0.75rem', color:'#059669', fontWeight:950 }}>Score: {a.score}/100 — {a.score>=a.pass?'PASSED':'FAILED'}</span>}
                 </div>
               </div>
               <div>
                 {a.status==='completed'
                   ? <button className="btn-brand-outline" style={{ fontSize:'0.75rem', padding: '10px 24px', borderRadius: '12px' }}>VIEW RESULTS</button>
-                  : <button className="btn-brand-primary" style={{ fontSize:'0.75rem', padding: '10px 28px', borderRadius: '12px' }}>
+                  : <button className="btn-brand" style={{ fontSize:'0.75rem', padding: '10px 28px', borderRadius: '12px', border: 'none' }}>
                       {a.status==='overdue' ? 'RESUME NOW' : 'START QUIZ'}
                     </button>
                 }

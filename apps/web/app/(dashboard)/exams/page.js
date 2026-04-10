@@ -1,5 +1,6 @@
 'use client';
 
+import { useState } from 'react';
 import Icon from '@/components/Icon';
 
 const ASSESSMENTS = [
@@ -13,52 +14,50 @@ const STATUS_STYLE = {
 };
 
 export default function ExamsPage() {
+  const [tab, setTab] = useState('pending');
+  const filtered = tab==='pending'
+    ? ASSESSMENTS.filter(a=>a.status!=='completed')
+    : ASSESSMENTS.filter(a=>a.status==='completed');
+
   return (
     <div className="platform-page">
       <div className="platform-page-header">
         <div>
-          <h1 className="platform-page-title">Final Assessments</h1>
+          <h1 className="platform-page-title">Exams</h1>
           <p className="platform-page-subtitle">Certification tests and formal evaluations.</p>
         </div>
       </div>
 
-      <div style={{ display:'flex', flexDirection:'column', gap:'1rem' }}>
-        {ASSESSMENTS.map((a) => {
+      <div className="platform-tabs" style={{ marginBottom: '2.5rem' }}>
+        <button className={`platform-tab ${tab==='pending'?'active':''}`} onClick={()=>setTab('pending')}>Upcoming Exams</button>
+        <button className={`platform-tab ${tab==='completed'?'active':''}`} onClick={()=>setTab('completed')}>Passed / History</button>
+      </div>
+
+      <div style={{ display:'flex', flexDirection:'column', gap:'0.75rem' }}>
+        {filtered.map((a) => {
           const st = STATUS_STYLE[a.status];
           return (
-            <div key={a.id} className="platform-info-card glass-card" style={{ display:'grid', gridTemplateColumns:'60px 1fr auto', alignItems:'center', gap:'2rem', padding:'1.5rem 2rem', borderRadius: '24px' }}>
-              <div style={{ borderRadius: '16px', width: 60, height: 60, display: 'flex', alignItems: 'center', justifyContent: 'center', background: 'var(--slate-50)' }}>
-                <Icon name="fileText" size={28} color="var(--brand-red)" />
+            <div key={a.id} className="platform-info-card glass-card" style={{ display:'grid', gridTemplateColumns:'50px 1fr auto', alignItems:'center', gap:'1.5rem', padding:'1.25rem 1.5rem', borderRadius: '24px' }}>
+              <div className="icon-box-red" style={{ borderRadius: '16px', width: 50, height: 50, display: 'flex', alignItems: 'center', justifyContent: 'center', background: 'var(--slate-50)' }}>
+                <Icon name="fileText" size={22} color="var(--brand-red)" />
               </div>
               <div style={{ flex: 1 }}>
-                <div style={{ display:'flex', alignItems:'center', gap:'1rem', marginBottom:8, flexWrap:'wrap' }}>
-                  <h3 style={{ fontWeight:950, color:'var(--brand-black)', margin:0, fontSize:'1.1rem' }}>{a.title}</h3>
-                  <span style={{ background:st.bg, color:st.tc, borderRadius:'8px', padding:'4px 14px', fontSize:'0.65rem', fontWeight:950, textTransform: 'uppercase' }}>{st.label}</span>
+                <div style={{ display:'flex', alignItems:'center', gap:'0.75rem', marginBottom:6, flexWrap:'wrap' }}>
+                  <h3 style={{ fontWeight:950, color:'var(--brand-black)', margin:0, fontSize:'1.05rem' }}>{a.title}</h3>
+                  <span style={{ background:st.bg, color:st.tc, borderRadius:'8px', padding:'3px 10px', fontSize:'0.65rem', fontWeight:950, textTransform: 'uppercase' }}>{st.label}</span>
                 </div>
-                <div style={{ display:'flex', gap:'2rem', flexWrap:'wrap', alignItems:'center' }}>
-                  <span style={{ fontSize:'0.8rem', color:'var(--slate-500)', fontWeight:850 }}>{a.course}</span>
-                  <div style={{ display:'flex', alignItems:'center', gap:6, color:'var(--slate-400)', fontSize:'0.75rem', fontWeight:800 }}>
-                    <Icon name="helpCircle" size={12} />
-                    {a.questions} Questions
-                  </div>
-                  <div style={{ display:'flex', alignItems:'center', gap:6, color:'var(--slate-400)', fontSize:'0.75rem', fontWeight:800 }}>
-                    <Icon name="clock" size={12} />
-                    {a.duration} Limit
-                  </div>
-                  {a.score!==null && (
-                    <div style={{ display:'flex', alignItems:'center', gap:6, color:'#059669', fontSize:'0.8rem', fontWeight:950 }}>
-                      <Icon name="checkCircle" size={14} />
-                      Result: {a.score}%
-                    </div>
-                  )}
+                <div style={{ display:'flex', gap:'1.5rem', flexWrap:'wrap' }}>
+                  <span style={{ fontSize:'0.75rem', color:'var(--slate-500)', fontWeight:800 }}>{a.course}</span>
+                  <span style={{ fontSize:'0.75rem', color:'var(--slate-400)', fontWeight:800, display:'flex', alignItems:'center', gap:4 }}><Icon name="helpCircle" size={12} color="var(--slate-400)" />{a.questions} Qs</span>
+                  <span style={{ fontSize:'0.75rem', color:'var(--slate-400)', fontWeight:800, display:'flex', alignItems:'center', gap:4 }}><Icon name="clock" size={12} color="var(--slate-400)" />{a.duration}</span>
+                  {a.score!==null && <span style={{ fontSize:'0.75rem', color:'#059669', fontWeight:950 }}>Score: {a.score}% — PASSED</span>}
                 </div>
               </div>
               <div>
-                {a.status==='completed' ? (
-                  <button style={{ padding: '12px 24px', fontSize: '0.8rem', background: 'var(--brand-black)', color: '#fff', borderRadius: '12px', fontWeight: 950, border: 'none' }}>REVIEW PAPER</button>
-                ) : (
-                  <button style={{ padding: '12px 28px', fontSize: '0.8rem', background: 'var(--brand-black)', color: '#fff', borderRadius: '12px', fontWeight: 950, border: 'none' }}>ENTER EXAM HALL</button>
-                )}
+                {a.status==='completed'
+                  ? <button className="btn-brand-outline" style={{ fontSize:'0.75rem', padding: '10px 24px', borderRadius: '12px' }}>REVIEW PAPER</button>
+                  : <button className="btn-brand" style={{ fontSize:'0.75rem', padding: '10px 28px', borderRadius: '12px', border: 'none' }}>ENTER EXAM HALL</button>
+                }
               </div>
             </div>
           );

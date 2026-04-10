@@ -15,9 +15,39 @@ export default function LearnPage() {
   const [activeModuleIdx, setActiveModuleIdx] = useState(0);
   const [loading, setLoading] = useState(true);
   const [completedLessons, setCompletedLessons] = useState(new Set());
+  const [activeTab, setActiveTab] = useState('Summary');
+  const [expandedWeeks, setExpandedWeeks] = useState(new Set([0])); 
 
   // Assessment State
   const [showAssessment, setShowAssessment] = useState(false);
+
+  // Load persistence
+  useEffect(() => {
+    const savedIdx = localStorage.getItem(`progress_${slug}`);
+    if (savedIdx !== null) {
+      const idx = parseInt(savedIdx, 10);
+      setActiveModuleIdx(idx);
+      setExpandedWeeks(new Set([Math.floor(idx / 3)]));
+    }
+    
+    const savedCompleted = localStorage.getItem(`completed_${slug}`);
+    if (savedCompleted) {
+      setCompletedLessons(new Set(JSON.parse(savedCompleted)));
+    }
+  }, [slug]);
+
+  // Save persistence
+  useEffect(() => {
+    if (course) {
+      localStorage.setItem(`progress_${slug}`, activeModuleIdx.toString());
+    }
+  }, [activeModuleIdx, slug, course]);
+
+  useEffect(() => {
+    if (course) {
+      localStorage.setItem(`completed_${slug}`, JSON.stringify(Array.from(completedLessons)));
+    }
+  }, [completedLessons, slug, course]);
 
   useEffect(() => {
     async function fetchData() {
@@ -54,320 +84,316 @@ export default function LearnPage() {
 
     // Auto-advance logic
     if (activeModuleIdx < modules.length - 1) {
-      // If it's the end of a "week" (3 modules), show assessment
       if ((activeModuleIdx + 1) % 3 === 0) {
         setShowAssessment(true);
       } else {
-        setActiveModuleIdx(activeModuleIdx + 1);
+        const nextIdx = activeModuleIdx + 1;
+        setActiveModuleIdx(nextIdx);
+        // Expand the next week if needed
+        const nextWeekIdx = Math.floor(nextIdx / 3);
+        const newExpanded = new Set(expandedWeeks);
+        newExpanded.add(nextWeekIdx);
+        setExpandedWeeks(newExpanded);
       }
     } else {
       setShowAssessment(true);
     }
   };
 
-  const weeks = useMemo(() => {
-    const w = [];
-    const size = 3;
-    for (let i = 0; i < modules.length; i += size) {
-      w.push(modules.slice(i, i + size));
+  const progress = Math.round((completedLessons.size / modules.length) * 100) || 0;
+
+  // Group modules into 7 days (mocking a 1-week course structure)
+  const days = useMemo(() => {
+    if (!modules.length) return [];
+    const result = [];
+    const modulesPerDay = Math.ceil(modules.length / 7);
+    for (let i = 0; i < 7; i++) {
+        const dayModules = modules.slice(i * modulesPerDay, (i + 1) * modulesPerDay);
+        if (dayModules.length > 0) {
+            result.push({
+                title: `Day ${i + 1}`,
+                items: dayModules,
+                startIdx: i * modulesPerDay
+            });
+        }
     }
-    return w;
+    return result;
   }, [modules]);
+
+  const toggleWeek = (dayIdx) => {
+    const newExpanded = new Set(expandedWeeks);
+    if (newExpanded.has(dayIdx)) {
+      newExpanded.delete(dayIdx);
+    } else {
+      newExpanded.add(dayIdx);
+    }
+    setExpandedWeeks(newExpanded);
+  };
 
   if (loading) return (
     <div style={{ height: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', background: '#fff' }}>
-      <div className="spinner" style={{ width: '40px', height: '40px', border: '4px solid #f3f3f3', borderTop: '4px solid #E92222', borderRadius: '50%', animation: 'spin 1s linear infinite' }} />
+      <div className="spinner" style={{ width: '40px', height: '40px', border: '4px solid #f3f3f3', borderTop: '4px solid #ef4444', borderRadius: '50%', animation: 'spin 1s linear infinite' }} />
     </div>
   );
 
-  if (!course) return <div style={{ padding: '4rem', textAlign: 'center', fontFamily: 'Inter, sans-serif' }}>Course not found.</div>;
+  if (!course) return <div style={{ padding: '4rem', textAlign: 'center', fontFamily: 'Poppins, sans-serif' }}>Course not found.</div>;
 
   return (
-    <div className="learn-player-premium" style={{ 
-      display: 'flex', 
-      height: '100vh', 
-      background: '#fff',
-      overflow: 'hidden',
-      fontFamily: 'Poppins, sans-serif'
+    <div className="modern-learn-player" style={{ 
+      minHeight: '100vh', 
+      background: '#f8fafc',
+      fontFamily: 'Poppins, sans-serif',
+      padding: '2rem 4rem'
     }}>
-      {/* ── SIDEBAR: LESSON NAVIGATION ── */}
-      <aside style={{ 
-        width: '380px', 
-        borderRight: '1px solid #F1F5F9', 
-        display: 'flex', 
-        flexDirection: 'column',
-        background: '#fff',
-        zIndex: 100,
-        boxShadow: '10px 0 30px rgba(0,0,0,0.02)'
-      }}>
-        {/* Sidebar Header */}
-        <div style={{ padding: '32px 28px', borderBottom: '1px solid #F8FAFC' }}>
+      
+      {/* ── TOP HEADER: BACK BUTTON & COURSETITLE ── */}
+      <header style={{ maxWidth: '1400px', margin: '0 auto 2.5rem', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
           <button 
-            onClick={() => router.push('/my-learning')}
+            onClick={() => router.back()}
             style={{ 
+              background: 'none', border: 'none', padding: 0, 
               display: 'flex', alignItems: 'center', gap: '8px', 
-              background: '#F8FAFC', border: '1px solid #E2E8F0', padding: '10px 16px', 
-              borderRadius: '12px', fontSize: '0.8rem', fontWeight: 700, cursor: 'pointer',
-              marginBottom: '24px', transition: 'all 0.2s', color: '#64748B'
+              fontSize: '0.85rem', fontWeight: 800, color: '#ef4444', 
+              cursor: 'pointer', transition: 'all 0.25s', marginBottom: '8px'
             }}
-            className="hover-lift"
+            onMouseOver={e => e.currentTarget.style.transform = 'translateX(-4px)'}
+            onMouseOut={e => e.currentTarget.style.transform = 'translateX(0)'}
           >
-            <Icon name="chevron-right" size={14} style={{ transform: 'rotate(180deg)' }} /> BACK TO LEARNING
+            <Icon name="chevronLeft" size={16} color="#ef4444" /> BACK TO LEARNING
           </button>
-          
-          <h2 style={{ fontSize: '1.25rem', fontWeight: 800, color: '#0F172A', marginBottom: '16px', letterSpacing: '-0.02em', lineHeight: 1.3 }}>{course.title}</h2>
-          
-          <div style={{ background: '#F1F5F9', height: '6px', borderRadius: '10px', overflow: 'hidden' }}>
-            <div style={{ 
-              width: `${(completedLessons.size / modules.length) * 100}%`, 
-              height: '100%', 
-              background: 'linear-gradient(90deg, #E92222, #FF4D4D)',
-              boxShadow: '0 0 10px rgba(233, 34, 34, 0.3)'
-            }} />
-          </div>
-          <div style={{ display: 'flex', justifyContent: 'space-between', marginTop: '10px' }}>
-            <span style={{ fontSize: '0.7rem', fontWeight: 700, color: '#94A3B8' }}>COURSE PROGRESS</span>
-            <span style={{ fontSize: '0.7rem', fontWeight: 800, color: '#E92222' }}>{Math.round((completedLessons.size / modules.length) * 100)}%</span>
+          <h1 style={{ fontSize: '1.8rem', fontWeight: 800, color: '#0f172a', margin: 0 }}>{course.title}</h1>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '20px', fontSize: '0.85rem', color: '#64748b', fontWeight: 500 }}>
+             <span style={{ display: 'flex', alignItems: 'center', gap: '6px' }}><Icon name="user" size={14} /> Beginner</span>
+             <span style={{ display: 'flex', alignItems: 'center', gap: '6px' }}><Icon name="book" size={14} /> {modules.length} Lessons</span>
+             <span style={{ display: 'flex', alignItems: 'center', gap: '6px' }}><Icon name="clock" size={14} /> 3h 45min</span>
           </div>
         </div>
+        <div style={{ display: 'flex', gap: '12px' }}>
+           <button style={{ background: '#fff', border: '1px solid #e2e8f0', padding: '10px 18px', borderRadius: '12px', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '8px', fontSize: '0.85rem', fontWeight: 600, color: '#475569' }}>
+             <Icon name="bookmark" size={16} /> Save
+           </button>
+           <button style={{ background: '#ef4444', border: 'none', padding: '10px 22px', borderRadius: '12px', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '8px', fontSize: '0.85rem', fontWeight: 700, color: '#fff', boxShadow: '0 4px 12px rgba(239, 68, 68, 0.2)' }}>
+             <Icon name="rocket" size={16} color="#fff" /> Share
+           </button>
+        </div>
+      </header>
 
-        {/* Lesson List */}
-        <nav style={{ flex: 1, overflowY: 'auto', padding: '24px 12px' }} className="custom-scrollbar">
-          {weeks.map((weekModules, weekIdx) => {
-            // Week 1 (idx 0) is always open. Subsequent weeks locked if previous week assessment not done.
-            const isLocked = weekIdx > 0 && (completedLessons.size < weekIdx * 3);
+      {/* ── MAIN GRID LAYOUT ── */}
+      <div style={{ maxWidth: '1400px', margin: '0 auto', display: 'grid', gridTemplateColumns: '1fr 380px', gap: '2.5rem' }}>
+        
+        {/* LEFT COLUMN: PLAYER & CONTENT */}
+        <section>
+          {/* Video Area */}
+          <div style={{ 
+            width: '100%', aspectRatio: '16/9', background: '#0f172a', 
+            borderRadius: '24px', position: 'relative', overflow: 'hidden', 
+            boxShadow: '0 25px 50px -12px rgba(0,0,0,0.15)', marginBottom: '2rem'
+          }}>
+            <img src={course.thumbnailUrl || "https://images.unsplash.com/photo-1516321318423-f06f85e504b3?w=1200"} alt="Thumbnail" style={{ width: '100%', height: '100%', objectFit: 'cover', opacity: 0.6 }} />
+            <div style={{ position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%)', width: '80px', height: '80px', borderRadius: '50%', background: '#fff', color: '#ef4444', display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer', boxShadow: '0 10px 30px rgba(0,0,0,0.3)' }}>
+              <Icon name="play" size={32} />
+            </div>
             
-            return (
-              <div key={weekIdx} style={{ marginBottom: '24px' }}>
-                <div style={{ 
-                  display: 'flex', alignItems: 'center', gap: '12px', 
-                  padding: '12px 16px', opacity: isLocked ? 0.5 : 1
-                }}>
-                  <div style={{ 
-                    width: '32px', height: '32px', borderRadius: '10px', 
-                    background: isLocked ? '#F1F5F9' : '#FEF2F2', 
-                    color: isLocked ? '#94A3B8' : '#E92222',
-                    display: 'flex', alignItems: 'center', justifyContent: 'center',
-                    fontSize: '0.8rem', fontWeight: 800
-                  }}>
-                    {weekIdx + 1}
-                  </div>
-                  <h3 style={{ fontSize: '0.9rem', fontWeight: 800, color: '#1E293B', margin: 0 }}>Week {weekIdx + 1}</h3>
-                  {isLocked && <Icon name="lock" size={12} color="#94A3B8" style={{ marginLeft: 'auto' }} />}
+            {/* Custom Controls Mock */}
+            <div style={{ position: 'absolute', bottom: 0, left: 0, right: 0, padding: '20px', background: 'linear-gradient(transparent, rgba(0,0,0,0.8))', display: 'flex', alignItems: 'center', gap: '20px' }}>
+                <Icon name="play" size={20} color="#fff" />
+                <div style={{ flex: 1, height: '4px', background: 'rgba(255,255,255,0.2)', borderRadius: '2px', position: 'relative' }}>
+                   <div style={{ width: (activeModuleIdx / modules.length * 100) + '%', height: '100%', background: '#ef4444', borderRadius: '2px' }} />
                 </div>
+                <span style={{ color: '#fff', fontSize: '0.75rem', fontWeight: 600 }}>{(activeModuleIdx + 1) * 3}:00 / {modules.length * 3}:00</span>
+                <Icon name="settings" size={18} color="#fff" />
+            </div>
+          </div>
 
-                <div style={{ marginLeft: '31px', paddingLeft: '20px', borderLeft: '2px solid #F1F5F9', marginTop: '4px', display: 'grid', gap: '4px' }}>
-                  {weekModules.map((m, mIdx) => {
-                    const globalIdx = weekIdx * 3 + mIdx;
-                    const isActive = activeModuleIdx === globalIdx && !showAssessment;
-                    const isCompleted = completedLessons.has(m._id);
-                    
-                    return (
-                      <button 
-                        key={m._id}
-                        disabled={isLocked}
-                        onClick={() => { setActiveModuleIdx(globalIdx); setShowAssessment(false); }}
-                        style={{ 
-                          textAlign: 'left', padding: '12px 16px', borderRadius: '14px',
-                          background: isActive ? '#FEF2F2' : 'transparent',
-                          border: 'none',
-                          cursor: isLocked ? 'not-allowed' : 'pointer',
-                          display: 'flex', alignItems: 'center', gap: '12px',
-                          transition: 'all 0.2s', width: '100%'
-                        }}
-                      >
-                        <div style={{ 
-                          width: '18px', height: '18px', borderRadius: '50%',
-                          border: isCompleted ? 'none' : '2px solid #E2E8F0',
-                          background: isCompleted ? '#22C55E' : 'transparent',
-                          display: 'flex', alignItems: 'center', justifyContent: 'center',
-                          flexShrink: 0
-                        }}>
-                          {isCompleted && <Icon name="check" size={10} color="#fff" />}
+          {/* Navigation Tabs */}
+          <div style={{ display: 'flex', gap: '32px', borderBottom: '1px solid #e2e8f0', marginBottom: '2rem' }}>
+            {['Summary', 'Files', 'Resources', 'Q&A'].map(tab => (
+              <button 
+                key={tab} 
+                onClick={() => setActiveTab(tab)}
+                style={{ 
+                  padding: '12px 0', background: 'none', border: 'none', 
+                  color: activeTab === tab ? '#0f172a' : '#94a3b8', 
+                  fontSize: '0.9rem', fontWeight: 700, cursor: 'pointer',
+                  borderBottom: activeTab === tab ? '2px solid #ef4444' : '2px solid transparent',
+                  transition: 'all 0.2s'
+                }}
+              >
+                {tab}
+              </button>
+            ))}
+          </div>
+
+          <AnimatePresence mode="wait">
+            <motion.div key={activeTab} initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -10 }}>
+              {activeTab === 'Summary' && (
+                <div>
+                  <h3 style={{ fontSize: '1.25rem', fontWeight: 800, color: '#0f172a', marginBottom: '16px' }}>Lesson Recap</h3>
+                  <p style={{ color: '#475569', lineHeight: 1.8, fontSize: '0.95rem', marginBottom: '2.5rem' }}>
+                    {activeModule?.description || "In this lesson, we explored the fundamental building blocks of this program. We learned that components are independent and reusable bits of code. They serve the same purpose as functions but work in isolation and return output data."}
+                  </p>
+
+                  <h3 style={{ fontSize: '1.25rem', fontWeight: 800, color: '#0f172a', marginBottom: '20px' }}>Key Concepts</h3>
+                  <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1.5rem' }}>
+                    {[
+                      { title: 'Foundational Knowledge', desc: 'Understanding the core principles of the domain.' },
+                      { title: 'Strategic Planning', desc: 'How to map out your architecture effectively.' },
+                      { title: 'Resource Efficiency', desc: 'Optimizing inputs for maximum scalability.' },
+                      { title: 'Performance Metrics', desc: 'Tracking success via key performance indicators.' }
+                    ].map((item, i) => (
+                      <div key={i} style={{ padding: '24px', borderRadius: '20px', background: '#fff', border: '1px solid #e2e8f0', display: 'flex', gap: '16px' }}>
+                        <div style={{ width: '20px', height: '20px', borderRadius: '50%', background: '#fef2f2', border: '1px solid #ef4444', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+                          <Icon name="check" size={10} color="#ef4444" />
                         </div>
-                        <span style={{ 
-                          fontSize: '0.8rem', fontWeight: isActive ? 700 : 500,
-                          color: isActive ? '#E92222' : (isLocked ? '#94A3B8' : '#475569'),
-                        }}>
-                          {m.title}
-                        </span>
-                        {isActive && <div style={{ width: '4px', height: '4px', borderRadius: '50%', background: '#E92222', marginLeft: 'auto' }} />}
-                      </button>
-                    );
-                  })}
-                  
-                  {/* Weekly Assessment Entry */}
-                  <button
-                    disabled={isLocked}
-                    onClick={() => { 
-                      const weekStarted = completedLessons.size >= weekIdx * 3;
-                      if (weekStarted) setShowAssessment(true);
-                    }}
-                    style={{ 
-                      textAlign: 'left', padding: '14px 16px', borderRadius: '14px',
-                      background: showAssessment && Math.floor(activeModuleIdx / 3) === weekIdx ? '#F8FAFC' : 'transparent',
-                      border: '1px dashed #E2E8F0',
-                      cursor: isLocked ? 'not-allowed' : 'pointer',
-                      display: 'flex', alignItems: 'center', gap: '12px',
-                      transition: 'all 0.2s', width: '100%', marginTop: '8px'
-                    }}
-                  >
-                    <div style={{ color: '#E92222' }}><Icon name="info" size={14} /></div>
-                    <span style={{ fontSize: '0.8rem', fontWeight: 800, color: '#1E293B' }}>Weekly Threesess</span>
-                    {isLocked && <Icon name="lock" size={10} color="#94A3B8" style={{ marginLeft: 'auto' }} />}
-                  </button>
-                </div>
-              </div>
-            );
-          })}
-        </nav>
-      </aside>
-
-      {/* ── MAIN CONTENT AREA ── */}
-      <main style={{ flex: 1, display: 'flex', flexDirection: 'column', height: '100%', background: '#fff' }}>
-        <div style={{ flex: 1, overflowY: 'auto', padding: '48px 64px' }} className="custom-scrollbar">
-          {showAssessment ? (
-            /* ── ASSESSMENT OVERLAY (THREESESS) ── */
-            <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} style={{ maxWidth: '850px', margin: '0 auto', width: '100%' }}>
-              <div style={{ 
-                padding: '50px', borderRadius: '32px', background: '#0F172A', color: '#fff',
-                position: 'relative', overflow: 'hidden', boxShadow: '0 40px 100px rgba(0,0,0,0.1)'
-              }}>
-                <div style={{ position: 'absolute', top: 0, right: 0, width: '400px', height: '400px', background: 'radial-gradient(circle, rgba(233, 34, 34, 0.15) 0%, transparent 70%)', pointerEvents: 'none' }} />
-                
-                <div style={{ position: 'relative', zIndex: 1, textAlign: 'center' }}>
-                  <div style={{ width: '64px', height: '64px', background: 'rgba(255,255,255,0.1)', borderRadius: '20px', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 24px', border: '1px solid rgba(255,255,255,0.1)' }}>
-                    <Icon name="info" size={32} color="#E92222" />
+                        <div>
+                          <div style={{ fontSize: '0.9rem', fontWeight: 700, color: '#1e293b', marginBottom: '4px' }}>{item.title}</div>
+                          <div style={{ fontSize: '0.8rem', color: '#64748b', lineHeight: 1.5 }}>{item.desc}</div>
+                        </div>
+                      </div>
+                    ))}
                   </div>
-                  <h1 style={{ fontSize: '2.5rem', fontWeight: 800, marginBottom: '8px' }}>Weekly Threesess</h1>
-                  <p style={{ color: '#94A3B8', fontWeight: 500, marginBottom: '48px' }}>Synchronization • Week {Math.floor(activeModuleIdx / 3) + 1}</p>
                 </div>
-
-                <div style={{ position: 'relative', zIndex: 1, display: 'grid', gap: '20px', marginBottom: '48px' }}>
-                  {[1, 2, 3].map(q => (
-                    <div key={q} style={{ padding: '32px', borderRadius: '24px', background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.06)' }}>
-                      <div style={{ display: 'flex', gap: '16px', marginBottom: '24px' }}>
-                        <span style={{ color: '#E92222', fontWeight: 800 }}>0{q}</span>
-                        <p style={{ fontSize: '1.1rem', fontWeight: 600, margin: 0, lineHeight: 1.5 }}>How does strategic domain targeting influence MVP scalability?</p>
-                      </div>
-                      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px' }}>
-                        {['Iterative Growth Path', 'Fixed Domain Scaling', 'Strategic Resilience', 'Dynamic Resource Allocation'].map((opt, idx) => (
-                          <button 
-                            key={idx} 
-                            style={{ 
-                              padding: '16px 20px', background: 'rgba(255,255,255,0.02)', border: '1px solid rgba(255,255,255,0.05)', 
-                              borderRadius: '16px', textAlign: 'left', fontSize: '0.9rem', color: '#CBD5E1',
-                              cursor: 'pointer', transition: '0.2s', display: 'flex', alignItems: 'center', gap: '12px'
-                            }}
-                          >
-                            <div style={{ width: '16px', height: '16px', borderRadius: '50%', border: '2px solid rgba(255,255,255,0.2)' }} />
-                            {opt}
-                          </button>
-                        ))}
-                      </div>
-                    </div>
-                  ))}
+              )}
+              {activeTab !== 'Summary' && (
+                <div style={{ padding: '40px', background: '#fff', borderRadius: '20px', border: '1px solid #e2e8f0', textAlign: 'center', color: '#94a3b8' }}>
+                   No {activeTab.toLowerCase()} attached to this lesson yet.
                 </div>
-
-                <div style={{ position: 'relative', zIndex: 1, textAlign: 'center' }}>
-                  <button 
-                    onClick={() => { setShowAssessment(false); setActiveModuleIdx(prev => Math.min(modules.length - 1, prev + 1)); }}
-                    style={{ background: '#E92222', color: '#fff', border: 'none', padding: '18px 48px', borderRadius: '16px', fontSize: '1rem', fontWeight: 800, cursor: 'pointer' }}
-                  >
-                    SUBMIT & CONTINUE
-                  </button>
-                </div>
-              </div>
+              )}
             </motion.div>
-          ) : activeModule ? (
-            /* ── LESSON VIEW ── */
-            <div style={{ maxWidth: '950px', margin: '0 auto', width: '100%', position: 'relative' }}>
-              {/* Media Player */}
-              <div style={{ 
-                width: '100%', aspectRatio: '16/9', background: '#0F172A', 
-                borderRadius: '28px', marginBottom: '48px', position: 'relative',
-                overflow: 'hidden', boxShadow: '0 30px 60px rgba(0,0,0,0.12)'
-              }}>
-                <img src={course.thumbnailUrl || "https://images.unsplash.com/photo-1516321318423-f06f85e504b3?w=1200"} alt={course.title} style={{ width: '100%', height: '100%', objectFit: 'cover', opacity: 0.5 }} />
-                <div style={{ position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%)', width: '80px', height: '80px', borderRadius: '50%', background: '#fff', color: '#E92222', display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer', boxShadow: '0 10px 30px rgba(0,0,0,0.3)' }}>
-                  <div style={{ transform: 'translateX(3px)' }}><Icon name="play" size={32} /></div>
-                </div>
-              </div>
+          </AnimatePresence>
+        </section>
 
-              {/* Lesson Info */}
-              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '32px' }}>
-                <div style={{ maxWidth: '70%' }}>
-                  <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '12px' }}>
-                    <span style={{ fontSize: '0.75rem', fontWeight: 800, color: '#E92222', background: '#FEF2F2', padding: '4px 12px', borderRadius: '6px', textTransform: 'uppercase' }}>Module {activeModuleIdx + 1}</span>
-                  </div>
-                  <h1 style={{ fontSize: '2.5rem', fontWeight: 900, color: '#0F172A', letterSpacing: '-0.03em', lineHeight: 1.1 }}>{activeModule.title}</h1>
-                </div>
-                <button 
-                  onClick={handleLessonComplete}
-                  style={{ 
-                    background: completedLessons.has(activeModule._id) ? '#22C55E' : '#0F172A',
-                    color: '#fff', border: 'none', padding: '16px 32px', borderRadius: '16px',
-                    fontSize: '0.9rem', fontWeight: 800, cursor: 'pointer',
-                    display: 'flex', alignItems: 'center', gap: '10px', transition: '0.3s'
-                  }}
-                >
-                  {completedLessons.has(activeModule._id) ? <><Icon name="check" size={18} /> COMPLETED</> : 'MARK AS COMPLETE'}
-                </button>
-              </div>
-
-              <div style={{ color: '#475569', fontSize: '1.1rem', lineHeight: 1.7, fontWeight: 500 }} dangerouslySetInnerHTML={{ __html: activeModule.description || "In this session, we dive deep into the strategic architectural considerations for building durable startup foundations." }} />
-
-              <div style={{ marginTop: '4rem', display: 'flex', gap: '32px', borderBottom: '1px solid #F1F5F9' }}>
-                {['RESOURCES', 'TRANSCRIPT', 'NOTES'].map((tab, idx) => (
-                  <button key={tab} style={{ padding: '0 0 16px', background: 'none', border: 'none', color: idx === 0 ? '#0F172A' : '#94A3B8', fontSize: '0.85rem', fontWeight: 800, cursor: 'pointer', borderBottom: idx === 0 ? '2px solid #E92222' : '2px solid transparent' }}>{tab}</button>
-                ))}
-              </div>
+        {/* RIGHT COLUMN: PROGRESS & CONTENT */}
+        <aside>
+          {/* Study Progress Card */}
+          <div style={{ padding: '24px', background: '#fff', borderRadius: '24px', border: '1px solid #e2e8f0', marginBottom: '2rem', display: 'flex', alignItems: 'center', gap: '20px' }}>
+            <div style={{ position: 'relative', width: '80px', height: '80px' }}>
+               <svg width="80" height="80" viewBox="0 0 80 80">
+                  <circle cx="40" cy="40" r="34" fill="none" stroke="#f1f5f9" strokeWidth="6" />
+                  <circle cx="40" cy="40" r="34" fill="none" stroke="#ef4444" strokeWidth="6" 
+                    strokeDasharray={213.6} strokeDashoffset={213.6 - (213.6 * progress) / 100}
+                    strokeLinecap="round" transform="rotate(-90 40 40)"
+                  />
+               </svg>
+               <span style={{ position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%)', fontSize: '0.9rem', fontWeight: 800, color: '#0f172a' }}>{progress}%</span>
             </div>
-          ) : (
-            <div style={{ textAlign: 'center', padding: '4rem', color: '#64748B' }}>
-               <p style={{ fontWeight: 600 }}>No modules found for this course.</p>
+            <div>
+              <div style={{ fontSize: '0.95rem', fontWeight: 800, color: '#0f172a', marginBottom: '4px' }}>Study Progress</div>
+              <div style={{ fontSize: '0.8rem', color: '#64748b', lineHeight: 1.4 }}>Track your learning milestones and where you left off.</div>
             </div>
-          )}
-        </div>
+          </div>
 
-        {/* ── FOOTER CONTROLS ── */}
-        <div style={{ 
-          padding: '24px 64px', borderTop: '1px solid #F1F5F9', background: '#fff',
-          display: 'flex', justifyContent: 'space-between', alignItems: 'center'
-        }}>
-           <button 
-             disabled={activeModuleIdx === 0}
-             onClick={() => { setActiveModuleIdx(prev => Math.max(0, prev - 1)); setShowAssessment(false); }}
-             style={{ 
-               background: 'none', border: 'none', color: activeModuleIdx === 0 ? '#CBD5E1' : '#1E293B', 
-               fontWeight: 800, fontSize: '0.9rem', cursor: activeModuleIdx === 0 ? 'not-allowed' : 'pointer',
-               display: 'flex', alignItems: 'center', gap: '10px'
-             }}
-           >
-              <Icon name="chevron-right" size={16} style={{ transform: 'rotate(180deg)' }} /> PREVIOUS MODULE
-           </button>
+          {/* Module List (Days Structure) */}
+          <div style={{ background: '#fff', borderRadius: '24px', border: '1px solid #e2e8f0', overflow: 'hidden' }}>
+            <div style={{ padding: '24px', borderBottom: '1px solid #f1f5f9', fontSize: '1rem', fontWeight: 800, color: '#0f172a' }}>Day Schedule</div>
+            <div style={{ maxHeight: '600px', overflowY: 'auto' }} className="custom-scrollbar">
+              {days.map((day, dIdx) => (
+                <div key={dIdx} style={{ borderBottom: '1px solid #f1f5f9' }}>
+                   <button 
+                     onClick={() => toggleWeek(dIdx)}
+                     style={{ 
+                       width: '100%', padding: '16px 24px', display: 'flex', justifyContent: 'space-between', 
+                       alignItems: 'center', background: '#f8fafc', border: 'none', cursor: 'pointer' 
+                     }}
+                   >
+                     <span style={{ fontSize: '0.9rem', fontWeight: 800, color: '#1e293b' }}>{day.title}</span>
+                     <Icon name={expandedWeeks.has(dIdx) ? "chevronUp" : "chevronDown"} size={14} color="#64748b" />
+                   </button>
+                   
+                   <AnimatePresence>
+                     {expandedWeeks.has(dIdx) && (
+                       <motion.div 
+                         initial={{ height: 0 }} animate={{ height: 'auto' }} exit={{ height: 0 }}
+                         style={{ overflow: 'hidden' }}
+                       >
+                         {day.items.map((m, i) => {
+                           const actualIdx = day.startIdx + i;
+                           const isActive = activeModuleIdx === actualIdx;
+                           const isCompleted = completedLessons.has(m._id);
+                           return (
+                             <button 
+                               key={m._id} 
+                               onClick={() => setActiveModuleIdx(actualIdx)}
+                               style={{ 
+                                 width: '100%', display: 'flex', alignItems: 'center', gap: '16px', 
+                                 padding: '16px 24px', background: isActive ? '#fef2f2' : 'transparent',
+                                 border: 'none', borderBottom: i === day.items.length - 1 ? 'none' : '1px solid #f1f5f9', textAlign: 'left',
+                                 cursor: 'pointer', transition: 'all 0.2s',
+                               }}
+                             >
+                               <div style={{ 
+                                 width: '28px', height: '28px', borderRadius: '50%', 
+                                 background: isCompleted ? '#22c55e' : (isActive ? '#ef4444' : '#f8fafc'), 
+                                 color: isCompleted || isActive ? '#fff' : '#94a3b8',
+                                 display: 'flex', alignItems: 'center', justifyContent: 'center',
+                                 fontSize: '0.75rem', fontWeight: 800, flexShrink: 0
+                               }}>
+                                 {isCompleted ? <Icon name="check" size={12} color="#fff" /> : actualIdx + 1}
+                               </div>
+                               <div style={{ flex: 1 }}>
+                                 <div style={{ fontSize: '0.8rem', fontWeight: isActive ? 800 : 800, color: isActive ? '#ef4444' : '#1e293b', marginBottom: '2px' }}>{m.title}</div>
+                                 <div style={{ fontSize: '0.7rem', color: '#94a3b8', fontWeight: 500 }}>
+                                    {isActive ? "Currently Playing" : "Session class"}
+                                 </div>
+                               </div>
+                               {isCompleted && (
+                                 <div style={{ color: '#22c55e' }}>
+                                    <Icon name="checkCircle" size={16} />
+                                 </div>
+                               )}
+                             </button>
+                           );
+                         })}
+                       </motion.div>
+                     )}
+                   </AnimatePresence>
+                </div>
+              ))}
+            </div>
+          </div>
+        </aside>
 
-           <button 
-             disabled={activeModuleIdx === modules.length - 1}
-             onClick={() => { setActiveModuleIdx(prev => Math.min(modules.length - 1, prev + 1)); setShowAssessment(false); }}
-             style={{ 
-               background: activeModuleIdx === modules.length - 1 ? '#F1F5F9' : '#0F172A', 
-               color: activeModuleIdx === modules.length - 1 ? '#94A3B8' : '#fff', 
-               fontWeight: 800, fontSize: '0.9rem', cursor: activeModuleIdx === modules.length - 1 ? 'not-allowed' : 'pointer',
-               display: 'flex', alignItems: 'center', gap: '10px', padding: '14px 28px', borderRadius: '14px', border: 'none'
-             }}
-           >
-              NEXT MODULE <Icon name="chevron-right" size={16} />
-           </button>
-        </div>
-      </main>
+      </div>
+
+      {/* ── FOOTER ACTIONS ── */}
+      <footer style={{ 
+        maxWidth: '1400px', margin: '3rem auto 0', padding: '1.5rem 0',
+        display: 'flex', justifyContent: 'space-between', alignItems: 'center',
+        borderTop: '1px solid #e2e8f0'
+      }}>
+         <button 
+           disabled={activeModuleIdx === 0}
+           onClick={() => {
+             const prevIdx = activeModuleIdx - 1;
+             setActiveModuleIdx(prevIdx);
+             // Find which day this index belongs to
+             const dIdx = days.findIndex(d => prevIdx >= d.startIdx && prevIdx < d.startIdx + d.items.length);
+             if (dIdx !== -1) {
+               const newExpanded = new Set(expandedWeeks);
+               newExpanded.add(dIdx);
+               setExpandedWeeks(newExpanded);
+             }
+           }}
+           style={{ background: 'none', border: 'none', color: activeModuleIdx === 0 ? '#cbd5e1' : '#475569', fontWeight: 700, cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '8px' }}
+         >
+           <Icon name="chevronLeft" size={16} /> PREVIOUS
+         </button>
+         <button 
+           onClick={handleLessonComplete}
+           style={{ background: '#0f172a', color: '#fff', border: 'none', padding: '14px 32px', borderRadius: '16px', fontWeight: 800, cursor: 'pointer', boxShadow: '0 4px 12px rgba(0,0,0,0.1)' }}
+         >
+           COMPLETE & NEXT
+         </button>
+      </footer>
 
       <style jsx global>{`
         .custom-scrollbar::-webkit-scrollbar { width: 6px; }
         .custom-scrollbar::-webkit-scrollbar-track { background: transparent; }
-        .custom-scrollbar::-webkit-scrollbar-thumb { background: #E2E8F0; borderRadius: 10px; }
-        .custom-scrollbar::-webkit-scrollbar-thumb:hover { background: #CBD5E1; }
+        .custom-scrollbar::-webkit-scrollbar-thumb { background: #e2e8f0; border-radius: 10px; }
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover { background: #cbd5e1; }
       `}</style>
+
     </div>
   );
 }

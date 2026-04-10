@@ -106,7 +106,7 @@
   border-radius: 24px;
   padding: 36px;
   transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
-  box-shadow: 
+  box-shadow:
     0 30px 80px rgba(0, 0, 0, 0.6),
     0 0 0 1px rgba(255, 255, 255, 0.05) inset;
   overflow: hidden;
@@ -122,18 +122,23 @@
   left: 0;
   right: 0;
   height: 3px;
-  background: linear-gradient(90deg, transparent 0%, rgba(255, 255, 255, 0.3) 50%, transparent 100%);
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(255, 255, 255, 0.3) 50%,
+    transparent 100%
+  );
 }
 
 .testimonial-card:hover {
   transform: translateY(-8px);
   border-color: rgba(255, 255, 255, 0.25);
-  box-shadow: 
+  box-shadow:
     0 40px 100px rgba(0, 0, 0, 0.8),
     0 0 80px rgba(255, 255, 255, 0.1);
 }
 
-/* Quote Icon */
+/* Quote Icon - Light Gray Default, Red + Glow on Hover */
 .quote-icon {
   width: 60px;
   height: 60px;
@@ -142,7 +147,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  color: rgba(255, 255, 255, 0.6);
+  color: #e5e7eb;
   margin-bottom: 24px;
   transition: all 0.4s ease;
 }
@@ -150,6 +155,8 @@
 .testimonial-card:hover .quote-icon {
   transform: scale(1.1) rotate(5deg);
   background: linear-gradient(135deg, rgba(255, 255, 255, 0.15) 0%, rgba(255, 255, 255, 0.12) 100%);
+  color: #e53935;
+  box-shadow: 0 0 25px rgba(229, 57, 53, 0.4);
 }
 
 /* Rating Stars */
@@ -239,7 +246,7 @@
   padding: 48px 40px;
   text-align: center;
   transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
-  box-shadow: 
+  box-shadow:
     0 30px 80px rgba(0, 0, 0, 0.6),
     0 0 0 1px rgba(255, 255, 255, 0.05) inset;
   overflow: hidden;
@@ -251,7 +258,7 @@
 .community-proof-card:hover {
   transform: translateY(-8px);
   border-color: rgba(255, 255, 255, 0.25);
-  box-shadow: 
+  box-shadow:
     0 40px 100px rgba(0, 0, 0, 0.8),
     0 0 80px rgba(255, 255, 255, 0.1);
 }
@@ -265,15 +272,16 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  color: rgba(255, 255, 255, 0.8);
+  color: #e5e7eb;
   margin: 0 auto 32px;
   transition: all 0.5s ease;
 }
 
 .community-proof-card:hover .community-icon {
   transform: scale(1.1) rotate(-5deg);
-  border-color: rgba(255, 255, 255, 0.4);
-  box-shadow: 0 0 40px rgba(255, 255, 255, 0.2);
+  border-color: rgba(229, 57, 53, 0.6);
+  color: #e53935;
+  box-shadow: 0 0 40px rgba(229, 57, 53, 0.4);
 }
 
 .community-title {
@@ -339,7 +347,7 @@
   justify-content: space-between;
   align-items: center;
   gap: 48px;
-  box-shadow: 
+  box-shadow:
     0 30px 80px rgba(0, 0, 0, 0.08),
     0 0 0 1px rgba(255, 255, 255, 0.9) inset;
   overflow: hidden;
@@ -386,7 +394,7 @@
   font-weight: 800;
   cursor: pointer;
   transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-  box-shadow: 
+  box-shadow:
     0 12px 36px rgba(220, 20, 60, 0.35),
     0 0 0 1px rgba(255, 255, 255, 0.2) inset;
   white-space: nowrap;
@@ -409,7 +417,7 @@
 
 .cta-button:hover {
   transform: translateY(-4px);
-  box-shadow: 
+  box-shadow:
     0 20px 50px rgba(220, 20, 60, 0.5),
     0 0 0 1px rgba(255, 255, 255, 0.3) inset;
 }

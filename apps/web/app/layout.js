@@ -32,8 +32,8 @@ import '@/styles/footer.css';
 import ClientErrorBoundary from '@/components/ClientErrorBoundary';
 import ConditionalLayout from '@/components/ConditionalLayout';
 
-// ScrollTotop button globally
 import ScrollToTop from '@/components/ScrollToTop';
+import CustomCursor from '@/components/CustomCursor';
 
 // Configure Poppins font - SIMPLE FIX for FOUC
 const poppins = Poppins({
@@ -65,13 +65,14 @@ export const viewport = {
 
 export default function RootLayout({ children }) {
   return (
-    <html lang="en" className={poppins.variable}>
+    <html lang="en" className={poppins.variable} suppressHydrationWarning>
       <body className={poppins.className} suppressHydrationWarning>
         <ClientErrorBoundary>
           <ConditionalLayout>
             {children}
           </ConditionalLayout>
-     <ScrollToTop />
+      <CustomCursor />
+      <ScrollToTop />
         </ClientErrorBoundary>
       </body>
     </html>

@@ -1,6 +1,4 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import "tailwindcss";
 
 /* Font loading handled in layout.js for optimal performance */
 /* Using Poppins font with system font stack as fallback */

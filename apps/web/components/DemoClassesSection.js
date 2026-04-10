@@ -3,6 +3,7 @@
 import { motion } from 'framer-motion';
 import { useState, useRef } from 'react';
 import dynamic from 'next/dynamic';
+import { Rocket, BarChart3, IndianRupee, GraduationCap } from 'lucide-react';
 const VideoPlayerModal = dynamic(() => import('./VideoPlayerModal'), { ssr: false });
 
 export default function DemoClassesSection() {
@@ -16,79 +17,67 @@ export default function DemoClassesSection() {
       id: 1,
       title: 'Why Pre incubation is important',
       instructor: 'Ravi Tilekar',
-      // duration: '45 min',
-
-      videoUrl: 'https://10ihs6meu0bf1qny.public.blob.vercel-storage.com/demo-1.mp4', // Replace with your video file
-      thumbnail: '/thumbnails/demo-1.jpg', // Replace with your thumbnail
+      videoUrl: 'https://10ihs6meu0bf1qny.public.blob.vercel-storage.com/demo-1.mp4',
+      thumbnail: '/thumbnails/demo-1.jpg',
       topics: ['Clarity', 'Mindset', 'Entrepreneurship'],
       views: '12.5K',
       gradient: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
-      icon: '🚀',
+      icon: Rocket,
     },
     {
       id: 2,
       title: 'Idea Validation',
       instructor: 'Vishwaraj Saude',
-      // duration: '60 min',
-
-      videoUrl: 'https://10ihs6meu0bf1qny.public.blob.vercel-storage.com/demo-2.mp4', // Replace with your video file
-      thumbnail: '/thumbnails/demo-2.jpg', // Replace with your thumbnail
+      videoUrl: 'https://10ihs6meu0bf1qny.public.blob.vercel-storage.com/demo-2.mp4',
+      thumbnail: '/thumbnails/demo-2.jpg',
       topics: ['Idea Validation', 'Audience', 'Market'],
       views: '15.2K',
       gradient: 'linear-gradient(135deg, #f093fb 0%, #f5576c 100%)',
-      icon: '📊',
+      icon: BarChart3,
     },
     {
       id: 3,
       title: 'Business Model',
       instructor: 'Avinash Tilekar',
-      // duration: '50 min',
-
-      videoUrl: 'https://10ihs6meu0bf1qny.public.blob.vercel-storage.com/demo-3.mp4', // Replace with your video file
-      thumbnail: '/thumbnails/demo-3.jpg', // Replace with your thumbnail
+      videoUrl: 'https://10ihs6meu0bf1qny.public.blob.vercel-storage.com/demo-3.mp4',
+      thumbnail: '/thumbnails/demo-3.jpg',
       topics: ['Structure roadmap', 'business plan'],
       views: '18.7K',
       gradient: 'linear-gradient(135deg, #4facfe 0%, #00f2fe 100%)',
-      icon: '💰',
+      icon: IndianRupee,
     },
     {
       id: 3,
       title: 'Market & Go To Market Strategy',
       instructor: 'Vishwaraj Saude',
-      // duration: '50 min',
-
-      videoUrl: '/videos/demo-3.mp4', // Replace with your video file
-      thumbnail: '/thumbnails/demo-3.jpg', // Replace with your thumbnail
+      videoUrl: '/videos/demo-3.mp4',
+      thumbnail: '/thumbnails/demo-3.jpg',
       topics: ['understanding Market', 'Market strategy', 'Revenue stream'],
       views: '18.7K',
       gradient: 'linear-gradient(135deg, #4facfe 0%, #00f2fe 100%)',
-      icon: '💰',
+      icon: IndianRupee,
     },
     {
       id: 3,
       title: 'Finance & Legal Foundation',
       instructor: 'Bharat Bhushan Rallapalli',
-      // duration: '50 min',
-
-      videoUrl: '/videos/demo-3.mp4', // Replace with your video file
-      thumbnail: '/thumbnails/demo-3.jpg', // Replace with your thumbnail
+      videoUrl: '/videos/demo-3.mp4',
+      thumbnail: '/thumbnails/demo-3.jpg',
       topics: ['Legal Structure', 'IPR protection', 'financial planning'],
       views: '18.7K',
       gradient: 'linear-gradient(135deg, #4facfe 0%, #00f2fe 100%)',
-      icon: '💰',
+      icon: IndianRupee,
     },
     {
       id: 3,
       title: 'Idea Pitching',
       instructor: 'Bharat Bhushan Rallapalli',
-      // duration: '50 min',
-
-      videoUrl: '/videos/demo-3.mp4', // Replace with your video file
-      thumbnail: '/thumbnails/demo-3.jpg', // Replace with your thumbnail
+      videoUrl: '/videos/demo-3.mp4',
+      thumbnail: '/thumbnails/demo-3.jpg',
       topics: ['Preparing Pitch Deck', 'Understanding Investors', 'Storytelling'],
       views: '18.7K',
       gradient: 'linear-gradient(135deg, #4facfe 0%, #00f2fe 100%)',
-      icon: '💰',
+      icon: IndianRupee,
     },
   ];
 
@@ -124,7 +113,9 @@ export default function DemoClassesSection() {
             viewport={{ once: true }}
             transition={{ duration: 0.5, delay: 0.2 }}
           >
-            <span className="badge-icon">🎓</span>
+            <span className="badge-icon">
+              <GraduationCap size={16} />
+            </span>
             <span className="badge-text">Free Demo Classes</span>
           </motion.div>
 

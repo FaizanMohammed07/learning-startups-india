@@ -1,108 +1,54 @@
 'use client';
 
+import { useEffect } from 'react';
 import { motion } from 'framer-motion';
+import {
+  Lightbulb,
+  Sprout,
+  Handshake,
+  Rocket,
+  Target,
+  Star,
+  Users,
+  GraduationCap,
+  Building2,
+  TrendingUp,
+  Zap,
+  Coins,
+  Library,
+  UserCheck,
+} from 'lucide-react';
 import '../../styles/about-modern.css';
-
+import TeamSection from '@/components/TeamSection';
+import AboutHero from '@/components/AboutHero';
 
 export default function AboutUs() {
-  // Floating metric cards - Startup ecosystem stats with animation delays
-  const floatingMetrics = [
-    { icon: "🚀", value: "5000+", label: "Startups", delay: 0 },
-    { icon: "💡", value: "200+", label: "Mentors", delay: 1.5 },
-    { icon: "🎯", value: "95%", label: "Success", delay: 3 },
-    { icon: "⚡", value: "24/7", label: "Support", delay: 4.5 },
-  ];
+  useEffect(() => {
+    const isTouchDevice = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
+    if (isTouchDevice) return;
+
+    const handleMouseMove = e => {
+      const cards = document.querySelectorAll(
+        '.stand-card, .what-card, .mission-card, .approach-card'
+      );
+      cards.forEach(card => {
+        const rect = card.getBoundingClientRect();
+        const x = ((e.clientX - rect.left) / rect.width) * 100;
+        const y = ((e.clientY - rect.top) / rect.height) * 100;
+        card.style.setProperty('--mouse-x', `${x}%`);
+        card.style.setProperty('--mouse-y', `${y}%`);
+      });
+    };
+
+    document.addEventListener('mousemove', handleMouseMove);
+    return () => document.removeEventListener('mousemove', handleMouseMove);
+  }, []);
 
   return (
     <>
+      <AboutHero />
+
       <div className="about-page">
-        
-        {/* Hero Section - Dark with Animated Cards */}
-        <section className="about-hero">
-          {/* Animated Background */}
-          <div className="hero-animated-bg">
-            <div className="gradient-orb orb-1"></div>
-            <div className="gradient-orb orb-2"></div>
-            <div className="gradient-orb orb-3"></div>
-          </div>
-
-          {/* Floating Grid Pattern */}
-          <div className="hero-grid-pattern"></div>
-
-          <div className="container">
-            <div className="hero-content">
-              <motion.h1 
-                className="hero-title"
-                initial={{ opacity: 0, y: 30 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.8 }}
-              >
-                Building the Future of <br/>
-                <span className="hero-highlight">Entrepreneurship</span>
-              </motion.h1>
-              
-              <motion.p 
-                className="hero-description"
-                initial={{ opacity: 0, y: 30 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.8, delay: 0.2 }}
-              >
-                We are a startup ecosystem platform connecting founders, innovators, mentors, and partners 
-                to transform ideas into successful ventures. From the first spark of innovation to scaling 
-                real businesses, we're here to support your complete entrepreneurial journey.
-              </motion.p>
-              
-              <motion.div 
-                className="hero-stats"
-                initial={{ opacity: 0, y: 30 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.8, delay: 0.4 }}
-              >
-                <div className="hero-stat">
-                  <div className="stat-number">5000+</div>
-                  <div className="stat-label">Startups Supported</div>
-                </div>
-                <div className="hero-stat">
-                  <div className="stat-number">200+</div>
-                  <div className="stat-label">Expert Mentors</div>
-                </div>
-                <div className="hero-stat">
-                  <div className="stat-number">95%</div>
-                  <div className="stat-label">Success Rate</div>
-                </div>
-              </motion.div>
-            </div>
-
-            {/* Floating Metric Cards - FadeIn/FadeOut Animation */}
-            <div className="floating-metrics-container">
-              {floatingMetrics.map((metric, index) => (
-                <motion.div
-                  key={`metric-${index}`}
-                  className={`floating-metric floating-metric-${index + 1}`}
-                  initial={{ opacity: 0, x: -50, y: 50, rotate: -5 }}
-                  animate={{ 
-                    opacity: [0, 1, 1, 0],
-                    x: [-50, 0, 0, 50],
-                    y: [50, 0, -30, -80],
-                    rotate: [-5, 0, 2, 5]
-                  }}
-                  transition={{
-                    duration: 4,
-                    delay: metric.delay,
-                    repeat: Infinity,
-                    repeatDelay: 2,
-                    ease: [0.43, 0.13, 0.23, 0.96]
-                  }}
-                >
-                  <div className="metric-icon">{metric.icon}</div>
-                  <div className="metric-value">{metric.value}</div>
-                  <div className="metric-label">{metric.label}</div>
-                </motion.div>
-              ))}
-            </div>
-          </div>
-        </section>
-
         {/* Who We Are - Dark */}
         <section className="who-section">
           <div className="container">
@@ -119,14 +65,17 @@ export default function AboutUs() {
 
               <div className="who-content">
                 <p className="who-description">
-                  Startups India is a startup ecosystem platform built to support the complete entrepreneurial journey—from 
-                  the first spark of an idea to building and scaling a real startup. We exist to connect founders, innovators, 
-                  students, mentors, and ecosystem partners under one collaborative platform where learning turns into execution.
+                  Startups India is a startup ecosystem platform built to support the complete
+                  entrepreneurial journey—from the first spark of an idea to building and scaling a
+                  real startup. We exist to connect founders, innovators, students, mentors, and
+                  ecosystem partners under one collaborative platform where learning turns into
+                  execution.
                 </p>
                 <div className="who-highlight">
                   <p>
-                    We strongly believe that great startups are not built in isolation. They grow when the right guidance, 
-                    opportunities, and ecosystem support come together at the right time.
+                    We strongly believe that great startups are not built in isolation. They grow
+                    when the right guidance, opportunities, and ecosystem support come together at
+                    the right time.
                   </p>
                 </div>
               </div>
@@ -148,25 +97,35 @@ export default function AboutUs() {
 
               <div className="stand-grid">
                 <div className="stand-card">
-                  <div className="stand-icon">💡</div>
+                  <div className="stand-icon">
+                    <Lightbulb size={24} />
+                  </div>
                   <h3>Ideas are Encouraged</h3>
                 </div>
                 <div className="stand-card">
-                  <div className="stand-icon">🌱</div>
+                  <div className="stand-icon">
+                    <Sprout size={24} />
+                  </div>
                   <h3>Innovation is Nurtured</h3>
                 </div>
                 <div className="stand-card">
-                  <div className="stand-icon">🤝</div>
+                  <div className="stand-icon">
+                    <Handshake size={24} />
+                  </div>
                   <h3>Founders are Supported</h3>
                 </div>
                 <div className="stand-card">
-                  <div className="stand-icon">🚀</div>
+                  <div className="stand-icon">
+                    <Rocket size={24} />
+                  </div>
                   <h3>Startups are Built with Clarity</h3>
                 </div>
               </div>
 
               <div className="stand-statement">
-                <p>We are not just a service provider—we are an <strong>ecosystem enabler</strong>.</p>
+                <p>
+                  We are not just a service provider—we are an <strong>ecosystem enabler</strong>.
+                </p>
               </div>
             </div>
           </div>
@@ -180,7 +139,8 @@ export default function AboutUs() {
                 <div className="section-label">Our Services</div>
                 <h2 className="section-title">What We Do as a Startup Ecosystem Platform</h2>
                 <p className="section-description">
-                  We help founders and aspiring entrepreneurs at every stage by providing structured support and real-world exposure.
+                  We help founders and aspiring entrepreneurs at every stage by providing structured
+                  support and real-world exposure.
                 </p>
               </div>
 
@@ -235,20 +195,25 @@ export default function AboutUs() {
             <div>
               <div className="mission-grid">
                 <div className="mission-card">
-                  <div className="mission-icon">🎯</div>
+                  <div className="mission-icon">
+                    <Target size={24} />
+                  </div>
                   <h3>Our Mission</h3>
                   <p>
-                    To empower founders and innovators with the right mindset, skills, mentorship, and ecosystem access 
-                    so they can build sustainable and impactful startups.
+                    To empower founders and innovators with the right mindset, skills, mentorship,
+                    and ecosystem access so they can build sustainable and impactful startups.
                   </p>
                 </div>
 
                 <div className="mission-card">
-                  <div className="mission-icon">🌟</div>
+                  <div className="mission-icon">
+                    <Star size={24} />
+                  </div>
                   <h3>Our Vision</h3>
                   <p>
-                    To build a strong, inclusive, and future-ready startup ecosystem that supports innovation, job creation, 
-                    and economic growth—especially among students and first-time founders.
+                    To build a strong, inclusive, and future-ready startup ecosystem that supports
+                    innovation, job creation, and economic growth—especially among students and
+                    first-time founders.
                   </p>
                 </div>
               </div>
@@ -270,33 +235,46 @@ export default function AboutUs() {
 
               <div className="ecosystem-flow">
                 <div className="ecosystem-node">
-                  <div className="node-icon">👥</div>
+                  <div className="node-icon">
+                    <Rocket size={24} />
+                  </div>
                   <h4>Aspiring Founders & Startups</h4>
                 </div>
                 <div className="flow-connector">↔</div>
                 <div className="ecosystem-node">
-                  <div className="node-icon">🎓</div>
+                  <div className="node-icon">
+                    <UserCheck size={24} />
+                  </div>
                   <h4>Mentors & Industry Experts</h4>
                 </div>
                 <div className="flow-connector">↔</div>
                 <div className="ecosystem-node">
-                  <div className="node-icon">🏢</div>
+                  <div className="node-icon">
+                    <Building2 size={24} />
+                  </div>
                   <h4>Incubators & Accelerators</h4>
                 </div>
                 <div className="flow-connector">↔</div>
                 <div className="ecosystem-node">
-                  <div className="node-icon">🎓</div>
+                  <div className="node-icon">
+                    <Library size={24} />
+                  </div>
                   <h4>Colleges & Institutions</h4>
                 </div>
                 <div className="flow-connector">↔</div>
                 <div className="ecosystem-node">
-                  <div className="node-icon">💰</div>
+                  <div className="node-icon">
+                    <Coins size={24} />
+                  </div>
                   <h4>Investors & Organizations</h4>
                 </div>
               </div>
 
               <div className="ecosystem-statement">
-                <p>By connecting these stakeholders, we ensure founders don’t just learn—but <strong>progress</strong>.</p>
+                <p>
+                  By connecting these stakeholders, we ensure founders don’t just learn—but{' '}
+                  <strong>progress</strong>.
+                </p>
               </div>
             </div>
           </div>
@@ -314,29 +292,40 @@ export default function AboutUs() {
 
               <div className="approach-grid">
                 <div className="approach-card">
-                  <div className="approach-icon">🎯</div>
+                  <div className="approach-icon">
+                    <Target size={24} />
+                  </div>
                   <h3>Learn by Doing</h3>
                   <p>Not just theory</p>
                 </div>
                 <div className="approach-card">
-                  <div className="approach-icon">👤</div>
+                  <div className="approach-icon">
+                    <Users size={24} />
+                  </div>
                   <h3>Founder-First Mindset</h3>
                   <p>Your success is our priority</p>
                 </div>
                 <div className="approach-card">
-                  <div className="approach-icon">⚡</div>
+                  <div className="approach-icon">
+                    <Zap size={24} />
+                  </div>
                   <h3>Execution Over Ideas</h3>
                   <p>Action drives results</p>
                 </div>
                 <div className="approach-card">
-                  <div className="approach-icon">🤝</div>
+                  <div className="approach-icon">
+                    <Handshake size={24} />
+                  </div>
                   <h3>Community-Driven Growth</h3>
                   <p>We grow together</p>
                 </div>
               </div>
 
               <div className="approach-statement">
-                <p>Every program, event, and initiative is designed to deliver <strong>real outcomes</strong>, not just certificates.</p>
+                <p>
+                  Every program, event, and initiative is designed to deliver{' '}
+                  <strong>real outcomes</strong>, not just certificates.
+                </p>
               </div>
             </div>
           </div>
@@ -389,16 +378,19 @@ export default function AboutUs() {
             >
               <h2>Our Commitment</h2>
               <p>
-                At Startups India, we are committed to helping people believe in their ideas, build with confidence, 
-                and grow with the ecosystem.
+                At Startups India, we are committed to helping people believe in their ideas, build
+                with confidence, and grow with the ecosystem.
               </p>
               <p>
-                Whether you are a student exploring entrepreneurship, a founder validating an idea, or a startup ready 
-                to scale—we are here to support your journey.
+                Whether you are a student exploring entrepreneurship, a founder validating an idea,
+                or a startup ready to scale—we are here to support your journey.
               </p>
             </motion.div>
           </div>
         </section>
+
+        {/* TEAM SECTION */}
+        <TeamSection />
 
         {/* CTA Section - Dark */}
         <section className="cta-section">
@@ -411,12 +403,13 @@ export default function AboutUs() {
               viewport={{ once: true }}
             >
               <h2>Have an Idea? A Vision? A Startup Dream?</h2>
-              <p>Join our ecosystem and take your first step toward building something meaningful.</p>
+              <p>
+                Join our ecosystem and take your first step toward building something meaningful.
+              </p>
               <button className="cta-button">Join Our Ecosystem</button>
             </motion.div>
           </div>
         </section>
-
       </div>
     </>
   );

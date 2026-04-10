@@ -146,17 +146,25 @@ export default function CourseDetailPage() {
         padding: '0 0 4rem',
         color: '#fff'
       }}>
-        <div style={{ maxWidth: '1200px', margin: '0 auto', padding: '1.5rem 2rem 0.5rem' }}>
-          <nav style={{ display: 'flex', gap: '8px', fontSize: '0.85rem', color: 'rgba(255,255,255,0.7)' }}>
-            <Link href="/dashboard" style={{ textDecoration: 'none', color: 'inherit' }}>Home</Link>
-            <span>/</span>
-            <Link href="/courses" style={{ textDecoration: 'none', color: 'inherit' }}>Courses</Link>
-            <span>/</span>
-            <span style={{ color: '#fff', fontWeight: 600 }}>{course.title}</span>
-          </nav>
+        <div style={{ maxWidth: '1440px', margin: '0 auto', padding: '1.5rem 1rem 0.5rem' }}>
+          <button 
+            onClick={() => router.back()}
+            style={{ 
+              display: 'flex', alignItems: 'center', gap: '8px', 
+              background: 'rgba(255,255,255,0.15)', border: '1px solid rgba(255,255,255,0.2)', 
+              padding: '10px 18px', borderRadius: '14px', 
+              fontSize: '0.85rem', fontWeight: 800, color: '#fff', 
+              cursor: 'pointer', transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
+              backdropFilter: 'blur(10px)'
+            }}
+            onMouseOver={e => { e.currentTarget.style.background = 'rgba(255,255,255,0.25)'; e.currentTarget.style.transform = 'translateX(-4px)'; }}
+            onMouseOut={e => { e.currentTarget.style.background = 'rgba(255,255,255,0.15)'; e.currentTarget.style.transform = 'translateX(0)'; }}
+          >
+            <div style={{ transform: 'rotate(180deg)', display: 'flex' }}>{Icons.play}</div> BACK TO EXPLORE
+          </button>
         </div>
 
-        <div style={{ maxWidth: '1200px', margin: '0 auto', padding: '2rem', display: 'grid', gridTemplateColumns: 'minmax(0, 1fr) 380px', gap: '4rem' }}>
+        <div style={{ maxWidth: '1440px', margin: '0 auto', padding: '2rem 1rem', display: 'grid', gridTemplateColumns: 'minmax(0, 1fr) 380px', gap: '4rem' }}>
           <main>
             <div style={{ marginBottom: '2rem' }}>
               <h1 style={{ 
@@ -226,7 +234,7 @@ export default function CourseDetailPage() {
               {/* Promotion Card */}
               <div style={{ border: '1px solid #e5e7eb', borderRadius: '16px', overflow: 'hidden', background: '#fff', boxShadow: '0 20px 50px rgba(0,0,0,0.1)' }}>
                 <div style={{ height: '200px', background: '#111827', position: 'relative' }}>
-                   <img src={course.thumbnailUrl || "/assets/images/course-placeholder.png"} style={{ width: '100%', height: '100%', objectFit: 'cover', opacity: 0.8 }} />
+                   <img src={course.thumbnailUrl || "/assets/images/course-placeholder.png"} style={{ width: '100%', height: '100%', objectFit: 'cover', opacity: 0.8 }} alt="Course Thumbnail" />
                    <div style={{ position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%)', width: '48px', height: '48px', borderRadius: '50%', background: '#fff', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#ef4444' }}>
                       {Icons.play}
                    </div>
@@ -241,7 +249,7 @@ export default function CourseDetailPage() {
                   <p style={{ fontSize: '0.85rem', color: '#ef4444', fontWeight: 600, marginBottom: '1.5rem' }}>Promo ends soon in 12:02!</p>
                   
                   <div style={{ display: 'grid', gap: '10px', marginBottom: '2.5rem' }}>
-                    <button onClick={() => router.push(`/learn/${course._id}`)} style={{ padding: '14px', borderRadius: '10px', background: '#ef4444', color: '#fff', border: 'none', fontSize: '0.95rem', fontWeight: 700, cursor: 'pointer' }}>Enroll Now</button>
+                    <button onClick={() => router.push(`/checkout?courseId=${course._id}`)} style={{ padding: '14px', borderRadius: '10px', background: '#ef4444', color: '#fff', border: 'none', fontSize: '0.95rem', fontWeight: 700, cursor: 'pointer' }}>Enroll Now</button>
                     <button style={{ padding: '14px', borderRadius: '10px', background: '#fff', color: '#4b5563', border: '1px solid #e5e7eb', fontSize: '0.95rem', fontWeight: 700, cursor: 'pointer' }}>Send Message</button>
                   </div>
 
@@ -273,7 +281,7 @@ export default function CourseDetailPage() {
               <div style={{ border: '1px solid #f1f5f9', borderRadius: '16px', background: '#f9fafb', padding: '2rem' }}>
                 <div style={{ display: 'flex', gap: '12px', alignItems: 'center', marginBottom: '1.25rem' }}>
                   <div style={{ width: '48px', height: '48px', borderRadius: '10px', background: '#fff', boxShadow: '0 1px 2px rgba(0,0,0,0.1)' }}>
-                     <img src="/assets/images/placeholder-user.png" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                     <img src="/assets/images/placeholder-user.png" style={{ width: '100%', height: '100%', objectFit: 'cover' }} alt="Instructor Avatar" />
                   </div>
                   <div>
                     <h4 style={{ margin: 0, fontSize: '0.95rem', fontWeight: 700, color: '#111827' }}>Faizal M.</h4>
@@ -291,7 +299,7 @@ export default function CourseDetailPage() {
         </div>
       </div>
 
-      <div style={{ maxWidth: '1200px', margin: '0 auto', padding: '4rem 2rem 0', display: 'grid', gridTemplateColumns: 'minmax(0, 1fr) 380px', gap: '4rem' }}>
+      <div style={{ maxWidth: '1440px', margin: '0 auto', padding: '4rem 1rem 0', display: 'grid', gridTemplateColumns: 'minmax(0, 1fr) 380px', gap: '4rem' }}>
         <main>
           <div>
             <h2 style={{ fontSize: '1.8rem', fontWeight: 700, color: '#111827', marginBottom: '2.5rem' }}>Course Overview</h2>
@@ -371,7 +379,7 @@ export default function CourseDetailPage() {
       </div>
 
       <div className="full-width-sections" style={{ borderTop: '1px solid #f1f5f9', marginTop: '4rem', background: '#fff' }}>
-        <section style={{ padding: '6rem 2rem', maxWidth: '1200px', margin: '0 auto' }}>
+        <section style={{ padding: '6rem 1rem', maxWidth: '1440px', margin: '0 auto' }}>
           <div style={{ textAlign: 'center', marginBottom: '4rem' }}>
             <h2 style={{ fontSize: '2.2rem', fontWeight: 700, color: '#111827', marginBottom: '1rem' }}>Stories from StartupsIndia Learners</h2>
             <p style={{ color: '#6b7280', fontWeight: 500, maxWidth: '600px', margin: '0 auto' }}>Thousands are growing their skills, switching careers, and achieving more. Here&apos;s what they&apos;re saying.</p>
@@ -398,13 +406,13 @@ export default function CourseDetailPage() {
         </section>
 
         <section style={{ padding: '6rem 2rem', background: '#f9fafb' }}>
-          <div style={{ maxWidth: '1200px', margin: '0 auto' }}>
+          <div style={{ maxWidth: '1440px', margin: '0 auto', padding: '0 1rem' }}>
             <h2 style={{ fontSize: '2rem', fontWeight: 700, color: '#111827', marginBottom: '3rem', textAlign: 'center' }}>Expand Your Expertise</h2>
             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '1.5rem' }}>
               {relatedCourses.map(rc => (
                 <div key={rc._id} style={{ border: '1px solid #e5e7eb', borderRadius: '12px', overflow: 'hidden', background: '#fff' }}>
                     <div style={{ height: '160px', background: '#f1f5f9' }}>
-                        <img src={rc.thumbnailUrl || rc.img} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                        <img src={rc.thumbnailUrl || rc.img} style={{ width: '100%', height: '100%', objectFit: 'cover' }} alt="Course Thumbnail" />
                     </div>
                     <div style={{ padding: '1.5rem' }}>
                         <span style={{ fontSize: '0.65rem', fontWeight: 700, color: '#ef4444', textTransform: 'uppercase' }}>FUNDAMENTALS</span>
@@ -420,7 +428,7 @@ export default function CourseDetailPage() {
         </section>
 
         <section style={{ padding: '8rem 2rem' }}>
-          <div style={{ maxWidth: '800px', margin: '0 auto' }}>
+          <div style={{ maxWidth: '900px', margin: '0 auto', padding: '0 1rem' }}>
             <h2 style={{ fontSize: '2.2rem', fontWeight: 700, color: '#111827', textAlign: 'center', marginBottom: '1rem' }}>Frequently Asked Questions</h2>
             <p style={{ color: '#6b7280', textAlign: 'center', marginBottom: '4rem' }}>Everything you need to know before starting your learning journey.</p>
             <div style={{ display: 'grid', gap: '12px' }}>

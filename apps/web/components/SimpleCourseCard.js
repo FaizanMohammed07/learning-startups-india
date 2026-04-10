@@ -149,24 +149,30 @@ export default function SimpleCourseCard({ course, type = 'explore', layout = 'g
                        <button 
                          className="btn-brand-primary" 
                          style={{ padding: '10px', fontSize: '0.65rem', borderRadius: '10px' }}
+                         onClick={() => window.location.href = `/learn/${course.slug || course._id || course.id}`}
                        >
-                         <Icon name="award" size={14} color="#fff" /> CERTIFICATE
+                         <Icon name="play" size={14} color="#fff" /> REVISE AGAIN
                        </button>
                     </div>
                  ) : (
                     <Link 
-                      href={`/courses/${course.slug || course._id || course.id}`} 
+                      href={isEnrolled ? `/learn/${course.slug || course._id || course.id}` : `/courses/${course.slug || course._id || course.id}`} 
                       className="btn-brand-primary" 
                       style={{ 
                         padding: '12px 20px', 
                         width: '100%',
                         fontSize: '0.75rem',
+                        fontWeight: 900,
+                        textAlign: 'center',
                         textDecoration: 'none',
-                        borderRadius: '12px'
+                        borderRadius: '12px',
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center'
                       }}
                     >
-                      {isEnrolled ? 'CONTINUE LEARNING' : 'EXPLORE PROGRAM'}
-                      <Icon name="chevron-right" size={14} color="#fff" style={{ marginLeft: 'auto' }} />
+                      {isEnrolled ? 'CONTINUE' : 'EXPLORE PROGRAM'}
+                      <Icon name="chevronRight" size={14} color="#fff" style={{ marginLeft: 'auto' }} />
                     </Link>
                  )}
               </div>

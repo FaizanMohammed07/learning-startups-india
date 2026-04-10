@@ -62,7 +62,7 @@ const SidebarItem = ({ label, active, onClick, icon }) => (
   <button 
     onClick={onClick}
     className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-200 text-sm font-medium ${
-      active ? 'bg-[#F97316] text-white shadow-lg' : 'text-gray-500 hover:bg-gray-100 hover:text-gray-900'
+      active ? 'bg-[#ef4444] text-white shadow-lg' : 'text-gray-500 hover:bg-gray-100 hover:text-gray-900'
     }`}
   >
     {icon && <Icon name={icon} size={18} color={active ? '#fff' : '#9CA3AF'} />}
@@ -76,7 +76,7 @@ const AssignmentCard = ({ assignment, onClick }) => {
       case 'Submitted': return { bg: 'bg-blue-50', text: 'text-blue-600' };
       case 'Graded': return { bg: 'bg-green-50', text: 'text-green-600' };
       case 'Late': return { bg: 'bg-red-50', text: 'text-red-600' };
-      default: return { bg: 'bg-orange-50', text: 'text-[#F97316]' };
+      default: return { bg: 'bg-red-50', text: 'text-[#ef4444]' };
     }
   };
 
@@ -107,7 +107,7 @@ const AssignmentCard = ({ assignment, onClick }) => {
         </div>
       </div>
 
-      <button className="w-full py-3 bg-[#F97316] text-white rounded-xl text-sm font-bold shadow-md hover:brightness-105 active:scale-95 transition-all">
+      <button className="w-full py-3 bg-[#ef4444] text-white rounded-xl text-sm font-bold shadow-md hover:brightness-105 active:scale-95 transition-all">
         {assignment.status === 'Submitted' || assignment.status === 'Graded' ? 'View Details' : 'Submit Assignment'}
       </button>
     </motion.div>
@@ -135,7 +135,7 @@ export default function AssignmentsPage() {
   if (view === 'detail' && selectedTask) {
     return (
       <div className="max-w-[1280px] mx-auto min-h-screen bg-[#F9FAFB] p-8 font-inter">
-        <button onClick={() => setView('list')} className="flex items-center gap-2 text-sm font-bold text-gray-400 mb-8 hover:text-[#F97316] transition-colors">
+        <button onClick={() => setView('list')} className="flex items-center gap-2 text-sm font-bold text-gray-400 mb-8 hover:text-[#ef4444] transition-colors">
           <Icon name="chevronLeft" size={18} /> BACK TO LIST
         </button>
 
@@ -145,11 +145,11 @@ export default function AssignmentsPage() {
               <div className="flex justify-between items-start mb-6">
                 <div>
                   <h1 className="text-3xl font-black text-[#111827] mb-2">{selectedTask.title}</h1>
-                  <p className="text-[#F97316] font-bold text-sm tracking-wide">{selectedTask.course}</p>
+                  <p className="text-[#ef4444] font-bold text-sm tracking-wide">{selectedTask.course}</p>
                 </div>
-                <div className="bg-orange-50 px-6 py-3 rounded-2xl border border-orange-100 text-center">
-                  <div className="text-xs font-bold text-orange-400 uppercase mb-1">Total Marks</div>
-                  <div className="text-2xl font-black text-[#F97316]">{selectedTask.marks}</div>
+                <div className="bg-red-50 px-6 py-3 rounded-2xl border border-red-100 text-center">
+                  <div className="text-xs font-bold text-red-400 uppercase mb-1">Total Marks</div>
+                  <div className="text-2xl font-black text-[#ef4444]">{selectedTask.marks}</div>
                 </div>
               </div>
 
@@ -165,7 +165,7 @@ export default function AssignmentsPage() {
                   <section>
                     <h3 className="text-lg font-bold text-[#111827] mb-3">Attachments</h3>
                     <div className="flex items-center gap-3 p-4 bg-gray-50 rounded-2xl border border-gray-100 w-fit cursor-pointer hover:bg-gray-100 transition-colors">
-                      <Icon name="fileText" size={20} color="#F97316" />
+                      <Icon name="fileText" size={20} color="#ef4444" />
                       <span className="text-sm font-bold text-gray-700">{selectedTask.attachment}</span>
                       <Icon name="download" size={16} color="#9CA3AF" />
                     </div>
@@ -204,13 +204,13 @@ export default function AssignmentsPage() {
               {selectedTask.status === 'Pending' || selectedTask.status === 'Late' ? (
                 <div className="space-y-6">
                   <div 
-                    className={`border-2 border-dashed rounded-2xl p-8 text-center transition-all ${isUploading ? 'border-[#F97316] bg-orange-50' : 'border-gray-200 hover:border-orange-300'}`}
+                    className={`border-2 border-dashed rounded-2xl p-8 text-center transition-all ${isUploading ? 'border-[#ef4444] bg-red-50' : 'border-gray-200 hover:border-red-300'}`}
                     onDragOver={(e) => { e.preventDefault(); setIsUploading(true); }}
                     onDragLeave={() => setIsUploading(false)}
                     onClick={() => setIsUploading(!isUploading)}
                   >
-                    <div className="w-16 h-16 bg-orange-50 rounded-full flex items-center justify-center mx-auto mb-4">
-                      <Icon name="upload" size={28} color="#F97316" />
+                    <div className="w-16 h-16 bg-red-50 rounded-full flex items-center justify-center mx-auto mb-4">
+                      <Icon name="upload" size={28} color="#ef4444" />
                     </div>
                     <h4 className="text-sm font-bold text-gray-900 mb-1">Click or drag file to upload</h4>
                     <p className="text-[11px] text-gray-400 font-bold uppercase">PDF, ZIP, or DOC (Max 20MB)</p>
@@ -220,11 +220,11 @@ export default function AssignmentsPage() {
                     <label className="text-xs font-black text-gray-400 uppercase ml-1">Submission Note</label>
                     <textarea 
                       placeholder="Add a comment to your instructor..."
-                      className="w-full p-4 rounded-xl border border-gray-200 focus:border-[#F97316] outline-none text-sm min-h-[100px] transition-all"
+                      className="w-full p-4 rounded-xl border border-gray-200 focus:border-[#ef4444] outline-none text-sm min-h-[100px] transition-all"
                     />
                   </div>
 
-                  <button className="w-full py-4 bg-[#F97316] text-white rounded-2xl font-black text-lg shadow-xl shadow-orange-100 hover:brightness-105 active:scale-95 transition-all">
+                  <button className="w-full py-4 bg-[#ef4444] text-white rounded-2xl font-black text-lg shadow-xl shadow-red-100 hover:brightness-105 active:scale-95 transition-all">
                     SUBMIT NOW
                   </button>
                 </div>
@@ -237,16 +237,16 @@ export default function AssignmentsPage() {
                     </div>
                     <p className="text-[11px] text-gray-400 font-bold uppercase">Submitted on {selectedTask.submittedDate || 'recently'}</p>
                   </div>
-                  <button className="w-full py-3 border-2 border-dashed border-gray-200 text-gray-400 rounded-2xl font-bold text-sm hover:border-orange-300 hover:text-orange-500 transition-all">
+                  <button className="w-full py-3 border-2 border-dashed border-gray-200 text-gray-400 rounded-2xl font-bold text-sm hover:border-red-300 hover:text-red-500 transition-all">
                     RESUBMIT
                   </button>
                 </div>
               )}
             </div>
 
-            <div className="bg-[#FFF7ED] rounded-3xl p-8 border border-[#FFEDD5]">
-              <h4 className="text-xs font-black text-orange-400 uppercase mb-4 tracking-widest">Deadlines</h4>
-              <div className="flex items-center gap-4 text-orange-700">
+            <div className="bg-red-50 rounded-3xl p-8 border border-red-100">
+              <h4 className="text-xs font-black text-red-400 uppercase mb-4 tracking-widest">Deadlines</h4>
+              <div className="flex items-center gap-4 text-red-700">
                 <Icon name="clock" size={22} />
                 <div>
                   <div className="text-sm font-black">{selectedTask.dueDate}</div>
@@ -274,15 +274,12 @@ export default function AssignmentsPage() {
               placeholder="Search assignments..." 
               value={search}
               onChange={(e) => setSearch(e.target.value)}
-              className="w-full pl-12 pr-4 py-3.5 rounded-2xl border border-[#E5E7EB] bg-white outline-none focus:ring-2 focus:ring-orange-100 transition-all font-medium text-sm" 
+              className="w-full pl-12 pr-4 py-3.5 rounded-2xl border border-[#E5E7EB] bg-white outline-none focus:ring-2 focus:ring-red-100 transition-all font-medium text-sm" 
             />
             <div className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400">
               <Icon name="search" size={18} />
             </div>
           </div>
-          <button className="px-6 py-3.5 bg-[#F97316] text-white rounded-2xl font-black shadow-lg shadow-orange-100 hover:scale-105 active:scale-95 transition-all flex items-center gap-2">
-            <Icon name="plus" size={20} /> Create Assignment
-          </button>
         </div>
       </header>
 
@@ -308,8 +305,8 @@ export default function AssignmentsPage() {
                     key={task.id} 
                     assignment={task} 
                     onClick={(t) => {
-                      setSelectedTask(t);
-                      setView('detail');
+                       setSelectedTask(t);
+                       setView('detail');
                     }} 
                   />
                 ))
@@ -329,32 +326,23 @@ export default function AssignmentsPage() {
         <aside className="space-y-6">
           <div className="bg-white border border-[#E5E7EB] rounded-3xl p-8 shadow-sm">
             <h4 className="text-sm font-black text-[#111827] uppercase tracking-widest mb-6 flex items-center gap-2">
-              <span className="w-2 h-2 bg-[#F97316] rounded-full"></span> Upcoming Deadlines
+              <span className="w-2 h-2 bg-[#ef4444] rounded-full"></span> Upcoming Deadlines
             </h4>
             <div className="space-y-4">
               {DEADLINES.map((d, i) => (
                 <div key={i} className="group cursor-pointer">
                   <div className="flex justify-between items-center mb-1">
-                    <span className="text-sm font-bold text-gray-700 group-hover:text-[#F97316] transition-colors">{d.title}</span>
-                    <span className="text-[10px] font-black text-orange-400 uppercase">{d.date}</span>
+                    <span className="text-sm font-bold text-gray-700 group-hover:text-[#ef4444] transition-colors">{d.title}</span>
+                    <span className="text-[10px] font-black text-red-400 uppercase">{d.date}</span>
                   </div>
                   <div className="h-1.5 bg-gray-50 rounded-full overflow-hidden">
-                    <motion.div initial={{ width: 0 }} animate={{ width: '70%' }} className="h-full bg-[#F97316]" />
+                    <motion.div initial={{ width: 0 }} animate={{ width: '70%' }} className="h-full bg-[#ef4444]" />
                   </div>
                 </div>
               ))}
             </div>
           </div>
 
-          <div className="bg-[#111827] rounded-3xl p-8 overflow-hidden relative">
-            <div className="relative z-10">
-              <h4 className="text-white text-lg font-black mb-2 leading-tight">Pro Mastery Tip</h4>
-              <p className="text-gray-400 text-sm font-medium leading-relaxed">Early submissions are rated 15% higher by industry reviewers.</p>
-            </div>
-            <div className="absolute -bottom-6 -right-6 opacity-10">
-              <Icon name="zap" size={120} color="#fff" />
-            </div>
-          </div>
         </aside>
       </div>
     </div>

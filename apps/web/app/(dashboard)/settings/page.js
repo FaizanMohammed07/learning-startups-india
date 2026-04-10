@@ -4,283 +4,375 @@ import Icon from '@/components/Icon';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useDashboard } from '@/contexts/DashboardProvider';
 
-const SIDEBAR_ITEMS = [
-  { label: 'Account', icon: 'user' },
-  { label: 'Security', icon: 'shield' },
-  { label: 'Notifications', icon: 'bell' },
-  { label: 'Privacy', icon: 'lock' }
-];
-
 export default function SettingsPage() {
   const { user } = useDashboard();
-  const [activeSidebar, setActiveSidebar] = useState('Account');
 
   return (
-    <div className="platform-page" style={{ padding: '0 2rem 4rem' }}>
-      <div style={{ display: 'grid', gridTemplateColumns: '260px 1fr', gap: '4rem' }}>
+    <div style={{ padding: '1.5rem 2.5rem', background: '#f8fafc', minHeight: '100vh' }}>
+      {/* Header Bar */}
+      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '2.5rem' }}>
+        <div>
+          <h1 style={{ fontSize: '2.8rem', fontWeight: 950, color: '#0f172a', margin: 0, letterSpacing: '-0.04em' }}>Account Settings</h1>
+          <p style={{ fontSize: '1.1rem', color: '#64748b', fontWeight: 600, marginTop: '8px' }}>Manage your profile, security, and preferences.</p>
+        </div>
+        <div style={{ display: 'flex', gap: '1rem' }}>
+          <button style={{ 
+            padding: '14px 24px', borderRadius: '16px', background: '#fff', border: '1px solid #e2e8f0',
+            fontSize: '0.95rem', fontWeight: 800, color: '#1e293b', cursor: 'pointer', transition: 'all 0.2s'
+          }}>Reset</button>
+          <button style={{ 
+            padding: '14px 28px', borderRadius: '16px', background: '#eb2327', border: 'none',
+            fontSize: '0.95rem', fontWeight: 900, color: '#fff', cursor: 'pointer', boxShadow: '0 6px 20px rgba(235,35,39,0.15)'
+          }}>Save all changes</button>
+        </div>
+      </div>
+
+      {/* Main Grid Layout */}
+      <div style={{ 
+        display: 'grid', 
+        gridTemplateColumns: 'repeat(12, 1fr)', 
+        gap: '1.5rem',
+        alignItems: 'start'
+      }}>
         
-        {/* Sidebar */}
-        <aside style={{ display: 'flex', flexDirection: 'column', gap: '2rem' }}>
-          <div>
-            <div style={{ padding: '0 1rem', marginBottom: '1.5rem' }}>
-              <h4 style={{ fontSize: '0.7rem', fontWeight: 950, color: 'var(--brand-red)', letterSpacing: '0.15em', textTransform: 'uppercase' }}>Settings Hub</h4>
-              <p style={{ fontSize: '0.8rem', color: 'var(--slate-400)', fontWeight: 600, marginTop: '4px' }}>Platform Preferences</p>
+        {/* Row 1: Profile Information (Large) & Basic Information (Medium) */}
+        <div style={{ gridColumn: 'span 8' }}>
+          <section className="settings-card" style={{ padding: '1.8rem 2rem', borderRadius: '24px', background: '#fff', border: '1px solid #f1f5f9', boxShadow: '0 1px 3px rgba(0,0,0,0.05)' }}>
+            <h3 style={{ fontSize: '1.1rem', fontWeight: 900, color: '#0f172a', marginBottom: '1.5rem' }}>Profile Information</h3>
+            
+            <div style={{ display: 'flex', gap: '2rem', marginBottom: '1.5rem' }}>
+               <div style={{ position: 'relative', flexShrink: 0 }}>
+                  <div style={{ 
+                    width: 90, height: 90, borderRadius: '20px', 
+                    background: 'linear-gradient(135deg, #7c0000 0%, #3e0000 100%)',
+                    display: 'flex', alignItems: 'center', justifyContent: 'center',
+                    fontSize: '2rem', fontWeight: 950, color: '#fff'
+                  }}>
+                    {user?.full_name?.split(' ').map(n => n[0]).join('').toUpperCase() || 'BS'}
+                  </div>
+                  <button style={{ 
+                    position: 'absolute', bottom: '-4px', right: '-4px', 
+                    width: 30, height: 30, borderRadius: '50%', background: '#fff',
+                    border: '1px solid #e2e8f0', display: 'flex', alignItems: 'center', justifyContent: 'center',
+                    boxShadow: '0 2px 4px rgba(0,0,0,0.1)', cursor: 'pointer'
+                  }}>
+                    <Icon name="pencil" size={14} color="#1e293b" />
+                  </button>
+               </div>
+               
+               <div style={{ flex: 1, display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
+                  <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1.2rem' }}>
+                    <div>
+                      <label style={{ display: 'block', fontSize: '0.75rem', fontWeight: 800, color: '#64748b', marginBottom: '6px' }}>Full name</label>
+                      <div style={{ position: 'relative' }}>
+                        <div style={{ position: 'absolute', left: '16px', top: '50%', transform: 'translateY(-50%)', opacity: 0.5 }}>
+                           <Icon name="user" size={16} />
+                        </div>
+                        <input 
+                          type="text" 
+                          defaultValue={user?.full_name || 'Beesu Siri'}
+                          className="settings-input"
+                          style={{ paddingLeft: '44px', height: '46px' }}
+                        />
+                      </div>
+                    </div>
+                    <div>
+                      <label style={{ display: 'block', fontSize: '0.75rem', fontWeight: 800, color: '#64748b', marginBottom: '6px' }}>Headline</label>
+                      <input 
+                        defaultValue="Serial Entrepreneur & Innovation Architect"
+                        className="settings-input"
+                        style={{ height: '46px' }}
+                      />
+                    </div>
+                  </div>
+               </div>
             </div>
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
-              {SIDEBAR_ITEMS.map(item => (
-                <div 
-                  key={item.label}
-                  onClick={() => setActiveSidebar(item.label)}
-                  style={{ 
-                    display: 'flex', alignItems: 'center', gap: '14px', padding: '12px 18px', borderRadius: '14px',
-                    cursor: 'pointer', transition: 'all 0.2s ease',
-                    background: activeSidebar === item.label ? 'var(--brand-red)' : 'transparent',
-                    color: activeSidebar === item.label ? '#fff' : 'var(--slate-500)',
-                    fontWeight: activeSidebar === item.label ? 900 : 750,
-                    boxShadow: activeSidebar === item.label ? '0 8px 16px rgba(235,35,39,0.1)' : 'none',
-                  }}
-                >
-                  <Icon name={item.icon} size={18} color={activeSidebar === item.label ? '#fff' : 'currentColor'} />
-                  {item.label}
-                </div>
-              ))}
+
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '1.2rem' }}>
+               <div>
+                  <label style={{ display: 'block', fontSize: '0.75rem', fontWeight: 800, color: '#64748b', marginBottom: '6px' }}>Mission Statement</label>
+                  <input 
+                    defaultValue="Building bold ideas with clarity, momentum, and strong execution."
+                    className="settings-input"
+                    style={{ height: '46px' }}
+                  />
+               </div>
+               <div>
+                  <label style={{ display: 'block', fontSize: '0.75rem', fontWeight: 800, color: '#64748b', marginBottom: '6px' }}>Bio</label>
+                  <textarea 
+                    defaultValue="Beesu Siri is focused on turning learning into visible progress through structured thinking, thinking, and disciplined execution."
+                    rows={2}
+                    className="settings-input"
+                    style={{ resize: 'none', padding: '12px 16px', minHeight: 'unset' }}
+                  />
+                  <div style={{ textAlign: 'right', fontSize: '0.65rem', color: '#94a3b8', marginTop: '4px', fontWeight: 600 }}>146/300</div>
+               </div>
             </div>
-          </div>
+          </section>
+        </div>
 
-          <div className="glass-card" style={{ padding: '1.5rem', borderRadius: '24px', background: 'var(--brand-black)', color: '#fff' }}>
-             <p style={{ fontSize: '0.8rem', fontWeight: 700, margin: '0 0 12px', lineHeight: 1.4, opacity: 0.8 }}>Need help with your account settings?</p>
-             <button className="btn-brand" style={{ width: '100%', padding: '10px', fontSize: '0.7rem' }}>GET HELP</button>
-          </div>
-        </aside>
+        <div style={{ gridColumn: 'span 4' }}>
+          <section className="settings-card" style={{ padding: '1.8rem 2rem', borderRadius: '24px', background: '#fff', border: '1px solid #f1f5f9', boxShadow: '0 1px 3px rgba(0,0,0,0.05)', height: '100%' }}>
+            <h3 style={{ fontSize: '1.1rem', fontWeight: 900, color: '#0f172a', marginBottom: '1.5rem' }}>Basic Information</h3>
+            
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '1.2rem' }}>
+               <div>
+                  <label style={{ display: 'block', fontSize: '0.75rem', fontWeight: 800, color: '#64748b', marginBottom: '6px' }}>Location</label>
+                  <div style={{ position: 'relative' }}>
+                    <div style={{ position: 'absolute', left: '16px', top: '50%', transform: 'translateY(-50%)', opacity: 0.5 }}>
+                       <Icon name="mapPin" size={16} />
+                    </div>
+                    <input 
+                      type="text" 
+                      defaultValue="Hyderabad, India"
+                      className="settings-input"
+                      style={{ paddingLeft: '44px', paddingRight: '44px', height: '46px' }}
+                    />
+                    <div style={{ position: 'absolute', right: '16px', top: '50%', transform: 'translateY(-50%)', opacity: 0.5 }}>
+                       <Icon name="moreHorizontal" size={16} />
+                    </div>
+                  </div>
+               </div>
 
-        {/* Content Area */}
-        <main>
-          <header style={{ marginBottom: '3rem' }}>
-            <h1 style={{ fontSize: '2.5rem', fontWeight: 950, color: 'var(--brand-black)', margin: 0, letterSpacing: '-0.03em' }}>
-              {activeSidebar} <span style={{ color: 'var(--brand-red)' }}>.</span>
-            </h1>
-          </header>
+               <div>
+                  <label style={{ display: 'block', fontSize: '0.75rem', fontWeight: 800, color: '#64748b', marginBottom: '6px' }}>Timezone</label>
+                  <div style={{ position: 'relative' }}>
+                    <div style={{ position: 'absolute', left: '16px', top: '50%', transform: 'translateY(-50%)', opacity: 0.5 }}>
+                       <Icon name="clock" size={16} />
+                    </div>
+                    <select 
+                      className="settings-input"
+                      style={{ paddingLeft: '44px', appearance: 'none', background: '#fff', height: '46px' }}
+                    >
+                      <option>IST (UTC+5:30)</option>
+                    </select>
+                    <div style={{ position: 'absolute', right: '16px', top: '50%', transform: 'translateY(-50%)', opacity: 0.5, pointerEvents: 'none' }}>
+                       <Icon name="chevronDown" size={16} />
+                    </div>
+                  </div>
+               </div>
 
-          <AnimatePresence mode="wait">
-            <motion.div 
-               key={activeSidebar}
-               initial={{ opacity: 0, y: 10 }}
-               animate={{ opacity: 1, y: 0 }}
-               exit={{ opacity: 0, y: -10 }}
-               transition={{ duration: 0.2 }}
-            >
-              {activeSidebar === 'Account' && <AccountSettingsView user={user} />}
-              {activeSidebar === 'Notifications' && <NotificationsView />}
-              {activeSidebar === 'Privacy' && <PrivacyView />}
-              {activeSidebar === 'Security' && <SecurityView user={user} />}
-            </motion.div>
-          </AnimatePresence>
-        </main>
-      </div>
-    </div>
-  );
-}
-
-function AccountSettingsView({ user }) {
-  return (
-    <div style={{ display: 'flex', flexDirection: 'column', gap: '2.5rem' }}>
-      {/* Profile Section */}
-      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '2rem' }}>
-        <div className="glass-card" style={{ padding: '2rem', borderRadius: '24px' }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '2rem', marginBottom: '2rem' }}>
-            <div style={{ position: 'relative' }}>
-              <div style={{ width: 80, height: 80, borderRadius: '50%', background: 'var(--brand-red)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#fff', fontSize: '1.8rem', fontWeight: 950 }}>
-                {user?.full_name?.[0] || 'B'}
-              </div>
-              <div style={{ position: 'absolute', bottom: 0, right: 0, width: 28, height: 28, background: '#000', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', border: '2px solid #fff' }}>
-                <Icon name="pencil" size={12} color="#fff" />
-              </div>
+               <div>
+                  <label style={{ display: 'block', fontSize: '0.75rem', fontWeight: 800, color: '#64748b', marginBottom: '6px' }}>Phone</label>
+                  <div style={{ position: 'relative' }}>
+                    <div style={{ position: 'absolute', left: '16px', top: '50%', transform: 'translateY(-50%)', opacity: 0.5 }}>
+                       <Icon name="phone" size={16} />
+                    </div>
+                    <input 
+                      type="text" 
+                      defaultValue="+91 90000 00000"
+                      className="settings-input"
+                      style={{ paddingLeft: '44px', height: '46px' }}
+                    />
+                  </div>
+               </div>
             </div>
-            <div>
-              <h3 style={{ margin: 0, fontSize: '1.2rem', fontWeight: 950 }}>{user?.full_name || 'Beesu Siri'}</h3>
-              <p style={{ margin: '4px 0 0', fontSize: '0.8rem', color: 'var(--slate-400)', fontWeight: 700 }}>{user?.email || 'beesu@startup-india.gov'}</p>
+          </section>
+        </div>
+
+        {/* Row 2: Links */}
+        <div style={{ gridColumn: 'span 12' }}>
+          <section className="settings-card" style={{ padding: '1.8rem 2rem', borderRadius: '24px', background: '#fff', border: '1px solid #f1f5f9', boxShadow: '0 1px 3px rgba(0,0,0,0.05)' }}>
+            <div style={{ marginBottom: '1.2rem' }}>
+              <h3 style={{ fontSize: '1.1rem', fontWeight: 900, color: '#0f172a', marginBottom: '0.4rem' }}>Links</h3>
+              <p style={{ fontSize: '0.85rem', color: '#64748b', fontWeight: 600 }}>Add and manage your public links.</p>
             </div>
-          </div>
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
-             <InputGroup label="Display Name" value={user?.full_name || 'Beesu Siri'} />
-             <InputGroup label="Headline" value="Serial Entrepreneur & Innovation Architect" />
-          </div>
-        </div>
-
-        <div className="glass-card" style={{ padding: '2rem', borderRadius: '24px' }}>
-           <h4 style={{ fontSize: '0.8rem', fontWeight: 950, marginBottom: '1.5rem', color: 'var(--slate-400)' }}>BASIC INFORMATION</h4>
-           <div style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
-              <InputGroup label="Location" value="Hyderabad, India" />
-              <InputGroup label="Timezone" value="(GMT+05:30) India Standard Time" />
-              <InputGroup label="Phone" value="+91 98765 43210" />
-           </div>
-        </div>
-      </div>
-
-      {/* Personal Signals Grid */}
-      <div>
-        <h4 style={{ fontSize: '0.8rem', fontWeight: 950, marginBottom: '1.5rem', color: 'var(--slate-400)', letterSpacing: '0.05em' }}>PERSONAL SIGNALS</h4>
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '1.5rem' }}>
-          {[
-            { label: 'Current Focus', value: 'Productivity', icon: 'zap' },
-            { label: 'Energy Mode', value: 'High Performance', icon: 'barChart' },
-            { label: 'Ambition Scale', value: 'Scaling Up', icon: 'trendUp' },
-            { label: 'Collaboration', value: 'Open for Ventures', icon: 'users' }
-          ].map(sig => (
-            <div key={sig.label} className="glass-card hover-lift" style={{ padding: '1.5rem', borderRadius: '20px', background: '#fff' }}>
-              <Icon name={sig.icon} size={16} color="var(--brand-red)" />
-              <div style={{ fontSize: '0.65rem', fontWeight: 950, color: 'var(--slate-400)', marginTop: '12px', textTransform: 'uppercase' }}>{sig.label}</div>
-              <div style={{ fontSize: '0.9rem', fontWeight: 950, color: 'var(--brand-black)', marginTop: '4px' }}>{sig.value}</div>
+            
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '0.8rem' }}>
+               { [
+                 { type: 'LinkedIn', url: 'https://linkedin.com/in/beesu-siri', icon: 'linkedin' },
+                 { type: 'Website', url: 'https://beesusiri.com', icon: 'globe' }
+               ].map((link, idx) => (
+                 <div key={idx} style={{ display: 'flex', gap: '1rem', alignItems: 'center' }}>
+                    <div style={{ opacity: 0.3, cursor: 'grab', flexShrink: 0 }}>
+                       <Icon name="grip" size={18} />
+                    </div>
+                    <div style={{ display: 'flex', gap: '10px', width: '220px', flexShrink: 0 }}>
+                       <div className="settings-input" style={{ 
+                         display: 'flex', alignItems: 'center', gap: '10px', background: '#fff', height: '44px'
+                       }}>
+                          <div style={{ width: 24, height: 24, borderRadius: '6px', background: link.type === 'LinkedIn' ? '#0a66c2' : '#f1f5f9', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+                             <Icon name={link.icon} size={14} color={link.type === 'LinkedIn' ? '#fff' : '#64748b'} />
+                          </div>
+                          <span style={{ fontSize: '0.9rem', fontWeight: 700, color: '#0f172a', flex: 1 }}>{link.type}</span>
+                          <Icon name="chevronDown" size={14} color="#94a3b8" />
+                       </div>
+                    </div>
+                    <input 
+                      type="text" 
+                      defaultValue={link.url}
+                      className="settings-input"
+                      style={{ flex: 1, height: '44px' }}
+                    />
+                    <button style={{ 
+                      width: 44, height: 44, borderRadius: '10px', border: '1px solid #fee2e2', 
+                      background: 'transparent', display: 'flex', alignItems: 'center', justifyContent: 'center',
+                      cursor: 'pointer', flexShrink: 0
+                    }}>
+                       <Icon name="trash" size={18} color="#ef4444" />
+                    </button>
+                 </div>
+               )) }
+               
+               <button style={{ 
+                 width: 'fit-content', padding: '10px 24px', borderRadius: '12px', 
+                 border: '1px solid #e2e8f0', background: 'transparent',
+                 fontSize: '0.85rem', fontWeight: 800, color: '#1e293b', 
+                 display: 'flex', alignItems: 'center', gap: '8px',
+                 marginTop: '0.5rem'
+               }}>
+                  <Icon name="plus" size={16} /> Add link
+               </button>
             </div>
-          ))}
+          </section>
         </div>
-      </div>
 
-      {/* Links & Social */}
-      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '2rem' }}>
-        <div className="glass-card" style={{ padding: '2rem', borderRadius: '24px' }}>
-          <h4 style={{ fontSize: '0.8rem', fontWeight: 950, marginBottom: '1.5rem', color: 'var(--slate-400)' }}>LINKS & WEB</h4>
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '1.2rem' }}>
-             <InputGroup label="LinkedIn URL" value="linkedin.com/in/beesusiri" icon="link" />
-             <InputGroup label="Personal Website" value="beesu.startup.io" icon="globe" />
-          </div>
+        {/* Row 3: Personal Signals & Account Security */}
+        <div style={{ gridColumn: 'span 6' }}>
+          <section className="settings-card" style={{ padding: '1.8rem 2rem', borderRadius: '24px', background: '#fff', border: '1px solid #f1f5f9', boxShadow: '0 1px 3px rgba(0,0,0,0.05)', height: '100%' }}>
+            <h3 style={{ fontSize: '1.1rem', fontWeight: 900, color: '#0f172a', marginBottom: '0.4rem' }}>Personal Signals</h3>
+            <p style={{ fontSize: '0.85rem', color: '#64748b', fontWeight: 600, marginBottom: '1.5rem' }}>Set words that define your vibe & strengths.</p>
+            
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+               {[
+                 { label: 'Focus word', value: 'Momentum', icon: 'target', bg: '#fff1f2', tc: '#e11d48' },
+                 { label: 'Energy mode', value: 'Focused', icon: 'zap', bg: '#fff7ed', tc: '#f97316' },
+                 { label: 'Ambition mode', value: 'Scale', icon: 'trendUp', bg: '#f1f5f9', tc: '#475569' },
+                 { label: 'Collaboration status', value: 'Open to collaborations', icon: 'users', bg: '#ecfdf5', tc: '#059669' }
+               ].map((signal, idx) => (
+                 <div key={idx} style={{ display: 'flex', gap: '1rem', alignItems: 'center' }}>
+                    <div style={{ 
+                      width: 44, height: 44, borderRadius: '12px', background: signal.bg, 
+                      display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0
+                    }}>
+                       <Icon name={signal.icon} size={20} color={signal.tc} />
+                    </div>
+                    <div style={{ flex: 1 }}>
+                       <label style={{ display: 'block', fontSize: '0.65rem', fontWeight: 800, color: '#64748b', textTransform: 'uppercase', marginBottom: '4px' }}>{signal.label}</label>
+                       <div style={{ position: 'relative' }}>
+                          <input 
+                            type="text" 
+                            defaultValue={signal.value}
+                            className="settings-input"
+                            style={{ padding: '8px 40px 8px 12px', height: '42px' }}
+                          />
+                          <div style={{ position: 'absolute', right: '12px', top: '50%', transform: 'translateY(-50%)', opacity: 0.4, cursor: 'pointer' }}>
+                             <Icon name="x" size={14} />
+                          </div>
+                       </div>
+                    </div>
+                 </div>
+               ))}
+               
+               <button style={{ 
+                 marginTop: '0.5rem', width: '100%', padding: '12px', borderRadius: '12px', 
+                 border: '1px solid #f97316', background: 'transparent',
+                 fontSize: '0.85rem', fontWeight: 800, color: '#f97316', 
+                 display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '10px',
+                 cursor: 'pointer'
+               }}>
+                  <Icon name="plus" size={16} /> Add your own word
+               </button>
+            </div>
+          </section>
         </div>
-        <div style={{ display: 'flex', alignItems: 'flex-end', justifyContent: 'flex-end', gap: '1rem' }}>
-           <button className="btn-brand" style={{ background: 'var(--slate-100)', color: 'var(--brand-black)', padding: '14px 30px' }}>CANCEL</button>
-           <button className="btn-brand" style={{ padding: '14px 40px' }}>SAVE PROFILE</button>
+
+        <div style={{ gridColumn: 'span 6' }}>
+          <section className="settings-card" style={{ padding: '1.8rem 2rem', borderRadius: '24px', background: '#fff', border: '1px solid #f1f5f9', boxShadow: '0 1px 3px rgba(0,0,0,0.05)', height: '100%' }}>
+            <h3 style={{ fontSize: '1.1rem', fontWeight: 900, color: '#0f172a', marginBottom: '1.5rem' }}>Account Security</h3>
+            
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '1.2rem' }}>
+               <div>
+                  <label style={{ display: 'block', fontSize: '0.75rem', fontWeight: 800, color: '#64748b', marginBottom: '6px' }}>Email</label>
+                  <div style={{ position: 'relative', display: 'flex', alignItems: 'center' }}>
+                    <div style={{ position: 'absolute', left: '16px', top: '50%', transform: 'translateY(-50%)', opacity: 0.5 }}>
+                       <Icon name="mail" size={16} />
+                    </div>
+                    <input 
+                      type="email" 
+                      defaultValue={user?.email || 'siribeesu07@gmail.com'}
+                      disabled
+                      className="settings-input"
+                      style={{ paddingLeft: '44px', paddingRight: '100px', background: '#f8fafc', color: '#94a3b8', height: '46px' }}
+                    />
+                    <div style={{ 
+                      position: 'absolute', right: '10px', top: '50%', transform: 'translateY(-50%)',
+                      background: '#ecfdf5', color: '#059669', fontSize: '0.7rem', fontWeight: 900,
+                      padding: '4px 10px', borderRadius: '8px'
+                    }}>
+                       Verified
+                    </div>
+                  </div>
+               </div>
+
+               <div>
+                  <label style={{ display: 'block', fontSize: '0.75rem', fontWeight: 800, color: '#64748b', marginBottom: '10px' }}>Change Password</label>
+                  <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
+                     {[
+                       { placeholder: 'Current Password' },
+                       { placeholder: 'New Password' },
+                       { placeholder: 'Confirm New Password' }
+                     ].map((pwd, pidx) => (
+                       <div key={pidx} style={{ position: 'relative' }}>
+                          <div style={{ position: 'absolute', left: '12px', top: '50%', transform: 'translateY(-50%)', opacity: 0.4 }}>
+                             <Icon name="lock" size={16} />
+                          </div>
+                          <input 
+                            type="password" 
+                            placeholder={pwd.placeholder}
+                            className="settings-input"
+                            style={{ paddingLeft: '38px', paddingRight: '38px', height: '46px' }}
+                          />
+                          <div style={{ position: 'absolute', right: '12px', top: '50%', transform: 'translateY(-50%)', opacity: 0.4, cursor: 'pointer' }}>
+                             <Icon name="eye" size={16} />
+                          </div>
+                       </div>
+                     ))}
+                  </div>
+               </div>
+               
+               <button style={{ 
+                 width: '100%', padding: '14px', borderRadius: '12px', 
+                 background: '#eb2327', border: 'none',
+                 fontSize: '0.9rem', fontWeight: 900, color: '#fff', 
+                 cursor: 'pointer', marginTop: '0.5rem', boxShadow: '0 4px 12px rgba(235,35,39,0.15)'
+               }}>
+                  Save Password
+               </button>
+            </div>
+          </section>
         </div>
+
       </div>
+
+      <style jsx>{`
+        .settings-card {
+          transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.2s ease;
+        }
+        .settings-card:hover {
+          box-shadow: 0 12px 30px -10px rgba(0, 0, 0, 0.08);
+        }
+        .settings-input {
+          width: 100%;
+          padding: 12px 14px;
+          border-radius: 12px;
+          border: 1px solid #e2e8f0;
+          font-size: 0.9rem;
+          font-weight: 650;
+          color: #1e293b;
+          background: #fff;
+          outline: none;
+          transition: all 0.2s ease;
+        }
+        .settings-input:focus {
+          border-color: #eb2327;
+          box-shadow: 0 0 0 4px rgba(235, 35, 39, 0.08);
+        }
+        .settings-input::placeholder {
+          color: #94a3b8;
+          font-weight: 500;
+        }
+      `}</style>
     </div>
   );
 }
-
-function NotificationsView() {
-  return (
-    <div className="glass-card" style={{ padding: '3rem', borderRadius: '32px' }}>
-      <div style={{ display: 'flex', flexDirection: 'column', gap: '3rem' }}>
-        <NotificationSection title="Email Notifications" toggles={[
-          { label: 'New course announcements', desc: 'Get notified when new relevant courses land.', active: true },
-          { label: 'Weekly learning reports', desc: 'A summary of your focused development hours.', active: true },
-          { label: 'Direct mentor messages', desc: 'Important replies from your industry experts.', active: true }
-        ]} />
-        <NotificationSection title="In-App Activity" toggles={[
-          { label: 'Achievement badges', desc: 'When you unlock new skill levels or streaks.', active: true },
-          { label: 'Community replies', desc: 'Comments on your discussions or doubts.', active: false },
-          { label: 'Smart Reminders', desc: 'AI-driven prompts based on your learning habits.', active: true }
-        ]} />
-      </div>
-    </div>
-  );
-}
-
-function PrivacyView() {
-  return (
-    <div style={{ display: 'flex', flexDirection: 'column', gap: '2rem' }}>
-      <div className="glass-card" style={{ padding: '3rem', borderRadius: '32px' }}>
-        <h3 style={{ fontSize: '1.1rem', fontWeight: 950, marginBottom: '2rem' }}>Profile Visibility</h3>
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
-           <PrivacyRadio label="Public" desc="Anyone on the web can see your profile and certificates." active={false} />
-           <PrivacyRadio label="Platform Users Only" desc="Only logged-in startups can view your progress." active={true} />
-           <PrivacyRadio label="Private" desc="Hide your profile from everyone except yourself." active={false} />
-        </div>
-      </div>
-
-      <div className="glass-card" style={{ padding: '3rem', borderRadius: '32px' }}>
-        <h3 style={{ fontSize: '1.1rem', fontWeight: 950, marginBottom: '2rem' }}>What Others Can See</h3>
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '2rem' }}>
-           <ToggleRow label="Show Enrolled Courses" desc="Allow users to see what skills you are building." active={true} />
-           <ToggleRow label="Show Mastery Badges" desc="Display your verified expertise on your profile." active={true} />
-           <ToggleRow label="Show Streak Status" desc="Reveal your daily consistency metrics." active={false} />
-        </div>
-      </div>
-    </div>
-  );
-}
-
-function SecurityView({ user }) {
-  return (
-    <div className="glass-card" style={{ padding: '3rem', borderRadius: '32px' }}>
-      <div style={{ maxWidth: '450px' }}>
-        <h3 style={{ fontSize: '1.1rem', fontWeight: 950, marginBottom: '2rem' }}>Account Credentials</h3>
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
-           <InputGroup label="Login Email" value={user?.email || 'beesu@startup-india.gov'} disabled />
-           <InputGroup label="Current Password" type="password" value="********" />
-           <InputGroup label="New Password" type="password" placeholder="Enter new password" />
-           <button className="btn-brand" style={{ background: 'var(--brand-black)', marginTop: '1rem' }}>UPDATE SECURITY</button>
-        </div>
-      </div>
-    </div>
-  );
-}
-
-// Sub-components
-function InputGroup({ label, value, type = 'text', icon, placeholder, disabled }) {
-  return (
-    <div style={{ width: '100%' }}>
-      <label style={{ display: 'block', fontSize: '0.65rem', fontWeight: 950, color: 'var(--slate-400)', marginBottom: '8px', textTransform: 'uppercase' }}>{label}</label>
-      <div style={{ position: 'relative' }}>
-        {icon && <div style={{ position: 'absolute', left: '15px', top: '50%', transform: 'translateY(-50%)', opacity: 0.4 }}><Icon name={icon} size={14} /></div>}
-        <input 
-          type={type} 
-          defaultValue={value} 
-          placeholder={placeholder}
-          disabled={disabled}
-          style={{ 
-            width: '100%', padding: `14px 20px \${icon ? '14px 45px' : ''}`, borderRadius: '14px', border: '1px solid #f1f5f9',
-            background: disabled ? '#f8fafc' : '#fff', fontWeight: 850, fontSize: '0.9rem', color: 'var(--brand-black)', outline: 'none'
-          }} 
-        />
-      </div>
-    </div>
-  );
-}
-
-function NotificationSection({ title, toggles }) {
-  return (
-    <div>
-      <h4 style={{ fontSize: '0.9rem', fontWeight: 950, color: 'var(--brand-red)', marginBottom: '1.5rem' }}>{title}</h4>
-      <div style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
-        {toggles.map(t => <ToggleRow key={t.label} {...t} />)}
-      </div>
-    </div>
-  );
-}
-
-function ToggleRow({ label, desc, active }) {
-  const [isOn, setIsOn] = useState(active);
-  return (
-    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-      <div>
-        <div style={{ fontSize: '0.95rem', fontWeight: 850, color: 'var(--brand-black)' }}>{label}</div>
-        <div style={{ fontSize: '0.8rem', color: 'var(--slate-400)', fontWeight: 600, marginTop: '2px' }}>{desc}</div>
-      </div>
-      <div 
-        onClick={() => setIsOn(!isOn)}
-        style={{ 
-          width: '44px', height: '24px', borderRadius: '12px', background: isOn ? 'var(--brand-red)' : '#e2e8f0',
-          position: 'relative', cursor: 'pointer', transition: 'all 0.3s ease'
-        }}
-      >
-        <div style={{ width: '18px', height: '18px', borderRadius: '50%', background: '#fff', position: 'absolute', top: '3px', left: isOn ? '23px' : '3px', transition: 'all 0.3s cubic-bezier(0.18, 0.89, 0.32, 1.28)' }} />
-      </div>
-    </div>
-  );
-}
-
-function PrivacyRadio({ label, desc, active }) {
-  return (
-    <div style={{ 
-      display: 'flex', gap: '1.5rem', padding: '1.5rem', borderRadius: '20px', border: active ? '2px solid var(--brand-red)' : '1px solid #f1f5f9',
-      background: active ? 'rgba(235,35,39,0.02)' : 'transparent', cursor: 'pointer'
-    }}>
-      <div style={{ width: 22, height: 22, borderRadius: '50%', border: `2px solid \${active ? 'var(--brand-red)' : '#e2e8f0'}`, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-        {active && <div style={{ width: 10, height: 10, borderRadius: '50%', background: 'var(--brand-red)' }} />}
-      </div>
-      <div>
-        <div style={{ fontSize: '1rem', fontWeight: 950, color: 'var(--brand-black)' }}>{label}</div>
-        <div style={{ fontSize: '0.8rem', color: 'var(--slate-400)', fontWeight: 700, marginTop: '2px' }}>{desc}</div>
-      </div>
-    </div>
-  );
-}
-

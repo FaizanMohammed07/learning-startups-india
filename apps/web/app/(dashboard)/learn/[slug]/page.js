@@ -80,7 +80,7 @@ export default function LearnPage() {
     </div>
   );
 
-  if (!course) return <div style={{ padding: '4rem', textAlign: 'center', fontFamily: 'Poppins, sans-serif' }}>Course not found.</div>;
+  if (!course) return <div style={{ padding: '4rem', textAlign: 'center', fontFamily: 'Inter, sans-serif' }}>Course not found.</div>;
 
   return (
     <div className="learn-player-premium" style={{ 

@@ -7,7 +7,7 @@
    ========================================== */
 
 // Next.js Font Optimization - Prevents font flicker
-import { Poppins } from 'next/font/google';
+import { Inter } from 'next/font/google';
 
 // 1. Reset - Normalize browser defaults (FIRST)
 import '@/styles/reset.css';
@@ -35,15 +35,15 @@ import ConditionalLayout from '@/components/ConditionalLayout';
 // ScrollTotop button globally
 import ScrollToTop from '@/components/ScrollToTop';
 
-// Configure Poppins font - SIMPLE FIX for FOUC
-const poppins = Poppins({
+// Configure Inter font - Primary Application Font
+const inter = Inter({
   subsets: ['latin'],
-  display: 'swap', // Show fallback immediately, swap when Poppins loads
-  preload: true, // Critical: preload in HTML head
+  display: 'swap',
+  preload: true,
   fallback: ['system-ui', '-apple-system', 'BlinkMacSystemFont', 'Segoe UI', 'Roboto', 'sans-serif'],
-  adjustFontFallback: true, // Match metrics to prevent layout shift
-  variable: '--font-poppins',
-  weight: ['300', '400', '500', '600', '700', '800', '900'], // All weights for consistency
+  adjustFontFallback: true,
+  variable: '--font-inter',
+  weight: ['300', '400', '500', '600', '700', '800', '900'],
 });
 
 export const metadata = {
@@ -65,8 +65,8 @@ export const viewport = {
 
 export default function RootLayout({ children }) {
   return (
-    <html lang="en" className={poppins.variable}>
-      <body className={poppins.className} suppressHydrationWarning>
+    <html lang="en" className={inter.variable}>
+      <body className={inter.className} suppressHydrationWarning>
         <ClientErrorBoundary>
           <ConditionalLayout>
             {children}

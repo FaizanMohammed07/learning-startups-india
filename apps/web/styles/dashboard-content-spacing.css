@@ -2,6 +2,17 @@
    DASHBOARD CONTENT SPACING - No Navbar
    ========================================== */
 
+/* ==========================================
+   DASHBOARD FONT — INTER
+   Overrides global Inter for all dashboard pages.
+   ========================================== */
+.dashboard-layout,
+.dashboard-main,
+.dashboard-content,
+.dashboard-content * {
+  font-family: var(--font-inter), 'Inter', -apple-system, BlinkMacSystemFont, sans-serif !important;
+}
+
 /* Remove top padding since navbar is removed */
 .dashboard-content {
   padding-top: 0 !important;
@@ -28,4 +39,155 @@
   .dashboard-content {
     padding-top: 60px !important; /* Account for mobile header */
   }
+}
+
+/* ==========================================
+   DASHBOARD SHARP CARD CORNERS
+   Scoped to dashboard only — does NOT affect
+   landing page, auth, or marketing pages.
+   ========================================== */
+
+/* Override CSS radius tokens for dashboard scope */
+.dashboard-content {
+  --r-sm: 8px;
+  --r-md: 10px;
+  --r-lg: 12px;
+  --r-xl: 14px;
+  --r-2xl: 16px;
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 16px;
+  --radius-xl: 20px;
+  --border-radius: 10px;
+}
+
+/* Core card elements */
+.dashboard-content .prof-card,
+.dashboard-content .platform-info-card,
+.dashboard-content .stat-card-premium,
+.dashboard-content .continue-learning-hero,
+.dashboard-content .full-width-progress,
+.dashboard-content .reco-card-compact,
+.dashboard-content .glass-card,
+.dashboard-content [class*="-card"],
+.dashboard-content [class*="card-"],
+.dashboard-content section {
+  border-radius: 12px !important;
+}
+
+/* Smaller inner elements — buttons, badges, chips */
+.dashboard-content .btn-brand,
+.dashboard-content .btn-ghost,
+.dashboard-content .btn-outline-red,
+.dashboard-content .tag-pill,
+.dashboard-content .platform-tab,
+.dashboard-content input,
+.dashboard-content textarea,
+.dashboard-content select {
+  border-radius: 8px !important;
+}
+
+/* Pill-shaped items remain circular */
+.dashboard-content .rounded-full,
+.dashboard-content [class*="rounded-full"] {
+  border-radius: 9999px !important;
+}
+
+/* ==========================================
+   DASHBOARD TYPOGRAPHY — LIGHTER & REFINED
+   Reduces heavy 900/950 weights to elegant
+   600/700. Softens pure black to dark gray.
+   Scoped to dashboard only.
+   ========================================== */
+
+/* Main headings — h1, h2 */
+.dashboard-content h1 {
+  font-weight: 600 !important;
+  color: #1e293b; /* Removed !important to allow overrides */
+  letter-spacing: -0.02em;
+}
+
+/* Specific exception for Banner Text to remain White */
+.dashboard-content [style*="color: #fff"] h1,
+.dashboard-content [style*="color: #ffffff"] h1,
+.dashboard-content [style*="color: rgb(255, 255, 255)"] h1,
+.dashboard-content h1[style*="color: #fff"],
+.dashboard-content h1[style*="color: #ffffff"],
+.dashboard-content h1[style*="color: rgb(255, 255, 255)"] {
+  color: #fff !important;
+}
+
+.dashboard-content h2 {
+  font-weight: 600 !important;
+  color: #334155;
+}
+
+.dashboard-content h3 {
+  font-weight: 600 !important;
+  color: #334155;
+}
+
+.dashboard-content h4 {
+  font-weight: 600 !important;
+  color: #475569;
+}
+
+/* Body / paragraph text */
+.dashboard-content p {
+  font-weight: 400 !important;
+  color: #64748b;
+}
+
+/* Specific exception for White Subtext in Banner */
+.dashboard-content p[style*="color: #fff"],
+.dashboard-content p[style*="color: #ffffff"],
+.dashboard-content p[style*="color: rgba(255, 255, 255"],
+.dashboard-content [style*="color: #fff"] p,
+.dashboard-content [style*="color: #ffffff"] p {
+  color: #fff !important;
+}
+
+.dashboard-content p[style*="color: rgba(255, 255, 255, 0.85)"] {
+  color: rgba(255, 255, 255, 0.85) !important;
+}
+
+/* Labels and uppercase caps */
+.dashboard-content .stat-title-caps,
+.dashboard-content .section-label-caps,
+.dashboard-content .small-label-caps,
+.dashboard-content [class*="label-caps"] {
+  font-weight: 600 !important;
+  color: #94a3b8 !important;
+  letter-spacing: 0.06em;
+}
+
+/* Large stat numbers — keep readable but not black */
+.dashboard-content .stat-val-huge {
+  font-weight: 700 !important;
+  color: #1e293b !important;
+}
+
+/* Navigation items */
+.dashboard-content .nav-item-label {
+  font-weight: 500 !important;
+}
+
+/* Override ultra-heavy inline font-weights from JS */
+.dashboard-content [style*="fontWeight: 900"],
+.dashboard-content [style*="font-weight: 900"] {
+  font-weight: 600 !important;
+}
+
+.dashboard-content [style*="fontWeight: 950"],
+.dashboard-content [style*="font-weight: 950"] {
+  font-weight: 700 !important;
+}
+
+/* Soften pure black colors in text */
+.dashboard-content [style*="color: #0f172a"] {
+  color: #1e293b !important;
+}
+
+.dashboard-content [style*="color: rgb(15, 23, 42)"] {
+  color: #1e293b !important;
 }

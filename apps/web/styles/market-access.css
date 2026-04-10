@@ -1,6 +1,6 @@
 /* ==========================================
    MARKET ACCESS PAGE - MODERN DESIGN
-   Note: Poppins loaded via Next.js font optimization in layout.js
+   Note: Inter loaded via Next.js font optimization in layout.js
    ========================================== */
 
 * {
@@ -10,7 +10,7 @@
 }
 
 .market-access-page {
-  font-family: var(--font-poppins, 'Poppins', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif);
+  font-family: var(--font-Inter, 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif);
   background: #ffffff;
 }
 

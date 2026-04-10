@@ -59,8 +59,8 @@ export default function MyLearningPage() {
                   onChange={(e) => setSearch(e.target.value)}
                 />
              </div>
-             <Link href="/courses" className="btn-brand" style={{ textDecoration: 'none', height: '44px', display: 'flex', alignItems: 'center' }}>
-                <Icon name="plus" size={16} /> Explore New
+             <Link href="/courses" className="btn-brand" style={{ textDecoration: 'none', height: '38px', display: 'flex', alignItems: 'center', padding: '0 15px' }}>
+                <Icon name="plus" size={14} /> Explore New
              </Link>
         </div>
       </header>

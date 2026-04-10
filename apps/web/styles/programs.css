@@ -1,10 +1,10 @@
 /* ==========================================
    PROGRAMS PAGE - SIMPLE COMING SOON
-   Note: Poppins loaded via Next.js font optimization in layout.js
+   Note: Inter loaded via Next.js font optimization in layout.js
    ========================================== */
 
 .programs-page {
-  font-family: var(--font-poppins, 'Poppins', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif);
+  font-family: var(--font-Inter, 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif);
   background: linear-gradient(135deg, #fef2f2 0%, #fee2e2 50%, #fef2f2 100%);
   min-height: 100vh;
   display: flex;

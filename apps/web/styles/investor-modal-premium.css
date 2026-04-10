@@ -96,7 +96,7 @@
 
 .investor-modal-title,
 .investor-modal-container .modal-title {
-  font-family: 'Poppins', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif !important;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif !important;
   font-size: 38px !important;
   font-weight: 700 !important;
   margin: 0 0 16px 0 !important;
@@ -113,7 +113,7 @@
 
 .investor-modal-subtitle,
 .investor-modal-container .modal-subtitle {
-  font-family: 'Poppins', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif !important;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif !important;
   font-size: 17px !important;
   color: rgba(255, 255, 255, 0.7) !important;
   font-weight: 400 !important;

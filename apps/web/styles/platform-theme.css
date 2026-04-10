@@ -133,22 +133,32 @@
 }
 
 /* ── Brand Button ── */
-.btn-brand {
-  background: var(--brand-red);
-  color: #fff;
-  padding: 11px 22px;
-  border-radius: var(--r-md);
-  font-weight: 900;
-  font-size: 0.88rem;
-  border: none;
-  cursor: pointer;
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  transition: all 0.2s ease;
-  font-family: var(--font);
-}
-.btn-brand:hover { filter: brightness(1.08); transform: translateY(-1px); box-shadow: var(--shadow-red); }
+  .btn-brand {
+    display: inline-flex;
+    background: var(--brand-red);
+    color: #fff;
+    padding: 8px 18px;
+    border-radius: var(--r-md);
+    font-weight: 700;
+    align-items: center;
+    gap: 8px;
+    transition: all 0.2s ease;
+    font-family: var(--font);
+    cursor: pointer;
+    border: none;
+    text-decoration: none;
+  }
+  .btn-brand:hover {
+    filter: brightness(1.1);
+    transform: translateY(-1px);
+    box-shadow: var(--shadow-red);
+  }
+  .btn-brand svg {
+    color: #fff !important;
+    margin: 0 !important;
+    width: 16px;
+    height: 16px;
+  }
 
 .btn-outline-red {
   background: var(--red-50);
@@ -252,19 +262,18 @@
     border-bottom: 1px solid rgba(255, 255, 255, 0.3);
 }
 
-/* Centered Button Utilities */
-.btn-brand, .btn-outline, .btn-ghost, .btn-black {
-    display: inline-flex !important;
-    align-items: center !important;
-    justify-content: center !important;
-    text-align: center !important;
-}
+  /* Centered Button Utilities */
+  .btn-brand, .btn-outline, .btn-ghost, .btn-black {
+      display: inline-flex !important;
+      align-items: center !important;
+      justify-content: center !important;
+      text-align: center !important;
+  }
 
-.btn-brand svg, .btn-outline svg, .btn-ghost svg, .btn-black svg {
-    margin-right: 8px;
-    color: var(--brand-red);
-    flex-shrink: 0;
-}
+  .btn-brand svg, .btn-outline svg, .btn-ghost svg, .btn-black svg {
+      margin: 0 !important; /* Gap handled by parent */
+      flex-shrink: 0;
+  }
 
 /* Expert Button - Black to Red Transition */
 .reco-btn-minimal {

@@ -39,7 +39,7 @@ const navigation = [
     id: 'assessments',
     label: 'QUIZ HUB',
     items: [
-      { id: 'quizzes', label: 'Quizzes', path: '/assessments', icon: 'helpCircle' },
+      { id: 'quizzes', label: 'Quizzes', path: '/quizzes', icon: 'helpCircle' },
       { id: 'assignments', label: 'Assignments', path: '/assignments', icon: 'pencil' },
       { id: 'exams', label: 'Exams', path: '/exams', icon: 'fileText' },
       { id: 'results', label: 'Results', path: '/results', icon: 'barChart' },

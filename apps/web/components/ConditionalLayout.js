@@ -29,7 +29,7 @@ export default function ConditionalLayout({ children }) {
   
   const dashboardPaths = [
     '/dashboard', '/my-learning', '/leaderboard', '/analytics', '/community', 
-    '/assessments', '/assignments', '/certificates', '/badges', '/settings', 
+    '/assessments', '/quizzes', '/assignments', '/certificates', '/badges', '/settings', 
     '/profile', '/wishlist', '/completed-courses', '/enrolled-courses', '/live', 
     '/recorded', '/notes', '/payments', '/results', '/exams', '/contact', '/courses'
   ];

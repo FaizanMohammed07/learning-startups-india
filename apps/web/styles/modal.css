@@ -70,13 +70,13 @@
   font-weight: 700;
   color: #1a1a1a;
   margin-bottom: 8px;
-  font-family: 'Poppins', sans-serif;
+  font-family: 'Inter', sans-serif;
 }
 
 .modal-header p {
   font-size: 16px;
   color: #64748b;
-  font-family: 'Poppins', sans-serif;
+  font-family: 'Inter', sans-serif;
 }
 
 .modal-form {
@@ -100,7 +100,7 @@
   font-weight: 600;
   color: #374151;
   margin-bottom: 8px;
-  font-family: 'Poppins', sans-serif;
+  font-family: 'Inter', sans-serif;
 }
 
 .form-group input,
@@ -111,7 +111,7 @@
   border: 2px solid #e5e7eb;
   border-radius: 10px;
   font-size: 15px;
-  font-family: 'Poppins', sans-serif;
+  font-family: 'Inter', sans-serif;
   transition: all 0.3s ease;
   background: white;
 }
@@ -149,7 +149,7 @@
   font-size: 13px;
   font-weight: 500;
   color: #374151;
-  font-family: 'Poppins', sans-serif;
+  font-family: 'Inter', sans-serif;
 }
 
 .checkbox-label:hover {
@@ -180,7 +180,7 @@
   font-weight: 600;
   cursor: pointer;
   transition: all 0.3s ease;
-  font-family: 'Poppins', sans-serif;
+  font-family: 'Inter', sans-serif;
   box-shadow: 0 8px 24px rgba(220, 38, 38, 0.3);
   margin-top: 32px;
 }
@@ -210,13 +210,13 @@
   font-weight: 700;
   color: #10b981;
   margin-bottom: 12px;
-  font-family: 'Poppins', sans-serif;
+  font-family: 'Inter', sans-serif;
 }
 
 .success-message p {
   font-size: 16px;
   color: #64748b;
-  font-family: 'Poppins', sans-serif;
+  font-family: 'Inter', sans-serif;
 }
 
 .error-message {
@@ -228,7 +228,7 @@
   font-size: 14px;
   font-weight: 500;
   margin-bottom: 24px;
-  font-family: 'Poppins', sans-serif;
+  font-family: 'Inter', sans-serif;
 }
 
 /* Responsive Design */

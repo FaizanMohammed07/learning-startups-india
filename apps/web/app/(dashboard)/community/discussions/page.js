@@ -2,98 +2,206 @@
 
 import { useState } from 'react';
 import Icon from '@/components/Icon';
-
-const DISCUSSIONS = [
-  { id:'d1', title:'How did you validate your first startup idea?', author:'Priya M.', initials:'PM', time:'2h ago',  replies:14, upvotes:32, tags:['Strategy','Ideation'], pinned:true },
-  { id:'d2', title:'Best resources for building a pitch deck in 2025?', author:'Arjun K.', initials:'AK', time:'5h ago',  replies:9,  upvotes:21, tags:['Pitching'],           pinned:false },
-  { id:'d3', title:'How much equity should a co-founder get?', author:'Sneha R.', initials:'SR', time:'1d ago',  replies:22, upvotes:48, tags:['Legal','Equity'],      pinned:false },
-  { id:'d4', title:'Thoughts on the Startup India DPIIT recognition process?', author:'Rohit P.', initials:'RP', time:'2d ago',  replies:7,  upvotes:15, tags:['DPIIT','Policy'],    pinned:false },
-  { id:'d5', title:'Recommended CA firms for early-stage startups?', author:'Divya V.', initials:'DV', time:'3d ago',  replies:11, upvotes:27, tags:['Finance','Legal'],    pinned:false },
-];
-
-const TAG_COLORS = { Strategy:'tag-red', Ideation:'tag-orange', Pitching:'tag-blue', Legal:'tag-gold', Equity:'tag-purple', DPIIT:'tag-green', Policy:'tag-green', Finance:'tag-green' };
-
-const avatarColors = ['#E92222','#F26722','#7c3aed','#2563eb','#059669'];
+import Link from 'next/link';
 
 export default function DiscussionsPage() {
-  const [search, setSearch] = useState('');
+  const [activeTab, setActiveTab] = useState('Discussions');
+  const [activeCourse, setActiveCourse] = useState('Startup Fundamentals');
 
-  const shown = DISCUSSIONS.filter(d => {
-    const q = search.toLowerCase();
-    return !q || d.title.toLowerCase().includes(q) || d.author.toLowerCase().includes(q);
-  });
+  const tabs = ['Overview', 'Tasks', 'Discussions', 'Members', 'Files'];
+  const courses = ['Startup Fundamentals', 'UI/UX Design Masterclass', 'Scaling SaaS 101', 'Growth Hub'];
+
+  const discussions = [
+    {
+      id: 1,
+      user: { name: 'Aryan Sharma', avatar: 'AS' },
+      time: '2 hours ago',
+      text: 'I\'ve been looking into our local storage strategy for the user dashboard. Should we be encrypting the key-value pairs before storing or just relying on the session timeout? Here is the link to the [proposed security doc](https://google.com).',
+      reactions: [
+        { emoji: '👍', count: 5 },
+        { emoji: '🔥', count: 3 }
+      ],
+      replies: ['RG', 'PV', 'NK'],
+      lastReply: '1 day ago'
+    },
+    {
+      id: 2,
+      user: { name: 'Rahul Gupta', avatar: 'RG' },
+      time: '5 hours ago',
+      text: 'Has anyone finished the module on "Cap Table Management"? I have a specific question about convertible notes vs SAFEs.',
+      reactions: [
+        { emoji: '👍', count: 8 }
+      ],
+      replies: ['NK'],
+      lastReply: '3 hours ago'
+    }
+  ];
 
   return (
-    <div className="platform-page">
-      <div className="platform-page-header">
+    <div className="min-h-screen bg-[#F9FAFB] flex flex-col">
+      
+      {/* ── TOP HEADER (WORKSPACE STYLE) ── */}
+      <header className="bg-white border-b border-[#E5E7EB] px-8 py-4 flex justify-between items-center">
         <div>
-          <h1 className="platform-page-title">Discussions</h1>
-          <p className="platform-page-subtitle">Connect, share knowledge, and grow together.</p>
+          <h1 className="text-xl font-bold text-[#111827] leading-tight">Discussions</h1>
+          <p className="text-xs font-semibold text-[#6B7280] uppercase tracking-wider mt-0.5">Collaborate and share ideas</p>
         </div>
-        <button className="btn-brand">
-          <Icon name="plus" size={15} color="#fff" /> New Discussion
+        <button className="bg-[#F97316] text-white px-5 py-2.5 rounded-[10px] font-bold text-sm shadow-sm transition-all hover:bg-[#EA580C]">
+          + Create New
         </button>
-      </div>
+      </header>
 
-      <div className="platform-stats-grid">
-        {[
-          { label:'Threads',       val:DISCUSSIONS.length, icon:'message',    bg:'var(--red-50)',    tc:'var(--brand-red)',    border:'var(--red-200)' },
-          { label:'Active Members', val:128,               icon:'users',      bg:'var(--orange-50)', tc:'var(--brand-orange)', border:'#fed7aa' },
-          { label:'Your Posts',     val:3,                 icon:'pencil',     bg:'#eff6ff',          tc:'#2563eb',            border:'#bfdbfe' },
-          { label:'Upvotes Received',val:19,              icon:'badge',      bg:'#f0fdf4',          tc:'#059669',            border:'#86efac' },
-        ].map((s,i) => (
-          <div key={i} className="platform-stat-card" style={{ background:s.bg, borderColor:s.border }}>
-            <div className="platform-stat-label">
-              {s.label}
-              <div style={{ width:28, height:28, borderRadius:7, background:'rgba(255,255,255,0.7)', display:'flex', alignItems:'center', justifyContent:'center' }}>
-                <Icon name={s.icon} size={15} color={s.tc} />
-              </div>
-            </div>
-            <span className="platform-stat-value" style={{ color:s.tc }}>{s.val}</span>
-          </div>
+      {/* ── TOP NAVIGATION TABS ── */}
+      <nav className="bg-white border-b border-[#E5E7EB] px-8 flex gap-8">
+        {tabs.map(tab => (
+          <button
+            key={tab}
+            onClick={() => setActiveTab(tab)}
+            className={`py-4 text-sm font-bold transition-all border-b-2 relative ${
+              activeTab === tab 
+              ? 'border-[#F97316] text-[#111827]' 
+              : 'border-transparent text-[#6B7280] hover:text-[#111827]'
+            }`}
+          >
+            {tab}
+          </button>
         ))}
-      </div>
+      </nav>
 
-      {/* Search */}
-      <div style={{ display:'flex', alignItems:'center', gap:'0.75rem', background:'#fff', border:'1.5px solid var(--slate-200)', borderRadius:'var(--r-md)', padding:'0 1rem', marginBottom:'1.5rem' }}>
-        <Icon name="search" size={16} color="var(--slate-400)" />
-        <input value={search} onChange={e=>setSearch(e.target.value)} placeholder="Search discussions..." style={{ flex:1, border:'none', outline:'none', fontFamily:'var(--font)', fontSize:'0.9rem', color:'var(--slate-900)', padding:'0.85rem 0', background:'transparent' }} />
-      </div>
-
-      <div style={{ display:'flex', flexDirection:'column', gap:'0.75rem' }}>
-        {shown.map((d,i) => (
-          <div key={d.id} className="platform-info-card hover-bg-red" style={{ borderLeft: d.pinned ? '3px solid var(--brand-red)' : '1px solid var(--slate-100)', cursor: 'pointer', transition: 'all 0.2s' }}>
-            <div style={{ display:'flex', gap:'1rem', alignItems:'flex-start' }}>
-              <div style={{ width:40, height:40, borderRadius:'50%', background:avatarColors[i%5], display:'flex', alignItems:'center', justifyContent:'center', flexShrink:0 }}>
-                <span style={{ color:'#fff', fontSize:'0.75rem', fontWeight:900 }}>{d.initials}</span>
-              </div>
-              <div style={{ flex:1, minWidth:0 }}>
-                <div style={{ display:'flex', gap:'0.5rem', alignItems:'center', marginBottom:5, flexWrap:'wrap' }}>
-                  {d.pinned && (
-                    <span style={{ background:'var(--red-50)', color:'var(--brand-red)', borderRadius:'var(--r-full)', padding:'1px 8px', fontSize:'0.6rem', fontWeight:900 }}>
-                      Pinned
-                    </span>
-                  )}
-                  {d.tags.map(t => <span key={t} className={`tag-pill ${TAG_COLORS[t]||'tag-blue'}`}>{t}</span>)}
-                </div>
-                <h3 className="hover-brand-red" style={{ fontWeight:900, color:'var(--slate-900)', margin:'0 0 5px 0', fontSize:'0.97rem', transition: 'all 0.2s' }}>{d.title}</h3>
-                <div style={{ display:'flex', gap:'1rem', flexWrap:'wrap' }}>
-                  <span style={{ fontSize:'0.72rem', color:'var(--slate-400)', fontWeight:600 }}>{d.author}</span>
-                  <span style={{ fontSize:'0.72rem', color:'var(--slate-400)', fontWeight:600, display:'flex', alignItems:'center', gap:3 }}>
-                    <Icon name="clock" size={11} color="var(--slate-400)" />{d.time}
-                  </span>
-                  <span style={{ fontSize:'0.72rem', color:'var(--slate-400)', fontWeight:600, display:'flex', alignItems:'center', gap:3 }}>
-                    <Icon name="message" size={11} color="var(--slate-400)" />{d.replies} replies
-                  </span>
-                  <span style={{ fontSize:'0.72rem', color:'var(--brand-red)', fontWeight:700, display:'flex', alignItems:'center', gap:3 }}>
-                    <Icon name="trendUp" size={11} color="var(--brand-red)" />{d.upvotes} upvotes
-                  </span>
-                </div>
-              </div>
-              <button className="btn-ghost" style={{ fontSize:'0.78rem', flexShrink:0, padding:'8px 14px' }}>View</button>
-            </div>
+      {/* ── MAIN CONTENT (3-SECTION LAYOUT) ── */}
+      <div className="flex-1 flex overflow-hidden">
+        
+        {/* LEFT SIDEBAR (MY COURSES) */}
+        <aside className="w-[260px] bg-white border-r border-[#E5E7EB] flex flex-col p-6 sticky top-0 h-full overflow-y-auto">
+          <h3 className="text-xs font-black text-[#9CA3AF] uppercase tracking-widest mb-4">MY COURSES</h3>
+          <div className="space-y-1">
+            {courses.map(course => (
+              <button
+                key={course}
+                onClick={() => setActiveCourse(course)}
+                className={`w-full flex items-center gap-3 px-3 py-2.5 rounded-[10px] text-left transition-all ${
+                  activeCourse === course 
+                  ? 'bg-[#FFF7ED] text-[#F97316] font-bold' 
+                  : 'text-[#4B5563] font-semibold hover:bg-[#F9FAFB]'
+                }`}
+              >
+                <div className={`w-1.5 h-1.5 rounded-full ${activeCourse === course ? 'bg-[#F97316]' : 'bg-[#E5E7EB]'}`} />
+                <span className="text-[0.9rem] truncate">{course}</span>
+              </button>
+            ))}
           </div>
-        ))}
+          <button className="mt-4 flex items-center gap-2 px-3 py-2 text-[#6B7280] font-bold text-xs hover:text-[#111827] transition-colors">
+            <Icon name="plus" size={14} /> Create New
+          </button>
+        </aside>
+
+        {/* CENTER DISCUSSION THREAD */}
+        <main className="flex-1 flex flex-col relative bg-white overflow-y-auto">
+          <div className="p-8 space-y-12 mb-32">
+            {discussions.map(disc => (
+              <div key={disc.id} className="flex gap-5 group">
+                {/* Profile Image */}
+                <div className="w-10 h-10 rounded-full bg-[#F3F4F6] text-[#F97316] flex items-center justify-center font-black text-sm border border-[#E5E7EB] flex-shrink-0">
+                  {disc.user.avatar}
+                </div>
+
+                {/* Discussion content */}
+                <div className="flex-1 min-w-0">
+                  <div className="flex justify-between items-start mb-1">
+                    <span className="font-bold text-[#111827] text-[1.rem]">{disc.user.name}</span>
+                    <span className="text-xs font-bold text-[#9CA3AF]">{disc.time}</span>
+                  </div>
+                  
+                  <p className="text-[#374151] font-medium leading-relaxed text-[1.05rem] mb-4">
+                    {/* Render text with basic link styling simulation if needed */}
+                    {disc.text.split(/(\[.*?\]\(.*?\))/g).map((part, i) => {
+                       const match = part.match(/\[(.*?)\]\((.*?)\)/);
+                       if (match) return <a key={i} href={match[2]} className="text-[#2563EB] underline hover:text-[#1D4ED8] transition-colors">{match[1]}</a>;
+                       return part;
+                    })}
+                  </p>
+
+                  <div className="flex items-center gap-4">
+                     {/* Reactions */}
+                     <div className="flex items-center gap-2">
+                        {disc.reactions.map((r, ri) => (
+                           <div key={ri} className="bg-[#F3F4F6] px-3 py-1.5 rounded-full flex items-center gap-2 cursor-pointer hover:bg-[#E5E7EB] transition-all border border-[#F1F5F9]">
+                              <span className="text-sm">{r.emoji}</span>
+                              <span className="text-xs font-black text-[#4B5563]">{r.count}</span>
+                           </div>
+                        ))}
+                        <button className="bg-[#F3F4F6] w-8 h-8 rounded-full flex items-center justify-center text-[#9CA3AF] hover:text-[#F97316] border border-[#F1F5F9] transition-all">
+                           <Icon name="plus" size={14} />
+                        </button>
+                     </div>
+
+                     {/* Replies Preview */}
+                     <div className="flex items-center gap-3 px-4 border-l border-[#F3F4F6]">
+                        <div className="flex -space-x-3">
+                           {disc.replies.map((rep, ri) => (
+                              <div key={ri} className="w-6 h-6 rounded-full bg-white border-2 border-white overflow-hidden">
+                                 <div className="w-full h-full bg-[#E5E7EB] flex items-center justify-center text-[10px] font-black text-[#6B7280]">
+                                    {rep}
+                                 </div>
+                              </div>
+                           ))}
+                        </div>
+                        <span className="text-xs font-bold text-[#9CA3AF]">last reply {disc.lastReply}</span>
+                     </div>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+
+          {/* COMMENT INPUT BOX (STICKY BOTTOM) */}
+          <div className="absolute bottom-6 left-8 right-8 bg-white border border-[#E5E7EB] rounded-[16px] shadow-lg p-3 flex items-start gap-4 focus-within:ring-2 focus-within:ring-[#F9731633] transition-all">
+             <div className="w-9 h-9 rounded-full bg-[#F3F4F6] flex items-center justify-center text-[#9CA3AF] font-bold text-sm flex-shrink-0">
+                U
+             </div>
+             <div className="flex-1 flex flex-col gap-2">
+                <textarea 
+                  rows={2} 
+                  placeholder="Write a comment..." 
+                  className="w-full bg-transparent border-none outline-none font-medium text-[#111827] resize-none"
+                />
+                <div className="flex justify-between items-center pt-2 border-t border-[#F9FAFB]">
+                   <div className="flex gap-2">
+                      <button className="p-2 rounded-lg text-[#9CA3AF] hover:bg-[#F9FAFB] hover:text-[#F97316] transition-all">
+                         <Icon name="link" size={16} />
+                      </button>
+                      <button className="p-2 rounded-lg text-[#9CA3AF] hover:bg-[#F9FAFB] hover:text-[#F97316] transition-all">
+                         <Icon name="heart" size={16} />
+                      </button>
+                      <button className="p-2 rounded-lg text-[#9CA3AF] hover:bg-[#F9FAFB] hover:text-[#F97316] transition-all">
+                         <Icon name="paperclip" size={16} />
+                      </button>
+                   </div>
+                   <div className="flex gap-3">
+                      <button className="px-4 py-2 font-black text-xs text-[#6B7280] hover:text-[#111827] transition-all">
+                         Discard
+                      </button>
+                      <button className="px-6 py-2 bg-[#F97316] text-white rounded-[10px] font-black text-xs shadow-md transition-all hover:translate-y-[-1px]">
+                         Submit
+                      </button>
+                   </div>
+                </div>
+             </div>
+          </div>
+        </main>
+
+        {/* RIGHT (MINIMAL AVATARS / INFO) */}
+        <aside className="w-[80px] bg-white border-l border-[#E5E7EB] hidden xl:flex flex-col items-center py-8 gap-4">
+           {['AS', 'RG', 'PV', 'NK', 'DV'].map(av => (
+              <div key={av} className="w-10 h-10 rounded-full bg-[#F9FAFB] border border-[#E5E7EB] flex items-center justify-center text-xs font-black text-[#6B7280] cursor-pointer hover:border-[#F97316] transition-all">
+                {av}
+              </div>
+           ))}
+           <div className="w-8 h-[1px] bg-[#F3F4F6] my-2" />
+           <button className="w-10 h-10 rounded-full border border-dashed border-[#E5E7EB] flex items-center justify-center text-[#9CA3AF] hover:text-[#F97316] transition-all">
+              <Icon name="plus" size={16} />
+           </button>
+        </aside>
       </div>
     </div>
   );

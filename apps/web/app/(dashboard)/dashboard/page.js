@@ -12,14 +12,8 @@ const STREAK_DAYS_OF_WEEK = [1, 2, 4, 6]; // Mon, Tue, Thu, Sat (mock data)
 export default function DashboardPage() {
   const { user, isLoading } = useDashboard();
   const userName = user?.full_name || 'Jaswanth Reddy';
-  const [isVisible, setIsVisible] = useState(false);
   const [viewDate, setViewDate] = useState(new Date());
 
-  useEffect(() => {
-    const onScroll = () => setIsVisible(window.pageYOffset > 300);
-    window.addEventListener('scroll', onScroll);
-    return () => window.removeEventListener('scroll', onScroll);
-  }, []);
 
   const today = useMemo(() => {
     const d = new Date(); d.setHours(0, 0, 0, 0); return d;
@@ -27,27 +21,56 @@ export default function DashboardPage() {
 
   const calendarDays = useMemo(() => {
     const days = [];
-    for (let i = -3; i <= 3; i++) {
-      const d = new Date(viewDate);
-      d.setDate(viewDate.getDate() + i);
-      const dayStart = new Date(d); dayStart.setHours(0, 0, 0, 0);
-      const isPast = dayStart < today;
-      const isToday = dayStart.getTime() === today.getTime();
-      const isFuture = dayStart > today;
-      days.push({
-        dayName: d.toLocaleDateString('en-US', { weekday: 'short' }),
-        dayNum: d.getDate().toString().padStart(2, '0'),
-        isToday, isPast, isFuture,
-        hasStreak: (isPast || isToday) && STREAK_DAYS_OF_WEEK.includes(d.getDay()),
+    const firstDayOfMonth = new Date(viewDate.getFullYear(), viewDate.getMonth(), 1);
+    const lastDayOfMonth = new Date(viewDate.getFullYear(), viewDate.getMonth() + 1, 0);
+    
+    // Day of week of the first day (0-6)
+    const startingDay = firstDayOfMonth.getDay();
+    
+    // Add padding days from previous month
+    const prevMonthLastDay = new Date(viewDate.getFullYear(), viewDate.getMonth(), 0).getDate();
+    for (let i = startingDay - 1; i >= 0; i--) {
+      days.push({ 
+        dayNum: prevMonthLastDay - i, 
+        isCurrentMonth: false, 
+        isToday: false, 
+        hasStreak: false,
+        dayName: '' 
       });
     }
+
+    // Add current month days
+    for (let i = 1; i <= lastDayOfMonth.getDate(); i++) {
+      const d = new Date(viewDate.getFullYear(), viewDate.getMonth(), i);
+      const isToday = d.toDateString() === today.toDateString();
+      days.push({
+        dayNum: i,
+        isCurrentMonth: true,
+        isToday,
+        hasStreak: STREAK_DAYS_OF_WEEK.includes(d.getDay()),
+        dayName: d.toLocaleDateString('en-US', { weekday: 'short' })
+      });
+    }
+
+    // Add padding days for next month to complete the 6-row grid if needed
+    const totalSlots = 42; // 6 rows * 7 days
+    const nextMonthDays = totalSlots - days.length;
+    for (let i = 1; i <= nextMonthDays; i++) {
+      days.push({ 
+        dayNum: i, 
+        isCurrentMonth: false, 
+        isToday: false, 
+        hasStreak: false,
+        dayName: '' 
+      });
+    }
+    
     return days;
   }, [viewDate, today]);
 
   const monthYearLabel = viewDate.toLocaleDateString('en-US', { month: 'long', year: 'numeric' });
-  // Navigate 7 days at a time for a cleaner UX
-  const prevDays = () => setViewDate(d => { const n = new Date(d); n.setDate(d.getDate() - 7); return n; });
-  const nextDays = () => setViewDate(d => { const n = new Date(d); n.setDate(d.getDate() + 7); return n; });
+  const prevMonth = () => setViewDate(d => new Date(d.getFullYear(), d.getMonth() - 1, 1));
+  const nextMonth = () => setViewDate(d => new Date(d.getFullYear(), d.getMonth() + 1, 1));
 
   const weeklyData = [
     { day: 'Mon', h: 2.5 }, { day: 'Tue', h: 4.0 }, { day: 'Wed', h: 1.5 },
@@ -64,111 +87,46 @@ export default function DashboardPage() {
   if (isLoading) return <div className="prof-dashboard-container" style={{ opacity: 0.4 }} />;
 
   return (
-    <div className="prof-dashboard-container">
-
+    <div className="prof-dashboard-container" style={{ paddingLeft: '2rem', paddingRight: '2rem' }}>
+      
       {/* ════════════════════════════════
-          TOP ROW: Greeting + Active Hub
+          TOP ROW: Greeting + Branding
       ════════════════════════════════ */}
-      <div className="dashboard-top-flex" style={{ alignItems: 'flex-start' }}>
+      <div className="dashboard-top-full">
         <header className="prof-dashboard-header" style={{ marginTop: 0 }}>
-          <h1>Good Morning,<br />{userName}</h1>
-          <p>Strategic overview of your startup journey.</p>
+          <h1 style={{ fontFamily: "var(--font-inter), 'Inter', sans-serif" }}>Good Morning, {userName}</h1>
+          <p style={{ marginBottom: '1.5rem' }}>Strategic overview of your startup journey.</p>
 
-          
-          {/* Header-Integrated Live Ticker (Mini) */}
-          <div className="live-ticker-card ticker--mini" style={{ marginTop: '1.25rem', width: 'fit-content' }}>
-            <div className="ticker-label-box" style={{ background: 'var(--brand-black)' }}>
+          {/* ── INTEGRATED FULL-WIDTH NEWS RIBBON (AFTER SUBTITLE) ── */}
+          <div className="live-ticker-card ticker--wide" style={{ 
+            width: 'calc(100% + 4rem)', 
+            marginLeft: '-2rem', 
+            marginBottom: '2rem',
+            borderRadius: 0,
+            borderLeft: 'none',
+            borderRight: 'none',
+            background: '#fff',
+            borderTop: '1px solid #f1f5f9',
+            borderBottom: '1px solid #f1f5f9'
+          }}>
+            <div className="ticker-label-box" style={{ background: 'var(--brand-black)', flexShrink: 0, borderRadius: 0 }}>
               <Icon name="zap" size={10} color="var(--brand-red)" />
-              <span style={{ fontSize: '0.55rem' }}>LIVE</span>
+              <span style={{ fontSize: '0.55rem', fontWeight: 950 }}>LIVE NEWS</span>
             </div>
             <div className="ticker-track" style={{ flex: 1 }}>
               <div className="ticker-inner">
-                {/* SET 1 */}
-                <span className="ticker-item" style={{ fontSize: '0.62rem' }}>DPIIT recognizes 1.41 Lakh+ startups across India</span>
+                <span className="ticker-item" style={{ fontSize: '0.65rem', fontWeight: 700 }}>DPIIT recognizes 1.41 Lakh+ startups across India</span>
                 <span className="ticker-sep" style={{ color: 'var(--brand-red)', fontSize: '1rem' }}>•</span>
-                <span className="ticker-item" style={{ fontSize: '0.62rem' }}>Startup India Seed Fund: Rs 945 Cr disbursed</span>
+                <span className="ticker-item" style={{ fontSize: '0.65rem', fontWeight: 700 }}>Startup India Seed Fund: Rs 945 Cr disbursed to incubators</span>
                 <span className="ticker-sep" style={{ color: 'var(--brand-red)', fontSize: '1rem' }}>•</span>
-                <span className="ticker-item" style={{ fontSize: '0.62rem' }}>GenAI &amp; DeepTech attract $2.1B in 2025</span>
+                <span className="ticker-item" style={{ fontSize: '0.65rem', fontWeight: 700 }}>GenAI &amp; DeepTech attract $2.1B in funding in 2025</span>
                 <span className="ticker-sep" style={{ color: 'var(--brand-red)', fontSize: '1rem' }}>•</span>
-                {/* SET 2 (for seamless loop) */}
-                <span className="ticker-item" style={{ fontSize: '0.62rem' }}>DPIIT recognizes 1.41 Lakh+ startups across India</span>
-                <span className="ticker-sep" style={{ color: 'var(--brand-red)', fontSize: '1rem' }}>•</span>
-                <span className="ticker-item" style={{ fontSize: '0.62rem' }}>Startup India Seed Fund: Rs 945 Cr disbursed</span>
-                <span className="ticker-sep" style={{ color: 'var(--brand-red)', fontSize: '1rem' }}>•</span>
-                <span className="ticker-item" style={{ fontSize: '0.62rem' }}>GenAI &amp; DeepTech attract $2.1B in 2025</span>
+                <span className="ticker-item" style={{ fontSize: '0.65rem', fontWeight: 700 }}>DPIIT recognizes 1.41 Lakh+ startups across India</span>
                 <span className="ticker-sep" style={{ color: 'var(--brand-red)', fontSize: '1rem' }}>•</span>
               </div>
             </div>
           </div>
         </header>
-
-        {/* ── Active Hub ── */}
-        <div className="header-active-hub">
-
-          {/* Row 1: Fire Streak Tooltip | Month+Nav */}
-          {/* New Consolidated Hub Header Row */}
-          <div className="hub-header-merged">
-            {/* Left: Momentum Info */}
-            <div className="hub-momentum-side">
-              <Icon name="target" size={38} color="var(--brand-red)" className="hub-header-icon" style={{ marginRight: '10px' }} />
-              <div className="hub-momentum-text-group" style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start', gap: '2px' }}>
-                <span className="hub-streak-main-val" style={{ whiteSpace: 'nowrap', fontSize: '1.25rem', fontWeight: 950, color: 'var(--brand-red)' }}>
-                  03 DAYS STREAK
-                </span>
-                <span className="hub-best-val" style={{ whiteSpace: 'nowrap', fontSize: '0.65rem', margin: 0, padding: 0, opacity: 0.8, fontWeight: 800, color: 'var(--brand-black)' }}>BEST STREAK = 12</span>
-              </div>
-            </div>
-
-            {/* Right: Month/Year + Improved Nav */}
-            <div className="hub-nav-exclusive" style={{ marginTop: '4px' }}>
-              <span className="hub-month-exclusive-label" style={{ whiteSpace: 'nowrap' }}>{monthYearLabel}</span>
-              <div className="hub-nav-exclusive-btns">
-                <button onClick={prevDays} className="cal-nav-btn-precise" aria-label="Previous week">
-                  <Icon name="chevronLeft" size={14} color="var(--brand-red)" stroke={2.5} />
-                </button>
-                <button onClick={nextDays} className="cal-nav-btn-precise" aria-label="Next week">
-                  <Icon name="chevronRight" size={14} color="var(--brand-red)" stroke={2.5} />
-                </button>
-              </div>
-            </div>
-          </div>
-
-          {/* Row 2: 7-day calendar strip */}
-          <div className="hub-cal-row">
-            {calendarDays.map((day, idx) => (
-              <div
-                key={idx}
-                className={`cal-day-pill${day.isToday ? ' is-today' : ''}${day.isFuture ? ' is-future' : ''}${day.hasStreak ? ' is-streak-flame' : ''} glass-card`}
-                style={{ 
-                  border: day.hasStreak ? '1px solid var(--brand-red)' : '1px solid rgba(255,255,255,0.2)',
-                  background: day.hasStreak ? 'var(--brand-red)' : 'rgba(255,255,255,0.05)',
-                  minWidth: '60px'
-                }}
-              >
-                <span className="cal-day-name" style={{ color: day.hasStreak ? '#fff' : 'inherit', fontWeight: 950 }}>{day.dayName}</span>
-                <div className="cal-date-cell">
-                  <span 
-                    className="cal-day-num" 
-                    style={{ 
-                      color: day.hasStreak ? 'var(--brand-red)' : '#000', 
-                      fontWeight: 950,
-                      position: 'relative',
-                      zIndex: 2,
-                      fontSize: '1.25rem'
-                    }}
-                  >
-                    {day.dayNum}
-                  </span>
-                  {day.hasStreak && (
-                    <div style={{ position: 'absolute', top: '-5px', right: '-5px', opacity: 0.9 }}>
-                       <Icon name="target" size={14} color="#fff" />
-                    </div>
-                  )}
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
       </div>
 
 
@@ -407,6 +365,49 @@ export default function DashboardPage() {
         {/* ── RIGHT COLUMN ── */}
         <div className="prof-right-stack">
 
+          {/* ── Active Hub (Calendar) ── */}
+          <section className="prof-card" style={{ padding: '1.75rem', marginBottom: '1.5rem' }}>
+            {/* Streak Row */}
+            <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '1rem' }}>
+              <Icon name="target" size={28} color="var(--brand-red)" />
+              <div>
+                <div style={{ fontSize: '0.95rem', fontWeight: 950, color: 'var(--brand-red)', lineHeight: 1.2 }}>03 Days Streak</div>
+                <div style={{ fontSize: '0.65rem', fontWeight: 700, color: '#94a3b8', marginTop: '2px' }}>Best: 12 days</div>
+              </div>
+            </div>
+
+            {/* Month Navigation Row */}
+            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '1rem' }}>
+              <span style={{ fontSize: '0.85rem', fontWeight: 900, color: '#1e293b' }}>{monthYearLabel}</span>
+              <div style={{ display: 'flex', gap: '4px' }}>
+                <button onClick={prevMonth} className="cal-nav-btn-precise"><Icon name="chevronLeft" size={12} color="var(--brand-red)" /></button>
+                <button onClick={nextMonth} className="cal-nav-btn-precise"><Icon name="chevronRight" size={12} color="var(--brand-red)" /></button>
+              </div>
+            </div>
+
+            {/* Weekday Labels */}
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(7, 1fr)', gap: '4px', marginBottom: '6px' }}>
+              {['S', 'M', 'T', 'W', 'T', 'F', 'S'].map((d, i) => (
+                <span key={i} style={{ fontSize: '0.6rem', fontWeight: 900, color: '#94a3b8', textAlign: 'center' }}>{d}</span>
+              ))}
+            </div>
+
+            {/* Calendar Grid */}
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(7, 1fr)', gap: '4px' }}>
+              {calendarDays.map((day, idx) => (
+                <div key={idx} style={{ 
+                  aspectRatio: '1/1', display: 'flex', alignItems: 'center', justifyContent: 'center', borderRadius: '8px', fontSize: '0.7rem', fontWeight: 900,
+                  background: day.isToday ? 'var(--brand-red)' : day.hasStreak ? 'rgba(235, 35, 39, 0.08)' : 'transparent',
+                  color: day.isToday ? '#fff' : day.hasStreak ? 'var(--brand-red)' : !day.isCurrentMonth ? '#d1d5db' : '#1e293b',
+                  border: day.isToday ? 'none' : day.hasStreak ? '1px solid rgba(235, 35, 39, 0.15)' : 'none',
+                  cursor: day.isCurrentMonth ? 'pointer' : 'default'
+                }}>
+                  {day.dayNum}
+                </div>
+              ))}
+            </div>
+          </section>
+
           {/* Today's Missions */}
           <section className="prof-card" style={{ padding: '2rem' }}>
             <h2 style={{ fontSize: '1.2rem', fontWeight: 900, color: '#0f172a', marginBottom: '1.25rem' }}>
@@ -539,14 +540,7 @@ export default function DashboardPage() {
         </div>
       </main>
 
-      {/* Scroll to Top */}
-      <button
-        className={`scroll-top-button ${isVisible ? 'visible' : ''}`}
-        onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
-        aria-label="Scroll to top"
-      >
-        <Icon name="chevronUp" size={24} color="#fff" />
-      </button>
+
 
     </div>
   );

@@ -103,6 +103,8 @@ export default function DashboardSidebar({ user, isPro = false }) {
   const isActive = useCallback(path => {
     if (path === '/dashboard') return pathname === '/dashboard';
     if (path === '/') return pathname === '/';
+    // Strict match for base /settings so we don't highlight it when on /settings/notifications
+    if (path === '/settings') return pathname === '/settings';
     return pathname === path || pathname.startsWith(path + '/');
   }, [pathname]);
 
@@ -171,7 +173,6 @@ export default function DashboardSidebar({ user, isPro = false }) {
                     key={item.id}
                     href={item.path}
                     className={`nav-item-row ${active ? 'active' : ''}`}
-                    prefetch={true}
                   >
                     <div className="nav-item-left">
                       <div className="icon-frame">

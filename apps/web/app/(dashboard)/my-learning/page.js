@@ -41,13 +41,13 @@ export default function MyLearningPage() {
 
   return (
     <div className="platform-page">
-      <header className="platform-page-header">
+      <header className="platform-page-header flex-stack-mobile">
         <div>
           <h1 className="platform-page-title">My Learning</h1>
           <p className="platform-page-subtitle">Track your progress and continue where you left off.</p>
         </div>
-        <div style={{ display: 'flex', gap: '1rem', alignItems: 'center' }}>
-             <div className="platform-search-container" style={{ width: '320px' }}>
+        <div className="learning-header-actions flex-stack-mobile">
+             <div className="platform-search-container responsive-search-wrap">
                 <div className="platform-search-icon">
                   <Icon name="search" size={16} color="var(--brand-red)" />
                 </div>
@@ -59,55 +59,39 @@ export default function MyLearningPage() {
                   onChange={(e) => setSearch(e.target.value)}
                 />
              </div>
-             <Link href="/courses" className="btn-brand" style={{ textDecoration: 'none', height: '38px', display: 'flex', alignItems: 'center', padding: '0 15px' }}>
+             <Link href="/courses" className="btn-brand learning-explore-btn">
                 <Icon name="plus" size={14} /> Explore New
              </Link>
         </div>
       </header>
 
+
       {/* Modern Filter + Layout Toggle */}
-      <div className="platform-section-label" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.5rem' }}>
-        <div className="platform-tabs" style={{ background: 'transparent', margin: 0, padding: 0 }}>
+      <div className="learning-filter-row">
+        <div className="platform-tabs">
           {['all','ongoing','completed'].map(f=>(
             <button 
                 key={f} 
                 className={`platform-tab ${filter===f?'active':''}`} 
                 onClick={()=>setFilter(f)}
-                style={{ padding: '0 20px', height: '40px' }}
             >
               {f.charAt(0).toUpperCase() + f.slice(1)}
             </button>
           ))}
         </div>
         
-        <div className="layout-toggle-group glass-card" style={{ display: 'flex', gap: '4px', background: 'rgba(255,255,255,0.1)', padding: '4px', borderRadius: '14px', border: '1px solid rgba(0,0,0,0.05)', boxShadow: 'inset 0 2px 4px rgba(0,0,0,0.02)' }}>
+        <div className="layout-toggle-group glass-card">
           <button 
             className={`btn-icon-toggle ${layout === 'grid' ? 'active' : ''}`} 
             onClick={() => setLayout('grid')}
-            style={{ 
-              padding: '8px 16px', borderRadius: '10px', border: 'none', cursor: 'pointer',
-              background: layout === 'grid' ? '#fff' : 'transparent',
-              display: 'flex', alignItems: 'center', gap: '8px', fontSize: '0.75rem', fontWeight: 950,
-              color: layout === 'grid' ? 'var(--brand-red)' : 'var(--slate-400)',
-              boxShadow: layout === 'grid' ? '0 4px 12px rgba(0,0,0,0.05)' : 'none',
-              transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)'
-            }}
           >
-            <Icon name="dashboard" size={14} color={layout === 'grid' ? 'var(--brand-red)' : 'var(--slate-400)'} /> GRID
+            <Icon name="dashboard" size={14} /> GRID
           </button>
           <button 
-            className={`btn-icon-toggle \${layout === 'list' ? 'active' : ''}`} 
+            className={`btn-icon-toggle ${layout === 'list' ? 'active' : ''}`} 
             onClick={() => setLayout('list')}
-            style={{ 
-              padding: '8px 16px', borderRadius: '10px', border: 'none', cursor: 'pointer',
-              background: layout === 'list' ? '#fff' : 'transparent',
-              display: 'flex', alignItems: 'center', gap: '8px', fontSize: '0.75rem', fontWeight: 950,
-              color: layout === 'list' ? 'var(--brand-red)' : 'var(--slate-400)',
-              boxShadow: layout === 'list' ? '0 4px 12px rgba(0,0,0,0.05)' : 'none',
-              transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)'
-            }}
           >
-            <Icon name="recorded" size={14} color={layout === 'list' ? 'var(--brand-red)' : 'var(--slate-400)'} /> LIST
+            <Icon name="recorded" size={14} /> LIST
           </button>
         </div>
       </div>
@@ -119,13 +103,9 @@ export default function MyLearningPage() {
             initial={{ opacity: 0, y: 10 }} 
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -10 }}
-            className={layout === 'grid' ? 'platform-grid' : 'platform-list-v'}
-            style={{ 
-              display: 'grid', 
-              gridTemplateColumns: layout === 'grid' ? 'repeat(3, 1fr)' : '1fr', 
-              gap: '1.5rem' 
-            }}
+            className={layout === 'grid' ? 'platform-grid fluid-grid-3' : 'platform-list-v'}
           >
+
             {filtered.map((c, i) => (
               <motion.div key={c.id || c._id} initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: i * 0.05 }}>
                 <SimpleCourseCard course={c} type={c.progress === 100 ? "completed" : "enrolled"} layout={layout} />

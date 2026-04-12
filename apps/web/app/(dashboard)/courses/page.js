@@ -71,8 +71,8 @@ export default function CoursesPage() {
         </div>
         
         {/* TOP SEARCH BAR (Above Filters) */}
-        <div style={{ display: 'flex', gap: '1rem', alignItems: 'center' }}>
-          <div className="platform-search-container" style={{ width: '380px', boxShadow: '0 4px 20px rgba(0,0,0,0.03)' }}>
+        <div className="flex-stack-mobile">
+          <div className="platform-search-container responsive-search-wrap" style={{ boxShadow: '0 4px 20px rgba(0,0,0,0.03)' }}>
             <div className="platform-search-icon">
               <Icon name="search" size={16} color="var(--brand-red)" />
             </div>
@@ -86,11 +86,12 @@ export default function CoursesPage() {
             />
           </div>
         </div>
+
       </header>
 
       {/* ── FILTER & SORT BAR ── */}
-      <div className="platform-section-label" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.5rem', marginTop: '1rem' }}>
-        <div className="platform-tabs" style={{ background: '#f8fafc', margin: 0, padding: '6px', border: '1px solid #f0f0f0', borderRadius: '16px', display: 'flex', gap: '4px' }}>
+      <div className="platform-section-label flex-stack-mobile" style={{ marginBottom: '1.5rem', marginTop: '1rem' }}>
+        <div className="platform-tabs scroll-tabs-mobile" style={{ background: '#f8fafc', margin: 0, padding: '6px', border: '1px solid #f0f0f0', borderRadius: '16px' }}>
           <button 
             className={`platform-tab ${!category ? 'active' : ''}`} 
             onClick={() => setCategory('')}
@@ -122,6 +123,7 @@ export default function CoursesPage() {
           ))}
         </div>
 
+
         <div style={{ display: 'flex', gap: '12px' }}>
           <select
             value={sortBy}
@@ -142,11 +144,12 @@ export default function CoursesPage() {
 
       {/* ── GRID CONTENT ── */}
       {loading ? (
-        <div className="platform-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '1.5rem' }}>
+        <div className="platform-grid fluid-grid-3">
           {[...Array(6)].map((_, i) => (
             <div key={i} className="platform-card-v glass-card animate-pulse" style={{ height: '320px', background: '#fff', opacity: 0.5 }} />
           ))}
         </div>
+
       ) : filtered.length === 0 ? (
         <div className="platform-empty" style={{ padding: '6rem 0' }}>
           <div style={{ width: 80, height: 80, borderRadius: '24px', background: 'var(--slate-50)', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 2rem' }}>
@@ -162,13 +165,9 @@ export default function CoursesPage() {
             key={category + debouncedSearch}
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
-            className="platform-grid"
-            style={{ 
-              display: 'grid', 
-              gridTemplateColumns: 'repeat(3, 1fr)', 
-              gap: '2.5rem' 
-            }}
+            className="platform-grid fluid-grid-3"
           >
+
             {filtered.map((course, i) => (
               <motion.div key={course._id} initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} transition={{ delay: i * 0.05 }}>
                 <SimpleCourseCard course={course} type="explore" />

@@ -18,6 +18,9 @@ import '../../styles/dashboard-content-spacing.css';
 import '../../styles/glass-dashboard.css';
 import '../../styles/sidebar-accordion.css';
 import '../../styles/platform-theme.css';
+import Icon from '@/components/Icon';
+import { navigationData } from '@/lib/navigation-data';
+
 
 
 export default function DashboardLayout({ children }) {
@@ -41,21 +44,27 @@ export default function DashboardLayout({ children }) {
     checkAuth();
   }, [router]);
 
+  // Handle window resize to automatically close mobile menu
+  useEffect(() => {
+    const handleResize = () => {
+      if (window.innerWidth > 1060 && isMobileMenuOpen) {
+        setIsMobileMenuOpen(false);
+      }
+    };
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, [isMobileMenuOpen]);
+
   // Lock body scroll when mobile menu is open
   useEffect(() => {
     if (isMobileMenuOpen) {
       document.body.style.overflow = 'hidden';
-      document.body.style.position = 'fixed';
-      document.body.style.width = '100%';
+      // Removed fixed position as it causes "white screen" / jump issues in some browsers
     } else {
       document.body.style.overflow = '';
-      document.body.style.position = '';
-      document.body.style.width = '';
     }
     return () => {
       document.body.style.overflow = '';
-      document.body.style.position = '';
-      document.body.style.width = '';
     };
   }, [isMobileMenuOpen]);
 
@@ -98,14 +107,88 @@ export default function DashboardLayout({ children }) {
 
   return (
     <DashboardProvider authUser={user}>
-      <div className={`dashboard-layout ${isFullWidthPage ? 'learning-mode' : ''}`}>
-        {/* Fixed Sidebar */}
-        {!isFullWidthPage && <DashboardSidebar user={user} isPro={false} />}
+      <div className={`dashboard-layout ${isFullWidthPage ? 'learning-mode' : ''} ${isMobileMenuOpen ? 'menu-open' : ''}`}>
+        
+        {/* Mobile Header - Visible only on mobile (< 1060px) */}
+        {(true) && (
+          <header className="mobile-nav-header interactive-glass sticky-header">
 
-        {/* Main Content Area */}
-        <div className="dashboard-main">
-          {/* Dynamic Content */}
-          <div className="dashboard-content">{children}</div>
+            <div className="mobile-nav-left">
+              <Link href="/dashboard" className="mobile-brand-logo">
+                <img src="/assets/images/logo.png" alt="Logo" className="mobile-logo-img" />
+              </Link>
+            </div>
+
+            <div className="mobile-nav-right">
+              <button 
+                className="mobile-dots-toggle" 
+                onClick={() => setIsMobileMenuOpen(true)}
+                aria-label="Open Menu"
+              >
+                <Icon name="moreVertical" size={24} color="var(--brand-red)" stroke={2.5} />
+              </button>
+            </div>
+          </header>
+        )}
+
+        {/* Mobile Menu Drawer Overlay - Enabled for all dashboard routes on mobile */}
+        <div className={`mobile-menu-overlay ${isMobileMenuOpen ? 'active' : ''}`} onClick={() => setIsMobileMenuOpen(false)}>
+          <div className={`mobile-menu-drawer ${isMobileMenuOpen ? 'active' : ''}`} onClick={e => e.stopPropagation()}>
+            <div className="mobile-menu-header">
+              <span className="mobile-menu-title">Navigation</span>
+              <button className="mobile-menu-close" onClick={() => setIsMobileMenuOpen(false)}>
+                <Icon name="x" size={24} color="#64748b" />
+              </button>
+            </div>
+            
+            <nav className="mobile-menu-nav custom-scrollbar">
+              {navigationData.map((section, sectionIdx) => (
+                <div key={section.id} className="mobile-nav-section">
+                  <div className="mobile-section-label">{section.label}</div>
+                  <div className="mobile-section-items">
+                    {section.items.map((item, itemIdx) => (
+                      <Link 
+                        key={item.id} 
+                        href={item.path} 
+                        className={`mobile-nav-item ${pathname === item.path ? 'active' : ''}`}
+                        onClick={() => setIsMobileMenuOpen(false)}
+                        style={{ '--stagger': itemIdx + (sectionIdx * 3) }}
+                      >
+                        <Icon name={item.icon} size={20} color="currentColor" />
+                        <span>{item.label}</span>
+                      </Link>
+                    ))}
+                  </div>
+                </div>
+              ))}
+            </nav>
+            
+            <div className="mobile-menu-footer">
+              <div className="mobile-user-profile">
+                <div className="mobile-user-avatar">
+                  {user?.name?.[0] || 'U'}
+                </div>
+                <div className="mobile-user-info">
+                  <div className="mobile-user-name">{user?.name || 'User'}</div>
+                  <div className="mobile-user-email">{user?.email || 'N/A'}</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Transition Wrapper for scale-down effect */}
+        <div className="dashboard-outer-wrapper">
+          <div className="dashboard-inner-wrap">
+             {/* Fixed Sidebar */}
+            {!isFullWidthPage && <DashboardSidebar user={user} isPro={false} />}
+
+            {/* Main Content Area */}
+            <div className="dashboard-main">
+              {/* Dynamic Content */}
+              <div className="dashboard-content">{children}</div>
+            </div>
+          </div>
         </div>
       </div>
     </DashboardProvider>

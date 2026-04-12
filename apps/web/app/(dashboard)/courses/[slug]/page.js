@@ -59,7 +59,7 @@ const Icons = {
     <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
       <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z" />
     </svg>
-  )
+  ),
 };
 
 export default function CourseDetailPage() {
@@ -82,7 +82,6 @@ export default function CourseDetailPage() {
         let c = res.data?.[0];
         if (!c) { res = await apiGet(`/api/v1/courses/${slug}`); c = res.data; }
         
-        // Comprehensive mock data for ANY slug to ensure high-fidelity previews (c1, c2, c3, etc.)
         const generateMock = (s) => {
           const titles = {
             c1: "Entrepreneurship Fundamentals: Starting Your Venture",
@@ -127,7 +126,6 @@ export default function CourseDetailPage() {
         
       } catch (e) {
         console.error(e);
-        // Fallback for demo purposes if API fails
         setCourse({title: `Course: ${slug.toUpperCase()}`, priceInr: 4900});
         setModules([{title:"Intro"}, {title:"Advanced"}]);
       } finally { setLoading(false); }
@@ -135,334 +133,317 @@ export default function CourseDetailPage() {
     fetchData();
   }, [slug]);
 
-  if (loading || !course) return null;
+  if (loading || !course) return (
+    <div style={{ height: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', background: '#fff' }}>
+      <div className="spinner" style={{ width: '40px', height: '40px', border: '4px solid #f3f3f3', borderTop: '4px solid #ef4444', borderRadius: '50%', animation: 'spin 1s linear infinite' }} />
+    </div>
+  );
 
   return (
-    <div className="course-detail-view" style={{ background: '#fff', minHeight: '100vh', fontFamily: 'var(--font-inter)' }}>
+    <div className="course-detail-view" style={{ background: '#fff', minHeight: '100vh', fontFamily: 'Poppins, sans-serif' }}>
       
-      {/* ── HERO SECTION (Unified PREMIUM RED theme for all courses) ── */}
-      <div style={{ 
-        background: 'linear-gradient(135deg, #ef4444 0%, #be123c 100%)',
-        padding: '0 0 4rem',
-        color: '#fff'
-      }}>
-        <div style={{ maxWidth: '1440px', margin: '0 auto', padding: '1.5rem 1rem 0.5rem' }}>
-          <button 
-            onClick={() => router.back()}
-            style={{ 
-              display: 'flex', alignItems: 'center', gap: '8px', 
-              background: 'rgba(255,255,255,0.15)', border: '1px solid rgba(255,255,255,0.2)', 
-              padding: '10px 18px', borderRadius: '14px', 
-              fontSize: '0.85rem', fontWeight: 800, color: '#fff', 
-              cursor: 'pointer', transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
-              backdropFilter: 'blur(10px)'
-            }}
-            onMouseOver={e => { e.currentTarget.style.background = 'rgba(255,255,255,0.25)'; e.currentTarget.style.transform = 'translateX(-4px)'; }}
-            onMouseOut={e => { e.currentTarget.style.background = 'rgba(255,255,255,0.15)'; e.currentTarget.style.transform = 'translateX(0)'; }}
-          >
-            <div style={{ transform: 'rotate(180deg)', display: 'flex' }}>{Icons.play}</div> BACK TO EXPLORE
-          </button>
-        </div>
+      {/* ── HERO SECTION ── */}
+      <div className="detail-hero">
+        <div className="detail-hero-inner">
+          <header className="detail-header-nav">
+            <button 
+              onClick={() => router.back()}
+              className="detail-back-btn"
+            >
+              <div style={{ transform: 'rotate(180deg)', display: 'flex' }}>{Icons.play}</div> BACK TO EXPLORE
+            </button>
+          </header>
 
-        <div style={{ maxWidth: '1440px', margin: '0 auto', padding: '2rem 1rem', display: 'grid', gridTemplateColumns: 'minmax(0, 1fr) 380px', gap: '4rem' }}>
-          <main>
-            <div style={{ marginBottom: '2rem' }}>
-              <h1 style={{ 
-                fontSize: '3rem', fontWeight: 700, 
-                color: '#fff', 
-                lineHeight: 1.2, marginBottom: '1.5rem', letterSpacing: '-0.02em' 
-              }}>
+          <div className="detail-hero-grid">
+            <main className="detail-hero-content">
+              <h1 className="detail-course-title">
                 {course.title}
               </h1>
-              <p style={{ 
-                fontSize: '1.15rem', 
-                color: 'rgba(255,255,255,0.9)', 
-                lineHeight: 1.6, marginBottom: '2rem' 
-              }}>
+              <p className="detail-course-desc">
                 {course.description}
               </p>
 
-              <div style={{ display: 'flex', gap: '2.5rem', alignItems: 'center', flexWrap: 'wrap' }}>
-                <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
-                  <span style={{ fontWeight: 800, color: '#fff' }}>4.9</span>
+              <div className="detail-meta-row">
+                <div className="detail-rating">
+                  <span style={{ fontWeight: 800 }}>4.9</span>
                   <div style={{ display: 'flex', gap: '2px' }}>{[...Array(5)].map((_, i) => <span key={i}>{Icons.star}</span>)}</div>
-                  <span style={{ color: 'rgba(255,255,255,0.7)', fontSize: '0.9rem' }}>(3,248+ reviews)</span>
+                  <span className="review-count">(3,248+ reviews)</span>
                 </div>
-                <div style={{ display: 'flex', alignItems: 'center', gap: '8px', color: 'rgba(255,255,255,0.8)', fontSize: '0.9rem', fontWeight: 500 }}>
+                <div className="detail-students">
                   <div style={{ color: '#fff' }}>{Icons.user}</div> 5,847 Students
                 </div>
               </div>
 
-              <div style={{ display: 'flex', gap: '1.5rem', marginTop: '2.5rem' }}>
-                <div style={{ display: 'flex', alignItems: 'center', gap: '8px', fontSize: '0.9rem', color: '#fff', fontWeight: 500 }}>
-                  <div style={{ color: '#fff' }}>{Icons.check}</div> No prior experience needed
+              <div className="detail-features-row">
+                <div className="feature-pill">
+                  <div style={{ color: '#fff' }}>{Icons.check}</div> No prior experience
                 </div>
-                <div style={{ display: 'flex', alignItems: 'center', gap: '8px', fontSize: '0.9rem', color: '#fff', fontWeight: 500 }}>
+                <div className="feature-pill">
                   <div style={{ color: '#fff' }}>{Icons.clock}</div> 4 weeks — Self-paced
                 </div>
-                <div style={{ display: 'flex', alignItems: 'center', gap: '8px', fontSize: '0.9rem', color: '#fff', fontWeight: 500 }}>
-                  <div style={{ color: '#fff' }}>{Icons.shield}</div> Certificate upon completion
+                <div className="feature-pill">
+                  <div style={{ color: '#fff' }}>{Icons.shield}</div> Certificate
                 </div>
               </div>
 
               <motion.button 
-                whileHover={{ scale: 1.02, boxShadow: '0 4px 12px rgba(0,0,0,0.1)' }}
+                whileHover={{ scale: 1.02 }}
                 whileTap={{ scale: 0.98 }}
                 onClick={() => setInWishlist(!inWishlist)}
-                style={{ 
-                  marginTop: '3rem', padding: '12px 28px', borderRadius: '12px', 
-                  background: '#fff', 
-                  border: inWishlist ? '1px solid #ffcccc' : '1px solid #e5e7eb',
-                  fontSize: '0.95rem', fontWeight: 700, 
-                  color: '#ef4444', 
-                  cursor: 'pointer', transition: 'all 0.2s',
-                  boxShadow: '0 2px 5px rgba(0,0,0,0.05)',
-                  display: 'flex', alignItems: 'center', gap: '10px'
-                }}
+                className={`wishlist-toggle-btn ${inWishlist ? 'active' : ''}`}
               >
                 <div style={{ color: '#ef4444' }}>
                   {inWishlist ? Icons.heartFilled : Icons.heart}
                 </div>
                 {inWishlist ? 'In Wishlist' : 'Add to Wishlist'}
               </motion.button>
-            </div>
-          </main>
+            </main>
 
-          {/* SIDEBAR (Sticky OVERLAPPING CARD) */}
-          <aside style={{ position: 'relative' }}>
-            <div style={{ position: 'absolute', top: '0', right: '0', width: '380px', display: 'grid', gap: '2rem', zIndex: 10 }}>
-              {/* Promotion Card */}
-              <div style={{ border: '1px solid #e5e7eb', borderRadius: '16px', overflow: 'hidden', background: '#fff', boxShadow: '0 20px 50px rgba(0,0,0,0.1)' }}>
-                <div style={{ height: '200px', background: '#111827', position: 'relative' }}>
-                   <img src={course.thumbnailUrl || "/assets/images/course-placeholder.png"} style={{ width: '100%', height: '100%', objectFit: 'cover', opacity: 0.8 }} alt="Course Thumbnail" />
-                   <div style={{ position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%)', width: '48px', height: '48px', borderRadius: '50%', background: '#fff', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#ef4444' }}>
-                      {Icons.play}
-                   </div>
-                </div>
-                <div style={{ padding: '2rem' }}>
-                  <div style={{ display: 'flex', alignItems: 'baseline', gap: '8px', marginBottom: '4px' }}>
-                    <span style={{ fontSize: '2.2rem', fontWeight: 800, color: '#111827' }}>\u20B9{(course.priceInr || 4900).toLocaleString()}</span>
-                    <span style={{ fontSize: '1.2rem', color: '#9ca3af', textDecoration: 'line-through' }}>\u20B99,999</span>
+            {/* SIDEBAR */}
+            <aside className="detail-sidebar">
+              <div className="sidebar-sticky-content">
+                <div className="promo-card">
+                  <div className="video-preview">
+                     <img src={course.thumbnailUrl || "/assets/images/course-placeholder.png"} className="video-thumb" alt="Course Thumbnail" />
+                     <div className="video-play-icon">
+                        {Icons.play}
+                     </div>
                   </div>
-                  <p style={{ fontSize: '0.8rem', color: '#6b7280', marginBottom: '1.5rem' }}>One-time payment</p>
-                  
-                  <p style={{ fontSize: '0.85rem', color: '#ef4444', fontWeight: 600, marginBottom: '1.5rem' }}>Promo ends soon in 12:02!</p>
-                  
-                  <div style={{ display: 'grid', gap: '10px', marginBottom: '2.5rem' }}>
-                    <button onClick={() => router.push(`/checkout?courseId=${course._id}`)} style={{ padding: '14px', borderRadius: '10px', background: '#ef4444', color: '#fff', border: 'none', fontSize: '0.95rem', fontWeight: 700, cursor: 'pointer' }}>Enroll Now</button>
-                    <button style={{ padding: '14px', borderRadius: '10px', background: '#fff', color: '#4b5563', border: '1px solid #e5e7eb', fontSize: '0.95rem', fontWeight: 700, cursor: 'pointer' }}>Send Message</button>
-                  </div>
+                  <div className="promo-details">
+                    <div className="price-row">
+                      <span className="current-price">\u20B9{(course.priceInr || 4900).toLocaleString()}</span>
+                      <span className="old-price">\u20B99,999</span>
+                    </div>
+                    <p className="payment-type">One-time payment</p>
+                    <p className="timer-text">Promo ends soon in 12:02!</p>
+                    
+                    <div className="action-buttons">
+                      <button onClick={() => router.push(`/checkout?courseId=${course._id}`)} className="btn-primary-detail">Enroll Now</button>
+                      <button className="btn-secondary-detail">Send Message</button>
+                    </div>
 
-                  <div style={{ display: 'grid', gap: '15px' }}>
-                    <h5 style={{ margin: 0, fontSize: '0.9rem', fontWeight: 700, color: '#111827' }}>What You&apos;ll Get:</h5>
-                    {[
-                      "Lifetime access to 12 video lessons",
-                      "Prompt templates & real-world use cases",
-                      "Peer learning group access",
-                      "Mini projects + certificate"
-                    ].map((text, i) => (
-                      <div key={i} style={{ display: 'flex', gap: '10px', fontSize: '0.85rem', color: '#4b5563', fontWeight: 500 }}>
-                        <span style={{ color: '#ef4444', marginTop: '4px' }}>{Icons.check}</span> {text}
+                    <div className="highlights-list">
+                      <h5 className="highlights-title">What You&apos;ll Get:</h5>
+                      {[
+                        "Lifetime access to 12 lessons",
+                        "Prompt templates & use cases",
+                        "Founder learning group",
+                        "Mini projects + certificate"
+                      ].map((text, i) => (
+                        <div key={i} className="highlight-item">
+                          <span style={{ color: '#ef4444' }}>{Icons.check}</span> {text}
+                        </div>
+                      ))}
+                    </div>
+
+                    <div className="coupon-section">
+                      <p className="coupon-title">Use Coupon</p>
+                      <div className="coupon-input-group">
+                        <input placeholder="Enter Coupon" className="coupon-input" />
+                        <button className="coupon-btn">Redeem</button>
                       </div>
-                    ))}
-                  </div>
-
-                  <div style={{ marginTop: '2.5rem' }}>
-                    <p style={{ fontSize: '0.85rem', fontWeight: 700, color: '#111827', marginBottom: '12px' }}>Use Coupon</p>
-                    <div style={{ display: 'flex', gap: '0', border: '1px solid #e5e7eb', borderRadius: '8px', overflow: 'hidden' }}>
-                      <input placeholder="Enter Coupon" style={{ border: 'none', padding: '12px', flex: 1, outline: 'none', fontSize: '0.85rem' }} />
-                      <button style={{ background: '#ef4444', color: '#fff', border: 'none', padding: '0 15px', fontSize: '0.85rem', fontWeight: 700 }}>Redeem</button>
                     </div>
                   </div>
                 </div>
-              </div>
 
-              {/* Instructor Card */}
-              <div style={{ border: '1px solid #f1f5f9', borderRadius: '16px', background: '#f9fafb', padding: '2rem' }}>
-                <div style={{ display: 'flex', gap: '12px', alignItems: 'center', marginBottom: '1.25rem' }}>
-                  <div style={{ width: '48px', height: '48px', borderRadius: '10px', background: '#fff', boxShadow: '0 1px 2px rgba(0,0,0,0.1)' }}>
-                     <img src="/assets/images/placeholder-user.png" style={{ width: '100%', height: '100%', objectFit: 'cover' }} alt="Instructor Avatar" />
+                <div className="instructor-card">
+                  <div className="inst-header">
+                    <div className="inst-avatar">
+                       <img src="/assets/images/placeholder-user.png" className="inst-img" alt="Instructor Avatar" />
+                    </div>
+                    <div>
+                      <h4 className="inst-name">Faizal M.</h4>
+                      <p className="inst-role">Founder @ StartupIndia</p>
+                    </div>
                   </div>
-                  <div>
-                    <h4 style={{ margin: 0, fontSize: '0.95rem', fontWeight: 700, color: '#111827' }}>Faizal M.</h4>
-                    <p style={{ margin: 0, fontSize: '0.75rem', color: '#6b7280' }}>Founder @ StartupIndia • Strategy Consultant</p>
+                  <div className="inst-stats">
+                     <span>{Icons.user} 15 Courses</span>
+                     <span>{Icons.star} 10,482 Reviews</span>
                   </div>
+                  <button className="inst-profile-btn">View Instructor Profile</button>
                 </div>
-                <div style={{ display: 'flex', gap: '15px', color: '#6b7280', fontSize: '0.75rem', fontWeight: 500, marginBottom: '1.5rem' }}>
-                   <span>{Icons.user} 15 Courses</span>
-                   <span>{Icons.star} 10,482 Reviews</span>
-                </div>
-                <button style={{ width: '100%', padding: '10px', borderRadius: '8px', background: '#fff', border: '1px solid #e5e7eb', fontSize: '0.8rem', fontWeight: 700, color: '#4b5563', cursor: 'pointer' }}>View Instructor Profile</button>
               </div>
-            </div>
-          </aside>
+            </aside>
+          </div>
         </div>
       </div>
 
-      <div style={{ maxWidth: '1440px', margin: '0 auto', padding: '4rem 1rem 0', display: 'grid', gridTemplateColumns: 'minmax(0, 1fr) 380px', gap: '4rem' }}>
-        <main>
-          <div>
-            <h2 style={{ fontSize: '1.8rem', fontWeight: 700, color: '#111827', marginBottom: '2.5rem' }}>Course Overview</h2>
-            
-            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '3rem', marginBottom: '4rem' }}>
-              <div>
-                <h3 style={{ fontSize: '1.1rem', fontWeight: 700, color: '#111827', marginBottom: '1.5rem' }}>What You&apos;ll Learn:</h3>
-                <ul style={{ listStyle: 'none', padding: 0, display: 'grid', gap: '12px' }}>
+      <div className="detail-main-content">
+        <div className="detail-content-inner">
+          <main className="main-info">
+            <h2 className="section-title">Course Overview</h2>
+            <div className="overview-grid">
+              <div className="overview-col">
+                <h3 className="col-title">What You&apos;ll Learn:</h3>
+                <ul className="overview-list">
                   {[
-                    "Craft precise prompts for various AI tools",
-                    "Use prompt patterns to generate better outputs",
+                    "Craft precise prompts for AI tools",
+                    "Use prompt patterns for better outputs",
                     "Apply AI in writing, design, and coding",
                     "Avoid common prompt mistakes",
-                    "Automate workflows using prompt chaining"
+                    "Automate workflows via chaining"
                   ].map((item, i) => (
-                    <li key={i} style={{ display: 'flex', gap: '12px', fontSize: '0.95rem', color: '#4b5563', lineHeight: 1.5 }}>
-                      <span style={{ color: '#ef4444', marginTop: '4px' }}>{Icons.check}</span> {item}
+                    <li key={i} className="overview-item">
+                      <span className="item-check">{Icons.check}</span> {item}
                     </li>
                   ))}
                 </ul>
               </div>
-              <div>
-                <h3 style={{ fontSize: '1.1rem', fontWeight: 700, color: '#111827', marginBottom: '1.5rem' }}>Who This Course is For:</h3>
-                <ul style={{ listStyle: 'none', padding: 0, display: 'grid', gap: '12px' }}>
+              <div className="overview-col">
+                <h3 className="col-title">Who This Course is For:</h3>
+                <ul className="overview-list">
                   {[
                     "Beginners in AI trends",
                     "Content creators & marketers",
                     "Designers exploring AI journey",
-                    "Developers building prompt-based apps",
-                    "Anyone curious about using AI effectively"
+                    "Developers building AI apps",
+                    "Curious about AI effectiveness"
                   ].map((item, i) => (
-                    <li key={i} style={{ display: 'flex', gap: '12px', fontSize: '0.95rem', color: '#4b5563', lineHeight: 1.5 }}>
-                      <span style={{ color: '#ef4444', marginTop: '4px' }}>{Icons.check}</span> {item}
+                    <li key={i} className="overview-item">
+                      <span className="item-check">{Icons.check}</span> {item}
                     </li>
                   ))}
                 </ul>
               </div>
             </div>
 
-            {/* SYLLABUS */}
-            <h2 style={{ fontSize: '1.8rem', fontWeight: 700, color: '#111827', marginBottom: '1rem' }}>Course Syllabus</h2>
-            <div style={{ display: 'flex', gap: '15px', color: '#6b7280', fontSize: '0.85rem', fontWeight: 500, marginBottom: '2.5rem' }}>
+            <h2 className="section-title">Course Syllabus</h2>
+            <div className="syllabus-meta">
               <span>• 48 Topics</span>
               <span>• 12 Lessons</span>
               <span>• 4 Parts</span>
             </div>
 
-            <div style={{ display: 'grid', gap: '12px', marginBottom: '5rem' }}>
+            <div className="syllabus-accordion">
               {modules.map((m, i) => (
-                <div key={i} style={{ border: '1px solid #e5e7eb', borderRadius: '12px', overflow: 'hidden' }}>
-                  <div style={{ padding: '1.5rem 2rem', display: 'flex', justifyContent: 'space-between', alignItems: 'center', cursor: 'pointer', background: expandedModule === i ? '#f9fafb' : '#fff' }} onClick={() => setExpandedModule(expandedModule === i ? -1 : i)}>
+                <div key={i} className={`syllabus-module ${expandedModule === i ? 'expanded' : ''}`}>
+                  <div className="module-header" onClick={() => setExpandedModule(expandedModule === i ? -1 : i)}>
                     <div>
-                      <h4 style={{ margin: 0, fontSize: '1.05rem', fontWeight: 700, color: '#111827' }}>Week {i+1}: {m.title}</h4>
-                      <p style={{ margin: '4px 0 0', fontSize: '0.85rem', color: '#6b7280' }}>Learn the fundamentals of {m.title.toLowerCase()} in startups.</p>
+                      <h4 className="module-title">Week {i+1}: {m.title}</h4>
+                      <p className="module-subtitle">Foundations of {m.title.toLowerCase()}.</p>
                     </div>
-                    <div style={{ transform: expandedModule === i ? 'rotate(180deg)' : 'none', transition: '0.3s' }}>{Icons.chevronDown}</div>
+                    <div className="expand-icon">{Icons.chevronDown}</div>
                   </div>
-                  {expandedModule === i && (
-                    <div style={{ padding: '0 2rem 1.5rem', background: '#f9fafb' }}>
-                      {[1, 2, 3].map(item => (
-                        <div key={item} style={{ display: 'flex', justifyContent: 'space-between', padding: '12px 0' }}>
-                          <div style={{ display: 'flex', gap: '12px', alignItems: 'center' }}>
-                            <div style={{ color: '#ef4444' }}>{Icons.play}</div>
-                            <span style={{ fontSize: '0.9rem', fontWeight: 500, color: '#374151' }}>Lesson {item}: {m.title} Mastery Part {item}</span>
+                  <AnimatePresence>
+                    {expandedModule === i && (
+                      <motion.div initial={{ height: 0 }} animate={{ height: 'auto' }} exit={{ height: 0 }} className="module-content">
+                        {[1, 2, 3].map(item => (
+                          <div key={item} className="lesson-row">
+                            <div className="lesson-left">
+                              <div className="lesson-play-icon">{Icons.play}</div>
+                              <span className="lesson-name">Lesson {item}: {m.title} Mastery Part {item}</span>
+                            </div>
+                            <span className="lesson-duration">12:45m</span>
                           </div>
-                          <span style={{ fontSize: '0.85rem', color: '#9ca3af' }}>12:45m</span>
-                        </div>
-                      ))}
-                    </div>
-                  )}
+                        ))}
+                      </motion.div>
+                    )}
+                  </AnimatePresence>
                 </div>
               ))}
             </div>
-          </div>
-        </main>
-        <aside />
-      </div>
-
-      <div className="full-width-sections" style={{ borderTop: '1px solid #f1f5f9', marginTop: '4rem', background: '#fff' }}>
-        <section style={{ padding: '6rem 1rem', maxWidth: '1440px', margin: '0 auto' }}>
-          <div style={{ textAlign: 'center', marginBottom: '4rem' }}>
-            <h2 style={{ fontSize: '2.2rem', fontWeight: 700, color: '#111827', marginBottom: '1rem' }}>Stories from StartupsIndia Learners</h2>
-            <p style={{ color: '#6b7280', fontWeight: 500, maxWidth: '600px', margin: '0 auto' }}>Thousands are growing their skills, switching careers, and achieving more. Here&apos;s what they&apos;re saying.</p>
-          </div>
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '1.5rem' }}>
-            {[
-              { name: "Sasha P.", role: "Founder @ Nexa", text: "Exactly what I needed to understand how to communicate with AI effectively." },
-              { name: "Amith S.", role: "CEO @ FlowTech", text: "A solid foundation for anyone who wants to get serious with AI tools." },
-              { name: "Fuad M.", role: "CTO @ Bloom", text: "I didn't realize how much better my AI results could be until I took this course." }
-            ].map((t, i) => (
-              <div key={i} style={{ padding: '2rem', border: '1px solid #e5e7eb', borderRadius: '12px', background: '#fff' }}>
-                <div style={{ display: 'flex', gap: '2px', marginBottom: '1.25rem' }}>{[...Array(5)].map((_,ri)=><span key={ri}>{Icons.star}</span>)}</div>
-                <p style={{ fontSize: '0.95rem', fontWeight: 600, color: '#111827', lineHeight: 1.6, marginBottom: '2rem' }}>&quot;{t.text}&quot;</p>
-                <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-                  <div style={{ width: '40px', height: '40px', borderRadius: '50%', background: '#F1F5F9' }} />
-                  <div>
-                    <h5 style={{ margin: 0, fontSize: '0.9rem', fontWeight: 700 }}>{t.name}</h5>
-                    <p style={{ margin: 0, fontSize: '0.75rem', color: '#6b7280' }}>{t.role}</p>
-                  </div>
-                </div>
-              </div>
-            ))}
-          </div>
-        </section>
-
-        <section style={{ padding: '6rem 2rem', background: '#f9fafb' }}>
-          <div style={{ maxWidth: '1440px', margin: '0 auto', padding: '0 1rem' }}>
-            <h2 style={{ fontSize: '2rem', fontWeight: 700, color: '#111827', marginBottom: '3rem', textAlign: 'center' }}>Expand Your Expertise</h2>
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '1.5rem' }}>
-              {relatedCourses.map(rc => (
-                <div key={rc._id} style={{ border: '1px solid #e5e7eb', borderRadius: '12px', overflow: 'hidden', background: '#fff' }}>
-                    <div style={{ height: '160px', background: '#f1f5f9' }}>
-                        <img src={rc.thumbnailUrl || rc.img} style={{ width: '100%', height: '100%', objectFit: 'cover' }} alt="Course Thumbnail" />
-                    </div>
-                    <div style={{ padding: '1.5rem' }}>
-                        <span style={{ fontSize: '0.65rem', fontWeight: 700, color: '#ef4444', textTransform: 'uppercase' }}>FUNDAMENTALS</span>
-                        <h4 style={{ fontSize: '1rem', fontWeight: 700, margin: '8px 0 12px' }}>{rc.title}</h4>
-                        <div style={{ display: 'flex', alignItems: 'center', gap: '4px', fontSize: '0.8rem', fontWeight: 700 }}>
-                            {Icons.star} 4.9 <span style={{ color: '#9ca3af', fontWeight: 500 }}>(124 reviews)</span>
-                        </div>
-                    </div>
-                </div>
-              ))}
-            </div>
-          </div>
-        </section>
-
-        <section style={{ padding: '8rem 2rem' }}>
-          <div style={{ maxWidth: '900px', margin: '0 auto', padding: '0 1rem' }}>
-            <h2 style={{ fontSize: '2.2rem', fontWeight: 700, color: '#111827', textAlign: 'center', marginBottom: '1rem' }}>Frequently Asked Questions</h2>
-            <p style={{ color: '#6b7280', textAlign: 'center', marginBottom: '4rem' }}>Everything you need to know before starting your learning journey.</p>
-            <div style={{ display: 'grid', gap: '12px' }}>
-              {[
-                "Do I need any prior experience to take this course?",
-                "Is there a certificate after completion?",
-                "How long do I have access to the course?",
-                "Can I get a refund if I'm not satisfied?",
-                "Can I interact with other learners?"
-              ].map((q, i) => (
-                <div key={i} style={{ border: '1px solid #e5e7eb', borderRadius: '8px', overflow: 'hidden' }}>
-                   <div style={{ padding: '1.25rem 1.5rem', display: 'flex', justifyContent: 'space-between', alignItems: 'center', cursor: 'pointer' }} onClick={() => setExpandedFaq(expandedFaq === i ? null : i)}>
-                     <span style={{ fontSize: '0.95rem', fontWeight: 600, color: '#111827' }}>{q}</span>
-                     <div style={{ transform: expandedFaq === i ? 'rotate(180deg)' : 'none', transition: '0.3s' }}>{Icons.chevronDown}</div>
-                   </div>
-                   {expandedFaq === i && (
-                     <AnimatePresence>
-                        <motion.div initial={{ height: 0 }} animate={{ height: 'auto' }} exit={{ height: 0 }} style={{ overflow: 'hidden' }}>
-                          <div style={{ padding: '0 1.5rem 1.25rem', fontSize: '0.9rem', color: '#6b7280', lineHeight: 1.6 }}>
-                             Yes, you get full lifetime access to all course materials and our private founder community.
-                          </div>
-                        </motion.div>
-                     </AnimatePresence>
-                   )}
-                </div>
-              ))}
-            </div>
-          </div>
-        </section>
+          </main>
+        </div>
       </div>
 
       <Footer />
+
       <style jsx global>{`
-        body { background: #fff !important; }
+        .course-detail-view { background: #fff !important; overflow-x: hidden; }
+        .detail-hero { background: linear-gradient(135deg, #ef4444 0%, #be123c 100%); padding-bottom: 3rem; color: #fff; position: relative; }
+        .detail-hero-inner { max-width: 1400px; margin: 0 auto; padding: 0 20px; }
+        .detail-header-nav { padding: 1.5rem 0 0.5rem; }
+        .detail-back-btn { display: flex; align-items: center; gap: 8px; background: rgba(255,255,255,0.15); border: 1px solid rgba(255,255,255,0.2); padding: 10px 18px; borderRadius: 14px; fontSize: 0.85rem; fontWeight: 800; color: #fff; cursor: pointer; transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); backdropFilter: blur(10px); }
+        .detail-back-btn:hover { background: rgba(255,255,255,0.25); transform: translateX(-4px); }
+        
+        .detail-hero-grid { display: grid; grid-template-columns: 1fr 400px; gap: 4rem; padding: 2rem 0 4rem; position: relative; }
+        .detail-course-title { font-size: 3rem; font-weight: 800; color: #fff; line-height: 1.1; margin-bottom: 1.5rem; letter-spacing: -0.02em; }
+        .detail-course-desc { font-size: 1.15rem; color: rgba(255,255,255,0.9); line-height: 1.6; margin-bottom: 2rem; }
+        .detail-meta-row { display: flex; gap: 2.5rem; align-items: center; flex-wrap: wrap; margin-bottom: 2.5rem; }
+        .detail-rating { display: flex; align-items: center; gap: 6px; }
+        .review-count { color: rgba(255,255,255,0.7); font-size: 0.9rem; }
+        .detail-students { display: flex; align-items: center; gap: 8px; color: rgba(255,255,255,0.8); font-size: 0.9rem; font-weight: 500; }
+        .detail-features-row { display: flex; gap: 1.5rem; flex-wrap: wrap; margin-bottom: 3rem; }
+        .feature-pill { display: flex; align-items: center; gap: 8px; font-size: 0.9rem; color: #fff; font-weight: 500; background: rgba(255,255,255,0.1); padding: 8px 16px; border-radius: 99px; }
+        .wishlist-toggle-btn { padding: 12px 28px; border-radius: 12px; background: #fff; border: 1px solid #e5e7eb; font-size: 0.95rem; font-weight: 700; color: #ef4444; cursor: pointer; transition: all 0.2s; box-shadow: 0 4px 12px rgba(0,0,0,0.1); display: flex; align-items: center; gap: 10px; }
+
+        .detail-sidebar { position: relative; height: 100%; }
+        .sidebar-sticky-content { position: sticky; top: 100px; display: grid; gap: 2rem; z-index: 10; width: 100%; }
+        .promo-card { border: 1px solid #e5e7eb; border-radius: 20px; overflow: hidden; background: #fff; box-shadow: 0 20px 50px rgba(0,0,0,0.1); color: #000; }
+        .video-preview { height: 200px; background: #111827; position: relative; }
+        .video-thumb { width: 100%; height: 100%; object-fit: cover; opacity: 0.8; }
+        .video-play-icon { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 48px; height: 48px; borderRadius: 50%; background: #fff; display: flex; alignItems: center; justifyContent: center; color: #ef4444; }
+        .promo-details { padding: 2rem; }
+        .price-row { display: flex; alignItems: baseline; gap: 8px; margin-bottom: 4px; }
+        .current-price { fontSize: 2.2rem; fontWeight: 800; color: #111827; }
+        .old-price { fontSize: 1.2rem; color: #9ca3af; text-decoration: line-through; }
+        .payment-type { fontSize: 0.8rem; color: #6b7280; margin-bottom: 1.5rem; }
+        .timer-text { fontSize: 0.85rem; color: #ef4444; fontWeight: 600; margin-bottom: 1.5rem; }
+        .action-buttons { display: grid; gap: 10px; margin-bottom: 2.5rem; }
+        .btn-primary-detail { padding: 14px; border-radius: 12px; background: #ef4444; color: #fff; border: none; fontSize: 0.95rem; fontWeight: 800; cursor: pointer; transition: 0.2s; }
+        .btn-primary-detail:hover { background: #dc2626; transform: translateY(-2px); }
+        .btn-secondary-detail { padding: 14px; border-radius: 12px; background: #fff; color: #4b5563; border: 1px solid #e5e7eb; fontSize: 0.95rem; fontWeight: 700; cursor: pointer; }
+
+        .highlights-list { display: grid; gap: 15px; }
+        .highlights-title { margin: 0; fontSize: 0.9rem; fontWeight: 800; color: #111827; }
+        .highlight-item { display: flex; gap: 10px; fontSize: 0.85rem; color: #4b5563; fontWeight: 500; }
+        .coupon-section { marginTop: 2.5rem; }
+        .coupon-title { fontSize: 0.85rem; fontWeight: 800; color: #111827; margin-bottom: 12px; }
+        .coupon-input-group { display: flex; border: 1px solid #e5e7eb; border-radius: 12px; overflow: hidden; width: 100%; }
+        .coupon-input { border: none; padding: 12px; flex: 1; min-width: 0; outline: none; fontSize: 0.85rem; }
+        .coupon-btn { background: #ef4444; color: #fff; border: none; padding: 0 16px; fontSize: 0.85rem; fontWeight: 700; cursor: pointer; }
+
+        .instructor-card { border: 1px solid #f1f5f9; border-radius: 16px; background: #f9fafb; padding: 1.5rem; color: #000; }
+        .inst-header { display: flex; gap: 12px; alignItems: center; margin-bottom: 1.25rem; }
+        .inst-avatar { width: 44px; height: 44px; border-radius: 10px; background: #fff; overflow: hidden; }
+        .inst-img { width: 100%; height: 100%; object-fit: cover; }
+        .inst-name { margin: 0; fontSize: 0.95rem; fontWeight: 700; color: #111827; }
+        .inst-role { margin: 0; fontSize: 0.7rem; color: #6b7280; line-height: 1.3; }
+        .inst-stats { display: flex; gap: 15px; color: #6b7280; fontSize: 0.75rem; fontWeight: 500; margin-bottom: 1.25rem; }
+        .inst-profile-btn { width: 100%; padding: 10px; borderRadius: 8px; background: #fff; border: 1px solid #e5e7eb; fontSize: 0.8rem; fontWeight: 700; color: #4b5563; cursor: pointer; }
+
+        .detail-main-content { max-width: 1400px; margin: 0 auto; padding: 4rem 20px; }
+        .detail-content-inner { display: grid; grid-template-columns: 1fr 400px; gap: 4rem; }
+        .section-title { font-size: 1.8rem; font-weight: 800; color: #111827; margin-bottom: 2.5rem; }
+        .overview-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 3rem; margin-bottom: 4rem; }
+        .col-title { font-size: 1.1rem; font-weight: 800; color: #111827; margin-bottom: 1.5rem; }
+        .overview-list { list-style: none; padding: 0; display: grid; gap: 16px; }
+        .overview-item { display: flex; gap: 12px; font-size: 0.95rem; color: #4b5563; line-height: 1.5; }
+        .item-check { color: #ef4444; flex-shrink: 0; }
+        .syllabus-meta { display: flex; gap: 15px; color: #6b7280; font-size: 0.85rem; font-weight: 600; margin-bottom: 2.5rem; }
+        .syllabus-accordion { display: grid; gap: 12px; }
+        .syllabus-module { border: 1px solid #e5e7eb; border-radius: 16px; overflow: hidden; transition: all 0.2s; }
+        .module-header { padding: 1.5rem 2rem; display: flex; justify-content: space-between; align-items: center; cursor: pointer; background: #fff; }
+        .syllabus-module.expanded { border-color: #ef4444; }
+        .module-title { margin: 0; font-size: 1.05rem; font-weight: 800; color: #111827; }
+        .module-subtitle { margin: 4px 0 0; font-size: 0.85rem; color: #6b7280; }
+        .module-content { padding: 0 2rem 1.5rem; background: #fafafa; }
+        .lesson-row { display: flex; justify-content: space-between; align-items: center; padding: 14px 0; border-top: 1px solid #f1f5f9; }
+        .lesson-left { display: flex; gap: 12px; align-items: center; }
+        .lesson-play-icon { color: #ef4444; opacity: 0.8; }
+        .lesson-name { font-size: 0.9rem; font-weight: 500; color: #374151; }
+        .lesson-duration { font-size: 0.85rem; color: #9ca3af; font-weight: 600; }
+
+        @media (max-width: 1060px) {
+          .detail-hero-grid { grid-template-columns: 1fr; gap: 2rem; }
+          .detail-content-inner { grid-template-columns: 1fr; }
+          .detail-sidebar { order: -1; }
+          .detail-course-title { font-size: 2rem; }
+          .overview-grid { grid-template-columns: 1fr; gap: 2rem; }
+          .syllabus-meta { flex-wrap: wrap; }
+          .module-header { padding: 1.25rem 1.5rem; }
+          .module-content { padding: 0 1.5rem 1.25rem; }
+          .detail-main-content { padding: 2rem 20px; }
+          .promo-card { margin-top: -3rem; }
+          .wishlist-toggle-btn { width: 100%; justify-content: center; }
+        }
+        
+        @media (max-width: 480px) {
+           .detail-course-title { font-size: 1.75rem; }
+           .detail-meta-row { gap: 1rem; }
+           .current-price { font-size: 1.75rem; }
+           .coupon-btn { padding: 0 10px; font-size: 0.75rem; }
+        }
       `}</style>
     </div>
   );

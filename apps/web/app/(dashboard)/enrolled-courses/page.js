@@ -31,8 +31,8 @@ export default function EnrolledCoursesPage() {
           <p className="platform-page-subtitle">Pick up right where you left off.</p>
         </div>
         
-        <div style={{ display: 'flex', gap: '1rem', alignItems: 'center' }}>
-          <div className="platform-search-container" style={{ width: '280px' }}>
+        <div className="learning-header-actions">
+          <div className="platform-search-container">
             <div className="platform-search-icon">
               <Icon name="search" size={18} />
             </div>
@@ -44,48 +44,32 @@ export default function EnrolledCoursesPage() {
               onChange={(e) => setSearch(e.target.value)}
             />
           </div>
-          <Link href="/courses" className="btn-brand" style={{ textDecoration: 'none', whiteSpace: 'nowrap' }}>
+          <Link href="/courses" className="btn-brand learning-explore-btn">
              <Icon name="plus" size={16} /> Explore More
           </Link>
         </div>
       </header>
 
       {/* Grid View Selection */}
-      <div className="platform-section-label" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.5rem' }}>
+      <div className="learning-filter-row">
         <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
           <Icon name="play" size={16} color="var(--brand-red)" />
           Active Courses
           <span className="platform-section-count">{active.length}</span>
         </div>
         
-        <div className="layout-toggle-group" style={{ display: 'flex', gap: '8px', background: 'var(--slate-50)', padding: '4px', borderRadius: '12px', border: '1px solid var(--slate-100)' }}>
+        <div className="layout-toggle-group">
           <button 
             className={`btn-icon-toggle ${layout === 'grid' ? 'active' : ''}`} 
             onClick={() => setLayout('grid')}
-            style={{ 
-              padding: '6px 14px', borderRadius: '8px', border: 'none', cursor: 'pointer',
-              background: layout === 'grid' ? '#fff' : 'transparent',
-              boxShadow: layout === 'grid' ? '0 2px 8px rgba(0,0,0,0.08)' : 'none',
-              display: 'flex', alignItems: 'center', gap: '6px', fontSize: '0.75rem', fontWeight: 900,
-              color: layout === 'grid' ? 'var(--brand-black)' : 'var(--slate-400)',
-              transition: 'all 0.2s ease'
-            }}
           >
-            <Icon name="dashboard" size={14} color={layout === 'grid' ? 'var(--brand-red)' : 'var(--slate-400)'} /> Grid
+            <Icon name="dashboard" size={14} /> Grid
           </button>
           <button 
             className={`btn-icon-toggle ${layout === 'list' ? 'active' : ''}`} 
             onClick={() => setLayout('list')}
-            style={{ 
-              padding: '6px 14px', borderRadius: '8px', border: 'none', cursor: 'pointer',
-              background: layout === 'list' ? '#fff' : 'transparent',
-              boxShadow: layout === 'list' ? '0 2px 8px rgba(0,0,0,0.08)' : 'none',
-              display: 'flex', alignItems: 'center', gap: '6px', fontSize: '0.75rem', fontWeight: 900,
-              color: layout === 'list' ? 'var(--brand-black)' : 'var(--slate-400)',
-              transition: 'all 0.2s ease'
-            }}
           >
-            <Icon name="recorded" size={14} color={layout === 'list' ? 'var(--brand-red)' : 'var(--slate-400)'} /> List
+            <Icon name="recorded" size={14} /> List
           </button>
         </div>
       </div>
@@ -97,12 +81,7 @@ export default function EnrolledCoursesPage() {
             initial={{ opacity: 0, y: 10 }} 
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -10 }}
-            className={layout === 'grid' ? 'platform-grid' : 'platform-list-v'}
-            style={{ 
-              display: 'grid', 
-              gridTemplateColumns: layout === 'grid' ? 'repeat(3, 1fr)' : '1fr', 
-              gap: '1.5rem' 
-            }}
+            className={layout === 'grid' ? 'platform-grid grid-responsive-3' : 'platform-list-v'}
           >
             {active.map((c, i) => (
               <motion.div key={c.id || c._id} initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: i * 0.05 }}>

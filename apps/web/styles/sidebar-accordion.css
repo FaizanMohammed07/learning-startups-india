@@ -96,17 +96,22 @@
   font-size: 0.85rem; 
   font-weight: 700;
   letter-spacing: -0.015em;
-  transition: all 0.2s;
+  transition: all 0.3s cubic-bezier(0.32, 0.72, 0, 1);
+  border-radius: 12px;
+  margin: 0 12px;
 }
 
 .nav-item-row:hover {
   background: #f1f5f9;
   color: #1e293b;
+  transform: translateX(4px) scale(1.02);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.03);
 }
 
 .nav-item-row.active {
   color: #eb2327; /* Highlight active item color */
   font-weight: 700;
+  background: rgba(235, 35, 39, 0.04);
 }
 
 .nav-item-left {
@@ -114,11 +119,6 @@
   align-items: center;
   gap: 12px;
   flex: 1;
-}
-
-/* Red Dot Indicator (Removed as per request) */
-.active-dot {
-  display: none;
 }
 
 /* Icon Frame (Minimalist - No background/border) */
@@ -140,8 +140,7 @@
 }
 
 .nav-item-row:hover .icon-frame {
-  border-color: #cbd5e1;
-  transform: scale(1.02);
+  transform: scale(1.1);
 }
 
 /* Badge count */

@@ -104,11 +104,11 @@ export default function ProgramsSection() {
                 borderRadius: 18,
                 boxShadow: '0 2px 12px rgba(30,41,59,0.07)',
                 background: '#18181b',
-                padding: 28,
+                padding: '24px', /* Reduced for mobile comfort */
                 margin: 0,
                 minWidth: 0,
                 width: '100%',
-                maxWidth: 370,
+                maxWidth: 'none', /* Removed hardcoded 370 */
                 outline: hoveredIndex === index ? '2px solid #6366f1' : 'none',
                 outlineOffset: 0,
                 cursor: 'pointer',

@@ -23,6 +23,8 @@ import '@/styles/design-system.css';
 
 // 5. Enterprise Responsive - Global responsive framework (FIFTH)
 import '@/styles/home-enterprise.css';
+import '@/styles/global-responsive-fix.css';
+
 
 // 6. Layout Components - Shared across all pages (SIXTH)
 import '@/styles/footer.css';

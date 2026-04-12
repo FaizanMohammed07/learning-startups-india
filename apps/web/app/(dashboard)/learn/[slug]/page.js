@@ -139,86 +139,64 @@ export default function LearnPage() {
   if (!course) return <div style={{ padding: '4rem', textAlign: 'center', fontFamily: 'Poppins, sans-serif' }}>Course not found.</div>;
 
   return (
-    <div className="modern-learn-player" style={{ 
-      minHeight: '100vh', 
-      background: '#f8fafc',
-      fontFamily: 'Poppins, sans-serif',
-      padding: '2rem 4rem'
-    }}>
+    <div className="modern-learn-player custom-scrollbar">
       
       {/* ── TOP HEADER: BACK BUTTON & COURSETITLE ── */}
-      <header style={{ maxWidth: '1400px', margin: '0 auto 2.5rem', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+      <header className="learn-header">
+        <div className="learn-header-main">
           <button 
             onClick={() => router.back()}
-            style={{ 
-              background: 'none', border: 'none', padding: 0, 
-              display: 'flex', alignItems: 'center', gap: '8px', 
-              fontSize: '0.85rem', fontWeight: 800, color: '#ef4444', 
-              cursor: 'pointer', transition: 'all 0.25s', marginBottom: '8px'
-            }}
-            onMouseOver={e => e.currentTarget.style.transform = 'translateX(-4px)'}
-            onMouseOut={e => e.currentTarget.style.transform = 'translateX(0)'}
+            className="learn-back-btn"
           >
             <Icon name="chevronLeft" size={16} color="#ef4444" /> BACK TO LEARNING
           </button>
-          <h1 style={{ fontSize: '1.8rem', fontWeight: 800, color: '#0f172a', margin: 0 }}>{course.title}</h1>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '20px', fontSize: '0.85rem', color: '#64748b', fontWeight: 500 }}>
-             <span style={{ display: 'flex', alignItems: 'center', gap: '6px' }}><Icon name="user" size={14} /> Beginner</span>
-             <span style={{ display: 'flex', alignItems: 'center', gap: '6px' }}><Icon name="book" size={14} /> {modules.length} Lessons</span>
-             <span style={{ display: 'flex', alignItems: 'center', gap: '6px' }}><Icon name="clock" size={14} /> 3h 45min</span>
+          <h1 className="learn-course-title">{course.title}</h1>
+          <div className="learn-meta-row">
+             <span className="learn-meta-item"><Icon name="user" size={14} /> Beginner</span>
+             <span className="learn-meta-item"><Icon name="book" size={14} /> {modules.length} Lessons</span>
+             <span className="learn-meta-item"><Icon name="clock" size={14} /> 3h 45min</span>
           </div>
         </div>
-        <div style={{ display: 'flex', gap: '12px' }}>
-           <button style={{ background: '#fff', border: '1px solid #e2e8f0', padding: '10px 18px', borderRadius: '12px', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '8px', fontSize: '0.85rem', fontWeight: 600, color: '#475569' }}>
+        <div className="learn-header-actions">
+           <button className="learn-action-btn secondary">
              <Icon name="bookmark" size={16} /> Save
            </button>
-           <button style={{ background: '#ef4444', border: 'none', padding: '10px 22px', borderRadius: '12px', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '8px', fontSize: '0.85rem', fontWeight: 700, color: '#fff', boxShadow: '0 4px 12px rgba(239, 68, 68, 0.2)' }}>
+           <button className="learn-action-btn primary">
              <Icon name="rocket" size={16} color="#fff" /> Share
            </button>
         </div>
       </header>
 
       {/* ── MAIN GRID LAYOUT ── */}
-      <div style={{ maxWidth: '1400px', margin: '0 auto', display: 'grid', gridTemplateColumns: '1fr 380px', gap: '2.5rem' }}>
+      <div className="learn-main-container">
         
         {/* LEFT COLUMN: PLAYER & CONTENT */}
-        <section>
+        <section className="learn-video-column">
           {/* Video Area */}
-          <div style={{ 
-            width: '100%', aspectRatio: '16/9', background: '#0f172a', 
-            borderRadius: '24px', position: 'relative', overflow: 'hidden', 
-            boxShadow: '0 25px 50px -12px rgba(0,0,0,0.15)', marginBottom: '2rem'
-          }}>
-            <img src={course.thumbnailUrl || "https://images.unsplash.com/photo-1516321318423-f06f85e504b3?w=1200"} alt="Thumbnail" style={{ width: '100%', height: '100%', objectFit: 'cover', opacity: 0.6 }} />
-            <div style={{ position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%)', width: '80px', height: '80px', borderRadius: '50%', background: '#fff', color: '#ef4444', display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer', boxShadow: '0 10px 30px rgba(0,0,0,0.3)' }}>
+          <div className="learn-video-wrapper">
+            <img src={course.thumbnailUrl || "https://images.unsplash.com/photo-1516321318423-f06f85e504b3?w=1200"} alt="Thumbnail" className="learn-video-thumb" />
+            <div className="learn-play-btn">
               <Icon name="play" size={32} />
             </div>
             
             {/* Custom Controls Mock */}
-            <div style={{ position: 'absolute', bottom: 0, left: 0, right: 0, padding: '20px', background: 'linear-gradient(transparent, rgba(0,0,0,0.8))', display: 'flex', alignItems: 'center', gap: '20px' }}>
+            <div className="learn-video-controls">
                 <Icon name="play" size={20} color="#fff" />
-                <div style={{ flex: 1, height: '4px', background: 'rgba(255,255,255,0.2)', borderRadius: '2px', position: 'relative' }}>
+                <div className="learn-progress-bar">
                    <div style={{ width: (activeModuleIdx / modules.length * 100) + '%', height: '100%', background: '#ef4444', borderRadius: '2px' }} />
                 </div>
-                <span style={{ color: '#fff', fontSize: '0.75rem', fontWeight: 600 }}>{(activeModuleIdx + 1) * 3}:00 / {modules.length * 3}:00</span>
+                <span className="learn-video-time">{(activeModuleIdx + 1) * 3}:00 / {modules.length * 3}:00</span>
                 <Icon name="settings" size={18} color="#fff" />
             </div>
           </div>
 
           {/* Navigation Tabs */}
-          <div style={{ display: 'flex', gap: '32px', borderBottom: '1px solid #e2e8f0', marginBottom: '2rem' }}>
+          <div className="learn-tabs-row">
             {['Summary', 'Files', 'Resources', 'Q&A'].map(tab => (
               <button 
                 key={tab} 
                 onClick={() => setActiveTab(tab)}
-                style={{ 
-                  padding: '12px 0', background: 'none', border: 'none', 
-                  color: activeTab === tab ? '#0f172a' : '#94a3b8', 
-                  fontSize: '0.9rem', fontWeight: 700, cursor: 'pointer',
-                  borderBottom: activeTab === tab ? '2px solid #ef4444' : '2px solid transparent',
-                  transition: 'all 0.2s'
-                }}
+                className={`learn-tab-btn ${activeTab === tab ? 'active' : ''}`}
               >
                 {tab}
               </button>
@@ -228,27 +206,27 @@ export default function LearnPage() {
           <AnimatePresence mode="wait">
             <motion.div key={activeTab} initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -10 }}>
               {activeTab === 'Summary' && (
-                <div>
-                  <h3 style={{ fontSize: '1.25rem', fontWeight: 800, color: '#0f172a', marginBottom: '16px' }}>Lesson Recap</h3>
-                  <p style={{ color: '#475569', lineHeight: 1.8, fontSize: '0.95rem', marginBottom: '2.5rem' }}>
+                <div className="learn-tab-content">
+                  <h3 className="learn-content-title">Lesson Recap</h3>
+                  <p className="learn-content-desc">
                     {activeModule?.description || "In this lesson, we explored the fundamental building blocks of this program. We learned that components are independent and reusable bits of code. They serve the same purpose as functions but work in isolation and return output data."}
                   </p>
 
-                  <h3 style={{ fontSize: '1.25rem', fontWeight: 800, color: '#0f172a', marginBottom: '20px' }}>Key Concepts</h3>
-                  <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1.5rem' }}>
+                  <h3 className="learn-content-title">Key Concepts</h3>
+                  <div className="learn-concepts-grid">
                     {[
                       { title: 'Foundational Knowledge', desc: 'Understanding the core principles of the domain.' },
                       { title: 'Strategic Planning', desc: 'How to map out your architecture effectively.' },
                       { title: 'Resource Efficiency', desc: 'Optimizing inputs for maximum scalability.' },
                       { title: 'Performance Metrics', desc: 'Tracking success via key performance indicators.' }
                     ].map((item, i) => (
-                      <div key={i} style={{ padding: '24px', borderRadius: '20px', background: '#fff', border: '1px solid #e2e8f0', display: 'flex', gap: '16px' }}>
-                        <div style={{ width: '20px', height: '20px', borderRadius: '50%', background: '#fef2f2', border: '1px solid #ef4444', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+                      <div key={i} className="concept-card">
+                        <div className="concept-icon">
                           <Icon name="check" size={10} color="#ef4444" />
                         </div>
                         <div>
-                          <div style={{ fontSize: '0.9rem', fontWeight: 700, color: '#1e293b', marginBottom: '4px' }}>{item.title}</div>
-                          <div style={{ fontSize: '0.8rem', color: '#64748b', lineHeight: 1.5 }}>{item.desc}</div>
+                          <div className="concept-title">{item.title}</div>
+                          <div className="concept-desc">{item.desc}</div>
                         </div>
                       </div>
                     ))}
@@ -256,7 +234,7 @@ export default function LearnPage() {
                 </div>
               )}
               {activeTab !== 'Summary' && (
-                <div style={{ padding: '40px', background: '#fff', borderRadius: '20px', border: '1px solid #e2e8f0', textAlign: 'center', color: '#94a3b8' }}>
+                <div className="learn-empty-tab">
                    No {activeTab.toLowerCase()} attached to this lesson yet.
                 </div>
               )}
@@ -265,10 +243,10 @@ export default function LearnPage() {
         </section>
 
         {/* RIGHT COLUMN: PROGRESS & CONTENT */}
-        <aside>
+        <aside className="learn-sidebar">
           {/* Study Progress Card */}
-          <div style={{ padding: '24px', background: '#fff', borderRadius: '24px', border: '1px solid #e2e8f0', marginBottom: '2rem', display: 'flex', alignItems: 'center', gap: '20px' }}>
-            <div style={{ position: 'relative', width: '80px', height: '80px' }}>
+          <div className="learn-progress-card">
+            <div className="learn-progress-circle">
                <svg width="80" height="80" viewBox="0 0 80 80">
                   <circle cx="40" cy="40" r="34" fill="none" stroke="#f1f5f9" strokeWidth="6" />
                   <circle cx="40" cy="40" r="34" fill="none" stroke="#ef4444" strokeWidth="6" 
@@ -276,28 +254,25 @@ export default function LearnPage() {
                     strokeLinecap="round" transform="rotate(-90 40 40)"
                   />
                </svg>
-               <span style={{ position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%)', fontSize: '0.9rem', fontWeight: 800, color: '#0f172a' }}>{progress}%</span>
+               <span className="learn-progress-percent">{progress}%</span>
             </div>
             <div>
-              <div style={{ fontSize: '0.95rem', fontWeight: 800, color: '#0f172a', marginBottom: '4px' }}>Study Progress</div>
-              <div style={{ fontSize: '0.8rem', color: '#64748b', lineHeight: 1.4 }}>Track your learning milestones and where you left off.</div>
+              <div className="learn-progress-title">Study Progress</div>
+              <div className="learn-progress-subtitle">Track your learning milestones and where you left off.</div>
             </div>
           </div>
 
           {/* Module List (Days Structure) */}
-          <div style={{ background: '#fff', borderRadius: '24px', border: '1px solid #e2e8f0', overflow: 'hidden' }}>
-            <div style={{ padding: '24px', borderBottom: '1px solid #f1f5f9', fontSize: '1rem', fontWeight: 800, color: '#0f172a' }}>Day Schedule</div>
-            <div style={{ maxHeight: '600px', overflowY: 'auto' }} className="custom-scrollbar">
+          <div className="learn-schedule-card">
+            <div className="learn-schedule-header">Day Schedule</div>
+            <div className="learn-schedule-list custom-scrollbar">
               {days.map((day, dIdx) => (
-                <div key={dIdx} style={{ borderBottom: '1px solid #f1f5f9' }}>
+                <div key={dIdx} className="learn-schedule-day">
                    <button 
                      onClick={() => toggleWeek(dIdx)}
-                     style={{ 
-                       width: '100%', padding: '16px 24px', display: 'flex', justifyContent: 'space-between', 
-                       alignItems: 'center', background: '#f8fafc', border: 'none', cursor: 'pointer' 
-                     }}
+                     className="learn-day-toggle"
                    >
-                     <span style={{ fontSize: '0.9rem', fontWeight: 800, color: '#1e293b' }}>{day.title}</span>
+                     <span className="learn-day-title">{day.title}</span>
                      <Icon name={expandedWeeks.has(dIdx) ? "chevronUp" : "chevronDown"} size={14} color="#64748b" />
                    </button>
                    
@@ -315,25 +290,14 @@ export default function LearnPage() {
                              <button 
                                key={m._id} 
                                onClick={() => setActiveModuleIdx(actualIdx)}
-                               style={{ 
-                                 width: '100%', display: 'flex', alignItems: 'center', gap: '16px', 
-                                 padding: '16px 24px', background: isActive ? '#fef2f2' : 'transparent',
-                                 border: 'none', borderBottom: i === day.items.length - 1 ? 'none' : '1px solid #f1f5f9', textAlign: 'left',
-                                 cursor: 'pointer', transition: 'all 0.2s',
-                               }}
+                               className={`learn-lesson-btn ${isActive ? 'active' : ''}`}
                              >
-                               <div style={{ 
-                                 width: '28px', height: '28px', borderRadius: '50%', 
-                                 background: isCompleted ? '#22c55e' : (isActive ? '#ef4444' : '#f8fafc'), 
-                                 color: isCompleted || isActive ? '#fff' : '#94a3b8',
-                                 display: 'flex', alignItems: 'center', justifyContent: 'center',
-                                 fontSize: '0.75rem', fontWeight: 800, flexShrink: 0
-                               }}>
+                               <div className={`lesson-status-icon ${isCompleted ? 'completed' : (isActive ? 'active' : '')}`}>
                                  {isCompleted ? <Icon name="check" size={12} color="#fff" /> : actualIdx + 1}
                                </div>
                                <div style={{ flex: 1 }}>
-                                 <div style={{ fontSize: '0.8rem', fontWeight: isActive ? 800 : 800, color: isActive ? '#ef4444' : '#1e293b', marginBottom: '2px' }}>{m.title}</div>
-                                 <div style={{ fontSize: '0.7rem', color: '#94a3b8', fontWeight: 500 }}>
+                                 <div className={`lesson-title ${isActive ? 'active' : ''}`}>{m.title}</div>
+                                 <div className="lesson-subtitle">
                                     {isActive ? "Currently Playing" : "Session class"}
                                  </div>
                                </div>
@@ -341,7 +305,7 @@ export default function LearnPage() {
                                  <div style={{ color: '#22c55e' }}>
                                     <Icon name="checkCircle" size={16} />
                                  </div>
-                               )}
+                                )}
                              </button>
                            );
                          })}
@@ -357,17 +321,12 @@ export default function LearnPage() {
       </div>
 
       {/* ── FOOTER ACTIONS ── */}
-      <footer style={{ 
-        maxWidth: '1400px', margin: '3rem auto 0', padding: '1.5rem 0',
-        display: 'flex', justifyContent: 'space-between', alignItems: 'center',
-        borderTop: '1px solid #e2e8f0'
-      }}>
+      <footer className="learn-footer">
          <button 
            disabled={activeModuleIdx === 0}
            onClick={() => {
              const prevIdx = activeModuleIdx - 1;
              setActiveModuleIdx(prevIdx);
-             // Find which day this index belongs to
              const dIdx = days.findIndex(d => prevIdx >= d.startIdx && prevIdx < d.startIdx + d.items.length);
              if (dIdx !== -1) {
                const newExpanded = new Set(expandedWeeks);
@@ -375,25 +334,96 @@ export default function LearnPage() {
                setExpandedWeeks(newExpanded);
              }
            }}
-           style={{ background: 'none', border: 'none', color: activeModuleIdx === 0 ? '#cbd5e1' : '#475569', fontWeight: 700, cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '8px' }}
+           className="learn-nav-btn"
          >
            <Icon name="chevronLeft" size={16} /> PREVIOUS
          </button>
          <button 
            onClick={handleLessonComplete}
-           style={{ background: '#0f172a', color: '#fff', border: 'none', padding: '14px 32px', borderRadius: '16px', fontWeight: 800, cursor: 'pointer', boxShadow: '0 4px 12px rgba(0,0,0,0.1)' }}
+           className="learn-complete-btn"
          >
            COMPLETE & NEXT
          </button>
       </footer>
 
       <style jsx global>{`
+        .modern-learn-player { min-height: 100vh; background: #f8fafc; font-family: 'Poppins', sans-serif; padding: 2.5rem 2rem; overflow-x: hidden; }
+        .learn-header { max-width: 1400px; margin: 0 auto 2.5rem; display: flex; justify-content: space-between; align-items: flex-end; gap: 24px; }
+        .learn-back-btn { background: none; border: none; padding: 0; display: flex; align-items: center; gap: 8px; fontSize: 0.85rem; fontWeight: 800; color: #ef4444; cursor: pointer; transition: all 0.25s; margin-bottom: 8px; }
+        .learn-back-btn:hover { transform: translateX(-4px); }
+        .learn-course-title { font-size: 1.8rem; font-weight: 800; color: #0f172a; margin: 0; line-height: 1.2; }
+        .learn-meta-row { display: flex; align-items: center; gap: 20px; font-size: 0.85rem; color: #64748b; font-weight: 500; margin-top: 8px; }
+        .learn-meta-item { display: flex; align-items: center; gap: 6px; }
+        .learn-header-actions { display: flex; gap: 12px; }
+        .learn-action-btn { border-radius: 12px; cursor: pointer; display: flex; align-items: center; gap: 8px; font-size: 0.85rem; font-weight: 700; transition: all 0.2s; padding: 10px 20px; }
+        .learn-action-btn.secondary { background: #fff; border: 1px solid #e2e8f0; color: #475569; }
+        .learn-action-btn.primary { background: #ef4444; border: none; color: #fff; box-shadow: 0 4px 12px rgba(239, 68, 68, 0.2); }
+        
+        .learn-main-container { max-width: 1400px; margin: 0 auto; display: grid; grid-template-columns: 1fr 380px; gap: 2.5rem; }
+        .learn-video-wrapper { width: 100%; aspect-ratio: 16/9; background: #0f172a; border-radius: 24px; position: relative; overflow: hidden; box-shadow: 0 25px 50px -12px rgba(0,0,0,0.15); margin-bottom: 2rem; }
+        .learn-video-thumb { width: 100%; height: 100%; object-fit: cover; opacity: 0.6; }
+        .learn-play-btn { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 80px; height: 80px; border-radius: 50%; background: #fff; color: #ef4444; display: flex; align-items: center; justify-content: center; cursor: pointer; boxShadow: 0 10px 30px rgba(0,0,0,0.3); }
+        .learn-video-controls { position: absolute; bottom: 0; left: 0; right: 0; padding: 20px; background: linear-gradient(transparent, rgba(0,0,0,0.8)); display: flex; align-items: center; gap: 20px; }
+        .learn-progress-bar { flex: 1; height: 4px; background: rgba(255,255,255,0.2); border-radius: 2px; position: relative; }
+        .learn-video-time { color: #fff; font-size: 0.75rem; font-weight: 600; min-width: 80px; }
+
+        .learn-tabs-row { display: flex; gap: 32px; border-bottom: 1px solid #e2e8f0; margin-bottom: 2rem; }
+        .learn-tab-btn { padding: 12px 0; background: none; border: none; color: #94a3b8; font-size: 0.9rem; font-weight: 700; cursor: pointer; transition: all 0.2s; border-bottom: 2px solid transparent; }
+        .learn-tab-btn.active { color: #0f172a; border-bottom: 2px solid #ef4444; }
+        .learn-content-title { fontSize: 1.25rem; fontWeight: 800; color: #0f172a; margin-bottom: 16px; margin-top: 0; }
+        .learn-content-desc { color: #475569; lineHeight: 1.8; fontSize: 0.95rem; marginBottom: 2.5rem; }
+        .learn-concepts-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; }
+        .concept-card { padding: 24px; border-radius: 20px; background: #fff; border: 1px solid #e2e8f0; display: flex; gap: 16px; }
+        .concept-icon { width: 20px; height: 20px; border-radius: 50%; background: #fef2f2; border: 1px solid #ef4444; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+        .concept-title { fontSize: 0.9rem; fontWeight: 700; color: #1e293b; marginBottom: 4px; }
+        .concept-desc { fontSize: 0.8rem; color: #64748b; lineHeight: 1.5; }
+        .learn-empty-tab { padding: 40px; background: #fff; border-radius: 20px; border: 1px solid #e2e8f0; textAlign: center; color: #94a3b8; }
+
+        .learn-progress-card { padding: 24px; background: #fff; borderRadius: 24px; border: 1px solid #e2e8f0; marginBottom: 2rem; display: flex; alignItems: center; gap: 20px; }
+        .learn-progress-circle { position: relative; width: 80px; height: 80px; flex-shrink: 0; }
+        .learn-progress-percent { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); fontSize: 0.9rem; fontWeight: 800; color: #0f172a; }
+        .learn-progress-title { fontSize: 0.95rem; fontWeight: 800; color: #0f172a; marginBottom: 4px; }
+        .learn-progress-subtitle { fontSize: 0.8rem; color: #64748b; lineHeight: 1.4; }
+
+        .learn-schedule-card { background: #fff; borderRadius: 24px; border: 1px solid #e2e8f0; overflow: hidden; }
+        .learn-schedule-header { padding: 24px; border-bottom: 1px solid #f1f5f9; fontSize: 1rem; fontWeight: 800; color: #0f172a; }
+        .learn-schedule-list { max-height: 600px; overflow-y: auto; }
+        .learn-day-toggle { width: 100%; padding: 16px 24px; display: flex; justify-content: space-between; align-items: center; background: #f8fafc; border: none; cursor: pointer; }
+        .learn-day-title { fontSize: 0.9rem; fontWeight: 800; color: #1e293b; }
+        .learn-lesson-btn { width: 100%; display: flex; align-items: center; gap: 16px; padding: 16px 24px; background: transparent; border: none; borderBottom: 1px solid #f1f5f9; textAlign: left; cursor: pointer; transition: all 0.2s; }
+        .learn-lesson-btn.active { background: #fef2f2; }
+        .lesson-status-icon { width: 28px; height: 28px; border-radius: 50%; background: #f8fafc; color: #94a3b8; display: flex; align-items: center; justify-content: center; fontSize: 0.75rem; fontWeight: 800; flexShrink: 0; }
+        .lesson-status-icon.active { background: #ef4444; color: #fff; }
+        .lesson-status-icon.completed { background: #22c55e; color: #fff; }
+        .lesson-title { fontSize: 0.8rem; fontWeight: 800; color: #1e293b; marginBottom: 2px; }
+        .lesson-title.active { color: #ef4444; }
+        .lesson-subtitle { fontSize: 0.7rem; color: #94a3b8; fontWeight: 500; }
+
+        .learn-footer { max-width: 1400px; margin: 3rem auto 0; padding: 1.5rem 0; display: flex; justify-content: space-between; align-items: center; border-top: 1px solid #e2e8f0; position: sticky; bottom: 0; background: #f8fafc; z-index: 10; }
+        .learn-nav-btn { background: none; border: none; color: #475569; fontWeight: 700; cursor: pointer; display: flex; alignItems: center; gap: 8px; font-family: inherit; }
+        .learn-nav-btn:disabled { color: #cbd5e1; cursor: not-allowed; }
+        .learn-complete-btn { background: #0f172a; color: #fff; border: none; padding: 14px 32px; border-radius: 16px; fontWeight: 800; cursor: pointer; boxShadow: 0 4px 12px rgba(0,0,0,0.1); transition: all 0.2s; }
+        .learn-complete-btn:hover { transform: translateY(-2px); background: #1e293b; }
+        .learn-complete-btn:active { transform: translateY(0); }
+
+        @media (max-width: 1060px) {
+          .modern-learn-player { padding: 1.5rem 20px 8rem; }
+          .learn-header { flex-direction: column; align-items: flex-start; margin-bottom: 1.5rem; }
+          .learn-header-actions { width: 100%; display: grid; grid-template-columns: 1fr 1fr; }
+          .learn-main-container { grid-template-columns: 1fr; gap: 2rem; }
+          .learn-footer { position: fixed; bottom: 0; left: 0; right: 0; padding: 1rem 20px; background: rgba(248, 250, 252, 0.95); backdrop-filter: blur(10px); margin-top: 0; box-shadow: 0 -10px 30px rgba(0,0,0,0.05); }
+          .learn-course-title { font-size: 1.4rem; }
+          .learn-video-wrapper { border-radius: 16px; }
+          .learn-concepts-grid { grid-template-columns: 1fr; }
+          .learn-sidebar { order: 2; }
+          .learn-video-column { order: 1; }
+        }
+
         .custom-scrollbar::-webkit-scrollbar { width: 6px; }
         .custom-scrollbar::-webkit-scrollbar-track { background: transparent; }
         .custom-scrollbar::-webkit-scrollbar-thumb { background: #e2e8f0; border-radius: 10px; }
         .custom-scrollbar::-webkit-scrollbar-thumb:hover { background: #cbd5e1; }
       `}</style>
-
     </div>
   );
 }

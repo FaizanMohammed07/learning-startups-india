@@ -87,7 +87,7 @@ export default function DashboardPage() {
   if (isLoading) return <div className="prof-dashboard-container" style={{ opacity: 0.4 }} />;
 
   return (
-    <div className="prof-dashboard-container" style={{ paddingLeft: '2rem', paddingRight: '2rem' }}>
+    <div className="prof-dashboard-container">
       
       {/* ════════════════════════════════
           TOP ROW: Greeting + Branding
@@ -98,17 +98,7 @@ export default function DashboardPage() {
           <p style={{ marginBottom: '1.5rem' }}>Strategic overview of your startup journey.</p>
 
           {/* ── INTEGRATED FULL-WIDTH NEWS RIBBON (AFTER SUBTITLE) ── */}
-          <div className="live-ticker-card ticker--wide" style={{ 
-            width: 'calc(100% + 4rem)', 
-            marginLeft: '-2rem', 
-            marginBottom: '2rem',
-            borderRadius: 0,
-            borderLeft: 'none',
-            borderRight: 'none',
-            background: '#fff',
-            borderTop: '1px solid #f1f5f9',
-            borderBottom: '1px solid #f1f5f9'
-          }}>
+          <div className="live-ticker-card ticker--wide ticker-container">
             <div className="ticker-label-box" style={{ background: 'var(--brand-black)', flexShrink: 0, borderRadius: 0 }}>
               <Icon name="zap" size={10} color="var(--brand-red)" />
               <span style={{ fontSize: '0.55rem', fontWeight: 950 }}>LIVE NEWS</span>
@@ -139,7 +129,7 @@ export default function DashboardPage() {
         <div className="prof-left-stack">
 
           {/* Stats Row */}
-          <section className="prof-stats-row">
+          <section className="prof-stats-grid">
             <Link href="/my-learning" className="stat-card-premium stat-card-lavender interactive-lift glass-card" style={{ border: 'none' }}>
               <div className="stat-header-p"><span className="stat-title-caps">Courses Enrolled</span></div>
               <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
@@ -210,7 +200,7 @@ export default function DashboardPage() {
           {/* Learning Progress */}
           <section className="full-width-progress" style={{ padding: '2.5rem' }}>
             <h2 style={{ fontSize: '1.9rem', fontWeight: 900, marginBottom: '2rem', color: '#0f172a' }}>Learning Progress</h2>
-            <div style={{ display: 'grid', gridTemplateColumns: 'minmax(0, 1.6fr) minmax(0, 1fr)', gap: '4rem' }}>
+            <div className="progress-grid-split">
               <div>
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.5rem' }}>
                   <span className="section-label-caps">Weekly Learning</span>
@@ -317,7 +307,7 @@ export default function DashboardPage() {
           </section>
 
           {/* ── ANALYTICS OVERVIEW ROW ── */}
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: '1.5rem' }}>
+          <div className="analytics-overview-grid">
             {[
               { label: 'Leaderboard Rank', val: '#12', sub: 'Top 5% this month', icon: <Icon name="star" size={22} color="#f59e0b" />, bg: '#fffbeb', bc: '#fef3c7' },
               { label: 'Community Posts', val: '28', sub: '+4 this week', icon: <Icon name="messageCircle" size={22} color="var(--brand-red)" />, bg: '#fff1f2', bc: '#fecaca' },
@@ -335,9 +325,9 @@ export default function DashboardPage() {
           </div>
 
           {/* ── QUICK LINKS OVERVIEW ── */}
-          <section className="prof-card" style={{ padding: '2.5rem' }}>
+          <section className="prof-card quick-access-section">
             <h2 style={{ fontSize: '1.4rem', fontWeight: 900, color: '#0f172a', marginBottom: '1.5rem' }}>Quick Access</h2>
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '1rem' }}>
+            <div className="quick-access-grid">
               {[
                 { label: 'My Courses',    icon: <Icon name="book" size={22} color="rgb(235,35,39)" />,    bg: '#fff1f2', href: '/my-learning' },
                 { label: 'Analytics',     icon: <Icon name="barChart" size={22} color="var(--brand-red)" />,        bg: '#eff6ff', href: '/analytics/performance' },

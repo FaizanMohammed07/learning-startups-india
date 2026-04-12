@@ -642,8 +642,9 @@
   max-width: 100% !important;
 }
 
+/* Header should ALWAYS be visible on mobile for brand presence and navigation drawer access */
 .dashboard-layout.learning-mode .mobile-nav-header {
-  display: none !important;
+  display: flex !important;
 }
 
 /* ── Assessment Overrides ── */

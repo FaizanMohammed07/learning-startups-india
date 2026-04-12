@@ -4,18 +4,20 @@ import Icon from '@/components/Icon';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useDashboard } from '@/contexts/DashboardProvider';
 
+import '@/styles/settings-responsive.css';
+
 export default function SettingsPage() {
   const { user } = useDashboard();
 
   return (
-    <div style={{ padding: '1.5rem 2.5rem', background: '#f8fafc', minHeight: '100vh' }}>
+    <div className="settings-container">
       {/* Header Bar */}
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '2.5rem' }}>
+      <div className="settings-header">
         <div>
           <h1 style={{ fontSize: '2.8rem', fontWeight: 950, color: '#0f172a', margin: 0, letterSpacing: '-0.04em' }}>Account Settings</h1>
           <p style={{ fontSize: '1.1rem', color: '#64748b', fontWeight: 600, marginTop: '8px' }}>Manage your profile, security, and preferences.</p>
         </div>
-        <div style={{ display: 'flex', gap: '1rem' }}>
+        <div className="header-actions" style={{ display: 'flex', gap: '1rem' }}>
           <button style={{ 
             padding: '14px 24px', borderRadius: '16px', background: '#fff', border: '1px solid #e2e8f0',
             fontSize: '0.95rem', fontWeight: 800, color: '#1e293b', cursor: 'pointer', transition: 'all 0.2s'
@@ -28,19 +30,14 @@ export default function SettingsPage() {
       </div>
 
       {/* Main Grid Layout */}
-      <div style={{ 
-        display: 'grid', 
-        gridTemplateColumns: 'repeat(12, 1fr)', 
-        gap: '1.5rem',
-        alignItems: 'start'
-      }}>
+      <div className="settings-grid">
         
         {/* Row 1: Profile Information (Large) & Basic Information (Medium) */}
         <div style={{ gridColumn: 'span 8' }}>
           <section className="settings-card" style={{ padding: '1.8rem 2rem', borderRadius: '24px', background: '#fff', border: '1px solid #f1f5f9', boxShadow: '0 1px 3px rgba(0,0,0,0.05)' }}>
             <h3 style={{ fontSize: '1.1rem', fontWeight: 900, color: '#0f172a', marginBottom: '1.5rem' }}>Profile Information</h3>
             
-            <div style={{ display: 'flex', gap: '2rem', marginBottom: '1.5rem' }}>
+            <div className="profile-info-row" style={{ display: 'flex', gap: '2rem', marginBottom: '1.5rem' }}>
                <div style={{ position: 'relative', flexShrink: 0 }}>
                   <div style={{ 
                     width: 90, height: 90, borderRadius: '20px', 
@@ -61,7 +58,7 @@ export default function SettingsPage() {
                </div>
                
                <div style={{ flex: 1, display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
-                  <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1.2rem' }}>
+                  <div className="profile-inputs-grid" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1.2rem' }}>
                     <div>
                       <label style={{ display: 'block', fontSize: '0.75rem', fontWeight: 800, color: '#64748b', marginBottom: '6px' }}>Full name</label>
                       <div style={{ position: 'relative' }}>
@@ -181,9 +178,9 @@ export default function SettingsPage() {
             <div style={{ display: 'flex', flexDirection: 'column', gap: '0.8rem' }}>
                { [
                  { type: 'LinkedIn', url: 'https://linkedin.com/in/beesu-siri', icon: 'linkedin' },
-                 { type: 'Website', url: 'https://beesusiri.com', icon: 'globe' }
+                { type: 'Website', url: 'https://beesusiri.com', icon: 'globe' }
                ].map((link, idx) => (
-                 <div key={idx} style={{ display: 'flex', gap: '1rem', alignItems: 'center' }}>
+                 <div key={idx} className="links-row" style={{ display: 'flex', gap: '1rem', alignItems: 'center' }}>
                     <div style={{ opacity: 0.3, cursor: 'grab', flexShrink: 0 }}>
                        <Icon name="grip" size={18} />
                     </div>
@@ -233,14 +230,14 @@ export default function SettingsPage() {
             <h3 style={{ fontSize: '1.1rem', fontWeight: 900, color: '#0f172a', marginBottom: '0.4rem' }}>Personal Signals</h3>
             <p style={{ fontSize: '0.85rem', color: '#64748b', fontWeight: 600, marginBottom: '1.5rem' }}>Set words that define your vibe & strengths.</p>
             
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+            <div className="personal-signals-stack">
                {[
                  { label: 'Focus word', value: 'Momentum', icon: 'target', bg: '#fff1f2', tc: '#e11d48' },
                  { label: 'Energy mode', value: 'Focused', icon: 'zap', bg: '#fff7ed', tc: '#f97316' },
                  { label: 'Ambition mode', value: 'Scale', icon: 'trendUp', bg: '#f1f5f9', tc: '#475569' },
                  { label: 'Collaboration status', value: 'Open to collaborations', icon: 'users', bg: '#ecfdf5', tc: '#059669' }
                ].map((signal, idx) => (
-                 <div key={idx} style={{ display: 'flex', gap: '1rem', alignItems: 'center' }}>
+                 <div key={idx} className="personal-signals-item">
                     <div style={{ 
                       width: 44, height: 44, borderRadius: '12px', background: signal.bg, 
                       display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0

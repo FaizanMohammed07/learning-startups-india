@@ -7,7 +7,7 @@
    ========================================== */
 
 // Next.js Font Optimization - Prevents font flicker
-import { Inter } from 'next/font/google';
+import { Inter, Poppins } from 'next/font/google';
 
 // 1. Reset - Normalize browser defaults (FIRST)
 import '@/styles/reset.css';
@@ -48,6 +48,16 @@ const inter = Inter({
   weight: ['300', '400', '500', '600', '700', '800', '900'],
 });
 
+// Configure Poppins font - Secondary/Premium Font
+const poppins = Poppins({
+  subsets: ['latin'],
+  display: 'swap',
+  preload: true,
+  fallback: ['system-ui', 'sans-serif'],
+  variable: '--font-poppins',
+  weight: ['300', '400', '500', '600', '700', '800', '900'],
+});
+
 export const metadata = {
   title: 'Startup India Incubation Platform',
   description: 'Premium code-based incubation platform for aspiring entrepreneurs',
@@ -67,7 +77,7 @@ export const viewport = {
 
 export default function RootLayout({ children }) {
   return (
-    <html lang="en" className={inter.variable}>
+    <html lang="en" className={`${inter.variable} ${poppins.variable}`}>
       <body className={inter.className} suppressHydrationWarning>
         <ClientErrorBoundary>
           <ConditionalLayout>

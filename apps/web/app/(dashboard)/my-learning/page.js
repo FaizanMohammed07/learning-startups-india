@@ -91,7 +91,7 @@ export default function MyLearningPage() {
             className={`btn-icon-toggle ${layout === 'list' ? 'active' : ''}`} 
             onClick={() => setLayout('list')}
           >
-            <Icon name="recorded" size={14} /> LIST
+            <Icon name="list" size={14} /> LIST
           </button>
         </div>
       </div>

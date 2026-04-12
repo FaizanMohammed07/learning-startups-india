@@ -12,7 +12,7 @@ export default function ProfilePage() {
   ]);
 
   return (
-    <div className="platform-page" style={{ padding: '0 2rem 3rem', background: '#f8fafc', minHeight: '100vh' }}>
+    <div className="platform-page profile-root">
       
       {/* ── TOP SECTION: FULL WIDTH BANNER WITH OVERLAY ── */}
       <div style={{ position: 'relative', paddingTop: '2.5rem', marginBottom: '2.5rem' }}>
@@ -42,7 +42,7 @@ export default function ProfilePage() {
              <Icon name="rocket" size={72} color="#fff" />
           </div>
 
-          <div style={{ display: 'flex', gap: '3rem', alignItems: 'center', position: 'relative', zIndex: 1, width: 'calc(100% - 450px)' }}>
+          <div className="profile-banner-inner">
              <div style={{ position: 'relative', flexShrink: 0 }}>
                 <svg width="160" height="160" style={{ transform: 'rotate(-90deg)' }}>
                   <circle cx="80" cy="80" r="72" fill="transparent" stroke="rgba(255,255,255,0.2)" strokeWidth="5" />
@@ -101,12 +101,7 @@ export default function ProfilePage() {
         </div>
 
         {/* Momentum Dashboard Overlay */}
-        <div style={{ 
-          position: 'absolute', right: '20px', top: '4.5rem', width: '370px',
-          background: '#fff', borderRadius: '35px', border: '1px solid #f1f5f9', 
-          padding: '2.2rem 2.2rem 3.8rem', height: 'fit-content', boxShadow: '0 10px 40px rgba(0,0,0,0.06)',
-          zIndex: 10
-        }}>
+        <div className="momentum-dashboard-card">
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '2rem' }}>
             <span className="section-label-caps" style={{ color: '#94a3b8' }}>MOMENTUM DASHBOARD</span>
             <div style={{ opacity: 0.2 }}><Icon name="moreHorizontal" /></div>
@@ -133,16 +128,7 @@ export default function ProfilePage() {
             </div>
           </div>
           {/* MINIMALIST FOCUS WORD CARD (STRICT SPEC) */}
-          <div style={{ 
-            background: 'linear-gradient(135deg, #FBE4D8 0%, #F9E0D2 40%, #F7D9C6 100%)', 
-            padding: '20px', 
-            borderRadius: '16px', 
-            boxShadow: '0px 8px 20px rgba(0, 0, 0, 0.05)',
-            position: 'relative',
-            width: '300px',
-            marginTop: '1.2rem',
-            textAlign: 'left'
-          }}>
+          <div className="orange-focus-card">
             {/* Top Label */}
             <div style={{ 
               fontSize: '12px', 
@@ -179,8 +165,8 @@ export default function ProfilePage() {
       </div>
 
       {/* ── ABOUT SECTION (SPLIT LAYOUT) ── */}
-      <div style={{ display: 'grid', gridTemplateColumns: 'minmax(0, 1fr) 370px', gap: '2.5rem', alignItems: 'start', marginBottom: '2.5rem' }}>
-        <div style={{ padding: '2.5rem 3rem', borderRadius: '35px', background: '#fff', border: '1px solid #f1f5f9' }}>
+      <div className="profile-about-grid" style={{ marginBottom: '2.5rem' }}>
+        <div style={{ padding: '2.5rem 2rem', borderRadius: '35px', background: '#fff', border: '1px solid #f1f5f9' }}>
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.5rem' }}>
               <div style={{ display: 'flex', alignItems: 'center', gap: '15px' }}>
                 <div style={{ padding: '10px', background: '#f8fafc', borderRadius: '15px', color: '#64748b' }}>
@@ -207,7 +193,7 @@ export default function ProfilePage() {
       </div>
 
       {/* ── STATS GRID (FULL WIDTH) ── */}
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '1.5rem', marginBottom: '2.5rem' }}>
+      <div className="profile-stats-grid" style={{ gap: '1.5rem', marginBottom: '2.5rem' }}>
          {[
            { label: 'COURSES', val: '0', sub: 'Programs currently enrolled', color: '#fef3c7', tc: '#92400e' },
            { label: 'CERTIFICATES', val: '7', sub: 'Proof of completed milestones', color: '#ffeff1', tc: '#eb2327' },
@@ -228,7 +214,7 @@ export default function ProfilePage() {
       </div>
 
       {/* ── GROWTH BOARD & TIMELINE (FULL WIDTH 2-COL) ── */}
-      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '2.5rem', marginTop: '2.5rem' }}>
+      <div className="profile-growth-grid" style={{ gap: '2.5rem', marginTop: '2.5rem' }}>
         
         {/* Personal Growth Board */}
         <div style={{ 

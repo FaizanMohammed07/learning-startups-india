@@ -3,6 +3,8 @@
 import { useState } from 'react';
 import Icon from '@/components/Icon';
 
+import '@/styles/settings-responsive.css';
+
 const Toggle = ({ enabled, onChange }) => (
   <button 
     onClick={() => onChange(!enabled)}
@@ -102,15 +104,15 @@ export default function PrivacyPage() {
   const updateSetting = (key, val) => setSettings(s => ({ ...s, [key]: val }));
 
   return (
-    <div className="platform-page" style={{ padding: '1.5rem 2.5rem', background: '#f8fafc', minHeight: '100vh' }}>
+    <div className="settings-container">
       
       {/* Header Bar */}
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '2.5rem' }}>
+      <div className="settings-header">
         <div>
           <h1 style={{ fontSize: '2.8rem', fontWeight: 950, color: '#0f172a', margin: 0, letterSpacing: '-0.04em' }}>Privacy</h1>
           <p style={{ fontSize: '1.1rem', color: '#64748b', fontWeight: 600, marginTop: '8px' }}>Manage your data sharing, visibility, and privacy preferences.</p>
         </div>
-        <div style={{ display: 'flex', gap: '1rem' }}>
+        <div className="header-actions" style={{ display: 'flex', gap: '1rem' }}>
           <button style={{ 
             padding: '14px 24px', borderRadius: '16px', background: '#fff', border: '1px solid #e2e8f0',
             fontSize: '0.95rem', fontWeight: 800, color: '#1e293b', cursor: 'pointer', transition: 'all 0.2s'
@@ -122,7 +124,7 @@ export default function PrivacyPage() {
         </div>
       </div>
 
-      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1.5rem', maxWidth: '1200px' }}>
+      <div className="settings-grid">
         
         {/* Left Column */}
         <div style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
@@ -159,7 +161,7 @@ export default function PrivacyPage() {
                 <h2 style={{ fontSize: '1.1rem', fontWeight: 900, color: '#0f172a' }}>Account Control</h2>
              </div>
              
-             <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1.5rem' }}>
+             <div className="settings-2col-grid" style={{ gap: '1.5rem' }}>
                 <button style={{ 
                   padding: '1.5rem', borderRadius: '18px', border: '1px solid #f1f5f9', background: '#fff',
                   textAlign: 'left', cursor: 'pointer', transition: 'all 0.2s', display: 'flex', flexDirection: 'column', gap: '10px'

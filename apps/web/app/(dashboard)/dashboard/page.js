@@ -325,7 +325,7 @@ export default function DashboardPage() {
           </div>
 
           {/* ── QUICK LINKS OVERVIEW ── */}
-          <section className="prof-card quick-access-section">
+          <section className="prof-card quick-access-section" style={{ padding: '2rem' }}>
             <h2 style={{ fontSize: '1.4rem', fontWeight: 900, color: '#0f172a', marginBottom: '1.5rem' }}>Quick Access</h2>
             <div className="quick-access-grid">
               {[
@@ -338,12 +338,10 @@ export default function DashboardPage() {
                 { label: 'Global Network',icon: <Icon name="globe" size={22} color="#8b5cf6" />,           bg: '#f5f3ff', href: '/community/doubts' },
                 { label: 'Leaderboard',   icon: <Icon name="star" size={22} color="#f59e0b" />,            bg: '#fffbeb', href: '/leaderboard' },
               ].map((l, i) => (
-                <Link key={i} href={l.href} style={{ textDecoration: 'none' }}>
-                  <div style={{ background: l.bg, borderRadius: 16, padding: '1.25rem 1rem', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '10px', cursor: 'pointer', transition: 'transform 0.2s ease, box-shadow 0.2s ease', border: '1px solid rgba(0,0,0,0.04)' }}
-                    onMouseEnter={e => { e.currentTarget.style.transform = 'translateY(-3px)'; e.currentTarget.style.boxShadow = '0 8px 20px rgba(0,0,0,0.08)'; }}
-                    onMouseLeave={e => { e.currentTarget.style.transform = ''; e.currentTarget.style.boxShadow = ''; }}>
-                    {l.icon}
-                    <span style={{ fontSize: '0.75rem', fontWeight: 900, color: '#1e293b', textAlign: 'center' }}>{l.label}</span>
+                <Link key={i} href={l.href} className="quick-access-card-wrapper">
+                  <div className="quick-access-item" style={{ background: l.bg }}>
+                    <div className="quick-access-icon-box">{l.icon}</div>
+                    <span className="quick-access-label">{l.label}</span>
                   </div>
                 </Link>
               ))}
@@ -355,70 +353,72 @@ export default function DashboardPage() {
         {/* ── RIGHT COLUMN ── */}
         <div className="prof-right-stack">
 
-          {/* ── Active Hub (Calendar) ── */}
-          <section className="prof-card" style={{ padding: '1.75rem', marginBottom: '1.5rem' }}>
-            {/* Streak Row */}
-            <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '1rem' }}>
-              <Icon name="target" size={28} color="var(--brand-red)" />
-              <div>
-                <div style={{ fontSize: '0.95rem', fontWeight: 950, color: 'var(--brand-red)', lineHeight: 1.2 }}>03 Days Streak</div>
-                <div style={{ fontSize: '0.65rem', fontWeight: 700, color: '#94a3b8', marginTop: '2px' }}>Best: 12 days</div>
-              </div>
-            </div>
-
-            {/* Month Navigation Row */}
-            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '1rem' }}>
-              <span style={{ fontSize: '0.85rem', fontWeight: 900, color: '#1e293b' }}>{monthYearLabel}</span>
-              <div style={{ display: 'flex', gap: '4px' }}>
-                <button onClick={prevMonth} className="cal-nav-btn-precise"><Icon name="chevronLeft" size={12} color="var(--brand-red)" /></button>
-                <button onClick={nextMonth} className="cal-nav-btn-precise"><Icon name="chevronRight" size={12} color="var(--brand-red)" /></button>
-              </div>
-            </div>
-
-            {/* Weekday Labels */}
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(7, 1fr)', gap: '4px', marginBottom: '6px' }}>
-              {['S', 'M', 'T', 'W', 'T', 'F', 'S'].map((d, i) => (
-                <span key={i} style={{ fontSize: '0.6rem', fontWeight: 900, color: '#94a3b8', textAlign: 'center' }}>{d}</span>
-              ))}
-            </div>
-
-            {/* Calendar Grid */}
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(7, 1fr)', gap: '4px' }}>
-              {calendarDays.map((day, idx) => (
-                <div key={idx} style={{ 
-                  aspectRatio: '1/1', display: 'flex', alignItems: 'center', justifyContent: 'center', borderRadius: '8px', fontSize: '0.7rem', fontWeight: 900,
-                  background: day.isToday ? 'var(--brand-red)' : day.hasStreak ? 'rgba(235, 35, 39, 0.08)' : 'transparent',
-                  color: day.isToday ? '#fff' : day.hasStreak ? 'var(--brand-red)' : !day.isCurrentMonth ? '#d1d5db' : '#1e293b',
-                  border: day.isToday ? 'none' : day.hasStreak ? '1px solid rgba(235, 35, 39, 0.15)' : 'none',
-                  cursor: day.isCurrentMonth ? 'pointer' : 'default'
-                }}>
-                  {day.dayNum}
+          <div className="cal-mission-group">
+            {/* ── Active Hub (Calendar) ── */}
+            <section className="prof-card" style={{ padding: '1.75rem' }}>
+              {/* Streak Row */}
+              <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '1rem' }}>
+                <Icon name="target" size={28} color="var(--brand-red)" />
+                <div>
+                  <div style={{ fontSize: '0.95rem', fontWeight: 950, color: 'var(--brand-red)', lineHeight: 1.2 }}>03 Days Streak</div>
+                  <div style={{ fontSize: '0.65rem', fontWeight: 700, color: '#94a3b8', marginTop: '2px' }}>Best: 12 days</div>
                 </div>
-              ))}
-            </div>
-          </section>
+              </div>
 
-          {/* Today's Missions */}
-          <section className="prof-card" style={{ padding: '2rem' }}>
-            <h2 style={{ fontSize: '1.2rem', fontWeight: 900, color: '#0f172a', marginBottom: '1.25rem' }}>
-              Today's Missions
-            </h2>
-            <div className="mission-stack">
-              {[
-                { t: 'Investor Deck Review', m: '04:30 PM • Lab',        c: '#eff6ff', i: <Icon name="play" size={17} color="var(--brand-red)" /> },
-                { t: 'Compliance Matrix',    m: '11:00 PM • Portal',     c: '#fff1f2', i: <Icon name="clock" size={17} color="#f43f5e" /> },
-                { t: 'Unit Economics 101',   m: 'Finished • AI Summary', c: '#f0fdf4', i: <Icon name="check" size={17} color="#22c55e" /> },
-              ].map((m, i) => (
-                <div key={i} className="mission-item-hub">
-                  <div className="mission-icon-box" style={{ background: m.c }}>{m.i}</div>
-                  <div className="mission-details">
-                    <h4>{m.t}</h4>
-                    <p>{m.m}</p>
+              {/* Month Navigation Row */}
+              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '1rem' }}>
+                <span style={{ fontSize: '0.85rem', fontWeight: 900, color: '#1e293b' }}>{monthYearLabel}</span>
+                <div style={{ display: 'flex', gap: '4px' }}>
+                  <button onClick={prevMonth} className="cal-nav-btn-precise"><Icon name="chevronLeft" size={12} color="var(--brand-red)" /></button>
+                  <button onClick={nextMonth} className="cal-nav-btn-precise"><Icon name="chevronRight" size={12} color="var(--brand-red)" /></button>
+                </div>
+              </div>
+
+              {/* Weekday Labels */}
+              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(7, 1fr)', gap: '4px', marginBottom: '6px' }}>
+                {['S', 'M', 'T', 'W', 'T', 'F', 'S'].map((d, i) => (
+                  <span key={i} style={{ fontSize: '0.6rem', fontWeight: 900, color: '#94a3b8', textAlign: 'center' }}>{d}</span>
+                ))}
+              </div>
+
+              {/* Calendar Grid */}
+              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(7, 1fr)', gap: '4px' }}>
+                {calendarDays.map((day, idx) => (
+                  <div key={idx} style={{ 
+                    aspectRatio: '1/1', display: 'flex', alignItems: 'center', justifyContent: 'center', borderRadius: '8px', fontSize: '0.7rem', fontWeight: 900,
+                    background: day.isToday ? 'var(--brand-red)' : day.hasStreak ? 'rgba(235, 35, 39, 0.08)' : 'transparent',
+                    color: day.isToday ? '#fff' : day.hasStreak ? 'var(--brand-red)' : !day.isCurrentMonth ? '#d1d5db' : '#1e293b',
+                    border: day.isToday ? 'none' : day.hasStreak ? '1px solid rgba(235, 35, 39, 0.15)' : 'none',
+                    cursor: day.isCurrentMonth ? 'pointer' : 'default'
+                  }}>
+                    {day.dayNum}
                   </div>
-                </div>
-              ))}
-            </div>
-          </section>
+                ))}
+              </div>
+            </section>
+
+            {/* Today's Missions */}
+            <section className="prof-card" style={{ padding: '2rem' }}>
+              <h2 style={{ fontSize: '1.2rem', fontWeight: 900, color: '#0f172a', marginBottom: '1.25rem' }}>
+                Today's Missions
+              </h2>
+              <div className="mission-stack">
+                {[
+                  { t: 'Investor Deck Review', m: '04:30 PM • Lab',        c: '#eff6ff', i: <Icon name="play" size={17} color="var(--brand-red)" /> },
+                  { t: 'Compliance Matrix',    m: '11:00 PM • Portal',     c: '#fff1f2', i: <Icon name="clock" size={17} color="#f43f5e" /> },
+                  { t: 'Unit Economics 101',   m: 'Finished • AI Summary', c: '#f0fdf4', i: <Icon name="check" size={17} color="#22c55e" /> },
+                ].map((m, i) => (
+                  <div key={i} className="mission-item-hub">
+                    <div className="mission-icon-box" style={{ background: m.c }}>{m.i}</div>
+                    <div className="mission-details">
+                      <h4>{m.t}</h4>
+                      <p>{m.m}</p>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </section>
+          </div>
 
           {/* ── ACHIEVEMENTS ── */}
           <section className="prof-card glass-card" style={{ padding: '2rem' }}>
@@ -456,30 +456,6 @@ export default function DashboardPage() {
             </div>
           </section>
 
-          {/* ── Community Pulse ── */}
-          <section className="prof-card" style={{ padding: '2rem' }}>
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.5rem' }}>
-              <h2 style={{ fontSize: '1.2rem', fontWeight: 900, color: '0f172a', margin: 0 }}>Community Pulse</h2>
-              <Link href="/community/discussions" style={{ fontSize: '0.72rem', fontWeight: 900, color: 'rgb(235,35,39)', textDecoration: 'none' }}>See all →</Link>
-            </div>
-            {[
-              { user: 'Priya M.', msg: 'Just closed our seed round!', time: '2m ago', avatar: <Icon name="award" size={14} />, bg: '#fff1f2', fc: 'rgb(235,35,39)' },
-              { user: 'Arjun K.', msg: 'Posted notes on Unit Economics.', time: '15m ago', avatar: <Icon name="pencil" size={14} />, bg: '#eff6ff', fc: '#3b82f6' },
-              { user: 'Sneha R.', msg: 'Anyone attending Startup Conclave?', time: '1h ago', avatar: <Icon name="users" size={14} />, bg: '#f0fdf4', fc: '#10b981' },
-            ].map((p, i) => (
-              <div key={i} style={{ display: 'flex', gap: '12px', alignItems: 'flex-start', marginBottom: i < 2 ? '1.25rem' : 0, paddingBottom: i < 2 ? '1.25rem' : 0, borderBottom: i < 2 ? '1px solid #f1f5f9' : 'none' }}>
-                <div style={{ width: 36, height: 36, borderRadius: '12px', background: p.bg, border: `1px solid ${p.fc}20`, display: 'flex', alignItems: 'center', justifyContent: 'center', color: p.fc, flexShrink: 0 }}>{p.avatar}</div>
-                <div style={{ flex: 1, minWidth: 0 }}>
-                  <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-                    <span style={{ fontSize: '0.85rem', fontWeight: 900, color: '#1e293b' }}>{p.user}</span>
-                    <span style={{ fontSize: '0.65rem', color: '#94a3b8', fontWeight: 700 }}>{p.time}</span>
-                  </div>
-                  <p style={{ fontSize: '0.75rem', color: '#64748b', margin: '4px 0 0 0', lineHeight: 1.5, fontWeight: 700 }}>{p.msg}</p>
-                </div>
-              </div>
-            ))}
-          </section>
-
           {/* ── Leaderboard Snapshot ── */}
           <section className="prof-card" style={{ padding: '2rem' }}>
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.25rem' }}>
@@ -503,29 +479,55 @@ export default function DashboardPage() {
             ))}
           </section>
 
-          {/* ── Upcoming Events ── */}
-          <section className="prof-card" style={{ padding: '2rem' }}>
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.25rem' }}>
-              <h2 style={{ fontSize: '1.2rem', fontWeight: 900, color: '#0f172a', margin: 0 }}>Upcoming Events</h2>
-              <span style={{ fontSize: '0.72rem', fontWeight: 900, color: 'rgb(235,35,39)' }}>View Calendar →</span>
-            </div>
-            {[
-              { title: 'Startup Conclave 2025', date: 'Apr 12', type: 'Conference', bg: '#fff1f2', fc: 'rgb(235,35,39)' },
-              { title: 'Pitch Perfect Bootcamp', date: 'Apr 18', type: 'Workshop',  bg: '#fffbeb', fc: '#f59e0b' },
-              { title: 'Investor Connect Day',   date: 'Apr 25', type: 'Networking', bg: '#f0fdf4', fc: '#10b981' },
-            ].map((ev, i) => (
-              <div key={i} style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: i < 2 ? '0.75rem' : 0 }}>
-                <div style={{ width: 42, height: 42, borderRadius: 12, background: ev.bg, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', flexShrink: 0, border: `1px solid ${ev.fc}20` }}>
-                  <span style={{ fontSize: '0.55rem', fontWeight: 900, color: ev.fc, textTransform: 'uppercase' }}>{ev.date.split(' ')[0]}</span>
-                  <span style={{ fontSize: '0.9rem', fontWeight: 900, color: ev.fc, lineHeight: 1 }}>{ev.date.split(' ')[1]}</span>
-                </div>
-                <div style={{ flex: 1, minWidth: 0 }}>
-                  <p style={{ fontSize: '0.82rem', fontWeight: 900, color: '#1e293b', margin: '0 0 2px 0', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{ev.title}</p>
-                  <span style={{ fontSize: '0.65rem', fontWeight: 700, color: '#94a3b8' }}>{ev.type}</span>
-                </div>
+          <div className="event-community-group">
+            {/* ── Community Pulse ── */}
+            <section className="prof-card" style={{ padding: '2rem' }}>
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.5rem' }}>
+                <h2 style={{ fontSize: '1.2rem', fontWeight: 900, color: '#0f172a', margin: 0 }}>Community Pulse</h2>
+                <Link href="/community/discussions" style={{ fontSize: '0.72rem', fontWeight: 900, color: 'rgb(235,35,39)', textDecoration: 'none' }}>See all →</Link>
               </div>
-            ))}
-          </section>
+              {[
+                { user: 'Priya M.', msg: 'Just closed our seed round!', time: '2m ago', avatar: <Icon name="award" size={14} />, bg: '#fff1f2', fc: 'rgb(235,35,39)' },
+                { user: 'Arjun K.', msg: 'Posted notes on Unit Economics.', time: '15m ago', avatar: <Icon name="pencil" size={14} />, bg: '#eff6ff', fc: '#3b82f6' },
+                { user: 'Sneha R.', msg: 'Anyone attending Startup Conclave?', time: '1h ago', avatar: <Icon name="users" size={14} />, bg: '#f0fdf4', fc: '#10b981' },
+              ].map((p, i) => (
+                <div key={i} style={{ display: 'flex', gap: '12px', alignItems: 'flex-start', marginBottom: i < 2 ? '1.25rem' : 0, paddingBottom: i < 2 ? '1.25rem' : 0, borderBottom: i < 2 ? '1px solid #f1f5f9' : 'none' }}>
+                  <div style={{ width: 36, height: 36, borderRadius: '12px', background: p.bg, border: `1px solid ${p.fc}20`, display: 'flex', alignItems: 'center', justifyContent: 'center', color: p.fc, flexShrink: 0 }}>{p.avatar}</div>
+                  <div style={{ flex: 1, minWidth: 0 }}>
+                    <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+                      <span style={{ fontSize: '0.85rem', fontWeight: 900, color: '#1e293b' }}>{p.user}</span>
+                      <span style={{ fontSize: '0.65rem', color: '#94a3b8', fontWeight: 700 }}>{p.time}</span>
+                    </div>
+                    <p className="pulse-text" style={{ fontSize: '0.75rem', color: '#64748b', margin: '4px 0 0 0', lineHeight: 1.5, fontWeight: 700 }}>{p.msg}</p>
+                  </div>
+                </div>
+              ))}
+            </section>
+
+            {/* ── Upcoming Events ── */}
+            <section className="prof-card" style={{ padding: '2rem' }}>
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.25rem' }}>
+                <h2 style={{ fontSize: '1.2rem', fontWeight: 900, color: '#0f172a', margin: 0 }}>Upcoming Events</h2>
+                <span style={{ fontSize: '0.72rem', fontWeight: 900, color: 'rgb(235,35,39)' }}>View Calendar →</span>
+              </div>
+              {[
+                { title: 'Startup Conclave 2025', date: 'Apr 12', type: 'Conference', bg: '#fff1f2', fc: 'rgb(235,35,39)' },
+                { title: 'Pitch Perfect Bootcamp', date: 'Apr 18', type: 'Workshop',  bg: '#fffbeb', fc: '#f59e0b' },
+                { title: 'Investor Connect Day',   date: 'Apr 25', type: 'Networking', bg: '#f0fdf4', fc: '#10b981' },
+              ].map((ev, i) => (
+                <div key={i} style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: i < 2 ? '0.75rem' : 0 }}>
+                  <div style={{ width: 42, height: 42, borderRadius: 12, background: ev.bg, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', flexShrink: 0, border: `1px solid ${ev.fc}20` }}>
+                    <span style={{ fontSize: '0.55rem', fontWeight: 900, color: ev.fc, textTransform: 'uppercase' }}>{ev.date.split(' ')[0]}</span>
+                    <span style={{ fontSize: '0.9rem', fontWeight: 900, color: ev.fc, lineHeight: 1 }}>{ev.date.split(' ')[1]}</span>
+                  </div>
+                  <div style={{ flex: 1, minWidth: 0 }}>
+                    <p className="event-text" style={{ fontSize: '0.82rem', fontWeight: 900, color: '#1e293b', margin: '0 0 2px 0', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{ev.title}</p>
+                    <span style={{ fontSize: '0.65rem', fontWeight: 700, color: '#94a3b8' }}>{ev.type}</span>
+                  </div>
+                </div>
+              ))}
+            </section>
+          </div>
 
         </div>
       </main>

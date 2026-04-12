@@ -70,8 +70,8 @@ export default function WishlistPage() {
              />
              <Icon name="rocket" size={80} color="var(--brand-red)" />
            </motion.div>
-           <h2 style={{ fontSize: '2rem', fontWeight: 950, color: 'var(--brand-black)', marginBottom: '0.75rem' }}>Your journey starts here.</h2>
-           <p style={{ color: 'var(--slate-500)', fontSize: '0.9rem', maxWidth: '380px', margin: '0 0 2rem', lineHeight: 1.6 }}>Dream big and curate your roadmap. Add tracks to your wishlist to see them here.</p>
+           <h2 style={{ fontSize: '2rem', fontWeight: 950, color: 'var(--brand-black)', marginBottom: '0.75rem', textAlign: 'center' }}>Your journey starts here.</h2>
+           <p style={{ color: 'var(--slate-500)', fontSize: '0.9rem', maxWidth: '380px', margin: '0 auto 2rem', lineHeight: 1.6, textAlign: 'center' }}>Dream big and curate your roadmap. Add tracks to your wishlist to see them here.</p>
            <Link href="/courses" style={{ textDecoration: 'none' }}>
              <button className="btn-brand" style={{ padding: '14px 32px' }}>EXPLORE OPPORTUNITIES</button>
            </Link>

@@ -82,7 +82,7 @@ export default function NotificationsPage() {
   const updateSetting = (key, val) => setSettings(s => ({ ...s, [key]: val }));
 
   return (
-    <div className="platform-page" style={{ padding: '1.5rem 2.5rem', background: '#f8fafc', minHeight: '100vh' }}>
+    <div className="settings-container">
       
       {/* Header Bar */}
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '2.5rem' }}>
@@ -113,7 +113,7 @@ export default function NotificationsPage() {
             <h2 style={{ fontSize: '1.2rem', fontWeight: 900, color: '#0f172a' }}>Email Notifications</h2>
           </div>
 
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0 3rem' }}>
+          <div className="settings-2col-grid" style={{ gap: '0 3rem' }}>
             <NotificationRow icon="moreHorizontal" label="Course updates" enabled={settings.courseUpdates} onChange={(v) => updateSetting('courseUpdates', v)} />
             <NotificationRow label="New programs" enabled={settings.newPrograms} onChange={(v) => updateSetting('newPrograms', v)} />
             <NotificationRow icon="archive" label="New programs" enabled={settings.newPrograms} onChange={(v) => updateSetting('newPrograms', v)} />
@@ -132,7 +132,7 @@ export default function NotificationsPage() {
             <h2 style={{ fontSize: '1.2rem', fontWeight: 900, color: '#0f172a' }}>In-App Notifications</h2>
           </div>
 
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '2rem' }}>
+          <div className="settings-2col-grid">
             {/* Learning Column */}
             <div style={{ background: '#f8fafc', borderRadius: '18px', padding: '1.2rem' }}>
                <h3 style={{ fontSize: '1rem', fontWeight: 800, color: '#64748b', marginBottom: '1.2rem' }}>Learning</h3>
@@ -158,7 +158,7 @@ export default function NotificationsPage() {
             <h2 style={{ fontSize: '1.2rem', fontWeight: 900, color: '#0f172a' }}>Smart Reminders</h2>
           </div>
 
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '2rem' }}>
+          <div className="settings-2col-grid">
             {/* Marketing Column */}
             <div style={{ background: '#f8fafc', borderRadius: '18px', padding: '1.2rem' }}>
                <h3 style={{ fontSize: '1rem', fontWeight: 800, color: '#64748b', marginBottom: '1.2rem' }}>Marketing</h3>

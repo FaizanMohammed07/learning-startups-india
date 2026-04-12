@@ -22,8 +22,13 @@ function LiveClassCard({ cls, layout = 'grid' }) {
   const isCompleted = cls.status === 'completed';
 
   const handleAction = () => {
-    if (isLive || isCompleted) {
+    if (isLive && !cls.isMyClass) {
       router.push(`/live-room/${cls.id}`);
+    } else if (cls.isMyClass && isLive) {
+      // User requested to remove action for now
+      console.log('Join Again clicked - No action taken per request');
+    } else if (isCompleted) {
+      alert('View recording... available soon');
     } else {
       alert('Reminder set for ' + cls.title);
     }
@@ -45,7 +50,7 @@ function LiveClassCard({ cls, layout = 'grid' }) {
       {/* Thumbnail */}
       <div style={{ 
         position: 'relative', 
-        height: isList ? '200px' : '180px', 
+        height: isList ? '220px' : '220px', 
         width: isList ? '280px' : '100%',
         overflow: 'hidden',
         flexShrink: 0,
@@ -207,7 +212,8 @@ export default function LiveClassesPage() {
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
           exit={{ opacity: 0, scale: 0.98 }}
-          style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(320px, 1fr))', gap: '2rem' }}
+          className="platform-grid"
+          style={{ gap: '2rem' }}
         >
           {filteredClasses.length > 0 ? (
             filteredClasses.map((cls, i) => (

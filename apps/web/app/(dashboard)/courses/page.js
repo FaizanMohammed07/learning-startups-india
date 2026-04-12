@@ -128,17 +128,28 @@ export default function CoursesPage() {
           <select
             value={sortBy}
             onChange={e => setSortBy(e.target.value)}
+            className="filter-select-red"
             style={{ 
-              padding: '0 16px', height: '44px', borderRadius: '12px', border: '1px solid rgba(0,0,0,0.05)',
-              fontSize: '0.75rem', fontWeight: 850, color: 'var(--brand-black)', background: '#fff',
-              boxShadow: '0 4px 12px rgba(0,0,0,0.02)', cursor: 'pointer', outline: 'none'
+              padding: '0 36px 0 16px', height: '44px', borderRadius: '14px', 
+              border: '2px solid #f1f5f9',
+              fontSize: '0.8rem', fontWeight: 800, color: 'var(--brand-black)', 
+              background: '#fff url("data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' width=\'16\' height=\'16\' viewBox=\'0 0 24 24\' fill=\'none\' stroke=\'%23eb2327\' stroke-width=\'3\' stroke-linecap=\'round\' stroke-linejoin=\'round\'%3E%3Cpolyline points=\'6 9 12 15 18 9\'%3E%3C/polyline%3E%3C/svg%3E") no-repeat right 12px center',
+              appearance: 'none',
+              boxShadow: '0 4px 15px rgba(0,0,0,0.04)', cursor: 'pointer', outline: 'none',
+              transition: 'all 0.2s ease'
             }}
           >
-            <option value="newest">Newest First</option>
-            <option value="popular">Most Popular</option>
+            <option value="newest">Latest Programs</option>
+            <option value="popular">Most Trending</option>
             <option value="price-low">Price: Low to High</option>
             <option value="price-high">Price: High to Low</option>
           </select>
+          <style jsx>{`
+            .filter-select-red:focus {
+              border-color: var(--brand-red) !important;
+              box-shadow: 0 0 0 4px rgba(235, 35, 39, 0.1) !important;
+            }
+          `}</style>
         </div>
       </div>
 

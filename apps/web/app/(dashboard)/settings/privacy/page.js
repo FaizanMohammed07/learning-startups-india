@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import Icon from '@/components/Icon';
+import { motion, AnimatePresence } from 'framer-motion';
 
 import '@/styles/settings-responsive.css';
 
@@ -85,43 +86,56 @@ const PrivacyRow = ({ icon, label, enabled, onChange }) => (
   </div>
 );
 
+const INITIAL_VISIBILITY = 'public';
+const INITIAL_SETTINGS = {
+  msgAnyone: true,
+  msgConnections: true,
+  msgNoOne: false,
+  showBio: true,
+  showStats: true,
+  showGoals: true,
+  showLinks: true,
+  showLocation: true,
+  analytics: true,
+  recommendations: true,
+  usageConsent: true,
+};
+
 export default function PrivacyPage() {
-  const [visibility, setVisibility] = useState('public');
-  const [settings, setSettings] = useState({
-    msgAnyone: true,
-    msgConnections: true,
-    msgNoOne: false,
-    showBio: true,
-    showStats: true,
-    showGoals: true,
-    showLinks: true,
-    showLocation: true,
-    analytics: true,
-    recommendations: true,
-    usageConsent: true,
-  });
+  const [visibility, setVisibility] = useState(INITIAL_VISIBILITY);
+  const [settings, setSettings] = useState(INITIAL_SETTINGS);
 
   const updateSetting = (key, val) => setSettings(s => ({ ...s, [key]: val }));
 
+  const isDirty = visibility !== INITIAL_VISIBILITY || JSON.stringify(settings) !== JSON.stringify(INITIAL_SETTINGS);
+
+  const handleReset = () => {
+    setVisibility(INITIAL_VISIBILITY);
+    setSettings(INITIAL_SETTINGS);
+  };
+
   return (
-    <div className="settings-container">
+    <div className="settings-container privacy-view">
       
       {/* Header Bar */}
-      <div className="settings-header">
-        <div>
-          <h1 style={{ fontSize: '2.8rem', fontWeight: 950, color: '#0f172a', margin: 0, letterSpacing: '-0.04em' }}>Privacy</h1>
-          <p style={{ fontSize: '1.1rem', color: '#64748b', fontWeight: 600, marginTop: '8px' }}>Manage your data sharing, visibility, and privacy preferences.</p>
+      <div className="payments-hero-header">
+        <div className="header-text">
+          <h1 className="header-title-main">Privacy Control</h1>
+          <p className="header-subtitle-main">Manage your data sharing, visibility, and platform tracking preferences.</p>
         </div>
-        <div className="header-actions" style={{ display: 'flex', gap: '1rem' }}>
-          <button style={{ 
-            padding: '14px 24px', borderRadius: '16px', background: '#fff', border: '1px solid #e2e8f0',
-            fontSize: '0.95rem', fontWeight: 800, color: '#1e293b', cursor: 'pointer', transition: 'all 0.2s'
-          }}>Reset</button>
-          <button style={{ 
-            padding: '14px 28px', borderRadius: '16px', background: '#eb2327', border: 'none',
-            fontSize: '0.95rem', fontWeight: 900, color: '#fff', cursor: 'pointer', boxShadow: '0 4px 12px rgba(235,35,39,0.2)'
-          }}>Save Changes</button>
-        </div>
+        <AnimatePresence>
+          {isDirty && (
+            <motion.div 
+              initial={{ opacity: 0, x: 20 }}
+              animate={{ opacity: 1, x: 0 }}
+              exit={{ opacity: 0, x: 20 }}
+              className="header-actions"
+            >
+              <button className="settings-btn-secondary" onClick={handleReset}>Reset</button>
+              <button className="settings-btn-primary" onClick={() => alert('Changes Saved!')}>Save Changes</button>
+            </motion.div>
+          )}
+        </AnimatePresence>
       </div>
 
       <div className="settings-grid">
@@ -220,12 +234,28 @@ export default function PrivacyPage() {
       </div>
 
       <style jsx>{`
+        .privacy-view { padding: 1.5rem 3rem 10rem !important; }
         .settings-card {
           padding: 1.8rem 2rem;
           border-radius: 32px;
           background: #fff;
           border: 1px solid #f1f5f9;
           box-shadow: 0 1px 3px rgba(0,0,0,0.02);
+        }
+        .payments-hero-header { display: flex; justify-content: space-between; align-items: flex-end; padding: 1.5rem 0 2rem; margin-bottom: 2rem; border-bottom: 1px solid #f1f5f9; }
+        .header-title-main { font-size: 2.8rem; font-weight: 950; color: #0f172a; margin: 0; letter-spacing: -0.04em; }
+        .header-subtitle-main { font-size: 1.1rem; color: #64748b; font-weight: 600; marginTop: 8px; }
+        .settings-btn-secondary { padding: 14px 24px; borderRadius: 16px; background: #fff; border: 1px solid #e2e8f0; fontSize: 0.95rem; fontWeight: 800; color: #1e293b; cursor: pointer; transition: all 0.2s; display: flex; align-items: center; gap: 10px; }
+        .settings-btn-secondary:hover { border-color: #ef4444; color: #ef4444; }
+        .settings-btn-primary { padding: 14px 28px; borderRadius: 16px; background: #eb2327; border: none; fontSize: 0.95rem; fontWeight: 900; color: #fff; cursor: pointer; boxShadow: 0 4px 12px rgba(235,35,39,0.2); }
+        .header-actions { display: flex; gap: 1rem; }
+
+        @media (max-width: 1060px) {
+           .privacy-view { padding: 6.5rem 1.25rem 8rem !important; }
+           .payments-hero-header { flex-direction: column; align-items: flex-start; gap: 1.5rem; padding-top: 1rem; border-bottom: none; }
+           .header-title-main { font-size: 2.25rem; }
+           .header-actions { width: 100%; flex-direction: column; }
+           .header-actions button { width: 100%; justify-content: center; padding: 16px; border-radius: 20px; }
         }
       `}</style>
     </div>

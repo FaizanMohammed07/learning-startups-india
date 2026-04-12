@@ -559,48 +559,49 @@
   }
 }
 
-/* Flex Stacking Helpers */
-.flex-stack-mobile {
-  display: flex;
-  gap: 1rem;
-}
-
 @media (max-width: 1060px) {
   .flex-stack-mobile {
     flex-direction: column !important;
     align-items: flex-start !important;
     width: 100% !important;
   }
+  .sidebar-stack {
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 1.5rem !important;
+  }
 }
 
 @media (max-width: 1060px) {
+  /* Standardize mobile background to eliminate black bands */
+  body, html, .dashboard-layout, .dashboard-outer-wrapper {
+    background: #ffffff !important;
+  }
+
   .mobile-nav-header {
     position: fixed !important;
     top: 0 !important;
     left: 0 !important;
     right: 0 !important;
-    height: 70px;
-    background: linear-gradient(135deg, rgba(15, 15, 15, 0.95) 0%, rgba(107, 0, 0, 0.95) 100%) !important;
-    backdrop-filter: blur(20px) !important;
-    -webkit-backdrop-filter: blur(20px) !important;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.04) !important;
+    height: 70px !important; /* Standard height */
+    background: #ffffff !important;
+    border-bottom: 1px solid #f1f5f9 !important;
     z-index: 10000 !important;
     display: flex !important;
     align-items: center;
     justify-content: space-between;
     padding: 0 20px !important;
-    box-shadow: 0 4px 30px rgba(0,0,0,0.1);
+    box-shadow: 0 2px 10px rgba(0,0,0,0.02) !important;
   }
 
   .mobile-logo-img {
-    height: 30px !important;
+    height: 60px !important;
     width: auto !important;
     object-fit: contain;
-    padding: 4px 8px;
-    background: rgba(255, 255, 255, 0.08);
-    border-radius: 8px;
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    filter: brightness(1.1); /* Pop against the red gradient */
+    padding: 0;
+    background: transparent;
+    border: none;
+    filter: none;
   }
 
   .mobile-dots-toggle {
@@ -673,10 +674,7 @@
 }
 
 @media (max-width: 1060px) {
-  /* Inherits from 1060px shield */
-  .dashboard-outer-wrapper {
-    padding-top: 0 !important;
-  }
+  /* Removed conflicting padding override */
 }
 
 /* On Desktop, keep everything normal - Ensure NO padding overlap */
@@ -940,8 +938,8 @@
 
   .fluid-grid-3, 
   .fluid-grid-2 { 
-    grid-template-columns: repeat(2, 1fr) !important;
-    gap: 6px !important; /* Tight spacing between the 2 cards */
+    grid-template-columns: 1fr !important;
+    gap: 1.5rem !important;
   }
 
   /* The Card Container */

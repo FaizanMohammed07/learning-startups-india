@@ -3,236 +3,259 @@
 import { useState } from 'react';
 import { motion } from 'framer-motion';
 import Icon from '@/components/Icon';
-
-const Sparkline = ({ color }) => (
-  <svg width="40" height="20" viewBox="0 0 40 20" style={{ opacity: 0.6 }}>
-    <path 
-      d="M0 15 Q 10 5, 20 12 T 40 8" 
-      fill="none" 
-      stroke={color} 
-      strokeWidth="2" 
-      strokeLinecap="round" 
-    />
-  </svg>
-);
+import { useRouter } from 'next/navigation';
 
 export default function LeaderboardPage() {
   const [tab, setTab] = useState('monthly');
+  const router = useRouter();
 
   const monthlyLeaders = [
-    { rank: 1, name: 'Arjun Mehra', score: 2840, change: '+12%', avatar: 'A', momentum: 'High', color: '#fbbf24' },
-    { rank: 2, name: 'Sanya Gupta', score: 2710, change: '+8%', avatar: 'S', momentum: 'Stable', color: '#94a3b8' },
-    { rank: 3, name: 'Rahul Varma', score: 2650, change: '+15%', avatar: 'R', momentum: 'Fast', color: '#d97706' },
-    { rank: 4, name: 'Priya Das', score: 2420, change: '+5%', avatar: 'P', style: 'default' },
-    { rank: 5, name: 'Karan Singh', score: 2380, change: '-2%', avatar: 'K', style: 'default' },
+    { rank: 1, name: 'Arjun Mehra', score: 2840, avatar: 'A' },
+    { rank: 2, name: 'Sanya Gupta', score: 2710, avatar: 'S' },
+    { rank: 3, name: 'Rahul Varma', score: 2650, avatar: 'R' },
+    { rank: 4, name: 'Priya Das', score: 2420, avatar: 'P' },
+    { rank: 5, name: 'Karan Singh', score: 2380, avatar: 'K' },
+    { rank: 6, name: 'Ananya Iyer', score: 2200, avatar: 'A' },
+    { rank: 7, name: 'Vivek Joshi', score: 2150, avatar: 'V' },
   ];
 
   const allTimeLeaders = [
-    { rank: 1, name: 'Sanya Gupta', score: 45200, avatar: 'S', color: '#fbbf24' },
-    { rank: 2, name: 'Arjun Mehra', score: 42800, avatar: 'A', color: '#94a3b8' },
-    { rank: 3, name: 'Vikram Rao', score: 41500, avatar: 'V', color: '#d97706' },
+    { rank: 1, name: 'Sanya Gupta', score: 45200, avatar: 'S' },
+    { rank: 2, name: 'Arjun Mehra', score: 42800, avatar: 'A' },
+    { rank: 3, name: 'Vikram Rao', score: 41500, avatar: 'V' },
+    { rank: 4, name: 'Rahul Varma', score: 38200, avatar: 'R' },
+    { rank: 5, name: 'Priya Das', score: 35600, avatar: 'P' },
   ];
 
   const leaders = tab === 'monthly' ? monthlyLeaders : allTimeLeaders;
 
   return (
-    <div className="platform-page" style={{ padding: '3rem 4rem', background: '#f8fafc' }}>
-      <header style={{ marginBottom: '4rem', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-        <div>
-          <h1 style={{ fontSize: '2.5rem', fontWeight: 900, color: '#0f172a', marginBottom: '0.5rem' }}>Global Leaderboard</h1>
-          <p style={{ color: '#64748b', fontSize: '1.1rem', fontWeight: 600 }}>The arena of high-momentum builders and visionary founders.</p>
+    <div className="platform-page leaderboard-page">
+      <header className="leaderboard-header">
+        <div className="header-content">
+          <h1 className="platform-page-title">
+            Founder <span className="red-glow-main">Leaderboard</span>
+          </h1>
+          <p className="platform-page-subtitle">Celebrating the highest velocity builders in the ecosystem.</p>
         </div>
-        <div style={{ 
-          background: '#fff', 
-          padding: '6px', 
-          borderRadius: '16px', 
-          display: 'flex', 
-          border: '1px solid #e2e8f0',
-          boxShadow: '0 4px 12px rgba(0,0,0,0.03)'
-        }}>
+
+        <div className="tab-container">
           {['monthly', 'allTime'].map(t => (
             <button 
               key={t}
               onClick={() => setTab(t)}
-              style={{ 
-                padding: '10px 24px', 
-                borderRadius: '12px', 
-                border: 'none', 
-                background: tab === t ? '#ef4444' : 'transparent',
-                color: tab === t ? '#fff' : '#64748b',
-                fontSize: '0.85rem',
-                fontWeight: 800,
-                cursor: 'pointer',
-                transition: 'all 0.2s'
-              }}
+              className={`velocity-tab ${tab === t ? 'active' : ''}`}
             >
-              {t === 'monthly' ? 'Monthly' : 'All-Time'}
+              {t === 'monthly' ? 'Monthly Sprint' : 'Hall of Fame'}
             </button>
           ))}
         </div>
       </header>
 
       {/* Podium for Top 3 */}
-      <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'flex-end', gap: '3rem', margin: '4rem 0 6rem' }}>
-        {/* 2nd Place */}
-        <motion.div 
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.2 }}
-          style={{ textAlign: 'center' }}
-        >
-          <div style={{ 
-            width: 100, height: 100, borderRadius: '32px', border: '4px solid #94a3b8', 
-            background: '#fff', display: 'flex', alignItems: 'center', justifyContent: 'center',
-            fontSize: '2rem', fontWeight: 900, position: 'relative', margin: '0 auto 1.5rem',
-            boxShadow: '0 20px 40px rgba(0,0,0,0.05)',
-            transform: 'rotate(-5deg)'
-          }}>
-            {leaders[1]?.avatar}
-            <div style={{ position: 'absolute', bottom: -12, background: '#94a3b8', color: '#fff', padding: '4px 12px', borderRadius: 12, fontSize: '0.75rem', fontWeight: 900 }}>2ND</div>
-          </div>
-          <div style={{ fontWeight: 900, fontSize: '1rem', color: '#1e293b' }}>{leaders[1]?.name}</div>
-          <div style={{ color: '#ef4444', fontWeight: 800, fontSize: '0.85rem', marginTop: '4px' }}>{leaders[1]?.score.toLocaleString()} pts</div>
-        </motion.div>
-
-        {/* 1st Place */}
-        <motion.div 
-          initial={{ opacity: 0, scale: 0.8 }}
-          animate={{ opacity: 1, scale: 1 }}
-          style={{ textAlign: 'center', position: 'relative', top: '-20px' }}
-        >
-          <div style={{ position: 'absolute', top: -50, left: '50%', transform: 'translateX(-50%)' }}>
-             <Icon name="award" size={40} color="#fbbf24" />
-          </div>
-          <div style={{ 
-            width: 140, height: 140, borderRadius: '40px', border: '5px solid #fbbf24', 
-            background: '#fff', display: 'flex', alignItems: 'center', justifyContent: 'center',
-            fontSize: '3rem', fontWeight: 900, position: 'relative', margin: '0 auto 1.5rem',
-            boxShadow: '0 30px 60px rgba(251, 191, 36, 0.2)',
-            zIndex: 2
-          }}>
-            {leaders[0]?.avatar}
-            <div style={{ position: 'absolute', bottom: -15, background: '#fbbf24', color: '#fff', padding: '6px 16px', borderRadius: 14, fontSize: '0.8rem', fontWeight: 900 }}>CHAMPION</div>
-          </div>
-          <div style={{ fontWeight: 900, fontSize: '1.2rem', color: '#0f172a' }}>{leaders[0]?.name}</div>
-          <div style={{ color: '#ef4444', fontWeight: 800, fontSize: '1rem', marginTop: '4px' }}>{leaders[0]?.score.toLocaleString()} pts</div>
-          
-          {/* Champion Glow */}
-          <div style={{ position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%)', width: '200px', height: '200px', background: 'rgba(251, 191, 36, 0.1)', filter: 'blur(50px)', borderRadius: '50%', zIndex: 1 }} />
-        </motion.div>
-
-        {/* 3rd Place */}
-        <motion.div 
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.3 }}
-          style={{ textAlign: 'center' }}
-        >
-          <div style={{ 
-            width: 100, height: 100, borderRadius: '32px', border: '4px solid #d97706', 
-            background: '#fff', display: 'flex', alignItems: 'center', justifyContent: 'center',
-            fontSize: '2rem', fontWeight: 900, position: 'relative', margin: '0 auto 1.5rem',
-            boxShadow: '0 20px 40px rgba(0,0,0,0.05)',
-            transform: 'rotate(5deg)'
-          }}>
-            {leaders[2]?.avatar}
-            <div style={{ position: 'absolute', bottom: -12, background: '#d97706', color: '#fff', padding: '4px 12px', borderRadius: 12, fontSize: '0.75rem', fontWeight: 900 }}>3RD</div>
-          </div>
-          <div style={{ fontWeight: 900, fontSize: '1rem', color: '#1e293b' }}>{leaders[2]?.name}</div>
-          <div style={{ color: '#ef4444', fontWeight: 800, fontSize: '0.85rem', marginTop: '4px' }}>{leaders[2]?.score.toLocaleString()} pts</div>
-        </motion.div>
-      </div>
-
-      <div style={{ background: '#fff', borderRadius: '32px', border: '1px solid #e2e8f0', overflow: 'hidden', boxShadow: '0 20px 50px rgba(0,0,0,0.03)' }}>
-        <table style={{ width: '100%', borderCollapse: 'collapse' }}>
-          <thead>
-            <tr style={{ background: '#f8fafc', borderBottom: '1px solid #f1f5f9' }}>
-              <th style={{ padding: '20px 32px', textAlign: 'left', fontSize: '0.75rem', fontWeight: 900, color: '#94a3b8', textTransform: 'uppercase', letterSpacing: '0.1em' }}>Rank</th>
-              <th style={{ padding: '20px 32px', textAlign: 'left', fontSize: '0.75rem', fontWeight: 900, color: '#94a3b8', textTransform: 'uppercase', letterSpacing: '0.1em' }}>Founder</th>
-              <th style={{ padding: '20px 32px', textAlign: 'center', fontSize: '0.75rem', fontWeight: 900, color: '#94a3b8', textTransform: 'uppercase', letterSpacing: '0.1em' }}>Momentum</th>
-              <th style={{ padding: '20px 32px', textAlign: 'right', fontSize: '0.75rem', fontWeight: 900, color: '#94a3b8', textTransform: 'uppercase', letterSpacing: '0.1em' }}>Score</th>
-            </tr>
-          </thead>
-          <tbody>
-            {leaders.map((l, idx) => (
-              <tr key={l.rank} style={{ borderBottom: '1px solid #f8fafc', transition: 'all 0.2s' }}>
-                <td style={{ padding: '20px 32px' }}>
-                  <div style={{ 
-                    width: '32px', height: '32px', borderRadius: '10px', 
-                    background: l.rank <= 3 ? (idx === 0 ? '#fef3c7' : '#f1f5f9') : 'transparent',
-                    display: 'flex', alignItems: 'center', justifyContent: 'center',
-                    fontWeight: 900, color: l.rank <= 3 ? (idx === 0 ? '#d97706' : '#64748b') : '#cbd5e1'
-                  }}>
-                    #{l.rank}
+      <div className="podium-section">
+        <div className="podium-grid">
+            {/* 2nd Place */}
+            <motion.div 
+              initial={{ opacity: 0, y: 30 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.2 }}
+              className="podium-slot second"
+            >
+              <div className="podium-tier tier-silver">
+                  <div className="avatar-frame">
+                    <div className="avatar-main">{leaders[1]?.avatar}</div>
+                    <div className="rank-tag silver">#2</div>
                   </div>
-                </td>
-                <td style={{ padding: '20px 32px' }}>
-                  <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
-                    <div style={{ width: 44, height: 44, borderRadius: '14px', background: '#f8fafc', border: '1px solid #e2e8f0', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 900, color: '#0f172a' }}>{l.avatar}</div>
-                    <div>
-                      <div style={{ fontWeight: 800, color: '#1e293b' }}>{l.name}</div>
-                      <div style={{ fontSize: '0.7rem', color: '#94a3b8', fontWeight: 600 }}>Elite Builder</div>
-                    </div>
+                  <div className="podium-details">
+                    <div className="podium-name">{leaders[1]?.name}</div>
+                    <div className="podium-pts">{leaders[1]?.score.toLocaleString()} PTS</div>
                   </div>
-                </td>
-                <td style={{ padding: '20px 32px', textAlign: 'center' }}>
-                    <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
-                       <Sparkline color={idx < 3 ? '#ef4444' : '#94a3b8'} />
-                    </div>
-                </td>
-                <td style={{ padding: '20px 32px', textAlign: 'right' }}>
-                  <div style={{ fontWeight: 900, color: '#0f172a', fontSize: '1rem' }}>{l.score.toLocaleString()}</div>
-                  {l.change && <div style={{ fontSize: '0.7rem', color: l.change.startsWith('+') ? '#10b981' : '#f43f5e', fontWeight: 800 }}>{l.change} vs last week</div>}
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
+              </div>
+            </motion.div>
 
-      {/* SELF RANK STICKER */}
-      {/* SELF RANK STICKER */}
-      <div style={{ 
-        marginTop: '3rem', 
-        padding: '2rem 2.5rem', 
-        background: 'rgba(239, 68, 68, 0.04)', 
-        borderRadius: '32px', 
-        border: '1px solid rgba(239, 68, 68, 0.1)',
-        display: 'flex', 
-        justifyContent: 'space-between', 
-        alignItems: 'center',
-        boxShadow: '0 20px 40px rgba(239, 68, 68, 0.03)'
-      }}>
-        <div style={{ display: 'flex', alignItems: 'center', gap: '24px' }}>
-            <div style={{ 
-              width: 56, height: 56, borderRadius: '18px', 
-              background: '#ef4444', color: '#fff', 
-              display: 'flex', alignItems: 'center', justifyContent: 'center', 
-              fontSize: '1.25rem', fontWeight: 900 
-            }}>J</div>
-            <div>
-              <div style={{ fontSize: '0.7rem', fontWeight: 800, color: '#ef4444', textTransform: 'uppercase', letterSpacing: '0.15em', marginBottom: '4px' }}>Your Current Rank</div>
-              <div style={{ fontSize: '1.75rem', fontWeight: 950, color: '#0f172a' }}>Rank #142</div>
-            </div>
-        </div>
-        <div style={{ textAlign: 'right' }}>
-           <div style={{ fontSize: '0.85rem', fontWeight: 600, color: '#64748b', marginBottom: '12px' }}>You are in the <span style={{ color: '#ef4444', fontWeight: 800 }}>top 15%</span> of all builders this month!</div>
-           <button 
-             onClick={() => router.push('/analytics')}
-             style={{ 
-               background: '#ef4444', color: '#fff', border: 'none', 
-               padding: '14px 32px', borderRadius: '16px', fontWeight: 800, 
-               cursor: 'pointer', boxShadow: '0 10px 20px rgba(239, 68, 68, 0.2)',
-               transition: 'all 0.2s',
-               display: 'flex',
-               alignItems: 'center',
-               gap: '8px'
-             }}
-           >
-              VIEW DETAILED ANALYTICS <Icon name="chevronRight" size={16} color="#fff" />
-           </button>
+            {/* 1st Place */}
+            <motion.div 
+              initial={{ opacity: 0, y: 0, scale: 0.9 }}
+              animate={{ opacity: 1, y: 0, scale: 1 }}
+              className="podium-slot first"
+            >
+              <div className="champion-ring">
+                <div className="podium-tier tier-gold">
+                    <div className="crown-icon">
+                       <Icon name="award" size={44} color="#fbbf24" stroke={2.5} />
+                    </div>
+                    <div className="avatar-frame gold-frame">
+                      <div className="avatar-main champion-avatar">{leaders[0]?.avatar}</div>
+                      <div className="rank-tag gold">CHAMPION</div>
+                    </div>
+                    <div className="podium-details">
+                      <div className="podium-name highlight">{leaders[0]?.name}</div>
+                      <div className="podium-pts highlight">{leaders[0]?.score.toLocaleString()} PTS</div>
+                    </div>
+                </div>
+              </div>
+            </motion.div>
+
+            {/* 3rd Place */}
+            <motion.div 
+              initial={{ opacity: 0, y: 30 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.3 }}
+              className="podium-slot third"
+            >
+              <div className="podium-tier tier-bronze">
+                  <div className="avatar-frame">
+                    <div className="avatar-main">{leaders[2]?.avatar}</div>
+                    <div className="rank-tag bronze">#3</div>
+                  </div>
+                  <div className="podium-details">
+                    <div className="podium-name">{leaders[2]?.name}</div>
+                    <div className="podium-pts">{leaders[2]?.score.toLocaleString()} PTS</div>
+                  </div>
+              </div>
+            </motion.div>
         </div>
       </div>
+
+      <div className="leaderboard-body">
+        <div className="table-container-glass glass-card">
+           <table className="leader-table">
+             <thead>
+               <tr>
+                 <th>RANKING</th>
+                 <th>BUILDER PROFILE</th>
+                 <th className="pts-th">SCORE</th>
+               </tr>
+             </thead>
+             <tbody>
+               {leaders.slice(3).map((l, idx) => (
+                 <tr key={l.rank} className="table-row-v2">
+                   <td className="rank-cell">
+                     <span className="rank-pill">#{l.rank}</span>
+                   </td>
+                   <td className="profile-cell">
+                     <div className="builder-info">
+                       <div className="builder-avatar">{l.avatar}</div>
+                       <div className="builder-meta">
+                         <div className="builder-name">{l.name}</div>
+                         <div className="builder-status">Active Builder</div>
+                       </div>
+                     </div>
+                   </td>
+                   <td className="pts-cell">
+                     <div className="score-badge">{l.score.toLocaleString()}</div>
+                   </td>
+                 </tr>
+               ))}
+             </tbody>
+           </table>
+        </div>
+
+        {/* User Status Sticky */}
+        <div className="user-ranking-sticky">
+           <div className="glass-card status-card">
+              <div className="user-profile-summary">
+                 <div className="user-large-avatar">J</div>
+                 <div className="user-text-summary">
+                    <span className="summary-label">YOUR GLOBAL STANDING</span>
+                    <h2 className="summary-rank-val">Rank #142</h2>
+                 </div>
+              </div>
+              <div className="user-action-area">
+                 <p className="summary-quote">
+                    You're in the elite <span className="red-highlight">top 15%</span>. Finalize your current sprint to break into top 100.
+                 </p>
+                 <button 
+                   onClick={() => router.push('/analytics/performance')}
+                   className="performance-link-btn"
+                 >
+                    DASHBOARD ANALYTICS <Icon name="chevronRight" size={18} />
+                 </button>
+              </div>
+           </div>
+        </div>
+      </div>
+
+      <style jsx global>{`
+        .leaderboard-page { padding: 4rem 4rem 10rem; background: #fff; font-family: 'Poppins', sans-serif; }
+        .leaderboard-header { margin-bottom: 6rem; display: flex; justify-content: space-between; align-items: flex-end; }
+        .red-glow-main { color: #ef4444; }
+        
+        .velocity-tab { padding: 14px 32px; border-radius: 20px; border: none; background: transparent; color: #64748b; font-size: 0.95rem; font-weight: 850; cursor: pointer; transition: all 0.3s; }
+        .velocity-tab.active { background: #ef4444; color: #fff; box-shadow: 0 10px 25px rgba(239, 68, 68, 0.2); }
+        
+        .podium-section { margin-bottom: 8rem; }
+        .podium-grid { display: flex; justify-content: center; align-items: flex-end; gap: 4rem; max-width: 1200px; margin: 0 auto; }
+        .podium-slot { flex: 1; max-width: 320px; text-align: center; }
+        
+        .avatar-frame { position: relative; display: inline-block; margin-bottom: 3rem; }
+        .avatar-main { width: 140px; height: 140px; border-radius: 48px; background: #fff; border: 4px solid #f1f5f9; display: flex; alignItems: center; justifyContent: center; fontSize: 3rem; fontWeight: 950; color: #0f172a; box-shadow: 0 20px 50px rgba(0,0,0,0.05); }
+        
+        .gold-frame .avatar-main { width: 200px; height: 200px; border-radius: 64px; border-color: #fbbf24; border-width: 8px; font-size: 4.5rem; }
+        .tier-silver .avatar-main { border-color: #cbd5e1; }
+        .tier-bronze .avatar-main { border-color: #d97706; }
+        
+        .rank-tag { position: absolute; bottom: -20px; left: 50%; transform: translateX(-50%); padding: 10px 24px; border-radius: 16px; font-size: 0.9rem; font-weight: 950; white-space: nowrap; box-shadow: 0 15px 30px rgba(0,0,0,0.1); }
+        .rank-tag.gold { background: #fbbf24; color: #0f172a; font-size: 1.1rem; bottom: -25px; padding: 14px 36px; box-shadow: 0 20px 40px rgba(251, 191, 36, 0.3); }
+        .rank-tag.silver { background: #0f172a; color: #fff; }
+        .rank-tag.bronze { background: #0f172a; color: #fff; }
+        
+        .podium-name { font-size: 1.4rem; font-weight: 950; color: #1e293b; margin-top: 2rem; }
+        .podium-pts { font-size: 1.15rem; font-weight: 900; color: #64748b; margin-top: 8px; }
+        .podium-name.highlight { font-size: 2.25rem; color: #0f172a; letter-spacing: -0.02em; }
+        .podium-pts.highlight { color: #ef4444; font-size: 1.5rem; }
+        
+        .crown-icon { margin-bottom: -15px; filter: drop-shadow(0 15px 25px rgba(251, 191, 36, 0.4)); }
+        
+        .table-container-glass { border-radius: 48px; border: 1.5px solid #f1f5f9; overflow: hidden; background: #fff; }
+        .leader-table { width: 100%; border-collapse: collapse; }
+        .leader-table th { padding: 2.5rem 3.5rem; text-align: left; background: #f8fafc; font-size: 0.8rem; font-weight: 950; color: #94a3b8; letter-spacing: 0.15em; border-bottom: 2px solid #f1f5f9; }
+        .leader-table td { padding: 2.5rem 3.5rem; border-bottom: 1.5px solid #f8fafc; }
+        
+        .rank-pill { padding: 10px 18px; background: #f8fafc; border-radius: 12px; font-weight: 950; color: #94a3b8; font-size: 0.9rem; }
+        .builder-info { display: flex; align-items: center; gap: 2rem; }
+        .builder-avatar { width: 60px; height: 60px; border-radius: 18px; background: #f1f5f9; border: 1.5px solid #e2e8f0; display: flex; align-items: center; justify-content: center; font-weight: 950; font-size: 1.4rem; }
+        .builder-name { font-size: 1.25rem; font-weight: 950; color: #0f172a; }
+        .builder-status { font-size: 0.85rem; font-weight: 700; color: #94a3b8; margin-top: 4px; }
+        
+        .pts-cell { text-align: right; }
+        .pts-th { text-align: right !important; }
+        .score-badge { font-size: 1.5rem; font-weight: 950; color: #0f172a; }
+        
+        .status-card { padding: 4rem; background: #fef2f2; border: 1.5px solid rgba(239, 68, 68, 0.1); border-radius: 60px; display: flex; justify-content: space-between; align-items: center; margin-top: 6rem; }
+        .user-large-avatar { width: 110px; height: 110px; border-radius: 40px; background: #ef4444; color: #fff; display: flex; align-items: center; justify-content: center; font-size: 2.8rem; font-weight: 950; box-shadow: 0 20px 45px rgba(239, 68, 68, 0.3); }
+        .summary-label { font-size: 0.85rem; font-weight: 950; color: #ef4444; letter-spacing: 0.15em; display: block; margin-bottom: 12px; }
+        .summary-rank-val { font-size: 4rem; font-weight: 950; color: #0f172a; margin: 0; letter-spacing: -0.05em; }
+        
+        .user-action-area { text-align: right; max-width: 550px; }
+        .summary-quote { font-size: 1.4rem; font-weight: 700; color: #64748b; line-height: 1.6; margin-bottom: 3rem; }
+        .red-highlight { color: #0f172a; font-weight: 950; text-decoration: underline; text-decoration-color: #ef4444; text-decoration-thickness: 4px; }
+        
+        .performance-link-btn { background: #0f172a; color: #fff; padding: 22px 48px; border-radius: 24px; font-weight: 950; font-size: 1.05rem; border: none; cursor: pointer; display: inline-flex; align-items: center; gap: 14px; transition: all 0.3s; }
+        .performance-link-btn:hover { background: #ef4444; transform: translateY(-5px); box-shadow: 0 25px 50px rgba(239, 68, 68, 0.25); }
+
+        @media (max-width: 1240px) {
+          .leaderboard-page { padding: 0 1.5rem 8rem; }
+          .leaderboard-header { padding-top: 8rem; flex-direction: column; align-items: flex-start; gap: 3rem; }
+          .podium-grid { flex-direction: column; align-items: center; gap: 6rem; padding-top: 4rem; }
+          .podium-slot { width: 100%; max-width: 450px; }
+          .podium-slot.first { order: 1; }
+          .podium-slot.second { order: 2; }
+          .podium-slot.third { order: 3; }
+          .gold-frame .avatar-main { width: 160px; height: 160px; font-size: 3.5rem; }
+          .podium-name.highlight { font-size: 1.75rem; }
+          .summary-rank-val { font-size: 3rem; }
+          .status-card { flex-direction: column; text-align: center; gap: 4rem; padding: 3rem 2rem; }
+          .user-profile-summary { flex-direction: column; }
+          .user-action-area { text-align: center; }
+          .performance-link-btn { width: 100%; justify-content: center; }
+          .leader-table th, .leader-table td { padding: 1.5rem 1rem; }
+          .builder-info { gap: 1rem; }
+          .builder-name { font-size: 1.05rem; }
+          .score-badge { font-size: 1.15rem; }
+        }
+      `}</style>
     </div>
   );
 }

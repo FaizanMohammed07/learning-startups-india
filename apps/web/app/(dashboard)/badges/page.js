@@ -83,15 +83,15 @@ export default function BadgesPage() {
   ];
 
   return (
-    <div className="platform-page" style={{ padding: '3rem 4rem', background: '#f8fafc', minHeight: '100vh' }}>
-      <header style={{ marginBottom: '4rem', display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end' }}>
+    <div className="platform-page badges-page">
+      <header className="page-standard-header badges-header">
         <div>
-          <h1 style={{ fontSize: '2.5rem', fontWeight: 950, color: '#0f172a', marginBottom: '0.5rem' }}>Achievement Vault</h1>
-          <p style={{ color: '#64748b', fontSize: '1.1rem', fontWeight: 600 }}>Decipher your milestones and unlock the builder odyssey.</p>
+          <h1 className="page-standard-title">Achievement Vault</h1>
+          <p className="page-standard-subtitle">Decipher your milestones and unlock the builder odyssey.</p>
         </div>
-        <div style={{ textAlign: 'right' }}>
-            <div style={{ fontSize: '0.8rem', fontWeight: 800, color: '#ef4444', textTransform: 'uppercase', letterSpacing: '0.1em', marginBottom: '4px' }}>Odyssey Progress</div>
-            <div style={{ fontSize: '1.5rem', fontWeight: 900, color: '#0f172a' }}>16.7% Complete</div>
+        <div className="odyssey-stats">
+            <div className="odyssey-label">Odyssey Progress</div>
+            <div className="odyssey-value">16.7% Complete</div>
         </div>
       </header>
 
@@ -105,11 +105,11 @@ export default function BadgesPage() {
           />
       </div>
 
-      <div style={{ marginBottom: '6rem' }}>
-          <div style={{ fontSize: '0.75rem', fontWeight: 900, color: '#94a3b8', textTransform: 'uppercase', letterSpacing: '0.2em', marginBottom: '2.5rem' }}>
-            UNLOCKED ACHIEVEMENTS <span style={{ marginLeft: '12px', color: '#ef4444' }}>GRID MODE</span>
+      <div className="unlocked-section">
+          <div className="section-label">
+            UNLOCKED ACHIEVEMENTS <span className="label-accent">GRID MODE</span>
           </div>
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '2rem' }}>
+          <div className="badges-grid">
             {earnedBadges.map((badge) => (
               <FlippableBadge key={badge.id} badge={badge} />
             ))}
@@ -117,73 +117,94 @@ export default function BadgesPage() {
       </div>
 
       {/* LOCKED SECTION: SCROLLABLE LOG */}
-      <div style={{ 
-        background: '#fff', 
-        borderRadius: '40px', 
-        padding: '3rem', 
-        border: '1px solid #e2e8f0',
-        boxShadow: '0 20px 50px rgba(0,0,0,0.02)'
-      }}>
-          <div style={{ fontSize: '0.75rem', fontWeight: 900, color: '#94a3b8', textTransform: 'uppercase', letterSpacing: '0.2em', marginBottom: '2.5rem', display: 'flex', alignItems: 'center', gap: '12px' }}>
-             <Icon name="lock" size={18} /> BUILDER MILESTONE LOG <span style={{ marginLeft: '12px', color: '#64748b' }}>SCROLLABLE PATHWAY</span>
+      <div className="milestone-container">
+          <div className="milestone-label">
+             <Icon name="lock" size={18} color="#94a3b8" /> BUILDER MILESTONE LOG <span className="milestone-pathway">SCROLLABLE PATHWAY</span>
           </div>
           
-          <div style={{ 
-            maxHeight: '500px', 
-            overflowY: 'auto', 
-            paddingRight: '1.5rem',
-            display: 'flex',
-            flexDirection: 'column',
-            gap: '1.5rem'
-          }} className="milestone-log">
+          <div className="milestone-log custom-scrollbar">
             {lockedBadges.map((badge, idx) => (
-              <div 
-                key={idx}
-                style={{ 
-                  background: '#f8fafc', 
-                  borderRadius: '24px', 
-                  padding: '1.75rem 2.5rem', 
-                  display: 'flex', 
-                  alignItems: 'center', 
-                  gap: '2.5rem',
-                  border: '1px solid #f1f5f9',
-                  transition: 'all 0.2s',
-                  cursor: 'default'
-                }}
-              >
-                 <div style={{ width: '60px', height: '60px', borderRadius: '18px', background: '#fff', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0, boxShadow: '0 8px 16px rgba(0,0,0,0.03)' }}>
-                    <Icon name={badge.icon || 'lock'} size={24} color="#cbd5e1" />
-                 </div>
-                 <div style={{ flex: 1 }}>
-                    <h4 style={{ fontSize: '1rem', fontWeight: 900, color: '#0f172a', margin: '0 0 4px' }}>{badge.title}</h4>
-                    <p style={{ fontSize: '0.85rem', color: '#64748b', fontWeight: 600, margin: 0, lineHeight: 1.5 }}>{badge.requirement}</p>
-                 </div>
-                 <div style={{ 
-                   padding: '10px 20px', 
-                   borderRadius: '12px', 
-                   background: '#fff', 
-                   border: '1px solid #e2e8f0', 
-                   fontSize: '0.7rem', 
-                   fontWeight: 900, 
-                   color: '#94a3b8',
-                   display: 'flex',
-                   alignItems: 'center',
-                   gap: '8px'
-                 }}>
-                    <Icon name="target" size={14} color="#cbd5e1" /> LOCKED
-                 </div>
+              <div key={idx} className="milestone-item">
+                  <div className="milestone-icon-wrap">
+                    <div className="milestone-icon-box">
+                      <Icon name={badge.icon || 'lock'} size={24} color="#94a3b8" />
+                    </div>
+                  </div>
+                  <div className="milestone-info">
+                    <h4 className="milestone-title">{badge.title}</h4>
+                    <p className="milestone-req">{badge.requirement}</p>
+                  </div>
+                  <div className="milestone-status-box">
+                    <div className="milestone-status">
+                      <Icon name="target" size={14} color="#94a3b8" /> 
+                      <span>LOCKED</span>
+                    </div>
+                  </div>
               </div>
             ))}
           </div>
       </div>
 
       <style jsx global>{`
-        .milestone-log::-webkit-scrollbar { width: 4px; }
-        .milestone-log::-webkit-scrollbar-track { background: transparent; }
-        .milestone-log::-webkit-scrollbar-thumb { background: #e2e8f0; border-radius: 10px; }
-        .milestone-log::-webkit-scrollbar-thumb:hover { background: #cbd5e1; }
-      `}</style>
+        .badges-page { padding: 3rem 4rem; background: #fff; min-height: 100vh; font-family: 'Poppins', sans-serif; }
+        .badges-header { margin-bottom: 3.5rem; display: flex; justify-content: space-between; align-items: flex-end; }
+        .page-standard-title { font-size: 3rem; font-weight: 950; color: #0f172a; margin: 0 0 0.5rem; letter-spacing: -0.05em; }
+        .page-standard-subtitle { color: #64748b; font-size: 1.1rem; font-weight: 650; margin: 0; }
+        
+        .odyssey-stats { text-align: right; }
+        .odyssey-label { font-size: 0.85rem; font-weight: 950; color: #ef4444; text-transform: uppercase; letter-spacing: 0.15em; margin-bottom: 6px; }
+        .odyssey-value { font-size: 2.25rem; font-weight: 950; color: #0f172a; letter-spacing: -0.02em; }
+        
+        .unlocked-section { margin-bottom: 7rem; }
+        .section-label { font-size: 0.85rem; font-weight: 950; color: #94a3b8; text-transform: uppercase; letter-spacing: 0.25em; margin-bottom: 3rem; display: flex; align-items: center; }
+        .label-accent { margin-left: 16px; color: #ef4444; background: #fef2f2; padding: 4px 12px; border-radius: 8px; font-size: 0.65rem; }
+        
+        .badges-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 2.5rem; }
 
+        .milestone-container { background: #fcfdfe; border-radius: 48px; padding: 4rem; border: 1.5px solid #f1f5f9; box-shadow: 0 4px 30px rgba(0,0,0,0.01); }
+        .milestone-label { font-size: 0.85rem; font-weight: 950; color: #94a3b8; text-transform: uppercase; letter-spacing: 0.2em; margin-bottom: 3rem; display: flex; align-items: center; gap: 14px; }
+        .milestone-pathway { margin-left: 16px; color: #cbd5e1; font-size: 0.7rem; }
+        
+        .milestone-log { max-height: 700px; overflow-y: auto; padding-right: 2rem; display: flex; flex-direction: column; gap: 1.5rem; }
+        .milestone-item { background: #fff; border-radius: 32px; padding: 2rem 3rem; display: flex; align-items: center; gap: 3rem; border: 1.5px solid #f1f5f9; transition: all 0.3s ease; }
+        .milestone-item:hover { border-color: rgba(239, 68, 68, 0.15); transform: translateY(-4px); box-shadow: 0 20px 40px rgba(0,0,0,0.03); }
+        
+        .milestone-icon-wrap { position: relative; }
+        .milestone-icon-box { width: 72px; height: 72px; border-radius: 24px; background: #f8fafc; display: flex; align-items: center; justify-content: center; flex-shrink: 0; border: 1px solid #f1f5f9; }
+        
+        .milestone-info { flex: 1; }
+        .milestone-title { font-size: 1.25rem; font-weight: 950; color: #0f172a; margin: 0 0 8px; }
+        .milestone-req { font-size: 0.95rem; color: #64748b; font-weight: 650; margin: 0; line-height: 1.6; }
+        
+        .milestone-status-box { flex-shrink: 0; }
+        .milestone-status { padding: 12px 28px; border-radius: 18px; background: #f8fafc; border: 1.5px solid #e2e8f0; font-size: 0.8rem; font-weight: 950; color: #94a3b8; display: flex; align-items: center; gap: 10px; }
+        
+        .custom-scrollbar::-webkit-scrollbar { width: 6px; }
+        .custom-scrollbar::-webkit-scrollbar-track { background: transparent; }
+        .custom-scrollbar::-webkit-scrollbar-thumb { background: #f1f5f9; border-radius: 10px; }
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover { background: #e2e8f0; }
+
+        @media (max-width: 1060px) {
+          .badges-page { padding: 6.5rem 1.25rem 4rem !important; }
+          .badges-header { flex-direction: column; align-items: flex-start; gap: 2rem; }
+          .page-standard-title { font-size: 2.25rem; }
+          .odyssey-stats { text-align: left; }
+          .odyssey-value { font-size: 1.75rem; }
+          
+          .unlocked-section { margin-bottom: 5rem; }
+          .badges-grid { grid-template-columns: 1fr; gap: 2rem; }
+          
+          .milestone-container { padding: 2rem 1.25rem; border-radius: 36px; }
+          .milestone-label { font-size: 0.7rem; margin-bottom: 1.5rem; }
+          .milestone-log { padding-right: 0; max-height: none; gap: 1rem; overflow: visible; }
+          .milestone-item { padding: 1.5rem; flex-direction: column; align-items: flex-start; gap: 1rem; border-radius: 24px; }
+          .milestone-icon-box { width: 56px; height: 56px; border-radius: 18px; }
+          .milestone-title { font-size: 1.1rem; }
+          .milestone-req { font-size: 0.85rem; }
+          .milestone-status-box { width: 100%; }
+          .milestone-status { width: 100%; justify-content: center; }
+        }
+      `}</style>
     </div>
   );
 }

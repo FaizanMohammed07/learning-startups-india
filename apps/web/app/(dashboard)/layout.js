@@ -84,37 +84,41 @@ export default function DashboardLayout({ children }) {
 
   const isFullWidthPage = pathname?.startsWith('/learn') || 
                           pathname?.startsWith('/checkout') ||
-                          (pathname?.startsWith('/courses/') && pathname.split('/').filter(Boolean).length === 2);
+                          (pathname?.includes('/courses/') && pathname.split('/').filter(Boolean).length >= 2);
 
   return (
     <DashboardProvider authUser={user}>
       <div className={`dashboard-layout ${isFullWidthPage ? 'learning-mode' : ''} ${isMobileMenuOpen ? 'menu-open' : ''}`}>
         
-        {/* SIDEBAR AT ROOT LEVEL - Ensures 'position: fixed' works correctly relative to viewport */}
+        {/* SIDEBAR - Excluded on full-width pages like Course Explore and Learning Player */}
         {!isFullWidthPage && <DashboardSidebar user={user} isPro={false} />}
 
-        {/* Mobile Header */}
-        <header className="mobile-nav-header interactive-glass sticky-header">
-          <div className="mobile-nav-left">
-            <Link href="/dashboard" className="mobile-brand-logo">
-              <img src="/assets/images/logo.png" alt="Logo" className="mobile-logo-img" />
-            </Link>
-          </div>
+        {/* Mobile Header - Only show on standard dashboard pages */}
+        {!isFullWidthPage && (
+          <header className="mobile-nav-header interactive-glass sticky-header">
+            <div className="mobile-nav-left">
+              <Link href="/dashboard" className="mobile-brand-logo">
+                <img src="/assets/images/logo.png" alt="Logo" className="mobile-logo-img" />
+              </Link>
+            </div>
 
-          <div className="mobile-nav-right">
-            <button className="mobile-dots-toggle" onClick={() => setIsMobileMenuOpen(true)}>
-              <Icon name="moreVertical" size={24} color="#e2e8f0" stroke={2.5} />
-            </button>
-          </div>
-        </header>
+            <div className="mobile-nav-right">
+              <button className="mobile-dots-toggle" onClick={() => setIsMobileMenuOpen(true)}>
+                <Icon name="moreVertical" size={24} color="#1e293b" stroke={2.5} />
+              </button>
+            </div>
+          </header>
+        )}
 
         {/* Mobile Menu Drawer Overlay */}
         <div className={`mobile-menu-overlay ${isMobileMenuOpen ? 'active' : ''}`} onClick={() => setIsMobileMenuOpen(false)}>
-          <DashboardSidebar 
-            user={user} 
-            isPro={false} 
-            onClose={() => setIsMobileMenuOpen(false)} 
-          />
+          <div onClick={(e) => e.stopPropagation()} style={{ height: '100%' }}>
+            <DashboardSidebar 
+              user={user} 
+              isPro={false} 
+              onClose={() => setIsMobileMenuOpen(false)} 
+            />
+          </div>
         </div>
 
         {/* Outer wrapper for transition logic */}

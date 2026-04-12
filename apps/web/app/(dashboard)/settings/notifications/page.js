@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import Icon from '@/components/Icon';
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 
 const Toggle = ({ enabled, onChange }) => (
   <button 
@@ -39,21 +39,21 @@ const NotificationRow = ({ icon, label, sublabel, enabled, onChange }) => (
     display: 'flex', 
     alignItems: 'center', 
     justifyContent: 'space-between', 
-    padding: '12px 0',
+    padding: '16px 0',
     borderBottom: '1px solid #f1f5f9',
-    gap: '1.5rem'
+    gap: '1rem'
   }}>
-    <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', flex: 1 }}>
-      {icon && (
-        <div style={{ opacity: 0.3 }}>
-           <Icon name={icon} size={18} />
-        </div>
-      )}
+    <div style={{ display: 'flex', alignItems: 'center', gap: '1.2rem', flex: 1 }}>
+      <div style={{ width: '20px', display: 'flex', justifyContent: 'center', opacity: 0.3 }}>
+         {icon ? <Icon name={icon} size={18} /> : <div style={{width: 18}} />}
+      </div>
       <div>
-        <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-           {sublabel && <span style={{ fontSize: '0.65rem', fontWeight: 800, color: '#94a3b8', textTransform: 'uppercase', letterSpacing: '0.5px' }}>{sublabel}</span>}
-        </div>
-        <span style={{ fontSize: '0.9rem', fontWeight: 650, color: '#1e293b' }}>{label}</span>
+        {sublabel && (
+          <div style={{ fontSize: '0.65rem', fontWeight: 850, color: '#94a3b8', textTransform: 'uppercase', letterSpacing: '0.5px', marginBottom: '2px' }}>
+            {sublabel}
+          </div>
+        )}
+        <span style={{ fontSize: '0.92rem', fontWeight: 650, color: '#1e293b', lineHeight: 1.4 }}>{label}</span>
       </div>
     </div>
     <Toggle enabled={enabled} onChange={onChange} />
@@ -61,7 +61,7 @@ const NotificationRow = ({ icon, label, sublabel, enabled, onChange }) => (
 );
 
 export default function NotificationsPage() {
-  const [settings, setSettings] = useState({
+  const initialValues = {
     courseUpdates: true,
     newPrograms: true,
     mentorMessages: true,
@@ -77,29 +77,38 @@ export default function NotificationsPage() {
     dailyLearningSys: true,
     weeklyGoalSys: true,
     streakSys: true,
-  });
+  };
+
+  const [settings, setSettings] = useState(initialValues);
 
   const updateSetting = (key, val) => setSettings(s => ({ ...s, [key]: val }));
+
+  const isDirty = JSON.stringify(settings) !== JSON.stringify(initialValues);
+
+  const handleReset = () => setSettings(initialValues);
 
   return (
     <div className="settings-container">
       
       {/* Header Bar */}
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '2.5rem' }}>
-        <div>
-          <h1 style={{ fontSize: '2.8rem', fontWeight: 950, color: '#0f172a', margin: 0, letterSpacing: '-0.04em' }}>Notifications</h1>
-          <p style={{ fontSize: '1.1rem', color: '#64748b', fontWeight: 600, marginTop: '8px' }}>Manage your email preferences, in-app alerts, and reminders.</p>
+      <div className="settings-header">
+        <div className="header-text">
+          <h1 className="header-title-main">Notifications</h1>
+          <p className="header-subtitle-main">Manage your email preferences, in-app alerts, and reminders.</p>
         </div>
-        <div style={{ display: 'flex', gap: '1rem' }}>
-          <button style={{ 
-            padding: '14px 24px', borderRadius: '16px', background: '#fff', border: '1px solid #e2e8f0',
-            fontSize: '0.95rem', fontWeight: 800, color: '#1e293b', cursor: 'pointer', transition: 'all 0.2s'
-          }}>Reset</button>
-          <button style={{ 
-            padding: '14px 28px', borderRadius: '16px', background: '#eb2327', border: 'none',
-            fontSize: '0.95rem', fontWeight: 900, color: '#fff', cursor: 'pointer', boxShadow: '0 6px 20px rgba(235,35,39,0.15)'
-          }}>Save all changes</button>
-        </div>
+        <AnimatePresence>
+          {isDirty && (
+            <motion.div 
+              initial={{ opacity: 0, x: 20 }}
+              animate={{ opacity: 1, x: 0 }}
+              exit={{ opacity: 0, x: 20 }}
+              className="header-actions"
+            >
+              <button className="settings-btn-secondary" onClick={handleReset}>Reset</button>
+              <button className="settings-btn-primary" onClick={() => alert('Settings Saved!')}>Save all changes</button>
+            </motion.div>
+          )}
+        </AnimatePresence>
       </div>
 
       <div style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem', maxWidth: '1200px' }}>
@@ -115,11 +124,11 @@ export default function NotificationsPage() {
 
           <div className="settings-2col-grid" style={{ gap: '0 3rem' }}>
             <NotificationRow icon="moreHorizontal" label="Course updates" enabled={settings.courseUpdates} onChange={(v) => updateSetting('courseUpdates', v)} />
-            <NotificationRow label="New programs" enabled={settings.newPrograms} onChange={(v) => updateSetting('newPrograms', v)} />
-            <NotificationRow icon="archive" label="New programs" enabled={settings.newPrograms} onChange={(v) => updateSetting('newPrograms', v)} />
-            <NotificationRow label="Mentor messages" enabled={settings.mentorMessages} onChange={(v) => updateSetting('mentorMessages', v)} />
+            <NotificationRow icon="box" label="New programs" enabled={settings.newPrograms} onChange={(v) => updateSetting('newPrograms', v)} />
+            <NotificationRow icon="archive" label="System updates" enabled={settings.newPrograms} onChange={(v) => updateSetting('newPrograms', v)} />
+            <NotificationRow icon="user" label="Mentor messages" enabled={settings.mentorMessages} onChange={(v) => updateSetting('mentorMessages', v)} />
             <NotificationRow icon="mail" label="Collaboration requests" enabled={settings.collabRequests} onChange={(v) => updateSetting('collabRequests', v)} />
-            <NotificationRow label="Weekly progress report" enabled={settings.weeklyReport} onChange={(v) => updateSetting('weeklyReport', v)} />
+            <NotificationRow icon="award" label="Weekly progress report" enabled={settings.weeklyReport} onChange={(v) => updateSetting('weeklyReport', v)} />
           </div>
         </section>
 
@@ -186,6 +195,22 @@ export default function NotificationsPage() {
           background: #fff;
           border: 1px solid #f1f5f9;
           box-shadow: 0 1px 3px rgba(0,0,0,0.02);
+        }
+        .header-title-main { fontSize: 2.8rem; fontWeight: 950; color: #0f172a; margin: 0; letterSpacing: -0.04em; }
+        .header-subtitle-main { fontSize: 1.1rem; color: #64748b; fontWeight: 600; marginTop: 8px; }
+        .settings-btn-secondary { padding: 14px 24px; borderRadius: 16px; background: #fff; border: 1px solid #e2e8f0; fontSize: 0.95rem; fontWeight: 800; color: #1e293b; cursor: pointer; transition: all 0.2s; }
+        .settings-btn-primary { padding: 14px 28px; borderRadius: 16px; background: #eb2327; border: none; fontSize: 0.95rem; fontWeight: 900; color: #fff; cursor: pointer; boxShadow: 0 4px 12px rgba(235,35,39,0.2); }
+        .header-actions { display: flex; gap: 1rem; }
+
+        @media (max-width: 1060px) {
+           .settings-2col-grid { grid-template-columns: 1fr !important; }
+        }
+
+        @media (max-width: 768px) {
+           .header-title-main { font-size: 1.8rem; }
+           .header-subtitle-main { font-size: 0.95rem; }
+           .header-actions { flex-direction: column; width: 100%; gap: 10px; }
+           .settings-btn-secondary, .settings-btn-primary { width: 100%; }
         }
       `}</style>
     </div>

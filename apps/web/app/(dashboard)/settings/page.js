@@ -9,157 +9,150 @@ import '@/styles/settings-responsive.css';
 export default function SettingsPage() {
   const { user } = useDashboard();
 
+  const initialProfile = {
+    fullName: user?.full_name || 'Beesu Siri',
+    headline: "Serial Entrepreneur & Innovation Architect",
+    mission: "Building bold ideas with clarity, momentum, and strong execution.",
+    bio: "Beesu Siri is focused on turning learning into visible progress through structured thinking, thinking, and disciplined execution.",
+    location: "Hyderabad, India",
+    phone: "+91 90000 00000"
+  };
+
+  const [profile, setProfile] = useState(initialProfile);
+
+  const isDirty = JSON.stringify(profile) !== JSON.stringify(initialProfile);
+
+  const handleReset = () => setProfile(initialProfile);
+
   return (
-    <div className="settings-container">
+    <div className="settings-container account-view">
       {/* Header Bar */}
-      <div className="settings-header">
-        <div>
-          <h1 style={{ fontSize: '2.8rem', fontWeight: 950, color: '#0f172a', margin: 0, letterSpacing: '-0.04em' }}>Account Settings</h1>
-          <p style={{ fontSize: '1.1rem', color: '#64748b', fontWeight: 600, marginTop: '8px' }}>Manage your profile, security, and preferences.</p>
+      <div className="payments-hero-header">
+        <div className="header-text">
+          <h1 className="header-title-main">Account Settings</h1>
+          <p className="header-subtitle-main">Manage your profile, security, and preferences.</p>
         </div>
-        <div className="header-actions" style={{ display: 'flex', gap: '1rem' }}>
-          <button style={{ 
-            padding: '14px 24px', borderRadius: '16px', background: '#fff', border: '1px solid #e2e8f0',
-            fontSize: '0.95rem', fontWeight: 800, color: '#1e293b', cursor: 'pointer', transition: 'all 0.2s'
-          }}>Reset</button>
-          <button style={{ 
-            padding: '14px 28px', borderRadius: '16px', background: '#eb2327', border: 'none',
-            fontSize: '0.95rem', fontWeight: 900, color: '#fff', cursor: 'pointer', boxShadow: '0 6px 20px rgba(235,35,39,0.15)'
-          }}>Save all changes</button>
-        </div>
+        <AnimatePresence>
+          {isDirty && (
+            <motion.div 
+              initial={{ opacity: 0, x: 20 }}
+              animate={{ opacity: 1, x: 0 }}
+              exit={{ opacity: 0, x: 20 }}
+              className="header-actions"
+            >
+              <button className="settings-btn-secondary" onClick={handleReset}>Reset</button>
+              <button className="settings-btn-primary" onClick={() => alert('Profile Updated!')}>Save all changes</button>
+            </motion.div>
+          )}
+        </AnimatePresence>
       </div>
 
       {/* Main Grid Layout */}
       <div className="settings-grid">
         
-        {/* Row 1: Profile Information (Large) & Basic Information (Medium) */}
-        <div style={{ gridColumn: 'span 8' }}>
-          <section className="settings-card" style={{ padding: '1.8rem 2rem', borderRadius: '24px', background: '#fff', border: '1px solid #f1f5f9', boxShadow: '0 1px 3px rgba(0,0,0,0.05)' }}>
-            <h3 style={{ fontSize: '1.1rem', fontWeight: 900, color: '#0f172a', marginBottom: '1.5rem' }}>Profile Information</h3>
+        {/* Row 1: Profile Information */}
+        <div className="settings-col-8">
+          <section className="settings-card profile-card-hero">
+            <h3 className="section-title">Profile Information</h3>
             
-            <div className="profile-info-row" style={{ display: 'flex', gap: '2rem', marginBottom: '1.5rem' }}>
-               <div style={{ position: 'relative', flexShrink: 0 }}>
-                  <div style={{ 
-                    width: 90, height: 90, borderRadius: '20px', 
-                    background: 'linear-gradient(135deg, #7c0000 0%, #3e0000 100%)',
-                    display: 'flex', alignItems: 'center', justifyContent: 'center',
-                    fontSize: '2rem', fontWeight: 950, color: '#fff'
-                  }}>
-                    {user?.full_name?.split(' ').map(n => n[0]).join('').toUpperCase() || 'BS'}
+            <div className="profile-hero-row">
+               <div className="avatar-upload-wrap">
+                  <div className="avatar-preview">
+                    {profile.fullName.split(' ').map(n => n[0]).join('').toUpperCase() || 'BS'}
                   </div>
-                  <button style={{ 
-                    position: 'absolute', bottom: '-4px', right: '-4px', 
-                    width: 30, height: 30, borderRadius: '50%', background: '#fff',
-                    border: '1px solid #e2e8f0', display: 'flex', alignItems: 'center', justifyContent: 'center',
-                    boxShadow: '0 2px 4px rgba(0,0,0,0.1)', cursor: 'pointer'
-                  }}>
+                  <button className="avatar-edit-btn">
                     <Icon name="pencil" size={14} color="#1e293b" />
                   </button>
                </div>
                
-               <div style={{ flex: 1, display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
-                  <div className="profile-inputs-grid" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1.2rem' }}>
-                    <div>
-                      <label style={{ display: 'block', fontSize: '0.75rem', fontWeight: 800, color: '#64748b', marginBottom: '6px' }}>Full name</label>
-                      <div style={{ position: 'relative' }}>
-                        <div style={{ position: 'absolute', left: '16px', top: '50%', transform: 'translateY(-50%)', opacity: 0.5 }}>
-                           <Icon name="user" size={16} />
-                        </div>
+               <div className="profile-core-inputs">
+                  <div className="profile-inputs-grid">
+                    <div className="input-group">
+                      <label>Full name</label>
+                      <div className="input-with-icon">
+                        <Icon name="user" size={16} />
                         <input 
                           type="text" 
-                          defaultValue={user?.full_name || 'Beesu Siri'}
+                          value={profile.fullName}
+                          onChange={(e) => setProfile({...profile, fullName: e.target.value})}
                           className="settings-input"
-                          style={{ paddingLeft: '44px', height: '46px' }}
                         />
                       </div>
                     </div>
-                    <div>
-                      <label style={{ display: 'block', fontSize: '0.75rem', fontWeight: 800, color: '#64748b', marginBottom: '6px' }}>Headline</label>
+                    <div className="input-group">
+                      <label>Headline</label>
                       <input 
-                        defaultValue="Serial Entrepreneur & Innovation Architect"
+                        value={profile.headline}
+                        onChange={(e) => setProfile({...profile, headline: e.target.value})}
                         className="settings-input"
-                        style={{ height: '46px' }}
                       />
                     </div>
                   </div>
                </div>
             </div>
 
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '1.2rem' }}>
-               <div>
-                  <label style={{ display: 'block', fontSize: '0.75rem', fontWeight: 800, color: '#64748b', marginBottom: '6px' }}>Mission Statement</label>
+            <div className="profile-extended-inputs">
+               <div className="input-group">
+                  <label>Mission Statement</label>
                   <input 
-                    defaultValue="Building bold ideas with clarity, momentum, and strong execution."
+                    value={profile.mission}
+                    onChange={(e) => setProfile({...profile, mission: e.target.value})}
                     className="settings-input"
-                    style={{ height: '46px' }}
                   />
                </div>
-               <div>
-                  <label style={{ display: 'block', fontSize: '0.75rem', fontWeight: 800, color: '#64748b', marginBottom: '6px' }}>Bio</label>
+               <div className="input-group">
+                  <label>Bio</label>
                   <textarea 
-                    defaultValue="Beesu Siri is focused on turning learning into visible progress through structured thinking, thinking, and disciplined execution."
+                    value={profile.bio}
+                    onChange={(e) => setProfile({...profile, bio: e.target.value})}
                     rows={2}
-                    className="settings-input"
-                    style={{ resize: 'none', padding: '12px 16px', minHeight: 'unset' }}
+                    className="settings-input bio-textarea"
                   />
-                  <div style={{ textAlign: 'right', fontSize: '0.65rem', color: '#94a3b8', marginTop: '4px', fontWeight: 600 }}>146/300</div>
+                  <div className="char-count">{profile.bio.length}/300</div>
                </div>
             </div>
           </section>
         </div>
 
-        <div style={{ gridColumn: 'span 4' }}>
-          <section className="settings-card" style={{ padding: '1.8rem 2rem', borderRadius: '24px', background: '#fff', border: '1px solid #f1f5f9', boxShadow: '0 1px 3px rgba(0,0,0,0.05)', height: '100%' }}>
-            <h3 style={{ fontSize: '1.1rem', fontWeight: 900, color: '#0f172a', marginBottom: '1.5rem' }}>Basic Information</h3>
+        <div className="settings-col-4">
+          <section className="settings-card info-card">
+            <h3 className="section-title">Basic Information</h3>
             
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '1.2rem' }}>
-               <div>
-                  <label style={{ display: 'block', fontSize: '0.75rem', fontWeight: 800, color: '#64748b', marginBottom: '6px' }}>Location</label>
-                  <div style={{ position: 'relative' }}>
-                    <div style={{ position: 'absolute', left: '16px', top: '50%', transform: 'translateY(-50%)', opacity: 0.5 }}>
-                       <Icon name="mapPin" size={16} />
-                    </div>
+            <div className="basic-info-stack">
+               <div className="input-group">
+                  <label>Location</label>
+                  <div className="input-with-icon-right">
+                    <div className="left-icon"><Icon name="mapPin" size={16} /></div>
                     <input 
                       type="text" 
-                      defaultValue="Hyderabad, India"
+                      value={profile.location}
+                      onChange={(e) => setProfile({...profile, location: e.target.value})}
                       className="settings-input"
-                      style={{ paddingLeft: '44px', paddingRight: '44px', height: '46px' }}
                     />
-                    <div style={{ position: 'absolute', right: '16px', top: '50%', transform: 'translateY(-50%)', opacity: 0.5 }}>
-                       <Icon name="moreHorizontal" size={16} />
-                    </div>
+                    <div className="right-icon"><Icon name="moreHorizontal" size={16} /></div>
                   </div>
                </div>
 
-               <div>
-                  <label style={{ display: 'block', fontSize: '0.75rem', fontWeight: 800, color: '#64748b', marginBottom: '6px' }}>Timezone</label>
-                  <div style={{ position: 'relative' }}>
-                    <div style={{ position: 'absolute', left: '16px', top: '50%', transform: 'translateY(-50%)', opacity: 0.5 }}>
-                       <Icon name="clock" size={16} />
-                    </div>
-                    <select 
-                      className="settings-input"
-                      style={{ paddingLeft: '44px', appearance: 'none', background: '#fff', height: '46px' }}
-                    >
+               <div className="input-group">
+                  <label>Timezone</label>
+                  <div className="input-with-icon-right">
+                    <div className="left-icon"><Icon name="clock" size={16} /></div>
+                    <select className="settings-input custom-select">
                       <option>IST (UTC+5:30)</option>
                     </select>
-                    <div style={{ position: 'absolute', right: '16px', top: '50%', transform: 'translateY(-50%)', opacity: 0.5, pointerEvents: 'none' }}>
-                       <Icon name="chevronDown" size={16} />
-                    </div>
+                    <div className="right-icon pointer-none"><Icon name="chevronDown" size={16} /></div>
                   </div>
                </div>
 
-               <div>
-                  <label style={{ display: 'block', fontSize: '0.75rem', fontWeight: 800, color: '#64748b', marginBottom: '6px' }}>Phone</label>
-                  <div style={{ position: 'relative' }}>
-                    <div style={{ position: 'absolute', left: '16px', top: '50%', transform: 'translateY(-50%)', opacity: 0.5 }}>
-                       <Icon name="phone" size={16} />
-                    </div>
+               <div className="input-group">
+                  <label>Phone</label>
+                  <div className="input-with-icon">
+                    <Icon name="phone" size={16} />
                     <input 
                       type="text" 
-                      defaultValue="+91 90000 00000"
+                      value={profile.phone}
+                      onChange={(e) => setProfile({...profile, phone: e.target.value})}
                       className="settings-input"
-                      style={{ paddingLeft: '44px', height: '46px' }}
                     />
                   </div>
                </div>
@@ -168,174 +161,78 @@ export default function SettingsPage() {
         </div>
 
         {/* Row 2: Links */}
-        <div style={{ gridColumn: 'span 12' }}>
-          <section className="settings-card" style={{ padding: '1.8rem 2rem', borderRadius: '24px', background: '#fff', border: '1px solid #f1f5f9', boxShadow: '0 1px 3px rgba(0,0,0,0.05)' }}>
-            <div style={{ marginBottom: '1.2rem' }}>
-              <h3 style={{ fontSize: '1.1rem', fontWeight: 900, color: '#0f172a', marginBottom: '0.4rem' }}>Links</h3>
-              <p style={{ fontSize: '0.85rem', color: '#64748b', fontWeight: 600 }}>Add and manage your public links.</p>
+        <div className="settings-col-12">
+          <section className="settings-card">
+            <div className="section-header-wrap">
+              <h3 className="section-title">Links</h3>
+              <p className="section-subtitle">Add and manage your public professional links.</p>
             </div>
             
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '0.8rem' }}>
+            <div className="links-manager-list">
                { [
                  { type: 'LinkedIn', url: 'https://linkedin.com/in/beesu-siri', icon: 'linkedin' },
-                { type: 'Website', url: 'https://beesusiri.com', icon: 'globe' }
+                 { type: 'Website', url: 'https://beesusiri.com', icon: 'globe' }
                ].map((link, idx) => (
-                 <div key={idx} className="links-row" style={{ display: 'flex', gap: '1rem', alignItems: 'center' }}>
-                    <div style={{ opacity: 0.3, cursor: 'grab', flexShrink: 0 }}>
-                       <Icon name="grip" size={18} />
-                    </div>
-                    <div style={{ display: 'flex', gap: '10px', width: '220px', flexShrink: 0 }}>
-                       <div className="settings-input" style={{ 
-                         display: 'flex', alignItems: 'center', gap: '10px', background: '#fff', height: '44px'
-                       }}>
-                          <div style={{ width: 24, height: 24, borderRadius: '6px', background: link.type === 'LinkedIn' ? '#0a66c2' : '#f1f5f9', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+                 <div key={idx} className="links-row">
+                    <div className="grip-handle"><Icon name="grip" size={18} /></div>
+                    <div className="link-type-selector">
+                       <div className="settings-input dropdown-mock">
+                          <div className={`platform-icon ${link.type === 'LinkedIn' ? 'bg-linkedin' : 'bg-slate'}`}>
                              <Icon name={link.icon} size={14} color={link.type === 'LinkedIn' ? '#fff' : '#64748b'} />
                           </div>
-                          <span style={{ fontSize: '0.9rem', fontWeight: 700, color: '#0f172a', flex: 1 }}>{link.type}</span>
+                          <span className="platform-name">{link.type}</span>
                           <Icon name="chevronDown" size={14} color="#94a3b8" />
                        </div>
                     </div>
-                    <input 
-                      type="text" 
-                      defaultValue={link.url}
-                      className="settings-input"
-                      style={{ flex: 1, height: '44px' }}
-                    />
-                    <button style={{ 
-                      width: 44, height: 44, borderRadius: '10px', border: '1px solid #fee2e2', 
-                      background: 'transparent', display: 'flex', alignItems: 'center', justifyContent: 'center',
-                      cursor: 'pointer', flexShrink: 0
-                    }}>
+                    <input type="text" defaultValue={link.url} className="settings-input flex-1" />
+                    <button className="btn-delete-link">
                        <Icon name="trash" size={18} color="#ef4444" />
                     </button>
                  </div>
                )) }
                
-               <button style={{ 
-                 width: 'fit-content', padding: '10px 24px', borderRadius: '12px', 
-                 border: '1px solid #e2e8f0', background: 'transparent',
-                 fontSize: '0.85rem', fontWeight: 800, color: '#1e293b', 
-                 display: 'flex', alignItems: 'center', gap: '8px',
-                 marginTop: '0.5rem'
-               }}>
+               <button className="btn-add-link">
                   <Icon name="plus" size={16} /> Add link
                </button>
             </div>
           </section>
         </div>
 
-        {/* Row 3: Personal Signals & Account Security */}
-        <div style={{ gridColumn: 'span 6' }}>
-          <section className="settings-card" style={{ padding: '1.8rem 2rem', borderRadius: '24px', background: '#fff', border: '1px solid #f1f5f9', boxShadow: '0 1px 3px rgba(0,0,0,0.05)', height: '100%' }}>
-            <h3 style={{ fontSize: '1.1rem', fontWeight: 900, color: '#0f172a', marginBottom: '0.4rem' }}>Personal Signals</h3>
-            <p style={{ fontSize: '0.85rem', color: '#64748b', fontWeight: 600, marginBottom: '1.5rem' }}>Set words that define your vibe & strengths.</p>
+        {/* Row 3: Account Security */}
+        <div className="settings-col-12">
+          <section className="settings-card">
+            <h3 className="section-title">Account Security</h3>
             
-            <div className="personal-signals-stack">
-               {[
-                 { label: 'Focus word', value: 'Momentum', icon: 'target', bg: '#fff1f2', tc: '#e11d48' },
-                 { label: 'Energy mode', value: 'Focused', icon: 'zap', bg: '#fff7ed', tc: '#f97316' },
-                 { label: 'Ambition mode', value: 'Scale', icon: 'trendUp', bg: '#f1f5f9', tc: '#475569' },
-                 { label: 'Collaboration status', value: 'Open to collaborations', icon: 'users', bg: '#ecfdf5', tc: '#059669' }
-               ].map((signal, idx) => (
-                 <div key={idx} className="personal-signals-item">
-                    <div style={{ 
-                      width: 44, height: 44, borderRadius: '12px', background: signal.bg, 
-                      display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0
-                    }}>
-                       <Icon name={signal.icon} size={20} color={signal.tc} />
-                    </div>
-                    <div style={{ flex: 1 }}>
-                       <label style={{ display: 'block', fontSize: '0.65rem', fontWeight: 800, color: '#64748b', textTransform: 'uppercase', marginBottom: '4px' }}>{signal.label}</label>
-                       <div style={{ position: 'relative' }}>
-                          <input 
-                            type="text" 
-                            defaultValue={signal.value}
-                            className="settings-input"
-                            style={{ padding: '8px 40px 8px 12px', height: '42px' }}
-                          />
-                          <div style={{ position: 'absolute', right: '12px', top: '50%', transform: 'translateY(-50%)', opacity: 0.4, cursor: 'pointer' }}>
-                             <Icon name="x" size={14} />
-                          </div>
-                       </div>
-                    </div>
-                 </div>
-               ))}
-               
-               <button style={{ 
-                 marginTop: '0.5rem', width: '100%', padding: '12px', borderRadius: '12px', 
-                 border: '1px solid #f97316', background: 'transparent',
-                 fontSize: '0.85rem', fontWeight: 800, color: '#f97316', 
-                 display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '10px',
-                 cursor: 'pointer'
-               }}>
-                  <Icon name="plus" size={16} /> Add your own word
-               </button>
-            </div>
-          </section>
-        </div>
-
-        <div style={{ gridColumn: 'span 6' }}>
-          <section className="settings-card" style={{ padding: '1.8rem 2rem', borderRadius: '24px', background: '#fff', border: '1px solid #f1f5f9', boxShadow: '0 1px 3px rgba(0,0,0,0.05)', height: '100%' }}>
-            <h3 style={{ fontSize: '1.1rem', fontWeight: 900, color: '#0f172a', marginBottom: '1.5rem' }}>Account Security</h3>
-            
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '1.2rem' }}>
-               <div>
-                  <label style={{ display: 'block', fontSize: '0.75rem', fontWeight: 800, color: '#64748b', marginBottom: '6px' }}>Email</label>
-                  <div style={{ position: 'relative', display: 'flex', alignItems: 'center' }}>
-                    <div style={{ position: 'absolute', left: '16px', top: '50%', transform: 'translateY(-50%)', opacity: 0.5 }}>
-                       <Icon name="mail" size={16} />
-                    </div>
+            <div className="security-grid">
+               <div className="input-group">
+                  <label>Email</label>
+                  <div className="input-with-badge">
+                    <div className="left-icon"><Icon name="mail" size={16} /></div>
                     <input 
                       type="email" 
                       defaultValue={user?.email || 'siribeesu07@gmail.com'}
                       disabled
-                      className="settings-input"
-                      style={{ paddingLeft: '44px', paddingRight: '100px', background: '#f8fafc', color: '#94a3b8', height: '46px' }}
+                      className="settings-input disabled-input"
                     />
-                    <div style={{ 
-                      position: 'absolute', right: '10px', top: '50%', transform: 'translateY(-50%)',
-                      background: '#ecfdf5', color: '#059669', fontSize: '0.7rem', fontWeight: 900,
-                      padding: '4px 10px', borderRadius: '8px'
-                    }}>
-                       Verified
-                    </div>
+                    <div className="verified-badge">Verified</div>
                   </div>
                </div>
 
-               <div>
-                  <label style={{ display: 'block', fontSize: '0.75rem', fontWeight: 800, color: '#64748b', marginBottom: '10px' }}>Change Password</label>
-                  <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
-                     {[
-                       { placeholder: 'Current Password' },
-                       { placeholder: 'New Password' },
-                       { placeholder: 'Confirm New Password' }
-                     ].map((pwd, pidx) => (
-                       <div key={pidx} style={{ position: 'relative' }}>
-                          <div style={{ position: 'absolute', left: '12px', top: '50%', transform: 'translateY(-50%)', opacity: 0.4 }}>
-                             <Icon name="lock" size={16} />
-                          </div>
-                          <input 
-                            type="password" 
-                            placeholder={pwd.placeholder}
-                            className="settings-input"
-                            style={{ paddingLeft: '38px', paddingRight: '38px', height: '46px' }}
-                          />
-                          <div style={{ position: 'absolute', right: '12px', top: '50%', transform: 'translateY(-50%)', opacity: 0.4, cursor: 'pointer' }}>
-                             <Icon name="eye" size={16} />
-                          </div>
-                       </div>
-                     ))}
+               <div className="password-update-box">
+                  <label className="mb-2 block">Change Password</label>
+                  <div className="password-fields-grid">
+                      <div className="password-input-wrap">
+                        <Icon name="lock" size={16} className="pass-icon" />
+                        <input type="password" placeholder="Current Password" className="settings-input" />
+                      </div>
+                      <div className="password-input-wrap">
+                        <Icon name="lock" size={16} className="pass-icon" />
+                        <input type="password" placeholder="New Password" className="settings-input" />
+                        <Icon name="eye" size={16} className="eye-icon" />
+                      </div>
+                      <button className="btn-save-primary">Update Securely</button>
                   </div>
                </div>
-               
-               <button style={{ 
-                 width: '100%', padding: '14px', borderRadius: '12px', 
-                 background: '#eb2327', border: 'none',
-                 fontSize: '0.9rem', fontWeight: 900, color: '#fff', 
-                 cursor: 'pointer', marginTop: '0.5rem', boxShadow: '0 4px 12px rgba(235,35,39,0.15)'
-               }}>
-                  Save Password
-               </button>
             </div>
           </section>
         </div>
@@ -343,31 +240,87 @@ export default function SettingsPage() {
       </div>
 
       <style jsx>{`
-        .settings-card {
-          transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.2s ease;
-        }
-        .settings-card:hover {
-          box-shadow: 0 12px 30px -10px rgba(0, 0, 0, 0.08);
-        }
-        .settings-input {
-          width: 100%;
-          padding: 12px 14px;
-          border-radius: 12px;
-          border: 1px solid #e2e8f0;
-          font-size: 0.9rem;
-          font-weight: 650;
-          color: #1e293b;
-          background: #fff;
-          outline: none;
-          transition: all 0.2s ease;
-        }
-        .settings-input:focus {
-          border-color: #eb2327;
-          box-shadow: 0 0 0 4px rgba(235, 35, 39, 0.08);
-        }
-        .settings-input::placeholder {
-          color: #94a3b8;
-          font-weight: 500;
+        .account-view { padding: 1.5rem 3rem 10rem !important; }
+        .payments-hero-header { display: flex; justify-content: space-between; align-items: flex-end; padding: 1.5rem 0 2rem; margin-bottom: 2rem; border-bottom: 1px solid #f1f5f9; }
+        .header-title-main { font-size: 2.8rem; font-weight: 950; color: #0f172a; margin: 0; letter-spacing: -0.04em; }
+        .header-subtitle-main { font-size: 1.1rem; color: #64748b; font-weight: 600; marginTop: 8px; }
+        
+        .settings-btn-secondary { padding: 14px 24px; border-radius: 16px; background: #fff; border: 1px solid #e2e8f0; font-size: 0.95rem; font-weight: 800; color: #1e293b; cursor: pointer; transition: all 0.2s; display: flex; align-items: center; gap: 10px; }
+        .settings-btn-secondary:hover { border-color: #ef4444; color: #ef4444; }
+        .settings-btn-primary { padding: 14px 28px; border-radius: 16px; background: #eb2327; border: none; font-size: 0.95rem; font-weight: 900; color: #fff; cursor: pointer; box-shadow: 0 4px 12px rgba(235,35,39,0.2); }
+        .header-actions { display: flex; gap: 1rem; }
+        
+        .settings-card { padding: 2rem; border-radius: 32px; background: #fff; border: 1px solid #f1f5f9; box-shadow: 0 1px 3px rgba(0,0,0,0.02); }
+        .section-title { font-size: 1.15rem; font-weight: 950; color: #0f172a; margin-bottom: 1.5rem; }
+        .section-subtitle { font-size: 0.85rem; color: #64748b; font-weight: 650; margin-bottom: 1.5rem; }
+
+        .profile-hero-row { display: flex; gap: 2.5rem; margin-bottom: 2rem; align-items: flex-start; }
+        .avatar-upload-wrap { position: relative; flex-shrink: 0; }
+        .avatar-preview { width: 100px; height: 100px; border-radius: 24px; background: linear-gradient(135deg, #ef4444, #991b1b); display: flex; align-items: center; justify-content: center; font-size: 2.25rem; font-weight: 950; color: #fff; box-shadow: 0 10px 25px rgba(239, 68, 68, 0.2); }
+        .avatar-edit-btn { position: absolute; bottom: -6px; right: -6px; width: 34px; height: 34px; border-radius: 50%; background: #fff; border: 1.5px solid #e2e8f0; display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 8px rgba(0,0,0,0.1); cursor: pointer; }
+        
+        .profile-core-inputs { flex: 1; }
+        .profile-inputs-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; }
+        .input-group { display: flex; flexDirection: column; gap: 8px; margin-bottom: 1.25rem; }
+        .input-group label { font-size: 0.75rem; font-weight: 850; color: #64748b; text-transform: uppercase; letter-spacing: 0.05em; }
+        
+        .input-with-icon { position: relative; }
+        .input-with-icon :global(svg) { position: absolute; left: 16px; top: 50%; transform: translateY(-50%); opacity: 0.4; }
+        .input-with-icon .settings-input { padding-left: 44px; }
+        
+        .input-with-icon-right { position: relative; display: flex; align-items: center; }
+        .input-with-icon-right .left-icon { position: absolute; left: 16px; opacity: 0.4; pointer-events: none; }
+        .input-with-icon-right .right-icon { position: absolute; right: 16px; opacity: 0.4; }
+        .input-with-icon-right .settings-input { padding-left: 44px; padding-right: 44px; }
+
+        .settings-input { width: 100%; height: 48px; padding: 0 16px; border-radius: 14px; border: 1.5px solid #f1f5f9; background: #fff; font-size: 0.95rem; font-weight: 700; color: #1e293b; transition: all 0.2s; }
+        .settings-input:focus { border-color: #ef4444; box-shadow: 0 0 0 4px rgba(239, 68, 68, 0.08); outline: none; }
+        .bio-textarea { height: auto; padding: 12px 16px; resize: none; }
+        .char-count { text-align: right; font-size: 0.65rem; color: #94a3b8; font-weight: 700; margin-top: 4px; }
+
+        .basic-info-stack { display: flex; flex-direction: column; gap: 0.5rem; }
+        .custom-select { appearance: none; cursor: pointer; }
+
+        .links-row { display: flex; align-items: center; gap: 1rem; margin-bottom: 1rem; }
+        .grip-handle { opacity: 0.25; cursor: grab; }
+        .link-type-selector { width: 220px; }
+        .dropdown-mock { display: flex; align-items: center; gap: 12px; cursor: pointer; }
+        .platform-icon { width: 24px; height: 24px; border-radius: 6px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+        .bg-linkedin { background: #0a66c2; }
+        .bg-slate { background: #f1f5f9; }
+        .platform-name { flex: 1; font-weight: 800; }
+
+        .btn-delete-link { width: 44px; height: 44px; border-radius: 12px; border: 1.5px solid #fee2e2; background: transparent; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: all 0.2s; }
+        .btn-delete-link:hover { background: #fef2f2; }
+        .btn-add-link { display: flex; align-items: center; gap: 10px; padding: 12px 24px; border-radius: 14px; border: 1.5px solid #f1f5f9; background: transparent; font-weight: 800; font-size: 0.85rem; color: #475569; cursor: pointer; transition: all 0.2s; }
+        .btn-add-link:hover { border-color: #ef4444; color: #ef4444; }
+
+        .security-grid { display: grid; grid-template-columns: 1fr 1.5fr; gap: 3rem; }
+        .input-with-badge { position: relative; }
+        .input-with-badge .left-icon { position: absolute; left: 16px; top: 50%; transform: translateY(-50%); opacity: 0.4; }
+        .input-with-badge .settings-input { padding-left: 44px; }
+        .verified-badge { position: absolute; right: 10px; top: 50%; transform: translateY(-50%); background: #ecfdf4; color: #16a34a; font-size: 0.7rem; font-weight: 950; padding: 4px 10px; border-radius: 8px; }
+        .disabled-input { background: #f8fafc; color: #94a3b8; }
+
+        .password-fields-grid { display: grid; grid-template-columns: 1fr 1fr auto; gap: 12px; align-items: flex-end; }
+        .password-input-wrap { position: relative; }
+        .password-input-wrap .pass-icon { position: absolute; left: 14px; top: 50%; transform: translateY(-50%); opacity: 0.4; }
+        .password-input-wrap .eye-icon { position: absolute; right: 14px; top: 50%; transform: translateY(-50%); opacity: 0.4; cursor: pointer; }
+        .password-input-wrap .settings-input { padding: 0 38px; }
+        .btn-save-primary { height: 48px; padding: 0 24px; border-radius: 14px; background: #0f172a; color: #fff; font-weight: 900; font-size: 0.9rem; border: none; cursor: pointer; transition: all 0.2s; }
+
+        @media (max-width: 1060px) {
+           .account-view { padding: 6.5rem 1.25rem 8rem !important; }
+           .payments-hero-header { flex-direction: column; align-items: flex-start; gap: 1.5rem; padding-top: 1rem; border-bottom: none; }
+           .header-title-main { font-size: 2.25rem; }
+           .header-actions { width: 100%; flex-direction: column; }
+           .header-actions button { width: 100%; justify-content: center; padding: 16px; border-radius: 20px; }
+
+           .profile-hero-row { flex-direction: column; align-items: center; text-align: center; gap: 1.5rem; }
+           .profile-inputs-grid { grid-template-columns: 1fr; width: 100%; }
+           .security-grid { grid-template-columns: 1fr; gap: 2rem; }
+           .password-fields-grid { grid-template-columns: 1fr; }
+           .btn-save-primary { width: 100%; }
         }
       `}</style>
     </div>

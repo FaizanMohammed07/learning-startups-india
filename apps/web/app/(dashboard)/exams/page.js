@@ -37,8 +37,8 @@ export default function ExamsPage() {
         {filtered.map((a) => {
           const st = STATUS_STYLE[a.status];
           return (
-            <div key={a.id} className="platform-info-card glass-card" style={{ display:'grid', gridTemplateColumns:'50px 1fr auto', alignItems:'center', gap:'1.5rem', padding:'1.25rem 1.5rem', borderRadius: '24px' }}>
-              <div className="icon-box-red" style={{ borderRadius: '16px', width: 50, height: 50, display: 'flex', alignItems: 'center', justifyContent: 'center', background: 'var(--slate-50)' }}>
+            <div key={a.id} className="platform-info-card glass-card flex-stack-mobile" style={{ display:'flex', alignItems:'center', gap:'1.5rem', padding:'1.5rem', borderRadius: '24px' }}>
+              <div className="icon-box-red" style={{ borderRadius: '16px', width: 50, height: 50, display: 'flex', alignItems: 'center', justifyContent: 'center', background: 'var(--slate-50)', flexShrink: 0 }}>
                 <Icon name="fileText" size={22} color="var(--brand-red)" />
               </div>
               <div style={{ flex: 1 }}>
@@ -48,15 +48,17 @@ export default function ExamsPage() {
                 </div>
                 <div style={{ display:'flex', gap:'1.5rem', flexWrap:'wrap' }}>
                   <span style={{ fontSize:'0.75rem', color:'var(--slate-500)', fontWeight:800 }}>{a.course}</span>
-                  <span style={{ fontSize:'0.75rem', color:'var(--slate-400)', fontWeight:800, display:'flex', alignItems:'center', gap:4 }}><Icon name="helpCircle" size={12} color="var(--slate-400)" />{a.questions} Qs</span>
-                  <span style={{ fontSize:'0.75rem', color:'var(--slate-400)', fontWeight:800, display:'flex', alignItems:'center', gap:4 }}><Icon name="clock" size={12} color="var(--slate-400)" />{a.duration}</span>
+                  <div style={{ display: 'flex', gap: '1.2rem', flexWrap: 'wrap' }}>
+                    <span style={{ fontSize:'0.75rem', color:'var(--slate-400)', fontWeight:800, display:'flex', alignItems:'center', gap:4 }}><Icon name="helpCircle" size={12} color="var(--slate-400)" />{a.questions} Qs</span>
+                    <span style={{ fontSize:'0.75rem', color:'var(--slate-400)', fontWeight:800, display:'flex', alignItems:'center', gap:4 }}><Icon name="clock" size={12} color="var(--slate-400)" />{a.duration}</span>
+                  </div>
                   {a.score!==null && <span style={{ fontSize:'0.75rem', color:'#059669', fontWeight:950 }}>Score: {a.score}% — PASSED</span>}
                 </div>
               </div>
-              <div>
+              <div style={{ width: '100%', maxWidth: 'fit-content' }} className="mobile-full-width">
                 {a.status==='completed'
-                  ? <button className="btn-brand-outline" style={{ fontSize:'0.75rem', padding: '10px 24px', borderRadius: '12px' }}>REVIEW PAPER</button>
-                  : <button className="btn-brand" style={{ fontSize:'0.75rem', padding: '10px 28px', borderRadius: '12px', border: 'none' }}>ENTER EXAM HALL</button>
+                  ? <button className="btn-brand-outline mobile-full-width" style={{ fontSize:'0.75rem', padding: '12px 24px', borderRadius: '12px', width: '100%' }}>REVIEW PAPER</button>
+                  : <button className="btn-brand mobile-full-width" style={{ fontSize:'0.75rem', padding: '12px 28px', borderRadius: '12px', border: 'none', width: '100%' }}>ENTER EXAM HALL</button>
                 }
               </div>
             </div>

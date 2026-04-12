@@ -102,13 +102,13 @@ export default function NotesPage() {
   };
 
   return (
-    <div className="platform-page" style={{ padding: '2rem 4rem 4rem', background: '#fff', minHeight: '100vh' }}>
-      <header style={{ marginBottom: '2rem' }}>
+    <div className="platform-page notes-hub-container" style={{ paddingBottom: '4rem', background: '#fff', minHeight: '100vh' }}>
+      <header className="platform-page-header" style={{ marginBottom: '2rem' }}>
         <h1 style={{ fontSize: '2rem', fontWeight: 800, color: '#111', margin: '0 0 8px' }}>Personal Space</h1>
         <p style={{ fontSize: '1rem', color: '#666', margin: 0 }}>Your private hub for notes, insights, and saved classes.</p>
       </header>
 
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end', borderBottom: '1px solid #eee', marginBottom: '2rem', paddingBottom: '2px' }}>
+      <div className="notes-filter-bar flex-stack-mobile" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end', borderBottom: '1px solid #eee', marginBottom: '2rem', paddingBottom: '2px' }}>
         <div style={{ display: 'flex', gap: '2rem' }}>
           <button 
             onClick={() => setActiveTab('notes')}
@@ -169,7 +169,7 @@ export default function NotesPage() {
                     exit={{ opacity: 0, height: 0 }}
                     style={{ overflow: 'hidden', marginBottom: '2rem' }}
                   >
-                    <div style={{ background: '#f9f9f9', borderRadius: '20px', padding: '2.5rem', border: '1px solid #eee' }}>
+                    <div style={{ background: '#f9f9f9', borderRadius: '20px', padding: '1.5rem', border: '1px solid #eee' }}>
                       <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '1.5rem' }}>
                         <button onClick={handleCancel} style={{ border: '1px solid #eee', background: '#fff', width: 38, height: 38, borderRadius: '10px', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center' }} title="Back">
                           <Icon name="chevronLeft" size={18} color="#111" />
@@ -240,7 +240,7 @@ export default function NotesPage() {
               </AnimatePresence>
 
               {/* Notes Grid */}
-              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(380px, 1fr))', gap: '2rem' }}>
+              <div className="platform-grid" style={{ marginTop: '1.5rem' }}>
                 {notes.map((note) => (
                   <div key={note.id} style={{ position: 'relative', background: '#fff', borderRadius: '20px', padding: '2rem', border: '1px solid #f0f0f0', display: 'flex', flexDirection: 'column' }}>
                     <div style={{ position: 'absolute', top: '1.5rem', right: '1.5rem', display: 'flex', gap: '8px' }}>
@@ -285,12 +285,12 @@ export default function NotesPage() {
             >
               <div style={{ display: 'flex', flexDirection: 'column', gap: '1.2rem' }}>
                 {bookmarks.map((b) => (
-                  <div key={b.id} style={{ padding: '1.5rem 2rem', borderRadius: '16px', background: '#fff', border: '1px solid #f0f0f0', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-                    <div style={{ display: 'flex', alignItems: 'center', gap: '1.5rem' }}>
+                  <div key={b.id} className="flex-stack-mobile" style={{ padding: '1.5rem 2rem', borderRadius: '16px', background: '#fff', border: '1px solid #f0f0f0', display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '1.5rem' }}>
+                    <div className="bookmark-content-wrap" style={{ display: 'flex', alignItems: 'center', gap: '1.5rem' }}>
                        <div style={{ 
                          width: 44, height: 44, borderRadius: '12px', 
                          background: b.type === 'Video' ? '#fff5f5' : b.type === 'Class' ? '#f0f7ff' : '#f9f9f9',
-                         display: 'flex', alignItems: 'center', justifyContent: 'center' 
+                         display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0
                        }}>
                           <Icon 
                              name={b.type === 'Video' ? 'recorded' : b.type === 'Class' ? 'live' : 'fileText'} 
@@ -300,7 +300,7 @@ export default function NotesPage() {
                        </div>
                        <div>
                           <h4 style={{ margin: 0, fontSize: '1rem', fontWeight: 800, color: '#111' }}>{b.title}</h4>
-                          <span style={{ fontSize: '0.8rem', fontWeight: 600, color: '#999' }}>{b.source} • Saved {b.date}</span>
+                          <span style={{ fontSize: '0.8rem', fontWeight: 600, color: '#999' }}>{b.source} • {b.date}</span>
                        </div>
                     </div>
                     <button style={{ background: '#fff', border: '1px solid #eee', padding: '10px 20px', borderRadius: '10px', fontSize: '0.85rem', fontWeight: 800, color: '#111', cursor: 'pointer' }}>
@@ -319,6 +319,12 @@ export default function NotesPage() {
         .note-preview-content code { background: #f5f5f5; padding: 2px 6px; border-radius: 4px; font-size: 0.85em; }
         [contenteditable] ul, [contenteditable] ol { padding-left: 20px; }
         [contenteditable]:empty:before { content: "Start writing your note..."; color: #ccc; pointer-events: none; }
+        
+        @media (max-width: 768px) {
+          .notes-hub-container { padding: 1.5rem !important; }
+          .notes-filter-bar { flex-direction: column !important; align-items: stretch !important; gap: 15px !important; }
+          .bookmark-content-wrap { gap: 1rem !important; }
+        }
       `}</style>
     </div>
   );

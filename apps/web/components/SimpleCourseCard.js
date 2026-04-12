@@ -20,7 +20,7 @@ export default function SimpleCourseCard({ course, type = 'explore', layout = 'g
       margin: 0,
       display: 'flex',
       flexDirection: isList ? 'row' : 'column',
-      minHeight: isList ? '180px' : 'auto',
+      minHeight: isList ? '280px' : '600px',
       overflow: 'hidden',
       border: '1px solid rgba(0,0,0,0.05)',
       background: '#fff'
@@ -28,8 +28,8 @@ export default function SimpleCourseCard({ course, type = 'explore', layout = 'g
       {/* Thumbnail */}
       <div className="platform-card-v__thumb" style={{ 
         position: 'relative', 
-        height: isList ? '180px' : '150px', 
-        width: isList ? '260px' : '100%',
+        height: isList ? '280px' : '340px', 
+        width: isList ? '360px' : '100%',
         overflow: 'hidden',
         flexShrink: 0
       }}>
@@ -43,8 +43,8 @@ export default function SimpleCourseCard({ course, type = 'explore', layout = 'g
             {/* Thematic Red Overlay */}
             <div style={{ 
               position: 'absolute', inset: 0, 
-              background: 'linear-gradient(to top, rgba(0,0,0,0.8) 0%, rgba(139,0,0,0.3) 100%)',
-              mixBlendMode: 'multiply', opacity: 0.8, zIndex: 1
+              background: 'linear-gradient(to top, rgba(0,0,0,0.85) 0%, rgba(239, 68, 68, 0.1) 100%)',
+              mixBlendMode: 'multiply', opacity: 0.85, zIndex: 1
             }} />
           </>
         ) : (
@@ -54,20 +54,20 @@ export default function SimpleCourseCard({ course, type = 'explore', layout = 'g
         )}
         
         {/* Category Badge on Image */}
-        <div style={{ position: 'absolute', top: '12px', left: '12px', zIndex: 5 }}>
+        <div style={{ position: 'absolute', top: '16px', left: '16px', zIndex: 5 }}>
           <div style={{ 
-             fontSize: '0.55rem', fontWeight: 950, color: '#fff', 
-             background: 'var(--brand-red)', padding: '4px 10px', 
-             borderRadius: '6px', textTransform: 'uppercase', letterSpacing: '0.08em',
-             boxShadow: '0 4px 12px rgba(235,35,39,0.3)'
+             fontSize: '0.65rem', fontWeight: 950, color: '#fff', 
+             background: 'var(--brand-red)', padding: '6px 14px', 
+             borderRadius: '8px', textTransform: 'uppercase', letterSpacing: '0.1em',
+             boxShadow: '0 8px 16px rgba(235,35,39,0.4)'
           }}>
             {course.category || course.tag || 'STARTUP'}
           </div>
         </div>
 
-        <div style={{ position: 'absolute', bottom: '12px', left: '12px', display: 'flex', gap: '8px' }}>
+        <div style={{ position: 'absolute', bottom: '16px', left: '16px', display: 'flex', gap: '8px', zIndex: 5 }}>
           {isCompleted && (
-            <span className="tag-pill" style={{ background: 'rgba(255,255,255,0.9)', color: 'var(--brand-red)', border: 'none', fontSize: '0.55rem', fontWeight: 950 }}>COMPLETED</span>
+            <span className="tag-pill" style={{ background: '#fff', color: 'var(--brand-red)', border: 'none', fontSize: '0.6rem', fontWeight: 950, padding: '4px 12px', borderRadius: '6px' }}>COMPLETED</span>
           )}
         </div>
 
@@ -75,35 +75,35 @@ export default function SimpleCourseCard({ course, type = 'explore', layout = 'g
           onClick={(e) => { e.preventDefault(); toggleWishlist(course._id || course.id); }}
           className="wishlist-btn-hover"
           style={{ 
-            position: 'absolute', top: '15px', right: '15px', 
-            background: wishlisted ? 'var(--brand-red)' : 'rgba(255,255,255,0.2)', 
-            backdropFilter: 'blur(15px)', 
-            border: wishlisted ? 'none' : '1px solid rgba(255,255,255,0.4)', 
-            borderRadius: '14px', 
-            width: '40px', height: '40px', display: 'flex', 
+            position: 'absolute', top: '16px', right: '16px', 
+            background: wishlisted ? 'var(--brand-red)' : 'rgba(255,255,255,0.15)', 
+            backdropFilter: 'blur(20px)', 
+            border: wishlisted ? 'none' : '1.5px solid rgba(255,255,255,0.3)', 
+            borderRadius: '16px', 
+            width: '44px', height: '44px', display: 'flex', 
             alignItems: 'center', justifyContent: 'center', 
             cursor: 'pointer', zIndex: 10,
             transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
-            boxShadow: wishlisted ? '0 10px 20px rgba(235,35,39,0.3)' : '0 4px 12px rgba(0,0,0,0.1)'
+            boxShadow: wishlisted ? '0 12px 24px rgba(235,35,39,0.3)' : '0 4px 12px rgba(0,0,0,0.15)'
           }}
         >
           <Icon 
             name="heart" 
-            size={20} 
-            color={wishlisted ? '#fff' : '#fff'} 
+            size={22} 
+            color="#fff" 
             fill={wishlisted ? '#fff' : 'none'}
-            stroke={wishlisted ? 0 : 2}
+            stroke={2}
           />
         </button>
       </div>
       
       {/* Body */}
-      <div className="platform-card-v__body" style={{ padding: '1rem', flex: 1, display: 'flex', flexDirection: 'column' }}>
-        <h3 className="platform-card-v__title" style={{ fontSize: '0.85rem', fontWeight: 950, marginBottom: '6px', color: 'var(--brand-black)', lineHeight: 1.3 }}>
+      <div className="platform-card-v__body" style={{ padding: '1.5rem', flex: 1, display: 'flex', flexDirection: 'column' }}>
+        <h3 className="platform-card-v__title" style={{ fontSize: '1rem', fontWeight: 950, marginBottom: '8px', color: '#0f172a', lineHeight: 1.4, letterSpacing: '-0.01em' }}>
           {course.title?.replace(/\sCourse$/gi, '')}
         </h3>
         
-        <p className="platform-card-v__desc" style={{ fontSize: '0.7rem', color: 'var(--slate-500)', fontWeight: 400, lineHeight: '1.4', margin: 0, display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical', overflow: 'hidden' }}>
+        <p className="platform-card-v__desc" style={{ fontSize: '0.8rem', color: '#64748b', fontWeight: 500, lineHeight: '1.6', margin: 0, display: '-webkit-box', WebkitLineClamp: 3, WebkitBoxOrient: 'vertical', overflow: 'hidden' }}>
           {course.description || course.module}
         </p>
 

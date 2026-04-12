@@ -159,7 +159,7 @@ export default function QuizzesPage() {
 
   if (view === 'attempt') {
     return (
-      <div style={{ maxWidth: '800px', margin: '60px auto', padding: '0 20px' }}>
+      <div className="quiz-attempt-container">
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '40px' }}>
           <div>
             <h2 style={{ margin: 0, fontSize: '1.5rem', fontWeight: 800 }}>{selectedQuiz.title}</h2>
@@ -170,7 +170,7 @@ export default function QuizzesPage() {
           </div>
         </div>
 
-        <div style={{ background: '#fff', border: '1px solid #E5E7EB', borderRadius: '24px', padding: '40px', boxShadow: '0 10px 30px rgba(0,0,0,0.05)' }}>
+        <div className="glass-card" style={{ padding: '2rem', border: '1px solid #E5E7EB', borderRadius: '24px', boxShadow: '0 10px 30px rgba(0,0,0,0.05)', background: '#fff' }}>
           <h3 style={{ fontSize: '1.3rem', fontWeight: 700, marginBottom: '30px', color: '#111827', lineHeight: 1.4 }}>
             {quizQuestions[currentQuestion].q}
           </h3>
@@ -227,15 +227,15 @@ export default function QuizzesPage() {
 
   if (view === 'result') {
     return (
-      <div style={{ maxWidth: '800px', margin: '60px auto', padding: '0 20px', textAlign: 'center' }}>
-        <div style={{ background: '#fff', border: '1px solid #E5E7EB', borderRadius: '40px', padding: '60px', boxShadow: '0 20px 50px rgba(0,0,0,0.05)' }}>
+      <div className="quiz-attempt-container" style={{ textAlign: 'center' }}>
+        <div className="glass-card" style={{ padding: '3rem 2rem', border: '1px solid #E5E7EB', borderRadius: '40px', boxShadow: '0 20px 50px rgba(0,0,0,0.05)', background: '#fff' }}>
           <div style={{ width: '80px', height: '80px', background: 'rgba(233,34,34,0.05)', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 24px', color: 'var(--brand-red)' }}>
              <Icon name="check" size={40} />
           </div>
           <h2 style={{ fontSize: '2.4rem', fontWeight: 950, marginBottom: '10px', color: 'var(--brand-black)' }}>Outstanding!</h2>
           <p style={{ color: '#6B7280', fontWeight: 600, marginBottom: '40px' }}>You successfully completed the quiz session.</p>
           
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', gap: '20px', marginBottom: '40px' }}>
+          <div className="quiz-result-stats">
             <div style={{ padding: '30px 20px', background: 'var(--slate-50)', borderRadius: '24px', border: '1px solid var(--slate-100)' }}>
               <div style={{ fontSize: '2.2rem', fontWeight: 950, color: 'var(--brand-red)', marginBottom: 4 }}>11/12</div>
               <div style={{ fontSize: '0.65rem', fontWeight: 950, color: 'var(--slate-400)', textTransform: 'uppercase', letterSpacing: '0.1em' }}>Score</div>
@@ -270,10 +270,10 @@ export default function QuizzesPage() {
         </div>
       </header>
 
-      <div style={{ display: 'grid', gridTemplateColumns: '240px 1fr', gap: '32px' }}>
+      <div className="quiz-hub-layout">
         
         {/* ── LEFT SIDEBAR ── */}
-        <aside style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+        <aside className="quiz-sidebar">
           <SidebarItem label="All Quizzes" icon="books" active={activeTab === 'All Quizzes'} onClick={() => setActiveTab('All Quizzes')} />
           <SidebarItem label="Pending" icon="clock" active={activeTab === 'Pending'} onClick={() => setActiveTab('Pending')} />
           <SidebarItem label="Submitted" icon="fileText" active={activeTab === 'Submitted'} onClick={() => setActiveTab('Submitted')} />
@@ -281,9 +281,8 @@ export default function QuizzesPage() {
           <SidebarItem label="Late Submissions" icon="target" active={activeTab === 'Late Submissions'} onClick={() => setActiveTab('Late Submissions')} />
         </aside>
 
-        {/* ── MAIN CONTENT ── */}
-        <main>
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(320px, 1fr))', gap: '24px' }}>
+        <main className="quiz-main-content">
+          <div className="platform-grid">
             <AnimatePresence>
               {filteredQuizzes.length > 0 ? filteredQuizzes.map((quiz, idx) => (
                 <QuizCard 
@@ -306,6 +305,22 @@ export default function QuizzesPage() {
           </div>
         </main>
       </div>
+      <style jsx global>{`
+        .quiz-hub-layout { display: grid; grid-template-columns: 240px 1fr; gap: 32px; }
+        .quiz-attempt-container { max-width: 800px; margin: 40px auto; padding: 0 20px; }
+        .quiz-result-stats { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 20px; margin-bottom: 40px; }
+        
+        @media (max-width: 1060px) {
+          .quiz-hub-layout { grid-template-columns: 1fr; gap: 24px; }
+          .quiz-sidebar { display: flex; flex-direction: row !important; overflow-x: auto; padding-bottom: 10px; gap: 12px !important; }
+          .quiz-sidebar > div { white-space: nowrap; flex-shrink: 0; }
+        }
+        
+        @media (max-width: 768px) {
+          .quiz-attempt-container { margin: 20px auto; }
+          .quiz-result-stats { grid-template-columns: 1fr; gap: 12px; }
+        }
+      `}</style>
     </div>
   );
 }

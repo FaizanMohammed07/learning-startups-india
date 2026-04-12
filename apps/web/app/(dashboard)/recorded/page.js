@@ -45,7 +45,7 @@ function RecordedCard({ cls, layout = 'grid' }) {
       {/* Thumbnail */}
       <div className="platform-card-v__thumb" style={{
         position: 'relative',
-        height: isList ? '200px' : '200px',
+        height: isList ? '200px' : '220px',
         width: isList ? '320px' : '100%',
         overflow: 'hidden',
         flexShrink: 0
@@ -263,9 +263,6 @@ export default function RecordedSessionsPage() {
           exit={{ opacity: 0, scale: 0.98 }}
           className={layout === 'grid' ? 'platform-grid' : 'platform-list-v'}
           style={{
-            display: 'grid',
-            gridTemplateColumns: layout === 'grid' ? 'repeat(3, 1fr)' : '1fr',
-            gap: '2rem',
             marginTop: '1.5rem'
           }}
         >

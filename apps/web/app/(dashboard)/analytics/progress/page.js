@@ -33,48 +33,51 @@ export default function ProgressOverviewPage() {
   };
 
   return (
-    <div className="platform-page" style={{ padding: '2rem 2rem 4rem' }}>
+    <div className="platform-page analytics-page">
       {/* Hero Section: "Am I on track?" */}
       <motion.div 
-        initial={{ opacity: 0, scale: 0.95 }}
+        initial={{ opacity: 0, scale: 0.98 }}
         animate={{ opacity: 1, scale: 1 }}
         style={{ 
-          background: 'linear-gradient(135deg, #e92222 0%, #b91c1c 100%)', color: '#fff', borderRadius: '20px', padding: '1.5rem 2rem',
-          display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '2rem',
-          position: 'relative', overflow: 'hidden'
+          background: 'linear-gradient(135deg, #0f172a 0%, #1e293b 100%)', color: '#fff', borderRadius: '32px', padding: '2.5rem',
+          display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '3rem',
+          position: 'relative', overflow: 'hidden', border: '1px solid rgba(255,255,255,0.1)'
         }}
       >
-        <div style={{ position: 'absolute', top: 0, right: 0, width: '180px', height: '180px', background: '#fff', filter: 'blur(100px)', opacity: 0.08 }} />
+        <div style={{ position: 'absolute', top: 0, right: 0, width: '300px', height: '300px', background: '#ef4444', filter: 'blur(150px)', opacity: 0.15, zIndex: 0 }} />
         
-        <div style={{ position: 'relative', zIndex: 1, maxWidth: '450px' }}>
-           <h1 style={{ fontSize: '1.6rem', fontWeight: 950, letterSpacing: '-0.03em', margin: '0 0 6px' }}>
-              Mastery Hero
+        <div className="progress-hero-content" style={{ position: 'relative', zIndex: 1 }}>
+           <h1 style={{ fontSize: '2.25rem', fontWeight: 950, letterSpacing: '-0.04em', margin: '0 0 12px', color: '#fff' }}>
+              Mastery <span style={{ color: '#ef4444' }}>Path</span>
            </h1>
-           <p style={{ fontSize: '0.9rem', fontWeight: 600, color: 'rgba(255,255,255,0.7)', lineHeight: 1.5, margin: 0 }}>
-              You have completed <span style={{ color: '#fff', fontWeight: 800 }}>65%</span> of your learning path. 12% ahead of your weekly goal.
+           <p style={{ fontSize: '1.1rem', fontWeight: 600, color: 'rgba(255,255,255,0.6)', lineHeight: 1.6, margin: '0 0 2rem', maxWidth: '500px' }}>
+              You have completed <span style={{ color: '#fff', fontWeight: 800 }}>65%</span> of your startup learning path. You're currently <span style={{ color: '#10b981' }}>12% ahead</span> of schedule.
            </p>
-           <div style={{ display: 'flex', gap: '1rem', marginTop: '10px' }}>
-              <div style={{ background: '#fff', color: 'var(--brand-red)', padding: '4px 12px', fontSize: '0.65rem', borderRadius: '20px', fontWeight: 950 }}>ON TRACK</div>
-              <div style={{ display: 'flex', alignItems: 'center', gap: '6px', color: '#fff', opacity: 0.9, fontSize: '0.75rem', fontWeight: 950 }}>
-                 <Icon name="zap" size={14} color="#fff" /> 8 Day Streak
+           <div style={{ display: 'flex', gap: '1rem', flexWrap: 'wrap' }}>
+              <div style={{ background: '#ef4444', color: '#fff', padding: '8px 20px', fontSize: '0.75rem', borderRadius: '12px', fontWeight: 950, letterSpacing: '0.05em' }}>VALEDICTORIAN TRACK</div>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '8px', color: '#fff', padding: '8px 20px', background: 'rgba(255,255,255,0.05)', borderRadius: '12px', fontSize: '0.75rem', fontWeight: 950, border: '1px solid rgba(255,255,255,0.1)' }}>
+                 <Icon name="zap" size={16} color="#ef4444" /> 8 DAY STREAK
               </div>
            </div>
         </div>
 
-        <div style={{ position: 'relative', width: '90px', height: '90px', flexShrink: 0 }}>
-           <svg width="90" height="90" viewBox="0 0 120 120">
-              <circle cx="60" cy="60" r="54" fill="none" stroke="rgba(255,255,255,0.15)" strokeWidth="10" />
+        <div className="hero-chart-wrap" style={{ position: 'relative', width: '160px', height: '160px', flexShrink: 0 }}>
+           <svg width="160" height="160" viewBox="0 0 120 120">
+              <circle cx="60" cy="60" r="54" fill="none" stroke="rgba(255,255,255,0.05)" strokeWidth="8" />
               <motion.circle 
-                cx="60" cy="60" r="54" fill="none" stroke="#fff" strokeWidth="10" 
+                cx="60" cy="60" r="54" fill="none" stroke="#ef4444" strokeWidth="8" 
                 strokeDasharray="339.29"
                 initial={{ strokeDashoffset: 339.29 }}
                 animate={{ strokeDashoffset: 339.29 - (339.29 * 65) / 100 }}
-                transition={{ duration: 1.5, ease: "easeOut" }}
+                transition={{ duration: 2, ease: "circOut" }}
                 strokeLinecap="round"
                 transform="rotate(-90 60 60)"
               />
            </svg>
-           <div style={{ position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%)', fontSize: '1.2rem', fontWeight: 950 }}>65%</div>
+           <div style={{ position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%)', textAlign: 'center' }}>
+              <div style={{ fontSize: '2rem', fontWeight: 950, color: '#fff', lineHeight: 1 }}>65%</div>
+              <div style={{ fontSize: '0.6rem', fontWeight: 950, color: 'rgba(255,255,255,0.4)', textTransform: 'uppercase', marginTop: '4px' }}>Path</div>
+           </div>
         </div>
       </motion.div>
 
@@ -82,45 +85,44 @@ export default function ProgressOverviewPage() {
         variants={containerVariants}
         initial="hidden"
         animate="visible"
-        style={{ display: 'grid', gridTemplateColumns: 'repeat(12, 1fr)', gap: '2.5rem' }}
+        className="analytics-grid"
       >
         {/* Stats Grid */}
-        <div style={{ gridColumn: 'span 12', display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '1.5rem' }}>
+        <div className="col-span-12 stats-grid">
           {stats.map((s, i) => (
-            <motion.div key={i} variants={itemVariants} className="glass-card" style={{ padding: '2rem', borderRadius: '24px', display: 'flex', alignItems: 'center', gap: '1.5rem' }}>
-               <div style={{ width: 56, height: 56, borderRadius: '18px', background: `${s.color}10`, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                  <Icon name={s.icon} size={24} color={s.color} />
+            <motion.div key={i} variants={itemVariants} className="glass-card" style={{ padding: '2.5rem', borderRadius: '32px', display: 'flex', alignItems: 'center', gap: '2rem', border: '1.5px solid #f1f5f9' }}>
+               <div style={{ width: 64, height: 64, borderRadius: '20px', background: `${s.color}10`, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                  <Icon name={s.icon} size={28} color={s.color} />
                </div>
                <div>
-                  <div style={{ fontSize: '0.75rem', fontWeight: 950, color: 'var(--slate-400)', marginBottom: '4px' }}>{s.label.toUpperCase()}</div>
-                  <div style={{ fontSize: '1.8rem', fontWeight: 950, color: 'var(--brand-black)' }}>{s.value}</div>
+                  <div style={{ fontSize: '0.85rem', fontWeight: 950, color: '#94a3b8', marginBottom: '6px', letterSpacing: '0.05em' }}>{s.label.toUpperCase()}</div>
+                  <div style={{ fontSize: '2.25rem', fontWeight: 950, color: '#0f172a', letterSpacing: '-0.02em' }}>{s.value}</div>
                </div>
             </motion.div>
           ))}
         </div>
 
         {/* Main Progress Breakdown */}
-        <motion.div variants={itemVariants} style={{ gridColumn: 'span 8' }} className="glass-card">
-           <div style={{ padding: '2.5rem' }}>
-              <h3 style={{ fontSize: '1.25rem', fontWeight: 950, color: 'var(--brand-black)', marginBottom: '2.5rem' }}>Subject-wise Progress</h3>
-              <div style={{ display: 'flex', flexDirection: 'column', gap: '2.5rem' }}>
+        <motion.div variants={itemVariants} className="glass-card col-span-8 main-card">
+           <div style={{ padding: '3rem' }}>
+              <h3 style={{ fontSize: '1.5rem', fontWeight: 950, color: '#0f172a', marginBottom: '3rem', letterSpacing: '-0.02em' }}>Subject Mastery Trends</h3>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '3rem' }}>
                 {courses.map((course, i) => (
                    <div key={i}>
-                      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '12px' }}>
-                         <span style={{ fontSize: '1rem', fontWeight: 900, color: 'var(--brand-black)' }}>{course.name}</span>
-                         <span style={{ fontSize: '0.9rem', fontWeight: 950, color: 'var(--brand-red)' }}>{course.progress}%</span>
+                      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end', marginBottom: '16px' }}>
+                         <div>
+                            <span style={{ fontSize: '1.1rem', fontWeight: 950, color: '#0f172a', display: 'block' }}>{course.name}</span>
+                            <span style={{ fontSize: '0.8rem', color: '#64748b', fontWeight: 650 }}>{course.completed} {course.type} Completed</span>
+                         </div>
+                         <span style={{ fontSize: '1.1rem', fontWeight: 950, color: '#ef4444' }}>{course.progress}%</span>
                       </div>
-                      <div style={{ height: '8px', background: 'var(--slate-50)', borderRadius: '10px', overflow: 'hidden', position: 'relative' }}>
+                      <div style={{ height: '12px', background: '#f8fafc', borderRadius: '20px', overflow: 'hidden', border: '1px solid #f1f5f9' }}>
                          <motion.div 
                            initial={{ width: 0 }}
                            animate={{ width: `${course.progress}%` }}
-                           transition={{ duration: 1, delay: i * 0.1 }}
-                           style={{ height: '100%', background: 'var(--brand-red)', borderRadius: '10px' }}
+                           transition={{ duration: 1.5, delay: i * 0.1, ease: 'circOut' }}
+                           style={{ height: '100%', background: '#ef4444', borderRadius: '20px', boxShadow: '0 0 20px rgba(239, 68, 68, 0.2)' }}
                          />
-                      </div>
-                      <div style={{ marginTop: '8px', display: 'flex', justifyContent: 'space-between', fontSize: '0.75rem', fontWeight: 750, color: 'var(--slate-400)' }}>
-                         <span>{course.completed} {course.type} Completed</span>
-                         <span>{course.total - course.completed} Remaining</span>
                       </div>
                    </div>
                 ))}
@@ -129,50 +131,75 @@ export default function ProgressOverviewPage() {
         </motion.div>
 
         {/* Sidebar: Activity & Tasks */}
-        <motion.div variants={itemVariants} style={{ gridColumn: 'span 4', display: 'flex', flexDirection: 'column', gap: '2.5rem' }}>
+        <motion.div variants={itemVariants} className="col-span-4 sidebar-stack">
            {/* Recent Activity */}
-           <div className="glass-card" style={{ padding: '2.5rem', borderRadius: '32px' }}>
-              <h3 style={{ fontSize: '1.1rem', fontWeight: 950, color: 'var(--brand-black)', marginBottom: '2rem' }}>Recent Activity</h3>
-              <div style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
-                 <div style={{ display: 'flex', gap: '1rem' }}>
-                    <div style={{ width: 40, height: 40, borderRadius: '12px', background: 'var(--red-50)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                       <Icon name="recorded" size={18} color="var(--brand-red)" />
+           <div className="glass-card" style={{ padding: '2.5rem', borderRadius: '32px', border: '1.5px solid #f1f5f9' }}>
+              <h3 style={{ fontSize: '1.25rem', fontWeight: 950, color: '#0f172a', marginBottom: '2.5rem', letterSpacing: '-0.01em' }}>Recent Activity</h3>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '2rem' }}>
+                 <div style={{ display: 'flex', gap: '1.25rem', alignItems: 'center' }}>
+                    <div style={{ width: 48, height: 48, borderRadius: '16px', background: '#fef2f2', display: 'flex', alignItems: 'center', justifyContent: 'center', border: '1px solid #fee2e2' }}>
+                       <Icon name="recorded" size={20} color="#ef4444" />
                     </div>
                     <div>
-                       <div style={{ fontSize: '0.85rem', fontWeight: 900, color: 'var(--brand-black)' }}>Adv. React Hooks</div>
-                       <div style={{ fontSize: '0.7rem', color: 'var(--slate-400)', fontWeight: 800 }}>Last watched 2h ago</div>
+                       <div style={{ fontSize: '0.95rem', fontWeight: 950, color: '#0f172a' }}>Advanced React Components</div>
+                       <div style={{ fontSize: '0.75rem', color: '#94a3b8', fontWeight: 700 }}>Last active 2h ago</div>
                     </div>
                  </div>
-                 <div style={{ display: 'flex', gap: '1rem' }}>
-                    <div style={{ width: 40, height: 40, borderRadius: '12px', background: 'var(--blue-50)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                       <Icon name="checkCircle" size={18} color="#3b82f6" />
+                 <div style={{ display: 'flex', gap: '1.25rem', alignItems: 'center' }}>
+                    <div style={{ width: 48, height: 48, borderRadius: '16px', background: '#ecfdf5', display: 'flex', alignItems: 'center', justifyContent: 'center', border: '1px solid #d1fae5' }}>
+                       <Icon name="checkCircle" size={20} color="#10b981" />
                     </div>
                     <div>
-                       <div style={{ fontSize: '0.85rem', fontWeight: 900, color: 'var(--brand-black)' }}>Valuation Quiz</div>
-                       <div style={{ fontSize: '0.7rem', color: 'var(--slate-400)', fontWeight: 800 }}>Completed with 92%</div>
+                       <div style={{ fontSize: '0.95rem', fontWeight: 950, color: '#0f172a' }}>Unit Economics Quiz</div>
+                       <div style={{ fontSize: '0.75rem', color: '#94a3b8', fontWeight: 700 }}>Graded: 92% Proficiency</div>
                     </div>
                  </div>
               </div>
            </div>
 
            {/* Upcoming Tasks */}
-           <div className="glass-card" style={{ padding: '2.5rem', borderRadius: '32px', background: 'linear-gradient(135deg, #e92222 0%, #b91c1c 100%)', color: '#fff', boxShadow: '0 20px 40px rgba(233, 34, 34, 0.15)' }}>
-              <h3 style={{ fontSize: '1.1rem', fontWeight: 950, color: '#fff', marginBottom: '2rem' }}>Upcoming Missions</h3>
+           <div className="glass-card mission-card" style={{ padding: '2.5rem', borderRadius: '32px', background: 'linear-gradient(135deg, #ef4444 0%, #b91c1c 100%)', color: '#fff', boxShadow: '0 25px 50px rgba(239, 68, 68, 0.25)', border: 'none' }}>
+              <h3 style={{ fontSize: '1.25rem', fontWeight: 950, color: '#fff', marginBottom: '2.5rem', letterSpacing: '-0.01em' }}>Upcoming Missions</h3>
               <div style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
                  {upcomingTasks.map((t) => (
-                   <div key={t.id} style={{ padding: '1.2rem', background: 'rgba(255,255,255,0.1)', borderRadius: '20px', border: '1px solid rgba(255,255,255,0.1)' }}>
-                      <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '8px' }}>
-                         <span style={{ fontSize: '0.65rem', fontWeight: 950, color: t.urgency === 'High' ? '#fff' : '#ffd700' }}>{t.urgency.toUpperCase()} PRIORITY</span>
-                         <Icon name="clock" size={12} color="rgba(255,255,255,0.4)" />
+                   <div key={t.id} style={{ padding: '1.5rem', background: 'rgba(255,255,255,0.12)', borderRadius: '24px', backdropFilter: 'blur(10px)', border: '1.5px solid rgba(255,255,255,0.15)' }}>
+                      <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '12px' }}>
+                         <span style={{ fontSize: '0.7rem', fontWeight: 950, color: t.urgency === 'High' ? '#fff' : '#ffd700', textTransform: 'uppercase', letterSpacing: '0.05em' }}>{t.urgency} Priority</span>
+                         <Icon name="clock" size={14} color="rgba(255,255,255,0.6)" />
                       </div>
-                      <div style={{ fontSize: '0.9rem', fontWeight: 900, marginBottom: '4px' }}>{t.title}</div>
-                      <div style={{ fontSize: '0.7rem', color: 'rgba(255,255,255,0.4)', fontWeight: 700 }}>Due {t.deadline}</div>
+                      <div style={{ fontSize: '1.1rem', fontWeight: 950, marginBottom: '4px' }}>{t.title}</div>
+                      <div style={{ fontSize: '0.8rem', color: 'rgba(255,255,255,0.6)', fontWeight: 700 }}>Target: {t.deadline}</div>
                    </div>
                  ))}
               </div>
            </div>
         </motion.div>
       </motion.div>
+      <style jsx global>{`
+        .analytics-page { padding: 3rem 4rem 6rem; font-family: 'Poppins', sans-serif; }
+        .analytics-grid { display: grid; grid-template-columns: repeat(12, 1fr); gap: 3.5rem; }
+        .stats-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2rem; }
+        .col-span-12 { grid-column: span 12; }
+        .col-span-8 { grid-column: span 8; }
+        .col-span-4 { grid-column: span 4; }
+        .sidebar-stack { display: flex; flex-direction: column; gap: 3.5rem; }
+        
+        @media (max-width: 1160px) {
+          .analytics-page { padding: 8rem 1.5rem 6rem; }
+          .analytics-grid { gap: 2.5rem; }
+          .col-span-8, .col-span-4 { grid-column: span 12; }
+          .stats-grid { grid-template-columns: 1fr; gap: 1.5rem; }
+          .progress-hero-content { padding-right: 0; }
+          .hero-chart-wrap { display: none; }
+          .sidebar-stack { gap: 2.5rem; }
+        }
+        
+        @media (max-width: 600px) {
+          .analytics-page { padding-top: 7rem; }
+          .progress-hero-content h1 { font-size: 1.75rem !important; }
+          .progress-hero-content p { font-size: 0.95rem !important; }
+        }
+      `}</style>
     </div>
   );
 }

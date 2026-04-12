@@ -34,13 +34,14 @@
 /* Mobile Adjustments (Below 1060px) */
 @media (max-width: 1060px) {
   .settings-container {
-    padding: 1.25rem 1rem !important;
+    padding: 6.5rem 1.25rem 8rem !important;
   }
   
   .settings-header {
     flex-direction: column !important;
     gap: 1.5rem !important;
-    margin-bottom: 2rem !important;
+    margin-bottom: 2.5rem !important;
+    text-align: left !important;
   }
 
   .settings-grid {
@@ -114,11 +115,21 @@
     padding: 12px !important;
   }
 
-  /* Force Inputs to take full width */
   .settings-input, 
   input, 
   select, 
   textarea {
-    font-size: 16px !important; /* Prevent iOS zoom */
+    font-size: 16px !important; 
+    border-radius: 12px !important;
+  }
+  
+  .settings-input:focus {
+    box-shadow: 0 0 0 4px rgba(235, 35, 39, 0.15), 0 0 20px rgba(235, 35, 39, 0.1) !important;
+    border-color: #eb2327 !important;
+  }
+
+  .settings-card {
+    border: 1px solid #f1f5f9 !important;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.02) !important;
   }
 }

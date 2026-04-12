@@ -3,8 +3,6 @@
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { 
-  Users, 
-  Briefcase, 
   Rocket, 
   TrendingUp, 
   GraduationCap, 
@@ -17,7 +15,9 @@ import {
   AlertTriangle,
   ArrowRight,
   Star,
-  BriefcaseBusiness
+  BriefcaseBusiness,
+  Building2,
+  Briefcase
 } from 'lucide-react';
 import MentorRegistrationModal from '@/components/MentorRegistrationModal';
 import ExploreMentorsModal from '@/components/ExploreMentorsModal';
@@ -680,31 +680,31 @@ export default function MentorsPage() {
             <div className="apply-grid">
               <div className="apply-card">
                 <div className="apply-icon">
-                  <Users size={22} color="#E5E7EB" />
+                  <Rocket size={28} />
                 </div>
                 <h4>Entrepreneurs & Startup Founders</h4>
               </div>
               <div className="apply-card">
                 <div className="apply-icon">
-                  <Network size={22} color="#E5E7EB" />
+                  <Briefcase size={28} />
                 </div>
                 <h4>Industry Professionals</h4>
               </div>
               <div className="apply-card">
                 <div className="apply-icon">
-                  <BriefcaseBusiness size={22} color="#E5E7EB" />
+                  <Building2 size={28} />
                 </div>
                 <h4>Corporate Leaders</h4>
               </div>
               <div className="apply-card">
                 <div className="apply-icon">
-                  <GraduationCap size={22} color="#E5E7EB" />
+                  <GraduationCap size={28} />
                 </div>
                 <h4>Subject Matter Experts</h4>
               </div>
               <div className="apply-card">
                 <div className="apply-icon">
-                  <TrendingUp size={22} color="#E5E7EB" />
+                  <TrendingUp size={28} />
                 </div>
                 <h4>Advisors with Relevant Experience</h4>
               </div>

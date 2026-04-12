@@ -7,7 +7,6 @@ import '../styles/collaboration-framework.css';
 const pillars = [
   {
     number: '01',
-    theme: 'glass-dark',
     title: 'Academia',
     tagline: 'Research & Talent Pipeline',
     description:
@@ -21,7 +20,6 @@ const pillars = [
   },
   {
     number: '02',
-    theme: 'glass-red',
     title: 'Startups Ecosystem',
     tagline: 'Incubation & Acceleration',
     description:
@@ -35,7 +33,6 @@ const pillars = [
   },
   {
     number: '03',
-    theme: 'glass-dark',
     title: 'Corporates & International',
     tagline: 'Partnerships & Global Reach',
     description:
@@ -49,7 +46,6 @@ const pillars = [
   },
   {
     number: '04',
-    theme: 'glass-red',
     title: 'Government',
     tagline: 'Policy & Ecosystem Support',
     description:
@@ -69,21 +65,19 @@ const containerVariants = {
 };
 
 const cardVariants = {
-  hidden:  { opacity: 0, y: 44 },
+  hidden: { opacity: 0, y: 44 },
   visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: [0.16, 1, 0.3, 1] } },
 };
 
 export default function CollaborationFrameworkSection() {
   return (
     <section className="collab-section">
-
       {/* ── Background decorative blobs (help glass effect "pop") ── */}
       <div className="collab-bg-blob collab-bg-blob--1" aria-hidden="true" />
       <div className="collab-bg-blob collab-bg-blob--2" aria-hidden="true" />
       <div className="collab-bg-blob collab-bg-blob--3" aria-hidden="true" />
 
       <div className="iec-container" style={{ position: 'relative', zIndex: 1 }}>
-
         {/* ── Header ── */}
         <motion.div
           className="collab-header"
@@ -93,7 +87,16 @@ export default function CollaborationFrameworkSection() {
           transition={{ duration: 0.6, ease: 'easeOut' }}
         >
           <div className="collab-label">
-            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+            <svg
+              width="12"
+              height="12"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2.5"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            >
               <circle cx="12" cy="12" r="3" />
               <path d="M12 1v4M12 19v4M4.22 4.22l2.83 2.83M16.95 16.95l2.83 2.83M1 12h4M19 12h4M4.22 19.78l2.83-2.83M16.95 7.05l2.83-2.83" />
             </svg>
@@ -103,8 +106,8 @@ export default function CollaborationFrameworkSection() {
             Collaboration <span className="collab-title-red">Framework</span>
           </h2>
           <p className="collab-subtitle">
-            Building bridges across academia, startups, corporates, and government
-            to create a thriving innovation ecosystem.
+            Building bridges across academia, startups, corporates, and government to create a
+            thriving innovation ecosystem.
           </p>
         </motion.div>
 
@@ -116,12 +119,12 @@ export default function CollaborationFrameworkSection() {
           whileInView="visible"
           viewport={{ once: true, margin: '-40px' }}
         >
-          {pillars.map((pillar) => (
+          {pillars.map(pillar => (
             <motion.div
               key={pillar.number}
               variants={cardVariants}
-              className={`collab-card collab-card--${pillar.theme}`}
-              whileHover={{ y: -6 }}
+              className="collab-card"
+              whileHover={{ y: -4 }}
               transition={{ type: 'spring', stiffness: 300, damping: 24 }}
             >
               {/* Step badge */}
@@ -155,7 +158,8 @@ export default function CollaborationFrameworkSection() {
                 <span>Read More</span>
                 <svg
                   className="collab-cta-arrow"
-                  width="14" height="14"
+                  width="14"
+                  height="14"
                   viewBox="0 0 24 24"
                   fill="none"
                   stroke="currentColor"
@@ -184,7 +188,16 @@ export default function CollaborationFrameworkSection() {
         >
           <div className="collab-connector-line" />
           <div className="collab-connector-badge">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+            <svg
+              width="14"
+              height="14"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            >
               <circle cx="12" cy="12" r="3" />
               <path d="M12 1v4M12 19v4M4.22 4.22l2.83 2.83M16.95 16.95l2.83 2.83M1 12h4M19 12h4M4.22 19.78l2.83-2.83M16.95 7.05l2.83-2.83" />
             </svg>
@@ -192,7 +205,6 @@ export default function CollaborationFrameworkSection() {
           </div>
           <div className="collab-connector-line" />
         </motion.div>
-
       </div>
     </section>
   );

@@ -94,55 +94,64 @@
 .card-flip-scene {
   perspective: 1200px;
   height: 100%;
-  /* Guarantee a baseline: front card is typically ≥360px; back must fit too */
   min-height: 360px;
 }
 
-/* ── Flipper (rotates in 3-D) ───────────────────────────────────────────────── */
-.card-flipper {
+/* ── Card container (required wrapper) ──────────────────────────────────────── */
+.card-container {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  perspective: 1200px;
+}
+
+/* ── Card inner (rotates in 3-D) ────────────────────────────────────────────── */
+.card-inner {
   position: relative;
   width: 100%;
   height: 100%;
   transform-style: preserve-3d;
-  transition: transform 0.55s cubic-bezier(0.55, 0.055, 0.675, 0.19);
-  /* Removes the lift-translate hover so the flip is the main interaction */
+  transition: transform 0.5s ease-in-out;
 }
 
-.card-flipper.is-flipped {
+/* Flip state - rotate 180deg */
+.card-container.flipped .card-inner {
   transform: rotateY(180deg);
 }
 
 /* ── Card faces (front & back) ──────────────────────────────────────────────── */
-.card-face {
-  position: absolute;
-  inset: 0;
+.card-front,
+.card-back {
   backface-visibility: hidden;
   -webkit-backface-visibility: hidden;
+  position: absolute;
+  width: 100%;
+  height: 100%;
   border-radius: 16px;
   overflow: hidden;
-  z-index: 1; /* Default for both faces */
+  z-index: 1;
 }
 
 .card-front {
-  z-index: 2; /* Front on top by default */
-}
-
-.card-flipper.is-flipped .card-front {
-  z-index: 1; /* Front moves behind when flipped */
-}
-
-.card-flipper.is-flipped .card-back {
-  z-index: 3; /* Back moves to top when flipped */
-  box-shadow:
-    0 20px 40px rgba(0, 0, 0, 0.12),
-    0 0 0 1px rgba(229, 57, 53, 0.15) !important;
-  border-color: rgba(229, 57, 53, 0.2) !important;
+  z-index: 2;
 }
 
 .card-back {
   transform: rotateY(180deg);
   /* Override base padding — back has extra chrome (close button) */
   padding: 20px 22px 22px !important;
+}
+
+.card-container.flipped .card-front {
+  z-index: 1;
+}
+
+.card-container.flipped .card-back {
+  z-index: 3;
+  box-shadow:
+    0 20px 40px rgba(0, 0, 0, 0.12),
+    0 0 0 1px rgba(229, 57, 53, 0.15) !important;
+  border-color: rgba(229, 57, 53, 0.2) !important;
 }
 
 /* ── Back content fade-in (triggers after the facing half of the flip) ───────── */
@@ -157,8 +166,8 @@
   }
 }
 
-.card-flipper.is-flipped .card-back-close,
-.card-flipper.is-flipped .card-back-content {
+.card-container.flipped .card-back-close,
+.card-container.flipped .card-back-content {
   animation: backFadeIn 0.3s ease 0.28s both;
 }
 
@@ -190,10 +199,10 @@
     transform 0.3s ease;
   display: flex;
   flex-direction: column;
-  cursor: pointer;
 }
 
-.ecosystem-card:hover {
+/* Hover effect only when not flipped */
+.card-container:not(.flipped) .ecosystem-card:hover {
   transform: translateY(-6px);
   box-shadow:
     0 20px 40px rgba(0, 0, 0, 0.12),
@@ -209,7 +218,7 @@
 }
 
 /* Hover: subtle lift only on the FRONT card, not while flipped */
-.card-flipper:not(.is-flipped) .card-front:hover {
+.card-container:not(.flipped) .card-front:hover {
   border-color: rgba(220, 20, 60, 0.2);
   box-shadow: 0 12px 30px rgba(220, 20, 60, 0.06);
 }
@@ -229,7 +238,7 @@
 }
 
 /* Remove hover effects - icons stay stable in RED */
-.card-flipper:not(.is-flipped) .card-front:hover .ecosystem-icon-wrapper {
+.card-container:not(.flipped) .card-front:hover .ecosystem-icon-wrapper {
   background: linear-gradient(135deg, #dc143c 0%, #ff6b6b 100%);
   color: #ffffff;
   transform: none;
@@ -280,51 +289,65 @@
   flex-grow: 1;
 }
 
-/* "Learn more" — now a <button> for accessibility */
+/* "Learn more" — button for accessibility */
 .ecosystem-card-footer {
   display: flex;
   align-items: center;
   gap: 8px;
-  color: #777;
-  font-size: 14px;
-  font-weight: 600;
+}
+
+.ecosystem-learn-more-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
   background: none;
   border: none;
   padding: 0;
+  color: #777;
+  font-size: 14px;
+  font-weight: 600;
   cursor: pointer;
   transition: color 0.3s ease;
   font-family: inherit;
   text-align: left;
 }
 
+.ecosystem-learn-more-btn:hover {
+  color: #dc143c;
+}
+
 .ecosystem-arrow {
   transition: transform 0.3s ease;
 }
 
+.ecosystem-learn-more-btn:hover .ecosystem-arrow {
+  transform: translateX(4px);
+}
+
 /* Remove icon hover effects - icons stay stable */
-.card-flipper:not(.is-flipped) .card-front:hover .ecosystem-icon-wrapper {
+.card-container:not(.flipped) .card-front:hover .ecosystem-icon-wrapper {
   background: rgba(0, 0, 0, 0.05);
   border-color: transparent;
   color: #1f2937;
   transform: none;
 }
 
-.card-flipper:not(.is-flipped) .card-front:hover .ecosystem-highlight-badge.active {
+.card-container:not(.flipped) .card-front:hover .ecosystem-highlight-badge.active {
   background: rgba(220, 20, 60, 0.14);
   color: #c0102c;
   border-color: rgba(220, 20, 60, 0.3);
 }
 
-.card-flipper:not(.is-flipped) .card-front:hover .ecosystem-highlight-badge:not(.active) {
+.card-container:not(.flipped) .card-front:hover .ecosystem-highlight-badge:not(.active) {
   background: #e8e8e8;
   color: #333;
 }
 
-.card-flipper:not(.is-flipped) .card-front:hover .ecosystem-card-footer {
+.card-container:not(.flipped) .card-front:hover .ecosystem-card-footer {
   color: #dc143c;
 }
 
-.card-flipper:not(.is-flipped) .card-front:hover .ecosystem-arrow {
+.card-container:not(.flipped) .card-front:hover .ecosystem-arrow {
   transform: translateX(4px);
 }
 
@@ -499,26 +522,42 @@
     padding: 22px;
   }
 
-  /* On mobile — disable 3-D, use accordion instead */
+  /* On mobile — disable 3-D flip, use vertical layout */
   .card-flip-scene {
     min-height: unset;
     perspective: none;
     height: auto;
   }
-  .card-flipper {
-    transform-style: flat;
-    transition: none;
+  .card-container {
+    perspective: none;
     height: auto;
   }
-  .card-face {
+  .card-inner {
+    transform-style: flat;
+    transition: none;
+    position: static;
+    height: auto;
+  }
+  .card-container.flipped .card-inner {
+    transform: none;
+  }
+  .card-front,
+  .card-back {
     position: static;
     backface-visibility: visible;
     -webkit-backface-visibility: visible;
+    transform: none !important;
   }
   .card-back {
-    display: none;
-    transform: none;
+    display: block;
+    margin-top: 16px;
     padding: 22px !important;
+  }
+  .card-container.flipped .card-front,
+  .card-container.flipped .card-back {
+    z-index: auto;
+    box-shadow: none !important;
+    border-color: inherit !important;
   }
   .spotlight-card {
     height: auto;

@@ -1,229 +1,289 @@
-/* Premium Refined How It Works Section */
+/* ════════════════════════════════════════════════════════════════════════════
+    Rocket Roadmap UI — Home Page
+    ════════════════════════════════════════════════════════════════════════════ */
 
-.how-it-works-section {
-  padding: 80px 20px;
-  background: transparent; /* inherits .iec-bg-gray gradient */
-  position: relative;
-}
-
-.how-it-works-header {
-  text-align: center;
-  margin-bottom: 80px;
-}
-
-.how-it-works-header h2 {
-  font-size: 40px;
-  font-weight: 800;
-  color: #ffffff;
-  margin-bottom: 16px;
-  letter-spacing: -0.02em;
-}
-
-.how-timeline-container {
-  max-width: 1100px;
-  margin: 0 auto;
-  position: relative;
-}
-
-/* Timeline Lines */
-.timeline-base-line {
-  position: absolute;
-  top: 24px;
-  left: 0;
-  right: 0;
-  height: 2px;
-  background: rgba(255, 255, 255, 0.08); /* Dark mode base line */
-  z-index: 1;
-}
-
-.timeline-active-line {
-  position: absolute;
-  top: 24px;
-  left: 0;
-  height: 2px;
-  background: #dc143c;
-  z-index: 2;
-  transition: width 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-}
-
-/* Steps Wrapper */
-.how-steps-wrapper {
-  display: flex;
-  justify-content: space-between;
-  position: relative;
-  z-index: 3;
-}
-
-/* Individual Step */
-.how-step-card {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  position: relative;
-  text-align: center;
-  padding: 0 16px;
-  transition: transform 0.3s ease-out;
-}
-
-/* Circle Badge */
-.step-badge-wrapper {
-  background: transparent; /* Changed from white to transparent */
-  padding: 0 12px;
-  margin-bottom: 32px;
-}
-
-.step-badge {
-  width: 48px;
-  height: 48px;
-  border-radius: 50%;
-  background: rgba(255, 255, 255, 0.05); /* Match dark mode glass */
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 18px;
-  font-weight: 700;
-  color: #a1a1aa;
-  transition: all 0.3s ease-out;
-  box-shadow: none;
-}
-
-/* Card Content */
-.step-content-card {
-  background: rgba(255, 255, 255, 0.05);
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  border-radius: 16px;
-  padding: 32px 24px;
-  width: 100%;
-  box-shadow: none;
-  transition: all 0.3s ease-out;
+.how-it-works-modern {
+  padding: 100px 0;
+  background: transparent;
   position: relative;
   overflow: hidden;
 }
 
-/* Icons - Always visible in RED */
-.step-icon-wrapper {
-  color: #dc143c !important;
-  margin-bottom: 16px;
-  display: inline-flex;
-  background: rgba(220, 20, 60, 0.1);
-  padding: 12px;
-  border-radius: 12px;
+/* ── Header ─────────────────────────────────────────────────────────────── */
+.roadmap-header {
+  text-align: center;
+  max-width: 700px;
+  margin: 0 auto 80px;
 }
 
-/* Remove hover effects - icons stay stable and RED */
-.how-step-card.hovered .step-icon-wrapper {
-  color: #dc143c !important;
-  filter: none;
-  transform: none;
-  background: rgba(220, 20, 60, 0.1);
-}
-
-/* Typography */
-.step-title {
-  font-size: 18px;
+.sub-tag {
+  display: block;
+  font-size: 11px;
   font-weight: 700;
-  color: #111111;
+  color: #E53935;
+  letter-spacing: 0.15em;
+  margin-bottom: 12px;
+  opacity: 0.7;
+}
+
+.roadmap-header h2 {
+  font-size: clamp(32px, 4vw, 42px);
+  font-weight: 800;
+  color: #1a1a1b;
+  margin-bottom: 20px;
+  letter-spacing: -0.02em;
+}
+
+.roadmap-header p {
+  font-size: 16px;
+  color: #64748b;
+  line-height: 1.6;
+}
+
+/* ── Roadmap axis (Line + Nodes + Rocket) ────────────────────────────────── */
+.roadmap-container {
+  max-width: 1100px;
+  margin: 0 auto;
+}
+
+.roadmap-axis {
+  position: relative;
+  height: 80px;
+  margin-bottom: 60px;
+  display: flex;
+  align-items: center;
+}
+
+/* Flame Line Style */
+.roadmap-base-line {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 50%;
+  height: 3px;
+  background: rgba(229, 57, 53, 0.08);
+  border-radius: 999px;
+  transform: translateY(-50%);
+  z-index: 1;
+}
+
+.roadmap-flame-trail {
+  position: absolute;
+  left: 0;
+  top: 50%;
+  height: 3px;
+  background: linear-gradient(90deg, #E53935, rgba(255, 120, 80, 0.6), transparent);
+  border-radius: 999px;
+  transform: translateY(-50%);
+  z-index: 2;
+  box-shadow: 0 0 12px rgba(229, 57, 53, 0.4);
+  /* Fast transition for real-time cursor tracking */
+  transition: width 0.05s linear;
+}
+
+/* Step Nodes */
+.roadmap-nodes-wrapper {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  display: flex;
+  justify-content: space-between;
+  /* Nodes must be above the rocket */
+  z-index: 5;
+  pointer-events: all;
+}
+
+.roadmap-node-item {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  border: 2px solid #E53935;
+  background: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  position: relative;
+}
+
+.node-number {
+  font-size: 16px;
+  font-weight: 800;
+  color: #E53935;
+  transition: color 0.3s ease;
+}
+
+.roadmap-node-item:hover,
+.roadmap-node-item.active {
+  background: #E53935;
+  transform: scale(1.1);
+  box-shadow: 0 0 15px rgba(229, 57, 53, 0.4);
+}
+
+.roadmap-node-item:hover .node-number,
+.roadmap-node-item.active .node-number {
+  color: #fff;
+}
+
+/* Rocket Pilot — sits exactly on the line, never overlaps nodes */
+.rocket-pilot {
+  position: absolute;
+  /* Vertically centered on the line axis */
+  top: 50%;
+  /* Horizontally driven by JS left% */
+  transform: translate(-50%, -50%);
+  z-index: 3; /* below nodes (z:5) but above flame trail (z:2) */
+  color: #E53935;
+  background: #fff;
+  width: 34px;
+  height: 34px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  border: 2px solid rgba(229,57,53,0.2);
+  box-shadow: 0 0 12px rgba(229,57,53,0.3), 0 2px 8px rgba(0,0,0,0.08);
+  /* Hidden until cursor enters the axis */
+  opacity: 0;
+  /* Near-real-time movement, tiny lag for smoothness */
+  transition: left 0.05s linear, opacity 0.2s ease;
+  pointer-events: none;
+}
+
+/* Rocket becomes visible when cursor is over the axis */
+.rocket-pilot.visible {
+  opacity: 1;
+}
+
+.rocket-icon-svg {
+  filter: drop-shadow(0 0 4px rgba(229, 57, 53, 0.4));
+}
+
+/* ── Cards Grid ─────────────────────────────────────────────────────────── */
+.roadmap-cards-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 24px;
+}
+
+.roadmap-step-card-glass {
+  background: rgba(255, 255, 255, 0.7);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.4);
+  border-radius: 14px;
+  padding: 32px 24px;
+  transition: all 0.3s ease;
+  cursor: pointer;
+}
+
+.roadmap-step-card-glass:hover,
+.roadmap-step-card-glass.focused {
+  transform: translateY(-6px);
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
+  border-color: rgba(229, 57, 53, 0.15);
+  background: #fff;
+}
+
+.step-card-icon {
+  width: 48px;
+  height: 48px;
+  background: rgba(229, 57, 53, 0.05);
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #E53935;
+  margin-bottom: 20px;
+  transition: all 0.3s ease;
+}
+
+.roadmap-step-card-glass:hover .step-card-icon,
+.roadmap-step-card-glass.focused .step-card-icon {
+  background: #E53935;
+  color: #fff;
+}
+
+.step-card-title {
+  font-size: 17px;
+  font-weight: 700;
+  color: #1e293b;
   margin-bottom: 12px;
 }
 
-.step-desc {
-  font-size: 14px;
-  color: #4b5563;
+.step-card-desc {
+  font-size: 13.5px;
+  color: #64748b;
   line-height: 1.6;
-  margin: 0;
 }
 
-.how-step-card.active-path .step-badge {
-  border-color: #e53935;
-  color: #e53935;
+/* ── Animations ─────────────────────────────────────────────────────────── */
+/* Smooth pulse for active nodes */
+@keyframes pulse-glow {
+  0% { box-shadow: 0 0 0 0 rgba(229, 57, 53, 0.4); }
+  70% { box-shadow: 0 0 0 10px rgba(229, 57, 53, 0); }
+  100% { box-shadow: 0 0 0 0 rgba(229, 57, 53, 0); }
 }
 
-/* ====================
-   RESPONSIVE DESIGN
-   ==================== */
+.roadmap-node-item.current {
+  animation: pulse-glow 2s infinite;
+}
 
+/* ── Responsive ─────────────────────────────────────────────────────────── */
 @media (max-width: 1024px) {
-  .how-step-card {
-    padding: 0 8px;
-  }
-  .step-content-card {
-    padding: 24px 16px;
-  }
-  .step-title {
-    font-size: 16px;
+  .roadmap-cards-grid {
+    grid-template-columns: repeat(2, 1fr);
   }
 }
 
-@media (max-width: 768px) {
-  .how-it-works-header {
-    margin-bottom: 60px;
+@media (max-width: 767px) {
+  .roadmap-axis {
+    flex-direction: column;
+    height: auto;
+    padding: 0 20px 0 40px;
+    align-items: flex-start;
+    margin-bottom: 40px;
   }
 
-  .how-timeline-container {
-    padding-left: 20px;
-  }
-
-  .timeline-base-line,
-  .timeline-active-line {
+  .roadmap-base-line {
+    left: 44px;
+    right: auto;
     top: 0;
     bottom: 0;
-    left: 44px;
-    width: 2px;
+    width: 3px;
     height: 100%;
+    transform: none;
   }
 
-  .timeline-active-line {
-    transition: height 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  .roadmap-flame-trail {
+    left: 44px;
+    top: 0;
+    width: 3px;
+    background: linear-gradient(180deg, #E53935, rgba(255, 120, 80, 0.6), transparent);
+    transform: none;
   }
 
-  .how-steps-wrapper {
+  .roadmap-nodes-wrapper {
     flex-direction: column;
-    gap: 40px;
+    left: 23px;
+    top: 0;
+    bottom: 0;
+    right: auto;
+    height: 100%;
+    transform: none;
+    padding: 20px 0;
+    gap: 80px;
   }
 
-  .how-step-card {
-    flex-direction: row;
-    align-items: flex-start;
-    padding: 0;
+  .roadmap-cards-grid {
+    grid-template-columns: 1fr;
+    padding-left: 60px;
   }
 
-  .step-badge-wrapper {
-    margin-bottom: 0;
-    margin-right: 24px;
-    padding: 12px 0; /* Add padding to clip vertical line */
-  }
-
-  .step-content-card {
-    text-align: left;
-    margin-top: 0;
-  }
-
-  .step-icon-wrapper {
-    margin-bottom: 12px;
-  }
-}
-
-@media (max-width: 480px) {
-  .how-it-works-header h2 {
-    font-size: 32px;
-  }
-  .how-step-card {
-    flex-direction: column;
-  }
-  .timeline-base-line,
-  .timeline-active-line {
-    display: none; /* Hide line completely on extremely small screens if it breaks, but typical mobile stays row */
-  }
-  /* Alternatively, keep the line and stack it */
-  .step-badge-wrapper {
-    margin: 0 auto 16px;
-  }
-  .how-timeline-container {
-    padding-left: 0;
-  }
-  .step-content-card {
-    text-align: center;
+  .rocket-pilot {
+    left: 44px !important;
   }
 }

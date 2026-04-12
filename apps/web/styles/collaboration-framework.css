@@ -106,8 +106,62 @@
 .collab-grid {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
-  gap: 18px;
+  gap: 1.75rem;
   align-items: stretch;
+}
+
+/* ════════════════════════════════════════════════════════════════════════════
+    Card base
+    ════════════════════════════════════════════════════════════════════════════ */
+.collab-card {
+  position: relative;
+  border-radius: 16px;
+  padding: 28px 22px 24px;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  cursor: pointer;
+  will-change: transform;
+  background: #ffffff;
+  border: 1px solid rgba(0, 0, 0, 0.06);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.04);
+  transition:
+    transform 0.3s ease,
+    box-shadow 0.3s ease,
+    border-color 0.3s ease;
+  transform: translateZ(0);
+}
+
+.collab-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 16px 35px rgba(0, 0, 0, 0.1);
+}
+
+/* ── Alternating card pattern: even cards get subtle red gradient ─── */
+.collab-card:nth-child(even) {
+  background: linear-gradient(135deg, rgba(229, 57, 53, 0.08) 0%, rgba(229, 57, 53, 0.02) 100%);
+  border: 1px solid rgba(229, 57, 53, 0.15);
+}
+
+.collab-card:nth-child(even):hover {
+  border-color: rgba(229, 57, 53, 0.3);
+  box-shadow: 0 16px 35px rgba(229, 57, 53, 0.1);
+}
+
+.collab-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 16px 35px rgba(0, 0, 0, 0.1);
+}
+
+/* ── Alternating card pattern: even cards get subtle red gradient ─── */
+.collab-card:nth-child(even) {
+  background: linear-gradient(135deg, rgba(229, 57, 53, 0.08) 0%, rgba(229, 57, 53, 0.02) 100%);
+  border: 1px solid rgba(229, 57, 53, 0.15);
+}
+
+.collab-card:nth-child(even):hover {
+  border-color: rgba(229, 57, 53, 0.3);
+  box-shadow: 0 16px 35px rgba(229, 57, 53, 0.1);
 }
 
 /* ══════════════════════════════════════════════════════════════════════════════
@@ -129,36 +183,6 @@
   transform: translateZ(0);
 }
 
-/* ── Dark glass variant (cards 1 & 3) ─────────────────────────────────────── */
-.collab-card--glass-dark {
-  background: rgba(255, 255, 255, 0.7);
-  backdrop-filter: blur(16px) saturate(160%);
-  -webkit-backdrop-filter: blur(16px) saturate(160%);
-  border: 1px solid rgba(0, 0, 0, 0.06);
-  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
-}
-
-.collab-card--glass-dark:hover {
-  background: rgba(255, 255, 255, 0.9);
-  border-color: rgba(229, 57, 53, 0.3);
-  box-shadow: 0 15px 35px rgba(229, 57, 53, 0.1);
-}
-
-/* ── Red-tinted glass variant (cards 2 & 4) ──────────────────────────────── */
-.collab-card--glass-red {
-  background: rgba(229, 57, 53, 0.05);
-  backdrop-filter: blur(16px) saturate(180%);
-  -webkit-backdrop-filter: blur(16px) saturate(180%);
-  border: 1px solid rgba(229, 57, 53, 0.15);
-  box-shadow: 0 10px 25px rgba(229, 57, 53, 0.05);
-}
-
-.collab-card--glass-red:hover {
-  background: rgba(229, 57, 53, 0.1);
-  border-color: rgba(229, 57, 53, 0.3);
-  box-shadow: 0 15px 35px rgba(229, 57, 53, 0.15);
-}
-
 /* ── Inner rim light (top edge highlight — classic glass cue) ─────────────── */
 .collab-rim-light {
   position: absolute;
@@ -176,124 +200,114 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 38px;
-  height: 38px;
-  border-radius: 11px;
-  font-size: 13px;
-  font-weight: 800;
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+  font-size: 12px;
+  font-weight: 700;
   letter-spacing: 0.01em;
-  margin-bottom: 18px;
+  margin-bottom: 14px;
   flex-shrink: 0;
 }
 
-.collab-card--glass-dark .collab-step-badge {
+.collab-card:nth-child(odd) .collab-step-badge {
   background: rgba(0, 0, 0, 0.04);
   border: 1px solid rgba(0, 0, 0, 0.08);
   color: #333333;
 }
 
-.collab-card--glass-red .collab-step-badge {
+.collab-card:nth-child(even) .collab-step-badge {
   background: rgba(229, 57, 53, 0.1);
   border: 1px solid rgba(229, 57, 53, 0.2);
   color: #e53935;
 }
 
 /* ── Icon ────────────────────────────────────────────────────────────────── */
-/* Icons - Always visible in RED */
 .collab-icon {
-  width: 56px;
-  height: 56px;
-  border-radius: 14px;
+  width: 40px;
+  height: 40px;
+  border-radius: 10px;
   display: flex;
   align-items: center;
   justify-content: center;
-  background: linear-gradient(135deg, #dc143c 0%, #ff6b6b 100%);
+  background: linear-gradient(135deg, #e53935 0%, #c62828 100%);
   color: #ffffff;
+  margin-bottom: 14px;
 }
 
-/* Remove hover effects - icons stay stable in RED */
-.collab-card--glass-dark:hover .collab-icon {
-  background: linear-gradient(135deg, #dc143c 0%, #ff6b6b 100%);
-  color: #ffffff;
+/* Icon subtle red tint on gradient cards */
+.collab-card:nth-child(even) .collab-icon {
+  background: linear-gradient(135deg, #e53935 0%, #b71c1c 100%);
+  box-shadow: 0 2px 8px rgba(229, 57, 53, 0.3);
+}
+
+/* Keep icon color visible */
+.collab-icon svg {
+  stroke: #ffffff;
+}
+
+/* Remove hover effects - icons stay stable */
+.collab-card:hover .collab-icon {
   filter: none;
   transform: none;
 }
 
 /* ── Text block ──────────────────────────────────────────────────────────── */
 .collab-text {
-  margin-bottom: 18px;
+  margin-bottom: 16px;
+  max-width: 90%;
 }
 
 .collab-tagline {
-  font-size: 10.5px;
+  font-size: 11px;
   font-weight: 700;
   text-transform: uppercase;
-  letter-spacing: 0.12em;
-  margin: 0 0 7px;
-}
-
-/* taglines */
-.collab-card--glass-dark .collab-tagline {
-  color: #777777;
-}
-.collab-card--glass-red .collab-tagline {
-  color: #e53935;
+  letter-spacing: 0.14em;
+  margin: 0 0 8px;
+  color: #9ca3af;
 }
 
 /*
  * SPECIFICITY FIX #2:
- * .iec-homepage h3 { color: #111 } overrides .collab-card-title { color:#fff }.
+ * .iec-homepage h3 { color: #111 } overrides .collab-card-title.
  * Scope with .collab-section AND add !important to guarantee white text.
  */
 .collab-section h3,
 .collab-card-title {
-  font-size: 19px !important;
+  font-size: 18px !important;
   font-weight: 700 !important;
-  line-height: 1.28 !important;
-  margin: 0 0 11px !important;
-  letter-spacing: -0.015em !important;
-  color: #111111 !important; /* beat .iec-homepage h3 { color:#111 } */
+  line-height: 1.3 !important;
+  margin: 0 0 10px !important;
+  letter-spacing: -0.01em !important;
+  color: #111111 !important;
 }
 
 /* Description */
 .collab-card-desc {
-  font-size: 13.5px;
-  line-height: 1.65;
+  font-size: 14px;
+  line-height: 1.6;
   margin: 0;
-}
-
-.collab-card--glass-dark .collab-card-desc {
-  color: #666666;
-}
-.collab-card--glass-red .collab-card-desc {
-  color: #9b2c2c;
+  color: #6b7280;
 }
 
 /* ── Bullet list ─────────────────────────────────────────────────────────── */
 .collab-points {
   list-style: none;
   padding: 0;
-  margin: 0 0 20px;
+  margin: 0 0 18px;
   display: flex;
   flex-direction: column;
-  gap: 9px;
+  gap: 8px;
   flex-grow: 1;
 }
 
 .collab-point {
   display: flex;
-  align-items: flex-start;
+  align-items: center;
   gap: 9px;
-  font-size: 12.5px;
+  font-size: 13px;
   line-height: 1.5;
-}
-
-/* Bullets */
-.collab-card--glass-dark .collab-point {
   color: #555555;
-}
-.collab-card--glass-red .collab-point {
-  color: #9b2c2c;
 }
 
 .collab-point-dot {
@@ -301,33 +315,19 @@
   width: 5px;
   height: 5px;
   border-radius: 50%;
-  margin-top: 5px;
-}
-
-/* Bullet dot */
-.collab-card--glass-dark .collab-point-dot {
   background: #e53935;
-}
-.collab-card--glass-red .collab-point-dot {
-  background: #c53030;
 }
 
 /* ── Divider ──────────────────────────────────────────────────────────────── */
 .collab-divider {
   height: 1px;
-  margin-bottom: 16px;
-}
-
-.collab-card--glass-dark .collab-divider {
-  background: rgba(0, 0, 0, 0.08);
-}
-.collab-card--glass-red .collab-divider {
-  background: rgba(229, 57, 53, 0.15);
+  margin: 16px 0;
+  background: rgba(0, 0, 0, 0.06);
 }
 
 /* ── CTA ─────────────────────────────────────────────────────────────────── */
 .collab-cta {
-  display: flex;
+  display: inline-flex;
   align-items: center;
   gap: 7px;
   font-size: 13px;
@@ -336,21 +336,11 @@
   position: relative;
   z-index: 1;
   transition: gap 0.25s ease;
-}
-
-/* CTA */
-.collab-card--glass-dark .collab-cta {
   color: #555555;
 }
-.collab-card--glass-red .collab-cta {
-  color: #9b2c2c;
-}
 
-.collab-card--glass-dark:hover .collab-cta {
+.collab-card:hover .collab-cta {
   color: #111111;
-}
-.collab-card--glass-red:hover .collab-cta {
-  color: #c53030;
 }
 
 .collab-cta-arrow {
@@ -405,7 +395,7 @@
 @media (max-width: 1024px) {
   .collab-grid {
     grid-template-columns: repeat(2, 1fr);
-    gap: 16px;
+    gap: 1.5rem;
   }
   .collab-title {
     font-size: 36px;
@@ -425,14 +415,11 @@
 
   .collab-grid {
     grid-template-columns: 1fr;
-    gap: 14px;
+    gap: 1.25rem;
   }
 
   .collab-card {
-    padding: 22px 18px;
-    /* Reduce blur slightly on mobile for perf */
-    backdrop-filter: blur(10px);
-    -webkit-backdrop-filter: blur(10px);
+    padding: 22px 20px;
   }
 
   .collab-connector {

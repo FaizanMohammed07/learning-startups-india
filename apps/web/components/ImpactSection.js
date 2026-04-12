@@ -202,73 +202,82 @@ const MetricCard = ({ metric }) => {
         transformStyle: 'preserve-3d',
         // Smooth tilt only applies on desktop when hovered
         transform: isHovered
-          ? `perspective(1000px) rotateX(${tilt.x}deg) rotateY(${tilt.y}deg) translateY(-8px)`
+          ? `perspective(1000px) rotateX(${tilt.x}deg) rotateY(${tilt.y}deg) translateY(-6px)`
           : 'perspective(1000px) rotateX(0deg) rotateY(0deg) translateY(0px)',
       }}
     >
-      {/* CARD OUTER WRAPPER (Handles borders and main glass filter) */}
-      <div className="absolute inset-0 bg-white/[0.04] border border-white/[0.08] backdrop-blur-[16px] rounded-[16px] transition-colors duration-300 group-hover:border-[#E53935]/40 shadow-[0_10px_30px_rgba(0,0,0,0.3)] group-hover:shadow-[0_0_20px_rgba(229,57,53,0.1),0_15px_40px_rgba(0,0,0,0.5)] -z-10" />
+      {/* CARD OUTER WRAPPER - Glass effect with hover glow */}
+      <div className="absolute inset-0 bg-white/[0.04] border border-white/[0.08] backdrop-blur-[16px] rounded-[18px] transition-all duration-300 group-hover:border-[#E53935]/40 group-hover:shadow-[0_0_20px_rgba(229,57,53,0.15),0_15px_40px_rgba(0,0,0,0.5)] group-hover:-translate-y-1 shadow-[0_10px_30px_rgba(0,0,0,0.3)] -z-10" />
 
-      {/* 1. Inner Highlight Layer (Dual Layer Glass) */}
+      {/* Inner Highlight Layer - Glass effect */}
       <div
-        className="absolute inset-0 rounded-[16px] pointer-events-none -z-10"
+        className="absolute inset-0 rounded-[18px] pointer-events-none -z-10"
         style={{
           background:
             'linear-gradient(180deg, rgba(255,255,255,0.08) 0%, rgba(255,255,255,0) 100%)',
-          boxShadow: 'inset 0 1px 0 0 rgba(255,255,255,0.12)', // Top light reflection
+          boxShadow: 'inset 0 1px 0 0 rgba(255,255,255,0.12)',
         }}
         aria-hidden="true"
       />
 
-      {/* 2. Soft Tint (Matches Icon Color) */}
+      {/* Soft Tint - Icon Color Match */}
       <div
-        className={`absolute inset-0 bg-gradient-to-br ${metric.gradient} opacity-[0.03] group-hover:opacity-[0.08] transition-opacity duration-300 pointer-events-none rounded-[16px] -z-10`}
+        className={`absolute inset-0 bg-gradient-to-br ${metric.gradient} opacity-[0.03] group-hover:opacity-[0.08] transition-opacity duration-300 pointer-events-none rounded-[18px] -z-10`}
         aria-hidden="true"
       />
 
-      {/* 3. Interactive Cursor Glow (Spotlight - Fade out on exit smoothly) */}
+      {/* Interactive Cursor Glow */}
       <div
-        className="pointer-events-none absolute inset-0 opacity-0 transition-opacity duration-500 ease-out group-hover:opacity-100 hidden md:block rounded-[16px]"
+        className="pointer-events-none absolute inset-0 opacity-0 transition-opacity duration-500 ease-out group-hover:opacity-100 hidden md:block rounded-[18px]"
         style={{
           background: `radial-gradient(350px circle at ${mousePos.x}px ${mousePos.y}px, rgba(229,57,53,0.15), transparent 60%)`,
         }}
         aria-hidden="true"
       />
 
-      {/* Content Container (elevated in Z-space slightly for 3D depth) */}
+      {/* Content Container - Centered alignment */}
       <div
-        className="relative z-10 flex flex-col items-center text-center gap-5 p-6"
-        style={{ transform: 'translateZ(30px)' }} // Pops out from the card background during tilt
+        className="relative z-10 flex flex-col items-center text-center"
+        style={{
+          transform: 'translateZ(30px)',
+          height: '240px',
+          padding: '24px 20px',
+          justifyContent: 'space-between',
+        }}
       >
-        {/* Gradient Icon Structure */}
-        <div
-          className={`relative w-[40px] h-[40px] rounded-[10px] bg-gradient-to-br ${metric.gradient} flex items-center justify-center transition-all duration-300 ease-out group-hover:scale-[1.08] group-hover:rotate-[3deg] shadow-[0_4px_12px_rgba(0,0,0,0.5),inset_0_1px_0_rgba(255,255,255,0.3)]`}
-        >
-          <Icon className="w-5 h-5 text-white drop-shadow-md" strokeWidth={2.5} />
+        {/* Gradient Icon - Centered with container */}
+        <div className="flex-shrink-0">
+          <div
+            className={`relative w-[44px] h-[44px] rounded-[12px] bg-gradient-to-br ${metric.gradient} flex items-center justify-center transition-all duration-300 ease-out group-hover:scale-105 group-hover:rotate-[3deg] shadow-[0_4px_12px_rgba(0,0,0,0.5),inset_0_1px_0_rgba(255,255,255,0.3)]`}
+          >
+            <Icon className="w-5 h-5 text-white drop-shadow-md" strokeWidth={2.5} />
+          </div>
         </div>
 
-        {/* Text Details */}
-        <div className="flex flex-col items-center gap-1.5">
-          {/* Stat Number */}
-          <div className="flex items-baseline justify-center !text-white drop-shadow-sm">
+        {/* Text Details - Centered */}
+        <div className="flex flex-col items-center gap-1">
+          {/* Stat Number - Larger, bolder */}
+          <div className="flex items-baseline justify-center text-white drop-shadow-sm">
             {metric.prefix && (
-              <span className="text-[22px] font-bold mr-1 opacity-90">{metric.prefix}</span>
+              <span className="text-[24px] font-bold mr-1 opacity-90">{metric.prefix}</span>
             )}
-            <span className="text-[34px] leading-none font-bold tracking-tight">
+            <span className="text-[38px] leading-none font-bold tracking-tight">
               <AnimatedCounter value={metric.value} trigger={isInView} duration={1600} />
             </span>
             {metric.suffix && (
-              <span className="text-[22px] font-bold ml-1 opacity-90">{metric.suffix}</span>
+              <span className="text-[24px] font-bold ml-1 opacity-90">{metric.suffix}</span>
             )}
           </div>
 
-          {/* Label */}
-          <h3 className="!text-[#FFFFFF] opacity-90 font-semibold text-base mt-2 tracking-wide">
+          {/* Label - 16px, weight 600 */}
+          <h3 className="text-white opacity-90 font-semibold text-base mt-1 tracking-wide">
             {metric.label}
           </h3>
 
-          {/* Description */}
-          <p className="!text-[#A1A1AA] text-[13px] leading-relaxed mt-1">{metric.sub}</p>
+          {/* Description - 13-14px, #9CA3AF, max-width 85% */}
+          <p className="text-[#9CA3AF] text-[13px] leading-relaxed mt-1 max-w-[85%]">
+            {metric.sub}
+          </p>
         </div>
       </div>
     </motion.div>
@@ -346,7 +355,7 @@ export default function ImpactSection() {
         </div>
 
         {/* GRID */}
-        <div className="iec-impact-grid w-full grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
+        <div className="w-full grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-7">
           {impactMetrics.map(metric => (
             <MetricCard key={metric.id} metric={metric} />
           ))}

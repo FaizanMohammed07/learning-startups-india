@@ -121,20 +121,13 @@ function SpotlightCard({ children, ...props }) {
 }
 
 // ─── FlipCard ─────────────────────────────────────────────────────────────────
-// Desktop: 3D rotateY flip. Mobile/touch: accordion expand.
+// 3D rotateY flip card with click-based interaction
 function FlipCard({ feature, index }) {
   const [flipped, setFlipped] = useState(false);
-  const [expanded, setExpanded] = useState(false);
-
-  const isTouchDevice = typeof window !== 'undefined' && window.matchMedia('(hover: none)').matches;
 
   const handleToggleFlip = e => {
     e.stopPropagation();
-    if (isTouchDevice) {
-      setExpanded(v => !v);
-    } else {
-      setFlipped(v => !v);
-    }
+    setFlipped(v => !v);
   };
 
   const handleFlipBack = e => {
@@ -151,82 +144,74 @@ function FlipCard({ feature, index }) {
         viewport={{ once: true, margin: '-50px' }}
         transition={{ duration: 0.5, delay: index * 0.1, ease: 'easeOut' }}
       >
-        {/* ── Flip container ── */}
-        <div 
-          className={`card-flipper ${flipped ? 'is-flipped' : ''}`}
-          onClick={handleToggleFlip}
-          style={{ cursor: 'pointer' }}
-        >
-          {/* ─ FRONT ─ */}
-          <div className="card-face card-front ecosystem-card">
-            <div className="ecosystem-card-header">
-              <div className="ecosystem-icon-wrapper">{feature.icon}</div>
-            </div>
-
-            <div className="ecosystem-badge-row">
-              {feature.badges?.map((badge, idx) => (
-                <span
-                  key={idx}
-                  className={`ecosystem-highlight-badge ${badge.active ? 'active' : ''}`}
-                >
-                  {badge.text}
-                </span>
-              ))}
-            </div>
-
-            <h3 className="ecosystem-card-title">{feature.title}</h3>
-            <p className="ecosystem-card-desc">{feature.description}</p>
-
-            <div
-              className="ecosystem-card-footer"
-              aria-label={`Learn more about ${feature.title}`}
-            >
-              <span className="ecosystem-learn-more">{isTouchDevice ? 'Tap to view details' : 'Learn more'}</span>
-              <svg
-                className="ecosystem-arrow"
-                width="16"
-                height="16"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="2"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              >
-                <line x1="5" y1="12" x2="19" y2="12" />
-                <polyline points="12 5 19 12 12 19" />
-              </svg>
-            </div>
-
-            {/* Mobile accordion panel */}
-            {isTouchDevice && (
-              <div className={`card-accordion ${expanded ? 'card-accordion--open' : ''}`}>
-                <div className="card-back-inner">
-                  <BackContent feature={feature} onClose={() => setExpanded(false)} />
-                </div>
+        {/* ── Flip container (flipped class applied here) ── */}
+        <div className={`card-container ${flipped ? 'flipped' : ''}`}>
+          <div className="card-inner">
+            {/* ─ FRONT ─ */}
+            <div className="card-front ecosystem-card">
+              <div className="ecosystem-card-header">
+                <div className="ecosystem-icon-wrapper">{feature.icon}</div>
               </div>
-            )}
-          </div>
 
-          {/* ─ BACK ─ */}
-          <div className="card-face card-back ecosystem-card">
-            <button className="card-back-close" onClick={handleFlipBack} aria-label="Go back">
-              <svg
-                width="16"
-                height="16"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="2.5"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              >
-                <line x1="19" y1="12" x2="5" y2="12" />
-                <polyline points="12 19 5 12 12 5" />
-              </svg>
-              <span>Back</span>
-            </button>
-            <BackContent feature={feature} onClose={() => setFlipped(false)} />
+              <div className="ecosystem-badge-row">
+                {feature.badges?.map((badge, idx) => (
+                  <span
+                    key={idx}
+                    className={`ecosystem-highlight-badge ${badge.active ? 'active' : ''}`}
+                  >
+                    {badge.text}
+                  </span>
+                ))}
+              </div>
+
+              <h3 className="ecosystem-card-title">{feature.title}</h3>
+              <p className="ecosystem-card-desc">{feature.description}</p>
+
+              <div className="ecosystem-card-footer">
+                <button
+                  className="ecosystem-learn-more-btn"
+                  onClick={handleToggleFlip}
+                  aria-label={`Learn more about ${feature.title}`}
+                >
+                  <span>Learn more</span>
+                  <svg
+                    className="ecosystem-arrow"
+                    width="16"
+                    height="16"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  >
+                    <line x1="5" y1="12" x2="19" y2="12" />
+                    <polyline points="12 5 19 12 12 19" />
+                  </svg>
+                </button>
+              </div>
+            </div>
+
+            {/* ─ BACK ─ */}
+            <div className="card-back ecosystem-card">
+              <button className="card-back-close" onClick={handleFlipBack} aria-label="Go back">
+                <svg
+                  width="16"
+                  height="16"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2.5"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                >
+                  <line x1="19" y1="12" x2="5" y2="12" />
+                  <polyline points="12 19 5 12 12 5" />
+                </svg>
+                <span>Back</span>
+              </button>
+              <BackContent feature={feature} onClose={() => setFlipped(false)} />
+            </div>
           </div>
         </div>
       </motion.div>
@@ -249,8 +234,8 @@ function BackContent({ feature }) {
         ))}
       </ul>
       {feature.backContent.cta && (
-        <a 
-          href={feature.backContent.ctaHref || '#'} 
+        <a
+          href={feature.backContent.ctaHref || '#'}
           className="card-back-cta"
           onClick={e => e.stopPropagation()}
         >

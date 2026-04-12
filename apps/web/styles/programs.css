@@ -129,6 +129,7 @@
   border-radius: 14px;
   border: 1px solid rgba(255, 255, 255, 0.1);
   transition: border-color 0.3s ease;
+  width: 100%;
 }
 
 .notify-form:focus-within {
@@ -171,6 +172,13 @@
   transform: translateY(0);
 }
 
+.programs-container {
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
 /* ==========================================
    RESPONSIVE DESIGN
    ========================================== */
@@ -208,6 +216,7 @@
     border: none;
     padding: 0;
     gap: 12px;
+    max-width: 100%;
   }
 
   .notify-input {

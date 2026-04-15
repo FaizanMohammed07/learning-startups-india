@@ -21,6 +21,8 @@ import {
 import '../../styles/about-modern.css';
 import TeamSection from '@/components/TeamSection';
 import AboutHero from '@/components/AboutHero';
+import EcosystemImpactRoadmap from '@/components/EcosystemImpactRoadmap';
+import '../../styles/ecosystem-roadmap.css';
 
 export default function AboutUs() {
   useEffect(() => {
@@ -221,64 +223,7 @@ export default function AboutUs() {
           </div>
         </section>
 
-        {/* Ecosystem Growth - Dark */}
-        <section className="ecosystem-section">
-          <div className="container">
-            <div>
-              <div className="section-header">
-                <div className="section-label">Ecosystem Impact</div>
-                <h2 className="section-title">How We Help the Ecosystem Grow</h2>
-                <p className="section-description">
-                  We act as a bridge between all key ecosystem players
-                </p>
-              </div>
-
-              <div className="ecosystem-flow">
-                <div className="ecosystem-node">
-                  <div className="node-icon">
-                    <Rocket size={24} />
-                  </div>
-                  <h4>Aspiring Founders & Startups</h4>
-                </div>
-                <div className="flow-connector">↔</div>
-                <div className="ecosystem-node">
-                  <div className="node-icon">
-                    <UserCheck size={24} />
-                  </div>
-                  <h4>Mentors & Industry Experts</h4>
-                </div>
-                <div className="flow-connector">↔</div>
-                <div className="ecosystem-node">
-                  <div className="node-icon">
-                    <Building2 size={24} />
-                  </div>
-                  <h4>Incubators & Accelerators</h4>
-                </div>
-                <div className="flow-connector">↔</div>
-                <div className="ecosystem-node">
-                  <div className="node-icon">
-                    <Library size={24} />
-                  </div>
-                  <h4>Colleges & Institutions</h4>
-                </div>
-                <div className="flow-connector">↔</div>
-                <div className="ecosystem-node">
-                  <div className="node-icon">
-                    <Coins size={24} />
-                  </div>
-                  <h4>Investors & Organizations</h4>
-                </div>
-              </div>
-
-              <div className="ecosystem-statement">
-                <p>
-                  By connecting these stakeholders, we ensure founders don’t just learn—but{' '}
-                  <strong>progress</strong>.
-                </p>
-              </div>
-            </div>
-          </div>
-        </section>
+        <EcosystemImpactRoadmap />
 
         {/* Our Approach - Light */}
         <section className="approach-section">

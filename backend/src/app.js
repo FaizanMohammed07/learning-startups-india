@@ -63,8 +63,8 @@ app.set('trust proxy', 1); // Trust first proxy for correct client IPs (if behin
 
 const allowedOrigins = [
   'https://learning-startups-india.vercel.app',
-  'https://www.innovationandentrepreneurshipcouncil.org',
-  'https://innovationandentrepreneurshipcouncil.org',
+  'https://startupsindia.in',
+  'https://www.startupsindia.in',
   'http://localhost:3000',
   // local dev (optional)
 ];

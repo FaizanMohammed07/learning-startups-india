@@ -390,6 +390,7 @@ export default function DashboardPage() {
   const [streak, setStreak] = useState({ current: 0, lastDate: null });
   const [insight, setInsight] = useState('');
   const [insightVisible, setInsightVisible] = useState(false);
+  const founderName = user?.fullName || user?.full_name || user?.name || 'Founder';
 
   useEffect(() => {
     setStreak(recordStreak());
@@ -722,7 +723,7 @@ export default function DashboardPage() {
                 textShadow: '0 2px 20px rgba(0,0,0,0.3)',
               }}
             >
-              {user?.fullName || 'Founder'}
+              {`${getGreeting()} Founder ${founderName}`}
             </h1>
 
             {/* Phase badge + Readiness */}

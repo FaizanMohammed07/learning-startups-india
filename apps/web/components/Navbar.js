@@ -35,7 +35,7 @@ export default function Navbar() {
     { label: 'Mentors', href: '/mentors', hasDropdown: true },
     { label: 'Investors', href: '/investors', hasDropdown: true },
     { label: 'Market Access', href: '/market-access', hasDropdown: true },
-    { label: 'Source', href: '/source', hasDropdown: true },
+    // { label: 'Source', href: '/source', hasDropdown: true },
   ];
 
   return (

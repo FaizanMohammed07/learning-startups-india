@@ -1,5 +1,6 @@
 'use client';
 
+/*
 import { useState } from 'react';
 import { motion } from 'framer-motion';
 import '../../styles/source-new.css';
@@ -88,11 +89,10 @@ export default function SourcePage() {
   return (
     <div className="source-page">
 
-      {/* Hero Section */}
       <section className="source-hero">
         <div className="hero-gradient-bg"></div>
         <div className="container">
-          <motion.div 
+          <motion.div
             className="hero-content"
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
@@ -109,7 +109,6 @@ export default function SourcePage() {
         </div>
       </section>
 
-      {/* Categories */}
       <section className="category-section">
         <div className="container">
           <div className="categories-scroll">
@@ -127,7 +126,6 @@ export default function SourcePage() {
         </div>
       </section>
 
-      {/* Articles Grid */}
       <section className="articles-section">
         <div className="container">
           <h2 className="section-title">Latest Articles</h2>
@@ -163,4 +161,9 @@ export default function SourcePage() {
       </section>
     </div>
   );
+}
+*/
+
+export default function SourcePage() {
+  return null;
 }

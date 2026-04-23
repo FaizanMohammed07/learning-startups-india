@@ -15,7 +15,7 @@ export default function DemoClassesSection() {
     {
       id: 1,
       title: 'Why Pre incubation is important',
-      instructor: 'Ravi Tilekar',
+      instructor: 'Vishwaraj Saude',
       // duration: '45 min',
 
       videoUrl: 'https://10ihs6meu0bf1qny.public.blob.vercel-storage.com/demo-1.mp4', // Replace with your video file
@@ -27,7 +27,7 @@ export default function DemoClassesSection() {
     },
     {
       id: 2,
-      title: 'Idea Validation',
+      title: 'Market Research & Validation',
       instructor: 'Vishwaraj Saude',
       // duration: '60 min',
 
@@ -40,8 +40,8 @@ export default function DemoClassesSection() {
     },
     {
       id: 3,
-      title: 'Business Model',
-      instructor: 'Avinash Tilekar',
+      title: 'Marketing and Go To Market Strategy',
+      instructor: 'Vishwaraj Saude',
       // duration: '50 min',
 
       videoUrl: 'https://10ihs6meu0bf1qny.public.blob.vercel-storage.com/demo-3.mp4', // Replace with your video file
@@ -51,45 +51,45 @@ export default function DemoClassesSection() {
       gradient: 'linear-gradient(135deg, #4facfe 0%, #00f2fe 100%)',
       icon: '💰',
     },
-    {
-      id: 3,
-      title: 'Market & Go To Market Strategy',
-      instructor: 'Vishwaraj Saude',
-      // duration: '50 min',
+    // {
+    //   id: 3,
+    //   title: 'Market & Go To Market Strategy',
+    //   instructor: 'Vishwaraj Saude',
+    //   // duration: '50 min',
 
-      videoUrl: '/videos/demo-3.mp4', // Replace with your video file
-      thumbnail: '/thumbnails/demo-3.jpg', // Replace with your thumbnail
-      topics: ['understanding Market', 'Market strategy', 'Revenue stream'],
-      views: '18.7K',
-      gradient: 'linear-gradient(135deg, #4facfe 0%, #00f2fe 100%)',
-      icon: '💰',
-    },
-    {
-      id: 3,
-      title: 'Finance & Legal Foundation',
-      instructor: 'Bharat Bhushan Rallapalli',
-      // duration: '50 min',
+    //   videoUrl: '/videos/demo-3.mp4', // Replace with your video file
+    //   thumbnail: '/thumbnails/demo-3.jpg', // Replace with your thumbnail
+    //   topics: ['understanding Market', 'Market strategy', 'Revenue stream'],
+    //   views: '18.7K',
+    //   gradient: 'linear-gradient(135deg, #4facfe 0%, #00f2fe 100%)',
+    //   icon: '💰',
+    // },
+    // {
+    //   id: 3,
+    //   title: 'Finance & Legal Foundation',
+    //   instructor: 'Bharat Bhushan Rallapalli',
+    //   // duration: '50 min',
 
-      videoUrl: '/videos/demo-3.mp4', // Replace with your video file
-      thumbnail: '/thumbnails/demo-3.jpg', // Replace with your thumbnail
-      topics: ['Legal Structure', 'IPR protection', 'financial planning'],
-      views: '18.7K',
-      gradient: 'linear-gradient(135deg, #4facfe 0%, #00f2fe 100%)',
-      icon: '💰',
-    },
-    {
-      id: 3,
-      title: 'Idea Pitching',
-      instructor: 'Bharat Bhushan Rallapalli',
-      // duration: '50 min',
+    //   videoUrl: '/videos/demo-3.mp4', // Replace with your video file
+    //   thumbnail: '/thumbnails/demo-3.jpg', // Replace with your thumbnail
+    //   topics: ['Legal Structure', 'IPR protection', 'financial planning'],
+    //   views: '18.7K',
+    //   gradient: 'linear-gradient(135deg, #4facfe 0%, #00f2fe 100%)',
+    //   icon: '💰',
+    // },
+    // {
+    //   id: 3,
+    //   title: 'Idea Pitching',
+    //   instructor: 'Bharat Bhushan Rallapalli',
+    //   // duration: '50 min',
 
-      videoUrl: '/videos/demo-3.mp4', // Replace with your video file
-      thumbnail: '/thumbnails/demo-3.jpg', // Replace with your thumbnail
-      topics: ['Preparing Pitch Deck', 'Understanding Investors', 'Storytelling'],
-      views: '18.7K',
-      gradient: 'linear-gradient(135deg, #4facfe 0%, #00f2fe 100%)',
-      icon: '💰',
-    },
+    //   videoUrl: '/videos/demo-3.mp4', // Replace with your video file
+    //   thumbnail: '/thumbnails/demo-3.jpg', // Replace with your thumbnail
+    //   topics: ['Preparing Pitch Deck', 'Understanding Investors', 'Storytelling'],
+    //   views: '18.7K',
+    //   gradient: 'linear-gradient(135deg, #4facfe 0%, #00f2fe 100%)',
+    //   icon: '💰',
+    // },
   ];
 
   const handleOpenVideo = demo => {
@@ -124,7 +124,7 @@ export default function DemoClassesSection() {
             viewport={{ once: true }}
             transition={{ duration: 0.5, delay: 0.2 }}
           >
-            <span className="badge-icon">🎓</span>
+            <span className="badge-icon"></span>
             <span className="badge-text">Free Demo Classes</span>
           </motion.div>
 

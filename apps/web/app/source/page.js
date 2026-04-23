@@ -1,5 +1,6 @@
 'use client';
 
+/*
 import { useState } from 'react';
 import { motion } from 'framer-motion';
 import '../../styles/source-new.css';
@@ -97,7 +98,7 @@ export default function SourcePage() {
       <section className="source-hero">
         <div className="hero-gradient-bg"></div>
         <div className="container">
-          <motion.div 
+          <motion.div
             className="hero-content"
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
@@ -205,4 +206,9 @@ export default function SourcePage() {
       </div>
     </div>
   );
+}
+*/
+
+export default function SourcePage() {
+  return null;
 }

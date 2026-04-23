@@ -12,4 +12,5 @@ export const metadata = {
 
 export default function AuthLayout({ children }) {
   return <>{children}</>;
+  // The actual layout and styling is handled in the individual auth page components (e.g. login/page.js, signup/page.js)
 }

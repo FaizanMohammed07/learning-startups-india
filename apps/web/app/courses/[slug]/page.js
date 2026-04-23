@@ -464,6 +464,9 @@ export default function CourseDetailPage() {
     () => modules.reduce((sum, m) => sum + (m.lessonCount || m.lessons?.length || 0), 0),
     [modules]
   );
+  const displayModules = 8;
+  const displayLessons = 58;
+  const displayStudents = 65;
   const hasDiscount =
     course?.originalPriceInr && course.originalPriceInr > (course?.priceInr || course?.price || 0);
   const price = course?.priceInr || course?.price || 0;
@@ -582,12 +585,12 @@ export default function CourseDetailPage() {
               <div className="flex flex-wrap items-center gap-x-5 gap-y-3 text-sm text-white/50">
                 {modules.length > 0 && (
                   <span className="flex items-center gap-1.5">
-                    <span className="text-[#C5975B]">{Icons.modules}</span> {modules.length} Modules
+                    <span className="text-[#C5975B]">{Icons.modules}</span> {displayModules} Modules
                   </span>
                 )}
                 {totalLessons > 0 && (
                   <span className="flex items-center gap-1.5">
-                    <span className="text-[#C5975B]">{Icons.video}</span> {totalLessons} Lessons
+                    <span className="text-[#C5975B]">{Icons.video}</span> {displayLessons} Lessons
                   </span>
                 )}
                 {course.durationWeeks > 0 && (
@@ -599,7 +602,7 @@ export default function CourseDetailPage() {
                 {course.enrolledCount > 0 && (
                   <span className="flex items-center gap-1.5">
                     <span className="text-[#C5975B]">{Icons.users}</span>{' '}
-                    {course.enrolledCount.toLocaleString()} Students
+                    {displayStudents}+ Students
                   </span>
                 )}
               </div>
@@ -717,7 +720,7 @@ export default function CourseDetailPage() {
                       { icon: Icons.certificate, text: 'Certificate on completion' },
                       {
                         icon: Icons.modules,
-                        text: `${modules.length} modules, ${totalLessons} lessons`,
+                        text: `${displayModules} modules, ${displayLessons} lessons`,
                       },
                       { icon: Icons.mentor, text: 'Mentor support included' },
                       { icon: Icons.shield, text: '7-day money-back guarantee' },
@@ -875,14 +878,14 @@ export default function CourseDetailPage() {
                     {[
                       {
                         label: 'Modules',
-                        value: modules.length,
+                        value: displayModules,
                         icon: Icons.modules,
                         color: 'text-[#7A1F2B]',
                         bg: 'bg-[#7A1F2B]/10',
                       },
                       {
                         label: 'Lessons',
-                        value: totalLessons,
+                        value: displayLessons,
                         icon: Icons.video,
                         color: 'text-[#C5975B]',
                         bg: 'bg-[#C5975B]/10',
@@ -896,7 +899,7 @@ export default function CourseDetailPage() {
                       },
                       {
                         label: 'Students',
-                        value: course.enrolledCount || 0,
+                        value: displayStudents,
                         icon: Icons.users,
                         color: 'text-emerald-600',
                         bg: 'bg-emerald-50',
@@ -1030,7 +1033,7 @@ export default function CourseDetailPage() {
                         <div>
                           <h2 className="text-xl font-bold text-gray-900">Course Curriculum</h2>
                           <p className="text-sm text-gray-500">
-                            {modules.length} modules, {totalLessons} lessons
+                            {displayModules} modules, {displayLessons} lessons
                           </p>
                         </div>
                       </div>
@@ -1213,7 +1216,7 @@ export default function CourseDetailPage() {
                   <div className="grid grid-cols-3 gap-4">
                     {[
                       {
-                        value: course.enrolledCount || 100,
+                        value: displayStudents,
                         suffix: '+',
                         label: 'Students Enrolled',
                       },
@@ -1433,7 +1436,7 @@ export default function CourseDetailPage() {
                 Ready to Transform Your Startup Journey?
               </h2>
               <p className="text-white/70 mb-8 max-w-xl mx-auto leading-relaxed">
-                Join {course.enrolledCount?.toLocaleString() || '100'}+ students who are already
+                Join {displayStudents}+ students who are already
                 building the future. Start learning today with lifetime access and mentor support.
               </p>
               <div className="flex flex-col sm:flex-row items-center justify-center gap-4">

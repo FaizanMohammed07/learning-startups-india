@@ -55,6 +55,9 @@ function SkeletonCard() {
 
 /* ──── Course Card ──── */
 function CourseCard({ course, index }) {
+  const displayModules = 8;
+  const displayLessons = 58;
+  const displayStudents = '65+';
   const hasDiscount =
     course.originalPriceInr && course.originalPriceInr > (course.priceInr || course.price || 0);
   const discountPct = hasDiscount
@@ -115,65 +118,59 @@ function CourseCard({ course, index }) {
 
             {/* Rating */}
             <div className="mb-3">
-              <StarRating rating={course.rating || 4.5} count={course.enrolledCount || 0} />
+              <StarRating rating={course.rating || 4.5} count={65} />
             </div>
 
             {/* Stats */}
             <div className="flex items-center gap-4 text-xs text-gray-400 mb-4">
-              {course.durationWeeks > 0 && (
-                <span className="flex items-center gap-1">
-                  <svg
-                    className="w-3.5 h-3.5"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke="currentColor"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"
-                    />
-                  </svg>
-                  {course.durationWeeks}w
-                </span>
-              )}
-              {course.totalModules > 0 && (
-                <span className="flex items-center gap-1">
-                  <svg
-                    className="w-3.5 h-3.5"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke="currentColor"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"
-                    />
-                  </svg>
-                  {course.totalModules} modules
-                </span>
-              )}
-              {course.enrolledCount > 0 && (
-                <span className="flex items-center gap-1">
-                  <svg
-                    className="w-3.5 h-3.5"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke="currentColor"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197m13.5-9a2.25 2.25 0 11-4.5 0 2.25 2.25 0 014.5 0z"
-                    />
-                  </svg>
-                  {course.enrolledCount} students
-                </span>
-              )}
+              <span className="flex items-center gap-1">
+                <svg
+                  className="w-3.5 h-3.5"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"
+                  />
+                </svg>
+                {displayModules} modules
+              </span>
+              <span className="flex items-center gap-1">
+                <svg
+                  className="w-3.5 h-3.5"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14m-6 5H5a2 2 0 01-2-2V7a2 2 0 012-2h4m0 14V5m0 14h6a2 2 0 002-2v-5a2 2 0 00-2-2H9"
+                  />
+                </svg>
+                {displayLessons} lessons
+              </span>
+              <span className="flex items-center gap-1">
+                <svg
+                  className="w-3.5 h-3.5"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197m13.5-9a2.25 2.25 0 11-4.5 0 2.25 2.25 0 014.5 0z"
+                  />
+                </svg>
+                {displayStudents} students
+              </span>
             </div>
 
             {/* Price + CTA */}

@@ -71,7 +71,7 @@ export default function RootLayout({ children }) {
           <ConditionalLayout>
             {children}
           </ConditionalLayout>
-     <ScrollToTop />
+          <ScrollToTop />
         </ClientErrorBoundary>
       </body>
     </html>

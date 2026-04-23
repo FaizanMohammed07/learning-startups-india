@@ -557,7 +557,7 @@ div.stat-card .stat-number,
 .section-title-center {
   font-size: 40px;
   font-weight: 700;
-  color: #1a1a1a;
+  color: #ffffff;
   text-align: center;
   margin-bottom: 12px;
   letter-spacing: -0.5px;
@@ -695,7 +695,7 @@ div.stat-card .stat-number,
 
 .mentors-grid-section {
   padding: 100px 0;
-  background: #f8f9fa;
+  background: #000;
   position: relative;
 }
 
@@ -710,7 +710,7 @@ div.stat-card .stat-number,
 .section-title {
   font-size: 40px !important;
   font-weight: 700 !important;
-  color: #1a1a1a !important;
+  color: #ffffff !important;
   margin-bottom: 12px !important;
   letter-spacing: -0.5px !important;
 }
@@ -718,7 +718,7 @@ div.stat-card .stat-number,
 .mentors-page .section-subtitle,
 .section-subtitle {
   font-size: 17px !important;
-  color: #64748b !important;
+  color: rgba(255, 255, 255, 0.6) !important;
   font-weight: 400 !important;
 }
 
@@ -752,18 +752,156 @@ div.stat-card .stat-number,
 
 .mentor-card-elite {
   position: relative;
-  background: white;
-  border-radius: 16px;
-  overflow: hidden;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
-  border: 1px solid #e5e7eb;
-  transition: all 0.25s ease;
+  background: transparent;
+  perspective: 1500px;
+  height: 480px; /* Specific height for consistency */
 }
 
-.mentor-card-elite:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
-  border-color: #cbd5e1;
+.mentor-card-inner {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  transition: transform 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+  transform-style: preserve-3d;
+  cursor: pointer;
+}
+
+.mentor-card-elite:hover .mentor-card-inner {
+  transform: rotateY(180deg);
+}
+
+.mentor-card-front, 
+.mentor-card-back {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  border: 1px solid #e5e7eb;
+}
+
+/* Front Face */
+.mentor-card-front {
+  background: white;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Back Face */
+.mentor-card-back {
+  background: linear-gradient(145deg, #0a0a0a 0%, #1a1a1a 100%);
+  transform: rotateY(180deg);
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  border-color: rgba(220, 38, 38, 0.3);
+  color: white;
+}
+
+.back-header {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.back-title {
+  font-size: 18px;
+  font-weight: 700;
+  color: #dc2626;
+  margin-bottom: 4px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.back-subtitle {
+  font-size: 13px;
+  color: #94a3b8;
+}
+
+.mentor-stats-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  margin-bottom: 24px;
+}
+
+.stat-item-back {
+  background: rgba(255, 255, 255, 0.05);
+  padding: 12px;
+  border-radius: 12px;
+  text-align: center;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.stat-value-back {
+  display: block;
+  font-size: 20px;
+  font-weight: 700;
+  color: white;
+  margin-bottom: 2px;
+}
+
+.stat-label-back {
+  font-size: 10px;
+  color: #94a3b8;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.history-section-back {
+  margin-bottom: 24px;
+}
+
+.history-label {
+  font-size: 12px;
+  font-weight: 600;
+  color: #cbd5e1;
+  margin-bottom: 8px;
+  display: block;
+}
+
+.history-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.history-tag {
+  font-size: 11px;
+  padding: 4px 10px;
+  background: rgba(220, 38, 38, 0.15);
+  color: #fca5a5;
+  border: 1px solid rgba(220, 38, 38, 0.3);
+  border-radius: 6px;
+}
+
+.back-footer {
+  margin-top: auto;
+}
+
+.connect-btn-back {
+  width: 100%;
+  padding: 12px;
+  background: linear-gradient(135deg, #dc2626 0%, #991b1b 100%);
+  color: white;
+  border: none;
+  border-radius: 10px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  transition: all 0.3s ease;
+}
+
+.connect-btn-back:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(220, 38, 38, 0.4);
 }
 
 .card-glow {
@@ -1094,8 +1232,9 @@ div.stat-card .stat-number,
    ========================================== */
 
 .testimonials-section {
-  padding: 100px 0;
-  background: white;
+  padding: 120px 0;
+  background: #000;
+  position: relative;
 }
 
 .testimonials-grid {
@@ -1108,19 +1247,36 @@ div.stat-card .stat-number,
 }
 
 .testimonial-card {
-  background: #fafafa;
-  padding: 32px;
-  border-radius: 20px;
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.04);
-  border: 2px solid rgba(0, 0, 0, 0.04);
-  transition: all 0.3s ease;
+  background: #111112;
+  padding: 40px;
+  border-radius: 28px;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.4);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
   position: relative;
+  overflow: hidden;
+}
+
+.testimonial-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 4px;
+  height: 0;
+  background: #dc2626;
+  transition: height 0.4s ease;
+}
+
+.testimonial-card:hover::before {
+  height: 100%;
 }
 
 .testimonial-card:hover {
-  transform: translateY(-6px);
-  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.08);
-  border-color: rgba(220, 38, 38, 0.15);
+  transform: translateY(-8px);
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.6);
+  border-color: rgba(220, 38, 38, 0.3);
+  background: #121214;
 }
 
 .quote-icon {
@@ -1130,18 +1286,19 @@ div.stat-card .stat-number,
 
 .testimonial-text {
   font-size: 15px;
-  color: #475569;
-  line-height: 1.7;
+  color: rgba(255, 255, 255, 0.7);
+  line-height: 1.8;
   margin-bottom: 24px;
   font-weight: 400;
+  font-style: italic;
 }
 
 .testimonial-author {
   display: flex;
   align-items: center;
   gap: 16px;
-  padding-top: 20px;
-  border-top: 1px solid #e5e7eb;
+  padding-top: 24px;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
 }
 
 .author-avatar {
@@ -1159,13 +1316,13 @@ div.stat-card .stat-number,
 .author-name {
   font-size: 16px;
   font-weight: 700;
-  color: #1a1a1a;
+  color: #ffffff;
   margin-bottom: 4px;
 }
 
 .author-role {
   font-size: 13px;
-  color: #64748b;
+  color: rgba(255, 255, 255, 0.45);
   font-weight: 500;
 }
 

@@ -20,6 +20,7 @@
     "canvas-confetti": "^1.9.4",
     "framer-motion": "^12.23.24",
     "html2canvas": "^1.4.1",
+    "incubation-platform": "file:../..",
     "jsonwebtoken": "^9.0.3",
     "next": "^14.2.0",
     "postcss-flexbugs-fixes": "^5.0.2",

@@ -73,3 +73,15 @@ logs/
 # Temporary
 tmp/
 temp/
+
+# Temp files
+.kilo/
+.playwright-mcp/
+commit_payload*.json
+file_list*.txt
+fileio_response.json
+nul
+output*.txt
+scratch/
+sync_changes*
+upserts*.json

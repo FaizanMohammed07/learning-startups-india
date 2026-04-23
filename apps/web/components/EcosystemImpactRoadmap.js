@@ -1,289 +1,148 @@
 'use client';
 
-import React, { useEffect, useRef, useState } from 'react';
-import { Rocket, Users, Building2, BarChart3, Link2 } from 'lucide-react';
+import React, { useEffect, useRef } from 'react';
+import { Rocket, Users, Building2, GraduationCap, Link2, ArrowRight } from 'lucide-react';
 
-/**
- * EcosystemImpactRoadmap Component
- * 
- * A scroll-driven interactive roadmap using a cubic bezier SVG path.
- * Features a rocket that follows the path and rotates based on the tangent.
- */
+const RoadmapCard = ({ title, icon }) => (
+  <div className="impact-roadmap-card">
+    <div className="impact-icon">
+      {icon}
+    </div>
+    <h3 className="impact-card-title">{title}</h3>
+  </div>
+);
+
 const EcosystemImpactRoadmap = () => {
-  const containerRef = useRef(null);
-  const pathRef = useRef(null);
-  const rocketRef = useRef(null);
-  const fillPathRef = useRef(null);
-  
-  const [progress, setProgress] = useState(0);
-  const [activeMileStone, setActiveMilestone] = useState(-1);
-  const [isMobile, setIsMobile] = useState(false);
-  const [mounted, setMounted] = useState(false);
-  const [points, setPoints] = useState([]);
-  
-  const pathLength = useRef(0);
+  const sectionRef = useRef(null);
+  const trackRef = useRef(null);
 
-  // Milestones Data
-  const milestones = [
-    { 
-      id: 0, 
-      label: "Aspiring Founders & Startups", 
-      icon: <Rocket size={20} />, 
-      pos: 0, 
-      align: "above" 
-    },
-    { 
-      id: 1, 
-      label: "Mentors & Industry Experts", 
-      icon: <Users size={20} />, 
-      pos: 0.25, 
-      align: "below" 
-    },
-    { 
-      id: 2, 
-      label: "Incubators & Accelerators", 
-      icon: <Building2 size={20} />, 
-      pos: 0.5, 
-      align: "above" 
-    },
-    { 
-      id: 3, 
-      label: "Colleges & Institutions", 
-      icon: <BarChart3 size={20} />, 
-      pos: 0.75, 
-      align: "below" 
-    },
-    { 
-      id: 4, 
-      label: "Investors & Organizations", 
-      icon: <Link2 size={20} />, 
-      pos: 1.0, 
-      align: "above",
-      isDestination: true
-    }
-  ];
-
-  // Precompute path points for smooth animation
   useEffect(() => {
-    setMounted(true);
-    
-    const computePoints = () => {
-      if (!pathRef.current) return;
-      
-      const length = pathRef.current.getTotalLength();
-      pathLength.current = length;
-      
-      const samples = 200;
-      const pts = [];
-      for (let i = 0; i <= samples; i++) {
-        const pt = pathRef.current.getPointAtLength((i / samples) * length);
-        const nextPt = pathRef.current.getPointAtLength(Math.min(((i + 1) / samples) * length, length));
-        const angle = Math.atan2(nextPt.y - pt.y, nextPt.x - pt.x) * (180 / Math.PI);
-        
-        pts.push({ 
-          x: (pt.x / 1440) * 100, 
-          y: (pt.y / 600) * 100, 
-          angle 
-        });
+    let rafId;
+    let current = 0;
+    let target = 0;
+    let currentProgress = 0;
+    let targetProgress = 0;
+
+    const lerp = (a, b, t) => a + (b - a) * t;
+
+    const updateActiveCard = () => {
+      const cards = document.querySelectorAll(".impact-roadmap-card");
+      if (!cards.length) return;
+      const center = window.innerWidth / 2;
+
+      let closest = null;
+      let minDist = Infinity;
+
+      cards.forEach((card) => {
+        const rect = card.getBoundingClientRect();
+        const cardCenter = rect.left + rect.width / 2;
+
+        const dist = Math.abs(center - cardCenter);
+
+        if (dist < minDist) {
+          minDist = dist;
+          closest = card;
+        }
+      });
+
+      cards.forEach((c) => c.classList.remove("active"));
+      if (closest) closest.classList.add("active");
+    };
+
+    const updateProgressLine = (progress) => {
+      const line = document.querySelector(".progress-line");
+      const bgGlow = document.querySelector('.impact-bg-glow');
+
+      if (line) {
+        line.style.width = `${progress * 100}%`;
       }
-      setPoints(pts);
+      
+      if (bgGlow) {
+        bgGlow.style.transform = `translate(-50%, -50%) translateX(${progress * 200}px)`;
+      }
     };
 
-    const handleResize = () => {
-      setIsMobile(window.innerWidth < 1024);
-      // Re-compute points on resize to ensure SVG metrics are fresh
-      computePoints();
+    const update = () => {
+      current = lerp(current, target, 0.08);
+      currentProgress = lerp(currentProgress, targetProgress, 0.08);
+
+      if (trackRef.current) {
+        trackRef.current.style.transform = `translateX(-${current}px)`;
+      }
+
+      updateActiveCard();
+      updateProgressLine(currentProgress);
+
+      rafId = requestAnimationFrame(update);
     };
 
-    // Small delay to ensure SVG DOM is fully ready
-    const timer = setTimeout(computePoints, 100);
+    const handleScroll = () => {
+      if (!sectionRef.current || !trackRef.current) return;
+      
+      const rect = sectionRef.current.getBoundingClientRect();
+      const scrollableDistance = rect.height - window.innerHeight;
+      const scrolled = -rect.top;
+      
+      const progress = Math.min(Math.max(scrolled / scrollableDistance, 0), 1);
+      targetProgress = progress;
 
-    handleResize();
-    window.addEventListener('resize', handleResize);
+      const maxScroll = Math.max(
+        trackRef.current.scrollWidth - window.innerWidth + 100,
+        0
+      );
+      target = Math.min(progress * maxScroll, maxScroll);
+    };
+
+    // Initial triggers
+    handleScroll();
+    rafId = requestAnimationFrame(update);
+
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    window.addEventListener("resize", handleScroll, { passive: true });
+    
     return () => {
-      window.removeEventListener('resize', handleResize);
-      clearTimeout(timer);
+      window.removeEventListener("scroll", handleScroll);
+      window.removeEventListener("resize", handleScroll);
+      cancelAnimationFrame(rafId);
     };
   }, []);
 
-  // Scroll logic
-  useEffect(() => {
-    if (!mounted || isMobile) return;
-
-    let rafId;
-    const handleScroll = () => {
-      if (!containerRef.current || !rocketRef.current) return;
-
-      const rect = containerRef.current.getBoundingClientRect();
-      const scrollHeight = rect.height - window.innerHeight;
-      const scrolled = -rect.top;
-      
-      let rawProgress = scrolled / scrollHeight;
-      rawProgress = Math.min(Math.max(rawProgress, 0), 1);
-      
-      rafId = requestAnimationFrame(() => {
-        updateRocket(rawProgress);
-      });
-    };
-
-    const updateRocket = (p) => {
-      setProgress(p);
-      
-      // Update Milestone activation
-      const milestoneIndex = milestones.findIndex(m => Math.abs(p - m.pos) < 0.05);
-      if (milestoneIndex !== -1) {
-        setActiveMilestone(milestoneIndex);
-      }
-
-      // Update Rocket position
-      if (points.length > 0) {
-        const idx = Math.floor(p * (points.length - 1));
-        const currentPt = points[idx];
-        
-        if (currentPt) {
-          rocketRef.current.style.left = `${currentPt.x}%`;
-          rocketRef.current.style.top = `${currentPt.y}%`;
-          rocketRef.current.style.transform = `translate(-50%, -50%) rotate(${currentPt.angle}deg)`;
-          
-          if (fillPathRef.current) {
-            const dashLength = pathLength.current * p;
-            fillPathRef.current.style.strokeDasharray = `${dashLength} ${pathLength.current}`;
-          }
-        }
-      }
-    };
-
-    window.addEventListener('scroll', handleScroll, { passive: true });
-    return () => {
-      window.removeEventListener('scroll', handleScroll);
-      cancelAnimationFrame(rafId);
-    };
-  }, [isMobile]);
-
-  // SVG Path Data
-  const pathD = "M 80 420 C 260 420 400 200 720 200 C 1040 200 1180 340 1360 340";
-
   return (
-    <section className="ecosystem-roadmap-section" id="impact-roadmap">
-      <div className="roadmap-noise-overlay" />
-      <div className="roadmap-bg-glow" />
-      
-      <div className="container mx-auto px-4">
-        <div className="roadmap-header">
-          <span className="roadmap-overline">Ecosystem Impact</span>
-          <h2 className="roadmap-heading">How We Help the <br/>Ecosystem Grow</h2>
-          <p className="roadmap-subtext">
-            We act as a bridge between all key ecosystem players
-          </p>
+    <section ref={sectionRef} className="ecosystem-impact-section roadmap-section" id="impact-roadmap">
+      <div className="roadmap-sticky">
+        <div className="impact-noise-overlay" />
+        <div className="impact-bg-glow" />
+
+        <div className="container mx-auto px-4 impact-header-wrapper">
+          <div className="impact-header">
+            <span className="impact-overline">Ecosystem Impact</span>
+            <h2 className="impact-heading">
+              How We Help the <br />
+              Ecosystem Grow
+            </h2>
+            <p className="impact-subtext">We act as a bridge between all key ecosystem players</p>
+          </div>
         </div>
 
-        {(!mounted || isMobile) ? (
-          <div className="mobile-roadmap-stack">
-            <div className="mobile-connection-line" />
-            {milestones.map((m) => (
-              <div key={m.id} className="mobile-roadmap-item">
-                <div className="mobile-roadmap-card">
-                  <div className="card-icon-box" style={{ background: '#E53935', color: '#FFF' }}>
-                    {m.icon}
-                  </div>
-                  <span className="card-label" style={{ color: '#FFF', fontWeight: 600 }}>
-                    {m.label}
-                  </span>
-                </div>
-              </div>
-            ))}
-            <div className="roadmap-bottom-callout visible" style={{ marginTop: '20px' }}>
-                <p className="callout-text">
-                  By connecting these stakeholders, we ensure founders don't just learn—but{' '}
-                  <span className="highlight-text">progress</span>.
-                </p>
-            </div>
+        <div className="roadmap-inner">
+          <div className="roadmap-track" ref={trackRef}>
+            <div className="progress-line"></div>
+            
+            <RoadmapCard title="Founders & Startups" icon={<Rocket />} />
+            <ArrowRight size={20} className="impact-arrow" />
+
+            <RoadmapCard title="Mentors & Experts" icon={<Users />} />
+            <ArrowRight size={20} className="impact-arrow" />
+
+            <RoadmapCard title="Incubators & Accelerators" icon={<Building2 />} />
+            <ArrowRight size={20} className="impact-arrow" />
+
+            <RoadmapCard title="Colleges & Institutions" icon={<GraduationCap />} />
+            <ArrowRight size={20} className="impact-arrow" />
+
+            <RoadmapCard title="Investors & Organizations" icon={<Link2 />} />
           </div>
-        ) : (
-          <div className="roadmap-sticky-outer" ref={containerRef}>
-            <div className="roadmap-sticky-inner">
-              <div className="roadmap-visual-container">
-                <svg viewBox="0 0 1440 600" className="roadmap-svg-layer">
-                  {/* Road Base */}
-                  <path 
-                    ref={pathRef}
-                    d={pathD} 
-                    className="roadmap-path-base" 
-                  />
-                  {/* Dashed Center Lane */}
-                  <path 
-                    d={pathD} 
-                    className="roadmap-path-dash" 
-                  />
-                  {/* Progress Fill Trail */}
-                  <path 
-                    ref={fillPathRef}
-                    d={pathD} 
-                    className="roadmap-path-fill" 
-                    style={{ strokeDasharray: `0 10000` }}
-                  />
-                </svg>
-
-                {/* Milestones Nodes */}
-                {points.length > 0 && milestones.map((m, idx) => {
-                  const ptIdx = Math.floor(m.pos * (points.length - 1));
-                  const pt = points[ptIdx];
-                  const isActive = progress >= m.pos - 0.05;
-                  const isCurrent = activeMileStone === idx;
-
-                  return (
-                    <div 
-                      key={m.id} 
-                      className="node-wrapper"
-                      style={{ 
-                        position: 'absolute', 
-                        left: `${pt.x}%`, 
-                        top: `${pt.y}%`,
-                        zIndex: 10
-                      }}
-                    >
-                      <div className={`roadmap-node-dot ${isActive ? 'active' : ''}`} />
-                      
-                      <div className={`milestone-card ${m.align} ${isActive ? 'active' : ''} ${isCurrent ? 'pulse' : ''} ${m.isDestination ? 'destination' : ''}`}>
-                        <div className="roadmap-connector-line" />
-                        <div className="card-icon-box">
-                          {m.icon}
-                        </div>
-                        <span className="card-label">
-                          {m.label}
-                        </span>
-                      </div>
-                    </div>
-                  );
-                })}
-
-                {/* Rocket Element */}
-                <div className="roadmap-rocket-wrapper" ref={rocketRef} style={{ position: 'absolute' }}>
-                  <Rocket size={18} fill="currentColor" />
-                  
-                  {/* Tiny exhaust pulse */}
-                   <div className="roadmap-exhaust-circle" 
-                    style={{ 
-                        width: '30px', 
-                        height: '30px', 
-                        left: '-20px', 
-                        top: '7px',
-                        borderRadius: '40% 60% 60% 40% / 50%'
-                    }} 
-                   />
-                </div>
-              </div>
-
-              {/* Final Callout */}
-              <div className={`roadmap-bottom-callout ${progress > 0.95 ? 'visible' : ''}`}>
-                <p className="callout-text">
-                  By connecting these stakeholders, we ensure founders don't just learn—but{' '}
-                  <span className="highlight-text">progress</span>.
-                </p>
-              </div>
-            </div>
-          </div>
-        )}
+        </div>
       </div>
     </section>
   );

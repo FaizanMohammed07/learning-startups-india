@@ -21,7 +21,7 @@
 .impact-grid-lines {
   position: absolute;
   inset: 0;
-  background-image: 
+  background-image:
     linear-gradient(rgba(220, 38, 38, 0.05) 1px, transparent 1px),
     linear-gradient(90deg, rgba(220, 38, 38, 0.05) 1px, transparent 1px);
   background-size: 60px 60px;
@@ -30,8 +30,12 @@
 }
 
 @keyframes grid-drift {
-  0% { transform: translate(0, 0); }
-  100% { transform: translate(60px, 60px); }
+  0% {
+    transform: translate(0, 0);
+  }
+  100% {
+    transform: translate(60px, 60px);
+  }
 }
 
 /* Floating Shapes */
@@ -77,15 +81,16 @@
 }
 
 @keyframes float-shape {
-  0%, 100% { 
+  0%,
+  100% {
     transform: translate(0, 0) scale(1);
     opacity: 0.4;
   }
-  33% { 
+  33% {
     transform: translate(40px, -40px) scale(1.1);
     opacity: 0.5;
   }
-  66% { 
+  66% {
     transform: translate(-40px, 40px) scale(0.9);
     opacity: 0.3;
   }
@@ -176,7 +181,7 @@
   text-align: center;
   transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
   overflow: hidden;
-  box-shadow: 
+  box-shadow:
     0 8px 32px rgba(0, 0, 0, 0.4),
     inset 0 1px 0 rgba(255, 255, 255, 0.08),
     inset 0 -1px 0 rgba(220, 38, 38, 0.1);
@@ -215,18 +220,14 @@
   background: linear-gradient(135deg, rgba(35, 35, 35, 0.9) 0%, rgba(25, 25, 25, 1) 100%);
   border-color: rgba(220, 38, 38, 0.4);
   transform: translateY(-8px);
-  box-shadow: 
+  box-shadow:
     0 24px 48px rgba(0, 0, 0, 0.6),
     0 0 0 1px rgba(220, 38, 38, 0.3),
     inset 0 1px 0 rgba(255, 255, 255, 0.12),
     inset 0 -1px 0 rgba(220, 38, 38, 0.2);
 }
 
-/* Icon Wrapper */
-.impact-icon-wrapper {
-  margin-bottom: 24px;
-}
-
+/* Icon Box - Always stable, no hover changes */
 .impact-icon-box {
   position: relative;
   width: 80px;
@@ -236,19 +237,19 @@
   align-items: center;
   justify-content: center;
   color: white;
-  box-shadow: 
+  box-shadow:
     0 8px 24px rgba(0, 0, 0, 0.4),
     inset 0 1px 0 rgba(255, 255, 255, 0.2);
-  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
   border: 1px solid rgba(255, 255, 255, 0.1);
 }
 
+/* Remove icon hover - keep only card hover */
 .impact-stat-card:hover .impact-icon-box {
-  transform: translateY(-4px) scale(1.05);
-  box-shadow: 
-    0 16px 40px rgba(0, 0, 0, 0.5),
-    inset 0 1px 0 rgba(255, 255, 255, 0.3);
-  border-color: rgba(255, 255, 255, 0.2);
+  transform: none;
+  box-shadow:
+    0 8px 24px rgba(0, 0, 0, 0.4),
+    inset 0 1px 0 rgba(255, 255, 255, 0.2);
+  border-color: rgba(255, 255, 255, 0.1);
 }
 
 .impact-icon-glow {

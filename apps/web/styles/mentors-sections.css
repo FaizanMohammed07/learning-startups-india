@@ -1016,3 +1016,120 @@
     font-size: 14px;
   }
 }
+
+/* ==============================================
+   SUPPLEMENTAL MOBILE RESPONSIVE — MENTORS PAGE
+   ============================================== */
+
+@media (max-width: 768px) {
+  /* Become a mentor CTA inline wrapper */
+  .bmc-inline-wrapper,
+  .become-mentor-cta {
+    padding: 60px 0;
+  }
+
+  .bmc-title {
+    font-size: clamp(30px, 8vw, 48px);
+    letter-spacing: -1px;
+  }
+
+  .bmc-subtitle {
+    font-size: clamp(14px, 3.5vw, 18px);
+  }
+
+  .bmc-features-grid {
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+  }
+
+  .bmc-register-btn {
+    padding: 16px 32px;
+    font-size: 14px;
+    width: 100%;
+    max-width: 360px;
+    justify-content: center;
+  }
+
+  /* Who can apply section */
+  .who-can-apply-section {
+    padding: 60px 0;
+  }
+
+  .wca-title {
+    font-size: clamp(26px, 7vw, 44px);
+    letter-spacing: -1px;
+  }
+
+  .apply-grid-top,
+  .apply-grid-bottom,
+  .apply-grid {
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+  }
+
+  .apply-card-dark {
+    padding: 24px 16px;
+  }
+
+  /* Commitment block */
+  .commitment-dark {
+    margin: 0 16px;
+  }
+
+  .commitment-heading {
+    font-size: clamp(20px, 5vw, 28px);
+  }
+
+  /* Mentors final grid overflow prevention */
+  .mentors-scroll-track,
+  .mentors-marquee-track {
+    padding: 0;
+  }
+}
+
+@media (max-width: 480px) {
+  .apply-grid-top,
+  .apply-grid-bottom,
+  .apply-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .bmc-features-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .role-section h2 {
+    font-size: clamp(22px, 7vw, 36px);
+  }
+
+  .role-section h2 .highlight-red {
+    font-size: clamp(28px, 9vw, 44px);
+  }
+}
+
+/* Tablet breakpoint — mentors */
+@media (min-width: 769px) and (max-width: 1024px) {
+  .role-section {
+    padding: 80px 0;
+  }
+
+  .role-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+  }
+
+  .onboarding-steps {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 24px;
+  }
+
+  .bmc-inline-wrapper,
+  .become-mentor-cta {
+    padding: 80px 0;
+  }
+
+  .bmc-title {
+    font-size: clamp(40px, 6vw, 64px);
+  }
+}
+

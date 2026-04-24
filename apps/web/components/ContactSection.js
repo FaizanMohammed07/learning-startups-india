@@ -2,6 +2,7 @@
 
 import { motion } from 'framer-motion';
 import { useState } from 'react';
+import '../styles/contact.css';
 
 export default function ContactSection() {
   const [formData, setFormData] = useState({
@@ -11,73 +12,101 @@ export default function ContactSection() {
     phone: '',
     company: '',
     subject: '',
-    message: ''
+    message: '',
   });
 
-  const handleSubmit = (e) => {
+  const handleSubmit = e => {
     e.preventDefault();
     console.log('Form submitted:', formData);
   };
 
-  const handleChange = (e) => {
+  const handleChange = e => {
     setFormData({
       ...formData,
-      [e.target.name]: e.target.value
+      [e.target.name]: e.target.value,
     });
   };
 
   const contactMethods = [
     {
       icon: (
-        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
-          <path d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
+        <svg
+          width="24"
+          height="24"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="1.5"
+        >
+          <path d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
         </svg>
       ),
       label: 'Email',
-      value: 'info@startupsindia.in',
-      subtext: 'Send us an email anytime'
+      value: 'info@startupindia.in',
+      subtext: 'Send us an email anytime',
     },
     {
       icon: (
-        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
-          <path d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"/>
+        <svg
+          width="24"
+          height="24"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="1.5"
+        >
+          <path d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
         </svg>
       ),
       label: 'Phone',
       value: '+91 9014878887',
-      subtext: 'Mon-Fri 9am to 6pm IST'
+      subtext: 'Mon–Fri 9am–6pm IST',
     },
     {
       icon: (
-        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
-          <path d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/>
-          <path d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/>
+        <svg
+          width="24"
+          height="24"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="1.5"
+        >
+          <path d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+          <path d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
         </svg>
       ),
-      label: 'Office',
+      label: 'Location',
       value: 'Hyderabad, Telangana',
-      subtext: 'India'
+      subtext: 'India',
     },
     {
       icon: (
-        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
-          <circle cx="12" cy="12" r="10"/>
-          <polyline points="12 6 12 12 16 14"/>
+        <svg
+          width="24"
+          height="24"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="1.5"
+        >
+          <circle cx="12" cy="12" r="10" />
+          <polyline points="12 6 12 12 16 14" />
         </svg>
       ),
-      label: 'Response Time',
-      value: 'Within 24 hours',
-      subtext: 'Average response time'
-    }
+      label: 'Availability',
+      value: 'Mon–Fri 9am–6pm IST',
+      subtext: 'We typically respond within 24 hours',
+    },
   ];
 
   const offices = [
     {
       city: 'Hyderabad',
-      address: '3rd Floor, United Arcade, Pillar No. 143, Shop.No.8, Attapur',
-      country: 'Telangana 500048, India',
-      primary: true
-    }
+      address: 'Third Floor, Indralok Arcade, Plot No. 143, Shop No.1, Alkapur',
+      country: 'Telangana 500014, India',
+      primary: true,
+    },
   ];
 
   return (
@@ -93,9 +122,12 @@ export default function ContactSection() {
             transition={{ duration: 0.6 }}
           >
             <div className="contact-badge">CONTACT US</div>
-            <h2 className="contact-main-title">Let’s Build Something Big</h2>
+            <h2 className="contact-main-title">
+              Let&apos;s Build Something <span className="highlight">Big</span>
+            </h2>
             <p className="contact-main-subtitle">
-              Whether you have questions about the program, pricing, or anything else, our team is ready to answer all your questions.
+              Whether you have questions about the program, pricing, or anything else, our team is
+              ready to answer all your questions.
             </p>
           </motion.div>
         </div>
@@ -139,10 +171,13 @@ export default function ContactSection() {
               viewport={{ once: true }}
               transition={{ duration: 0.6, delay: 0.2 }}
             >
-              <h3 className="office-title">Our Offices</h3>
+              <h3 className="office-title">Headquarters</h3>
               <div className="office-list">
                 {offices.map((office, index) => (
-                  <div key={index} className={`office-item ${office.primary ? 'office-primary' : ''}`}>
+                  <div
+                    key={index}
+                    className={`office-item ${office.primary ? 'office-primary' : ''}`}
+                  >
                     {office.primary && <span className="office-badge">Headquarters</span>}
                     <div className="office-city">{office.city}</div>
                     <div className="office-address">{office.address}</div>
@@ -164,13 +199,17 @@ export default function ContactSection() {
             <div className="contact-form-wrapper">
               <div className="form-header">
                 <h3 className="form-title">Send us a message</h3>
-                <p className="form-subtitle">Fill out the form below and we'll get back to you as soon as possible.</p>
+                <p className="form-subtitle">
+                  Fill out the form below and we'll get back to you as soon as possible.
+                </p>
               </div>
 
               <form onSubmit={handleSubmit} className="professional-contact-form">
                 <div className="form-row">
                   <div className="form-field">
-                    <label htmlFor="firstName" className="form-label">First Name</label>
+                    <label htmlFor="firstName" className="form-label">
+                      First Name
+                    </label>
                     <input
                       type="text"
                       id="firstName"
@@ -182,7 +221,9 @@ export default function ContactSection() {
                     />
                   </div>
                   <div className="form-field">
-                    <label htmlFor="lastName" className="form-label">Last Name</label>
+                    <label htmlFor="lastName" className="form-label">
+                      Last Name
+                    </label>
                     <input
                       type="text"
                       id="lastName"
@@ -197,7 +238,9 @@ export default function ContactSection() {
 
                 <div className="form-row">
                   <div className="form-field">
-                    <label htmlFor="email" className="form-label">Email Address</label>
+                    <label htmlFor="email" className="form-label">
+                      Email Address
+                    </label>
                     <input
                       type="email"
                       id="email"
@@ -209,7 +252,9 @@ export default function ContactSection() {
                     />
                   </div>
                   <div className="form-field">
-                    <label htmlFor="phone" className="form-label">Phone Number</label>
+                    <label htmlFor="phone" className="form-label">
+                      Phone Number
+                    </label>
                     <input
                       type="tel"
                       id="phone"
@@ -222,7 +267,9 @@ export default function ContactSection() {
                 </div>
 
                 <div className="form-field">
-                  <label htmlFor="company" className="form-label">Company / University (Optional)</label>
+                  <label htmlFor="company" className="form-label">
+                    Company / University (Optional)
+                  </label>
                   <input
                     type="text"
                     id="company"
@@ -234,7 +281,9 @@ export default function ContactSection() {
                 </div>
 
                 <div className="form-field">
-                  <label htmlFor="subject" className="form-label">Subject</label>
+                  <label htmlFor="subject" className="form-label">
+                    Subject
+                  </label>
                   <select
                     id="subject"
                     name="subject"
@@ -253,7 +302,9 @@ export default function ContactSection() {
                 </div>
 
                 <div className="form-field">
-                  <label htmlFor="message" className="form-label">Message</label>
+                  <label htmlFor="message" className="form-label">
+                    Message
+                  </label>
                   <textarea
                     id="message"
                     name="message"
@@ -267,9 +318,16 @@ export default function ContactSection() {
 
                 <button type="submit" className="form-submit-pro">
                   <span>Send Message</span>
-                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                    <line x1="22" y1="2" x2="11" y2="13"/>
-                    <polygon points="22 2 15 22 11 13 2 9 22 2"/>
+                  <svg
+                    width="20"
+                    height="20"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                  >
+                    <line x1="22" y1="2" x2="11" y2="13" />
+                    <polygon points="22 2 15 22 11 13 2 9 22 2" />
                   </svg>
                 </button>
               </form>

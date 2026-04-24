@@ -1,108 +1,56 @@
 'use client';
 
+import { useEffect } from 'react';
 import { motion } from 'framer-motion';
+import {
+  Lightbulb,
+  Sprout,
+  Handshake,
+  Rocket,
+  Target,
+  Star,
+  Users,
+  GraduationCap,
+  Building2,
+  TrendingUp,
+  Zap,
+  Coins,
+  Library,
+  UserCheck,
+} from 'lucide-react';
 import '../../styles/about-modern.css';
-
+import TeamSection from '@/components/TeamSection';
+import AboutHero from '@/components/AboutHero';
+import EcosystemImpactRoadmap from '@/components/EcosystemImpactRoadmap';
+import '../../styles/ecosystem-roadmap.css';
 
 export default function AboutUs() {
-  // Floating metric cards - Startup ecosystem stats with animation delays
-  const floatingMetrics = [
-    { icon: "🚀", value: "5000+", label: "Startups", delay: 0 },
-    { icon: "💡", value: "200+", label: "Mentors", delay: 1.5 },
-    { icon: "🎯", value: "95%", label: "Success", delay: 3 },
-    { icon: "⚡", value: "24/7", label: "Support", delay: 4.5 },
-  ];
+  useEffect(() => {
+    const isTouchDevice = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
+    if (isTouchDevice) return;
+
+    const handleMouseMove = e => {
+      const cards = document.querySelectorAll(
+        '.stand-card, .what-card, .mission-card, .approach-card'
+      );
+      cards.forEach(card => {
+        const rect = card.getBoundingClientRect();
+        const x = ((e.clientX - rect.left) / rect.width) * 100;
+        const y = ((e.clientY - rect.top) / rect.height) * 100;
+        card.style.setProperty('--mouse-x', `${x}%`);
+        card.style.setProperty('--mouse-y', `${y}%`);
+      });
+    };
+
+    document.addEventListener('mousemove', handleMouseMove);
+    return () => document.removeEventListener('mousemove', handleMouseMove);
+  }, []);
 
   return (
     <>
+      <AboutHero />
+
       <div className="about-page">
-        
-        {/* Hero Section - Dark with Animated Cards */}
-        <section className="about-hero">
-          {/* Animated Background */}
-          <div className="hero-animated-bg">
-            <div className="gradient-orb orb-1"></div>
-            <div className="gradient-orb orb-2"></div>
-            <div className="gradient-orb orb-3"></div>
-          </div>
-
-          {/* Floating Grid Pattern */}
-          <div className="hero-grid-pattern"></div>
-
-          <div className="container">
-            <div className="hero-content">
-              <motion.h1 
-                className="hero-title"
-                initial={{ opacity: 0, y: 30 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.8 }}
-              >
-                Building the Future of <br/>
-                <span className="hero-highlight">Entrepreneurship</span>
-              </motion.h1>
-              
-              <motion.p 
-                className="hero-description"
-                initial={{ opacity: 0, y: 30 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.8, delay: 0.2 }}
-              >
-                We are a startup ecosystem platform connecting founders, innovators, mentors, and partners 
-                to transform ideas into successful ventures. From the first spark of innovation to scaling 
-                real businesses, we're here to support your complete entrepreneurial journey.
-              </motion.p>
-              
-              <motion.div 
-                className="hero-stats"
-                initial={{ opacity: 0, y: 30 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.8, delay: 0.4 }}
-              >
-                <div className="hero-stat">
-                  <div className="stat-number">5000+</div>
-                  <div className="stat-label">Startups Supported</div>
-                </div>
-                <div className="hero-stat">
-                  <div className="stat-number">200+</div>
-                  <div className="stat-label">Expert Mentors</div>
-                </div>
-                <div className="hero-stat">
-                  <div className="stat-number">95%</div>
-                  <div className="stat-label">Success Rate</div>
-                </div>
-              </motion.div>
-            </div>
-
-            {/* Floating Metric Cards - FadeIn/FadeOut Animation */}
-            <div className="floating-metrics-container">
-              {floatingMetrics.map((metric, index) => (
-                <motion.div
-                  key={`metric-${index}`}
-                  className={`floating-metric floating-metric-${index + 1}`}
-                  initial={{ opacity: 0, x: -50, y: 50, rotate: -5 }}
-                  animate={{ 
-                    opacity: [0, 1, 1, 0],
-                    x: [-50, 0, 0, 50],
-                    y: [50, 0, -30, -80],
-                    rotate: [-5, 0, 2, 5]
-                  }}
-                  transition={{
-                    duration: 4,
-                    delay: metric.delay,
-                    repeat: Infinity,
-                    repeatDelay: 2,
-                    ease: [0.43, 0.13, 0.23, 0.96]
-                  }}
-                >
-                  <div className="metric-icon">{metric.icon}</div>
-                  <div className="metric-value">{metric.value}</div>
-                  <div className="metric-label">{metric.label}</div>
-                </motion.div>
-              ))}
-            </div>
-          </div>
-        </section>
-
         {/* Who We Are - Dark */}
         <section className="who-section">
           <div className="container">
@@ -119,14 +67,17 @@ export default function AboutUs() {
 
               <div className="who-content">
                 <p className="who-description">
-                  Startups India is a startup ecosystem platform built to support the complete entrepreneurial journey—from 
-                  the first spark of an idea to building and scaling a real startup. We exist to connect founders, innovators, 
-                  students, mentors, and ecosystem partners under one collaborative platform where learning turns into execution.
+                  Startups India is a startup ecosystem platform built to support the complete
+                  entrepreneurial journey—from the first spark of an idea to building and scaling a
+                  real startup. We exist to connect founders, innovators, students, mentors, and
+                  ecosystem partners under one collaborative platform where learning turns into
+                  execution.
                 </p>
                 <div className="who-highlight">
                   <p>
-                    We strongly believe that great startups are not built in isolation. They grow when the right guidance, 
-                    opportunities, and ecosystem support come together at the right time.
+                    We strongly believe that great startups are not built in isolation. They grow
+                    when the right guidance, opportunities, and ecosystem support come together at
+                    the right time.
                   </p>
                 </div>
               </div>
@@ -148,25 +99,35 @@ export default function AboutUs() {
 
               <div className="stand-grid">
                 <div className="stand-card">
-                  <div className="stand-icon">💡</div>
+                  <div className="stand-icon">
+                    <Lightbulb size={24} />
+                  </div>
                   <h3>Ideas are Encouraged</h3>
                 </div>
                 <div className="stand-card">
-                  <div className="stand-icon">🌱</div>
+                  <div className="stand-icon">
+                    <Sprout size={24} />
+                  </div>
                   <h3>Innovation is Nurtured</h3>
                 </div>
                 <div className="stand-card">
-                  <div className="stand-icon">🤝</div>
+                  <div className="stand-icon">
+                    <Handshake size={24} />
+                  </div>
                   <h3>Founders are Supported</h3>
                 </div>
                 <div className="stand-card">
-                  <div className="stand-icon">🚀</div>
+                  <div className="stand-icon">
+                    <Rocket size={24} />
+                  </div>
                   <h3>Startups are Built with Clarity</h3>
                 </div>
               </div>
 
               <div className="stand-statement">
-                <p>We are not just a service provider—we are an <strong>ecosystem enabler</strong>.</p>
+                <p>
+                  We are not just a service provider—we are an <strong>ecosystem enabler</strong>.
+                </p>
               </div>
             </div>
           </div>
@@ -180,7 +141,8 @@ export default function AboutUs() {
                 <div className="section-label">Our Services</div>
                 <h2 className="section-title">What We Do as a Startup Ecosystem Platform</h2>
                 <p className="section-description">
-                  We help founders and aspiring entrepreneurs at every stage by providing structured support and real-world exposure.
+                  We help founders and aspiring entrepreneurs at every stage by providing structured
+                  support and real-world exposure.
                 </p>
               </div>
 
@@ -235,20 +197,25 @@ export default function AboutUs() {
             <div>
               <div className="mission-grid">
                 <div className="mission-card">
-                  <div className="mission-icon">🎯</div>
+                  <div className="mission-icon">
+                    <Target size={24} />
+                  </div>
                   <h3>Our Mission</h3>
                   <p>
-                    To empower founders and innovators with the right mindset, skills, mentorship, and ecosystem access 
-                    so they can build sustainable and impactful startups.
+                    To empower founders and innovators with the right mindset, skills, mentorship,
+                    and ecosystem access so they can build sustainable and impactful startups.
                   </p>
                 </div>
 
                 <div className="mission-card">
-                  <div className="mission-icon">🌟</div>
+                  <div className="mission-icon">
+                    <Star size={24} />
+                  </div>
                   <h3>Our Vision</h3>
                   <p>
-                    To build a strong, inclusive, and future-ready startup ecosystem that supports innovation, job creation, 
-                    and economic growth—especially among students and first-time founders.
+                    To build a strong, inclusive, and future-ready startup ecosystem that supports
+                    innovation, job creation, and economic growth—especially among students and
+                    first-time founders.
                   </p>
                 </div>
               </div>
@@ -256,132 +223,7 @@ export default function AboutUs() {
           </div>
         </section>
 
-        {/* Ecosystem Growth - Dark Premium */}
-        <section className="ecosystem-section-premium">
-          <div className="container">
-            <motion.div
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.7 }}
-              viewport={{ once: true }}
-            >
-              <h2 className="eco-main-title">
-                How We Help the{' '}
-                <span className="eco-title-red">Ecosystem Grow</span>
-              </h2>
-              <p className="eco-main-subtitle">
-                A definitive, linear framework connecting high-impact stakeholders to institutional-grade growth.
-              </p>
-
-              <div className="eco-stack">
-                {[
-                  {
-                    label: 'Aspiring Founders & Startups',
-                    desc: 'The primary engines of innovation, seeking guidance and capital to transform ideas into institutional-grade ventures.',
-                    icon: (
-                      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                        <path d="M4.5 16.5c-1.5 1.26-2 5-2 5s3.74-.5 5-2c.71-.84.7-2.13-.09-2.91a2.18 2.18 0 0 0-2.91-.09z"/>
-                        <path d="m12 15-3-3a22 22 0 0 1 2-3.95A12.88 12.88 0 0 1 22 2c0 2.72-.78 7.5-6 11a22.35 22.35 0 0 1-4 2z"/>
-                        <path d="M9 12H4s.5-1 1.35-2.35L12 15Z"/>
-                        <path d="M12 15v5s1-.5 2.35-1.35L9 12Z"/>
-                      </svg>
-                    ),
-                  },
-                  {
-                    label: 'Mentors & Industry Experts',
-                    desc: 'Elite professionals providing the surgical precision and strategic oversight needed to navigate complex markets.',
-                    icon: (
-                      <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                        <circle cx="12" cy="12" r="10"/>
-                        <circle cx="12" cy="12" r="3"/>
-                      </svg>
-                    ),
-                  },
-                  {
-                    label: 'Incubators & Accelerators',
-                    desc: 'The critical framework for high-frequency growth, offering modalized support and operational resources.',
-                    icon: (
-                      <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                        <path d="M12 2L2 7l10 5 10-5-10-5z"/>
-                        <path d="M2 17l10 5 10-5"/>
-                        <path d="M2 12l10 5 10-5"/>
-                      </svg>
-                    ),
-                  },
-                  {
-                    label: 'Colleges & Institutions',
-                    desc: 'The bedrock of talent and research, supplying a steady stream of intellectual capital and fresh perspectives.',
-                    icon: (
-                      <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                        <circle cx="12" cy="8" r="6"/>
-                        <path d="M15.477 12.89 17 22l-5-3-5 3 1.523-9.11"/>
-                      </svg>
-                    ),
-                  },
-                  {
-                    label: 'Investors & Organizations',
-                    desc: 'Providing the essential fuel for expansion while seeking high-conviction opportunities within the network.',
-                    icon: (
-                      <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                        <line x1="12" y1="1" x2="12" y2="23"/>
-                        <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/>
-                      </svg>
-                    ),
-                  },
-                ].map((item, i) => (
-                  <div className="eco-segment" key={i}>
-                    <motion.div 
-                      className="eco-card-icon"
-                      initial={{ opacity: 0, scale: 0.5 }}
-                      whileInView={{ opacity: 1, scale: 1 }}
-                      transition={{ duration: 0.5, delay: i * 0.1 }}
-                      viewport={{ once: true }}
-                    >
-                      {item.icon}
-                    </motion.div>
-                    <motion.div
-                      className="eco-card"
-                      initial={{ opacity: 0, y: 20 }}
-                      whileInView={{ opacity: 1, y: 0 }}
-                      transition={{ duration: 0.6, delay: i * 0.12 + 0.1 }}
-                      viewport={{ once: true }}
-                    >
-                      <h4 className="eco-card-title">{item.label}</h4>
-                      <p className="eco-card-desc">{item.desc}</p>
-                    </motion.div>
-
-                    {/* Animated Arrow Connector */}
-                    {i < 4 && (
-                      <motion.div 
-                        className="eco-arrow-connector"
-                        initial={{ opacity: 0, y: -10 }}
-                        whileInView={{ opacity: 1, y: 0 }}
-                        transition={{ duration: 0.4, delay: i * 0.12 + 0.3 }}
-                        viewport={{ once: true }}
-                      >
-                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="4" strokeLinecap="round" strokeLinejoin="round">
-                          <polyline points="7 13 12 18 17 13"/>
-                          <polyline points="7 6 12 11 17 6"/>
-                        </svg>
-                      </motion.div>
-                    )}
-                  </div>
-                ))}
-              </div>
-
-              <motion.div
-                className="eco-quote"
-                initial={{ opacity: 0, y: 30, scale: 0.95 }}
-                whileInView={{ opacity: 1, y: 0, scale: 1 }}
-                transition={{ duration: 0.8, delay: 0.6 }}
-                viewport={{ once: true }}
-              >
-                "By connecting these stakeholders, we ensure founders don't just learn—but{' '}
-                <span className="eco-quote-red">progress.</span>"
-              </motion.div>
-            </motion.div>
-          </div>
-        </section>
+        <EcosystemImpactRoadmap />
 
         {/* Our Approach - Light */}
         <section className="approach-section">
@@ -395,29 +237,40 @@ export default function AboutUs() {
 
               <div className="approach-grid">
                 <div className="approach-card">
-                  <div className="approach-icon">🎯</div>
+                  <div className="approach-icon">
+                    <Target size={24} />
+                  </div>
                   <h3>Learn by Doing</h3>
                   <p>Not just theory</p>
                 </div>
                 <div className="approach-card">
-                  <div className="approach-icon">👤</div>
+                  <div className="approach-icon">
+                    <Users size={24} />
+                  </div>
                   <h3>Founder-First Mindset</h3>
                   <p>Your success is our priority</p>
                 </div>
                 <div className="approach-card">
-                  <div className="approach-icon">⚡</div>
+                  <div className="approach-icon">
+                    <Zap size={24} />
+                  </div>
                   <h3>Execution Over Ideas</h3>
                   <p>Action drives results</p>
                 </div>
                 <div className="approach-card">
-                  <div className="approach-icon">🤝</div>
+                  <div className="approach-icon">
+                    <Handshake size={24} />
+                  </div>
                   <h3>Community-Driven Growth</h3>
                   <p>We grow together</p>
                 </div>
               </div>
 
               <div className="approach-statement">
-                <p>Every program, event, and initiative is designed to deliver <strong>real outcomes</strong>, not just certificates.</p>
+                <p>
+                  Every program, event, and initiative is designed to deliver{' '}
+                  <strong>real outcomes</strong>, not just certificates.
+                </p>
               </div>
             </div>
           </div>
@@ -470,16 +323,19 @@ export default function AboutUs() {
             >
               <h2>Our Commitment</h2>
               <p>
-                At Startups India, we are committed to helping people believe in their ideas, build with confidence, 
-                and grow with the ecosystem.
+                At Startups India, we are committed to helping people believe in their ideas, build
+                with confidence, and grow with the ecosystem.
               </p>
               <p>
-                Whether you are a student exploring entrepreneurship, a founder validating an idea, or a startup ready 
-                to scale—we are here to support your journey.
+                Whether you are a student exploring entrepreneurship, a founder validating an idea,
+                or a startup ready to scale—we are here to support your journey.
               </p>
             </motion.div>
           </div>
         </section>
+
+        {/* TEAM SECTION */}
+        <TeamSection />
 
         {/* CTA Section - Dark */}
         <section className="cta-section">
@@ -492,12 +348,13 @@ export default function AboutUs() {
               viewport={{ once: true }}
             >
               <h2>Have an Idea? A Vision? A Startup Dream?</h2>
-              <p>Join our ecosystem and take your first step toward building something meaningful.</p>
+              <p>
+                Join our ecosystem and take your first step toward building something meaningful.
+              </p>
               <button className="cta-button">Join Our Ecosystem</button>
             </motion.div>
           </div>
         </section>
-
       </div>
     </>
   );

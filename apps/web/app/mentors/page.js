@@ -2,6 +2,23 @@
 
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { 
+  Rocket, 
+  TrendingUp, 
+  GraduationCap, 
+  Network, 
+  Target, 
+  BookOpen, 
+  Lightbulb, 
+  ShieldCheck,
+  CheckCircle2,
+  AlertTriangle,
+  ArrowRight,
+  Star,
+  BriefcaseBusiness,
+  Building2,
+  Briefcase
+} from 'lucide-react';
 import MentorRegistrationModal from '@/components/MentorRegistrationModal';
 import ExploreMentorsModal from '@/components/ExploreMentorsModal';
 import ScrollToTop from '@/components/ScrollToTop';
@@ -23,7 +40,7 @@ export default function MentorsPage() {
       company: 'PRAGMA EDUCATION',
       expertise: ['Startup Mentor', 'Life Skills Coach', 'Political Strategist'],
       experience: '8+ years',
-      previous_companies: ['Microsoft', 'Amazon'],
+      previous_companies: ['Government of India'],
       profile_image: '/assets/images/Bhushan-pragma.jpg',
       rating: 4.9,
       total_mentees: 120,
@@ -49,7 +66,7 @@ export default function MentorsPage() {
       company: 'Teleperformance Global Services Ltd',
       expertise: ['Cyber Security Expert', 'AI Driven Expert', 'Team Management'],
       experience: '10+ years',
-      previous_companies: ['Adobe', 'Figma'],
+      previous_companies: ['IT Infrastructure'],
       profile_image: '/assets/images/Dr.Venugopal Gandham.jpg',
       rating: 4.9,
       total_mentees: 110,
@@ -62,7 +79,7 @@ export default function MentorsPage() {
       company: 'Supreme Court of India',
       expertise: ['Criminal Law', 'Labor Law', 'Legal Aid'],
       experience: '14+ years',
-      previous_companies: ['Oracle', 'Series A Founder'],
+      previous_companies: ['Legal Services'],
       profile_image: '/assets/images/raghu-vasishth.jpg',
       rating: 4.9,
       total_mentees: 85,
@@ -70,16 +87,55 @@ export default function MentorsPage() {
     },
     {
       id: 5,
-      full_name: 'Meera Patel',
-      current_role: 'Engineering & CTO Advisor',
-      company: 'Netflix',
-      expertise: ['System Architecture', 'Team Building', 'Technical Leadership'],
-      experience: '16+ years',
-      previous_companies: ['Uber', 'CTO at Series B'],
-      profile_image: 'https://randomuser.me/api/portraits/women/5.jpg',
+      full_name: 'Avinash Tilekar',
+      current_role: 'Business Model Expert',
+      company: 'Startups India',
+      expertise: ['Business Planning', 'Market Strategy', 'Scaling'],
+      experience: '12+ years',
+      previous_companies: ['Strategy Consultant'],
+      profile_image: '/assets/images/Avinash Tilekar.jpg',
+      rating: 4.8,
+      total_mentees: 70,
+      total_sessions: 280,
+    },
+    {
+      id: 6,
+      full_name: 'Ravi Tilekar',
+      current_role: 'Pre-incubation Specialist',
+      company: 'Startups India',
+      expertise: ['Entrepreneurship', 'Idea Validation', 'Mindset'],
+      experience: '10+ years',
+      previous_companies: ['Incubation Lead'],
+      profile_image: '/assets/images/Ravi Tilekar.jpg',
       rating: 4.9,
-      total_mentees: 100,
-      total_sessions: 400,
+      total_mentees: 90,
+      total_sessions: 320,
+    },
+    {
+      id: 7,
+      full_name: 'Vishwaraj Saude',
+      current_role: 'Product & Tech Advisor',
+      company: 'Innovation Lab',
+      expertise: ['Product Management', 'Tech Strategy', 'MVP Development'],
+      experience: '8+ years',
+      previous_companies: ['Tech Lead'],
+      profile_image: '/assets/images/Vishwaraj.jpg',
+      rating: 4.7,
+      total_mentees: 65,
+      total_sessions: 240,
+    },
+    {
+      id: 8,
+      full_name: 'Vijay',
+      current_role: 'Operations Head',
+      company: 'Startups India',
+      expertise: ['Operations', 'Supply Chain', 'Logistics'],
+      experience: '15+ years',
+      previous_companies: ['Logistics Expert'],
+      profile_image: '/assets/images/Vijay.jpg',
+      rating: 4.9,
+      total_mentees: 150,
+      total_sessions: 600,
     },
   ];
 
@@ -299,6 +355,19 @@ export default function MentorsPage() {
 
       {/* Role of Mentors Section */}
       <section className="role-section">
+        {/* Background Asset Integration */}
+        <div 
+          className="role-bg-asset opacity-20" 
+          style={{ 
+            backgroundImage: 'url("/assets/images/mentors-role-bg.png")',
+            backgroundSize: 'cover',
+            backgroundPosition: 'center',
+            position: 'absolute',
+            inset: 0,
+            zIndex: 0,
+            pointerEvents: 'none'
+          }}
+        />
         <div className="container">
           <motion.div
             className="role-header"
@@ -580,9 +649,9 @@ export default function MentorsPage() {
                     transition={{ delay: 0.7 }}
                   >
                     <div className="avatar-group-listing">
-                      <img className="avatar-listing" src="https://randomuser.me/api/portraits/men/32.jpg" alt="Mentor" />
-                      <img className="avatar-listing" src="https://randomuser.me/api/portraits/women/44.jpg" alt="Mentor" />
-                      <img className="avatar-listing" src="https://randomuser.me/api/portraits/men/45.jpg" alt="Mentor" />
+                      <img className="avatar-listing" src="/assets/images/Bhushan-pragma.jpg" alt="Mentor" />
+                      <img className="avatar-listing" src="/assets/images/Raghunatha-Chary.jpg" alt="Mentor" />
+                      <img className="avatar-listing" src="/assets/images/Dr.Venugopal Gandham.jpg" alt="Mentor" />
                       <div className="avatar-plus-listing">+</div>
                     </div>
                   </motion.div>
@@ -651,11 +720,12 @@ export default function MentorsPage() {
               <h2 className="note-title-premium">IMPORTANT NOTE</h2>
               <motion.p 
                 className="note-subtitle-premium"
-                initial={{ opacity: 0 }}
-                whileInView={{ opacity: 1 }}
-                transition={{ delay: 0.3 }}
+                variants={{
+                  closed: { opacity: 0.6, y: 0 },
+                  open: { opacity: 1, y: -2, transition: { duration: 0.3 } }
+                }}
               >
-                Mentors do not directly interact with founders or participants through the website.
+                Mentors do not directly interact with founders or participants through this platform.
               </motion.p>
             </div>
 

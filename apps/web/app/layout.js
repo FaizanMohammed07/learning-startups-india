@@ -27,13 +27,16 @@ import '@/styles/home-enterprise.css';
 // 6. Layout Components - Shared across all pages (SIXTH)
 import '@/styles/footer.css';
 
+// 7. Global Responsive Overrides - Applied LAST for global responsiveness (SEVENTH)
+import '@/styles/responsive-overrides.css';
+
 // Page-specific CSS moved to their respective page/layout files for better code splitting
 // This prevents CSS conflicts and improves production bundle optimization
 import ClientErrorBoundary from '@/components/ClientErrorBoundary';
 import ConditionalLayout from '@/components/ConditionalLayout';
 
-// ScrollTotop button globally
 import ScrollToTop from '@/components/ScrollToTop';
+import CustomCursor from '@/components/CustomCursor';
 
 // Configure Poppins font - SIMPLE FIX for FOUC
 const poppins = Poppins({
@@ -65,12 +68,13 @@ export const viewport = {
 
 export default function RootLayout({ children }) {
   return (
-    <html lang="en" className={poppins.variable}>
+    <html lang="en" className={poppins.variable} suppressHydrationWarning>
       <body className={poppins.className} suppressHydrationWarning>
         <ClientErrorBoundary>
           <ConditionalLayout>
             {children}
           </ConditionalLayout>
+          <CustomCursor />
           <ScrollToTop />
         </ClientErrorBoundary>
       </body>

@@ -69,7 +69,7 @@ const allowedOrigins = [
   // local dev (optional)
 ];
 
-console.log('mohammed sufiyan');
+// console.log('mohammed sufiyan');
 
 app.use(
   cors({

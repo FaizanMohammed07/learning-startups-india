@@ -970,46 +970,6 @@
 }
 
 /* ==========================================
-<<<<<<< HEAD
-   ECOSYSTEM ROADMAP - IMPROVED
-   ========================================== */
-
-.roadmap-wrapper {
-  position: relative;
-  padding: 60px 0;
-  max-width: 1000px;
-  margin: 0 auto 60px;
-}
-
-/* SVG Path Line */
-.roadmap-svg-container {
-  position: absolute;
-  top: 50%;
-  left: 0;
-  right: 0;
-  height: 4px;
-  transform: translateY(-50%);
-  z-index: 1;
-}
-
-.roadmap-svg-container svg {
-  width: 100%;
-  height: 100%;
-}
-
-.roadmap-line {
-  stroke: rgba(220, 38, 38, 0.4);
-  stroke-width: 2;
-  stroke-dasharray: 8 6;
-  fill: none;
-}
-
-/* Nodes Wrapper */
-.roadmap-nodes {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-=======
    ECOSYSTEM SECTION - PREMIUM DARK (New)
    ========================================== */
 
@@ -1164,12 +1124,113 @@
   text-align: center;
   transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
   cursor: default;
->>>>>>> mahathi
   position: relative;
   z-index: 2;
 }
 
-<<<<<<< HEAD
+.eco-card:hover {
+  border-color: rgba(220, 38, 38, 0.4);
+  transform: translateY(-5px);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4), 0 0 20px rgba(220, 38, 38, 0.05);
+}
+
+.eco-card-title {
+  font-size: 20px;
+  font-weight: 700;
+  color: #ffffff;
+  margin-bottom: 12px;
+  letter-spacing: -0.5px;
+}
+
+.eco-card-desc {
+  font-size: 14px;
+  color: rgba(255, 255, 255, 0.4);
+  line-height: 1.6;
+  margin: 0;
+  max-width: 100% !important;
+}
+
+/* Quote Section */
+.eco-quote {
+  max-width: 900px !important;
+  margin: 100px auto 0 !important;
+  text-align: center;
+  font-size: 32px;
+  font-weight: 700;
+  color: #ffffff;
+  line-height: 1.3;
+  letter-spacing: -1.2px;
+  padding: 80px 40px;
+  background: #111112;
+  border: 1px solid rgba(220, 38, 38, 0.2); /* More prominent red-tinted border */
+  border-radius: 32px;
+  position: relative;
+  z-index: 2;
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.3);
+}
+
+.eco-quote-red {
+  color: #dc2626;
+}
+
+@media (max-width: 768px) {
+  .eco-main-title {
+    font-size: 36px;
+    letter-spacing: -1px;
+  }
+
+  .eco-card {
+    padding: 24px 20px;
+  }
+
+  .eco-quote {
+    font-size: 18px;
+  }
+}
+
+/* ==========================================
+   ECOSYSTEM ROADMAP - IMPROVED
+   ========================================== */
+
+.roadmap-wrapper {
+  position: relative;
+  padding: 60px 0;
+  max-width: 1000px;
+  margin: 0 auto 60px;
+}
+
+/* SVG Path Line */
+.roadmap-svg-container {
+  position: absolute;
+  top: 50%;
+  left: 0;
+  right: 0;
+  height: 4px;
+  transform: translateY(-50%);
+  z-index: 1;
+}
+
+.roadmap-svg-container svg {
+  width: 100%;
+  height: 100%;
+}
+
+.roadmap-line {
+  stroke: rgba(220, 38, 38, 0.4);
+  stroke-width: 2;
+  stroke-dasharray: 8 6;
+  fill: none;
+}
+
+/* Nodes Wrapper */
+.roadmap-nodes {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  position: relative;
+  z-index: 2;
+}
+
 /* Individual Node */
 .roadmap-node {
   display: flex;
@@ -1401,69 +1462,10 @@
   }
 
   .ecosystem-statement p {
-=======
-.eco-card:hover {
-  border-color: rgba(220, 38, 38, 0.4);
-  transform: translateY(-5px);
-  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4), 0 0 20px rgba(220, 38, 38, 0.05);
-}
-
-.eco-card-title {
-  font-size: 20px;
-  font-weight: 700;
-  color: #ffffff;
-  margin-bottom: 12px;
-  letter-spacing: -0.5px;
-}
-
-.eco-card-desc {
-  font-size: 14px;
-  color: rgba(255, 255, 255, 0.4);
-  line-height: 1.6;
-  margin: 0;
-  max-width: 100% !important;
-}
-
-/* Quote Section */
-.eco-quote {
-  max-width: 900px !important;
-  margin: 100px auto 0 !important;
-  text-align: center;
-  font-size: 32px;
-  font-weight: 700;
-  color: #ffffff;
-  line-height: 1.3;
-  letter-spacing: -1.2px;
-  padding: 80px 40px;
-  background: #111112;
-  border: 1px solid rgba(220, 38, 38, 0.2); /* More prominent red-tinted border */
-  border-radius: 32px;
-  position: relative;
-  z-index: 2;
-  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.3);
-}
-
-.eco-quote-red {
-  color: #dc2626;
-}
-
-@media (max-width: 768px) {
-  .eco-main-title {
-    font-size: 36px;
-    letter-spacing: -1px;
-  }
-
-  .eco-card {
-    padding: 24px 20px;
-  }
-
-  .eco-quote {
->>>>>>> mahathi
     font-size: 18px;
   }
 }
 
-<<<<<<< HEAD
 /* Responsive - Mobile Stack */
 @media (max-width: 640px) {
   .roadmap-path-container {
@@ -1535,8 +1537,7 @@
   }
 }
 
-=======
->>>>>>> mahathi
+
 /* ==========================================
    APPROACH - LIGHT
    ========================================== */
@@ -2033,3 +2034,132 @@ section[class*='hero'] .stat-number {
   background-clip: unset !important;
   -webkit-text-fill-color: #dc2626 !important;
 }
+
+/* ==============================================
+   SUPPLEMENTAL MOBILE RESPONSIVE — ABOUT PAGE
+   ============================================== */
+
+@media (max-width: 768px) {
+  /* Hero */
+  .about-hero {
+    min-height: auto;
+    padding: 80px 0 60px;
+  }
+
+  .about-hero-content {
+    text-align: center;
+  }
+
+  .hero-title-about,
+  .about-page h1 {
+    font-size: clamp(28px, 7vw, 44px);
+    letter-spacing: -1px;
+  }
+
+  /* Ecosystem section */
+  .ecosystem-section-premium {
+    padding: 60px 0;
+  }
+
+  .eco-main-title {
+    font-size: clamp(24px, 7vw, 40px);
+    letter-spacing: -1px;
+  }
+
+  .eco-main-subtitle {
+    font-size: clamp(14px, 3.5vw, 16px);
+  }
+
+  .eco-stack {
+    padding: 0;
+    gap: 16px;
+  }
+
+  .eco-card {
+    padding: 24px 20px;
+  }
+
+  .eco-quote {
+    font-size: clamp(16px, 4vw, 24px);
+    padding: 32px 20px;
+    margin-top: 40px;
+  }
+
+  /* Ecosystem statement */
+  .ecosystem-statement {
+    padding: 28px 20px;
+    margin-top: 40px;
+  }
+
+  .ecosystem-statement p {
+    font-size: clamp(14px, 3.5vw, 18px);
+  }
+
+  /* Stats grid */
+  .hero-stats {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 16px;
+    margin-top: 32px;
+  }
+
+  .hero-stat {
+    padding: 20px 12px;
+  }
+
+  .stat-number {
+    font-size: clamp(28px, 7vw, 44px);
+  }
+
+  /* About sections padding normalization */
+  .founding-story-section,
+  .mission-vision-section,
+  .team-section,
+  .values-section,
+  .impact-section {
+    padding: 60px 0;
+  }
+
+  /* Container override for about */
+  .about-page .container {
+    padding: 0 16px;
+  }
+
+  /* About page section title */
+  .about-page .section-title {
+    font-size: clamp(22px, 6vw, 36px);
+  }
+}
+
+@media (max-width: 480px) {
+  .about-hero {
+    padding: 64px 0 40px;
+  }
+
+  .eco-main-title {
+    font-size: clamp(22px, 8vw, 32px);
+  }
+
+  .hero-stats {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+/* Tablet — about page */
+@media (min-width: 769px) and (max-width: 1024px) {
+  .about-hero {
+    padding: 100px 0 80px;
+  }
+
+  .eco-main-title {
+    font-size: clamp(36px, 5vw, 48px);
+  }
+
+  .ecosystem-section-premium {
+    padding: 80px 0;
+  }
+
+  .hero-stats {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+

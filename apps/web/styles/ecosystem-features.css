@@ -111,13 +111,9 @@
   width: 100%;
   height: 100%;
   transform-style: preserve-3d;
-  transition: transform 0.5s ease-in-out;
 }
 
-/* Flip state - rotate 180deg */
-.card-container.flipped .card-inner {
-  transform: rotateY(180deg);
-}
+/* Flip state - z-index management handled by .flipped class below */
 
 /* ── Card faces (front & back) ──────────────────────────────────────────────── */
 .card-front,
@@ -139,7 +135,8 @@
 .card-back {
   transform: rotateY(180deg);
   /* Override base padding — back has extra chrome (close button) */
-  padding: 20px 22px 22px !important;
+  padding: 24px 24px 24px !important;
+  background-color: #ffffff;
 }
 
 .card-container.flipped .card-front {
@@ -510,7 +507,9 @@
   }
   .ecosystem-grid {
     grid-template-columns: 1fr;
-    gap: 20px;
+    gap: 24px;
+    max-width: 450px;
+    margin: 0 auto;
   }
   .ecosystem-header {
     margin-bottom: 48px;
@@ -519,47 +518,15 @@
     font-size: 32px;
   }
   .ecosystem-card {
-    padding: 22px;
+    padding: 28px 24px;
   }
 
-  /* On mobile — disable 3-D flip, use vertical layout */
+  /* Keep 3D flip on mobile but ensure proper sizing */
   .card-flip-scene {
-    min-height: unset;
-    perspective: none;
-    height: auto;
+    min-height: 400px;
   }
-  .card-container {
-    perspective: none;
-    height: auto;
-  }
-  .card-inner {
-    transform-style: flat;
-    transition: none;
-    position: static;
-    height: auto;
-  }
-  .card-container.flipped .card-inner {
-    transform: none;
-  }
-  .card-front,
+  
   .card-back {
-    position: static;
-    backface-visibility: visible;
-    -webkit-backface-visibility: visible;
-    transform: none !important;
-  }
-  .card-back {
-    display: block;
-    margin-top: 16px;
-    padding: 22px !important;
-  }
-  .card-container.flipped .card-front,
-  .card-container.flipped .card-back {
-    z-index: auto;
-    box-shadow: none !important;
-    border-color: inherit !important;
-  }
-  .spotlight-card {
-    height: auto;
+    padding: 24px !important;
   }
 }

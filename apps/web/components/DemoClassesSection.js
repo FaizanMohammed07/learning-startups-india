@@ -16,7 +16,7 @@ export default function DemoClassesSection() {
     {
       id: 1,
       title: 'Why Pre incubation is important',
-      instructor: 'Ravi Tilekar',
+      instructor: 'Vishwaraj Saude',
       videoUrl: 'https://10ihs6meu0bf1qny.public.blob.vercel-storage.com/demo-1.mp4',
       thumbnail: '/thumbnails/demo-1.jpg',
       topics: ['Clarity', 'Mindset', 'Entrepreneurship'],
@@ -37,8 +37,8 @@ export default function DemoClassesSection() {
     },
     {
       id: 3,
-      title: 'Business Model',
-      instructor: 'Avinash Tilekar',
+      title: 'Marketing and Go To Market Strategy',
+      instructor: 'Vishwaraj Saude',
       videoUrl: 'https://10ihs6meu0bf1qny.public.blob.vercel-storage.com/demo-3.mp4',
       thumbnail: '/thumbnails/demo-3.jpg',
       topics: ['Structure roadmap', 'business plan'],
@@ -46,45 +46,28 @@ export default function DemoClassesSection() {
       gradient: 'linear-gradient(135deg, #4facfe 0%, #00f2fe 100%)',
       icon: IndianRupee,
     },
-    // {
-    //   id: 3,
-    //   title: 'Market & Go To Market Strategy',
-    //   instructor: 'Vishwaraj Saude',
-    //   // duration: '50 min',
-
-    //   videoUrl: '/videos/demo-3.mp4', // Replace with your video file
-    //   thumbnail: '/thumbnails/demo-3.jpg', // Replace with your thumbnail
-    //   topics: ['understanding Market', 'Market strategy', 'Revenue stream'],
-    //   views: '18.7K',
-    //   gradient: 'linear-gradient(135deg, #4facfe 0%, #00f2fe 100%)',
-    //   icon: '💰',
-    // },
-    // {
-    //   id: 3,
-    //   title: 'Finance & Legal Foundation',
-    //   instructor: 'Bharat Bhushan Rallapalli',
-    //   // duration: '50 min',
-
-    //   videoUrl: '/videos/demo-3.mp4', // Replace with your video file
-    //   thumbnail: '/thumbnails/demo-3.jpg', // Replace with your thumbnail
-    //   topics: ['Legal Structure', 'IPR protection', 'financial planning'],
-    //   views: '18.7K',
-    //   gradient: 'linear-gradient(135deg, #4facfe 0%, #00f2fe 100%)',
-    //   icon: '💰',
-    // },
-    // {
-    //   id: 3,
-    //   title: 'Idea Pitching',
-    //   instructor: 'Bharat Bhushan Rallapalli',
-    //   // duration: '50 min',
-
-    //   videoUrl: '/videos/demo-3.mp4', // Replace with your video file
-    //   thumbnail: '/thumbnails/demo-3.jpg', // Replace with your thumbnail
-    //   topics: ['Preparing Pitch Deck', 'Understanding Investors', 'Storytelling'],
-    //   views: '18.7K',
-    //   gradient: 'linear-gradient(135deg, #4facfe 0%, #00f2fe 100%)',
-    //   icon: '💰',
-    // },
+    {
+      id: 4,
+      title: 'Finance & Legal Foundation',
+      instructor: 'Bharat Bhushan Rallapalli',
+      videoUrl: '/videos/demo-3.mp4',
+      thumbnail: '/thumbnails/demo-3.jpg',
+      topics: ['Legal Structure', 'IPR protection', 'financial planning'],
+      views: '18.7K',
+      gradient: 'linear-gradient(135deg, #4facfe 0%, #00f2fe 100%)',
+      icon: IndianRupee,
+    },
+    {
+      id: 5,
+      title: 'Idea Pitching',
+      instructor: 'Bharat Bhushan Rallapalli',
+      videoUrl: '/videos/demo-3.mp4',
+      thumbnail: '/thumbnails/demo-3.jpg',
+      topics: ['Preparing Pitch Deck', 'Understanding Investors', 'Storytelling'],
+      views: '18.7K',
+      gradient: 'linear-gradient(135deg, #4facfe 0%, #00f2fe 100%)',
+      icon: IndianRupee,
+    },
   ];
 
   const handleOpenVideo = demo => {
@@ -99,12 +82,10 @@ export default function DemoClassesSection() {
 
   return (
     <section className="demo-classes-section" ref={sectionRef}>
-      {/* Animated Background */}
       <div className="demo-bg-grid"></div>
       <div className="demo-bg-gradient"></div>
 
       <div className="container">
-        {/* Section Header */}
         <motion.div
           className="demo-classes-header"
           initial={{ opacity: 0, y: 30 }}
@@ -119,7 +100,9 @@ export default function DemoClassesSection() {
             viewport={{ once: true }}
             transition={{ duration: 0.5, delay: 0.2 }}
           >
-            <span className="badge-icon"></span>
+            <span className="badge-icon">
+              <GraduationCap size={16} />
+            </span>
             <span className="badge-text">Free Demo Classes</span>
           </motion.div>
 
@@ -145,7 +128,6 @@ export default function DemoClassesSection() {
           </motion.p>
         </motion.div>
 
-        {/* Demo Classes Grid */}
         <div className="demo-classes-grid">
           {demoClasses.map((demo, index) => (
             <motion.div
@@ -160,13 +142,10 @@ export default function DemoClassesSection() {
               onHoverEnd={() => setHoveredIndex(null)}
             >
               <div className="demo-card-inner">
-                {/* Video Preview */}
                 <div className="demo-video-preview" onClick={() => handleOpenVideo(demo)}>
-                  {/* Thumbnail Image */}
                   <img src={demo.thumbnail} alt={demo.title} className="demo-thumbnail-image" />
                   <div className="demo-thumbnail-overlay"></div>
 
-                  {/* Play Overlay */}
                   <motion.div
                     className="demo-play-overlay"
                     animate={{ opacity: hoveredIndex === index ? 1 : 0 }}
@@ -178,23 +157,8 @@ export default function DemoClassesSection() {
                       </svg>
                     </div>
                   </motion.div>
-
-                  {/* Level Badge */}
-                  {/* <div className="demo-level-badge" style={{ borderColor: demo.gradient.split(',')[0].split('(')[1] }}>
-                    {demo.level}
-                  </div> */}
-
-                  {/* Duration Badge */}
-                  {/* <div className="demo-duration-badge">
-                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                      <circle cx="12" cy="12" r="10"/>
-                      <polyline points="12 6 12 12 16 14"/>
-                    </svg>
-                    <span>{demo.duration}</span>
-                  </div> */}
                 </div>
 
-                {/* Content */}
                 <div className="demo-card-content">
                   <h3 className="demo-class-title">{demo.title}</h3>
 
@@ -208,7 +172,6 @@ export default function DemoClassesSection() {
                     </div>
                   </div>
 
-                  {/* Topics */}
                   <div className="demo-topics">
                     {demo.topics.map((topic, idx) => (
                       <span key={idx} className="demo-topic-tag">
@@ -217,7 +180,6 @@ export default function DemoClassesSection() {
                     ))}
                   </div>
 
-                  {/* Footer */}
                   <div className="demo-card-footer">
                     <div className="demo-views">
                       <svg
@@ -255,7 +217,6 @@ export default function DemoClassesSection() {
         </div>
       </div>
 
-      {/* Video Player Modal */}
       <VideoPlayerModal
         isOpen={isModalOpen}
         onClose={handleCloseVideo}

@@ -1,9 +1,8 @@
 'use client';
 
-/*
 import { useState } from 'react';
 import { motion } from 'framer-motion';
-import '../../styles/source-new.css';
+import '@/styles/source-new.css';
 
 export default function SourcePage() {
   const [activeCategory, setActiveCategory] = useState('all');
@@ -105,7 +104,7 @@ export default function SourcePage() {
             transition={{ duration: 0.8 }}
           >
             <h1 className="hero-title">
-             Your Startup <br/>
+              Your Startup <br/>
               <span className="title-highlight">Knowledge Center</span>
             </h1>
             <p className="hero-description">
@@ -206,9 +205,4 @@ export default function SourcePage() {
       </div>
     </div>
   );
-}
-*/
-
-export default function SourcePage() {
-  return null;
 }

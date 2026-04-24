@@ -32,7 +32,7 @@ const lessonProgressSchema = new mongoose.Schema(
   {
     userId: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true, index: true },
     courseId: { type: mongoose.Schema.Types.ObjectId, ref: 'Course', required: true, index: true },
-    moduleId: { type: mongoose.Schema.Types.ObjectId, ref: 'Module', required: true, index: true },
+    moduleId: { type: mongoose.Schema.Types.ObjectId, ref: 'Module', required: true },
     lessonId: { type: mongoose.Schema.Types.ObjectId, ref: 'Lesson', required: true, index: true },
     lessonTitle: { type: String, default: null },
     isCompleted: { type: Boolean, default: false },
@@ -52,7 +52,7 @@ const moduleQuizAttemptSchema = new mongoose.Schema(
       type: mongoose.Schema.Types.ObjectId,
       ref: 'ModuleQuiz',
       required: true,
-      index: true,
+      index: false,
     },
     answers: [{ questionIndex: Number, selectedOption: Number }],
     score: { type: Number, required: true },

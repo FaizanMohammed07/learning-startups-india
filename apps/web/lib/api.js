@@ -23,7 +23,14 @@ async function tryRefresh() {
         body: JSON.stringify({ refreshToken: rt }),
         credentials: 'include',
       });
-      const json = await res.json();
+      
+      let json;
+      try {
+        json = await res.json();
+      } catch (err) {
+        return false;
+      }
+
       if (res.ok && json.data?.session?.access_token) {
         localStorage.setItem('access_token', json.data.session.access_token);
         if (json.data.session.refresh_token) {

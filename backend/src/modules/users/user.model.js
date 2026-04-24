@@ -19,6 +19,7 @@ const userSchema = new mongoose.Schema(
       marketingEmails: { type: Boolean, default: false },
     },
     isActive: { type: Boolean, default: true },
+    wishlist: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Course' }],
     refreshTokenHash: { type: String, default: null },
   },
   { timestamps: true }

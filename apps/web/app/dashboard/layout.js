@@ -1,4 +1,4 @@
-﻿'use client';
+'use client';
 
 import { useState, useEffect } from 'react';
 import { usePathname, useRouter } from 'next/navigation';
@@ -136,7 +136,7 @@ export default function DashboardLayout({ children }) {
                 <nav className="mobile-menu-nav">
                   <Link
                     href="/dashboard"
-                    className={mobile - menu - item}
+                    className="mobile-menu-item"
                     onClick={() => setIsMobileMenuOpen(false)}
                   >
                     <svg
@@ -156,7 +156,7 @@ export default function DashboardLayout({ children }) {
                   </Link>
                   <Link
                     href="/dashboard/explore"
-                    className={mobile - menu - item}
+                    className="mobile-menu-item"
                     onClick={() => setIsMobileMenuOpen(false)}
                   >
                     <svg
@@ -174,7 +174,7 @@ export default function DashboardLayout({ children }) {
                   </Link>
                   <Link
                     href="/dashboard/my-courses"
-                    className={mobile - menu - item}
+                    className="mobile-menu-item"
                     onClick={() => setIsMobileMenuOpen(false)}
                   >
                     <svg
@@ -192,7 +192,7 @@ export default function DashboardLayout({ children }) {
                   </Link>
                   <Link
                     href="/dashboard/certificates"
-                    className={mobile - menu - item}
+                    className="mobile-menu-item"
                     onClick={() => setIsMobileMenuOpen(false)}
                   >
                     <svg
@@ -210,7 +210,7 @@ export default function DashboardLayout({ children }) {
                   </Link>
                   <Link
                     href="/dashboard/contact"
-                    className={mobile - menu - item}
+                    className="mobile-menu-item"
                     onClick={() => setIsMobileMenuOpen(false)}
                   >
                     <svg
@@ -227,7 +227,7 @@ export default function DashboardLayout({ children }) {
                   </Link>
                   <Link
                     href="/dashboard/settings"
-                    className={mobile - menu - item}
+                    className="mobile-menu-item"
                     onClick={() => setIsMobileMenuOpen(false)}
                   >
                     <svg

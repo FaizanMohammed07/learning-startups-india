@@ -2,8 +2,8 @@ const { Enrollment, LessonProgress, ModuleQuizAttempt } = require('./enrollment.
 const { ApiError } = require('../../utils/apiError');
 const { cacheGet, cacheSet, cacheDel } = require('../../infrastructure/cache/redis');
 
-async function listEnrollments(userId, courseId) {
-  if (courseId) {
+async function listEnrollments(userId, courseId, status) {
+  if (courseId && !status) {
     // Check cache for specific enrollment
     const cacheKey = `enrollment:${userId}:${courseId}`;
     const cached = await cacheGet(cacheKey);
@@ -13,6 +13,9 @@ async function listEnrollments(userId, courseId) {
   const query = { userId };
   if (courseId) {
     query.courseId = courseId;
+  }
+  if (status) {
+    query.status = status;
   }
   const result = await Enrollment.find(query).sort({ lastAccessedAt: -1, createdAt: -1 }).lean();
 

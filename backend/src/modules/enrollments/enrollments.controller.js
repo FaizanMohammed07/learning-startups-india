@@ -1,7 +1,8 @@
 const service = require('./enrollments.service');
 
 async function listEnrollments(req, res) {
-  const records = await service.listEnrollments(req.user.userId, req.query.courseId);
+  const { courseId, status } = req.query;
+  const records = await service.listEnrollments(req.user.userId, courseId, status);
   res.json({ success: true, data: records });
 }
 

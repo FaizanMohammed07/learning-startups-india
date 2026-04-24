@@ -2,8 +2,13 @@ const service = require('./courses.service');
 const enrollmentsService = require('../enrollments/enrollments.service');
 
 async function listCourses(req, res) {
-  const items = await service.listCourses(req.query.slug);
-  res.json({ success: true, data: items });
+  const result = await service.listCourses(req.query);
+  res.json({
+    success: true,
+    message: 'Courses fetched successfully',
+    data: result.items,
+    pagination: result.pagination,
+  });
 }
 
 async function getCourseById(req, res) {
@@ -59,6 +64,23 @@ async function submitQuiz(req, res) {
   res.json({ success: true, data: result });
 }
 
+async function toggleWishlist(req, res) {
+  const { courseId } = req.params;
+  const wishlist = await service.toggleWishlist(req.user.userId, courseId);
+  res.json({ success: true, message: 'Wishlist updated successfully', data: wishlist });
+}
+
+async function getWishlist(req, res) {
+  const wishlist = await service.getWishlist(req.user.userId);
+  res.json({ success: true, message: 'Wishlist fetched successfully', data: wishlist });
+}
+
+async function completeCourse(req, res) {
+  const { courseId } = req.params;
+  const enrollment = await service.markCourseCompleted(req.user.userId, courseId);
+  res.json({ success: true, message: 'Course marked as completed', data: enrollment });
+}
+
 module.exports = {
   listCourses,
   getCourseById,
@@ -66,4 +88,7 @@ module.exports = {
   listLessons,
   trackProgress,
   submitQuiz,
+  toggleWishlist,
+  getWishlist,
+  completeCourse,
 };

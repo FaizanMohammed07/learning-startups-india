@@ -71,8 +71,12 @@ export default function RootLayout({ children }) {
           <ConditionalLayout>
             {children}
           </ConditionalLayout>
+<<<<<<< HEAD
       <CustomCursor />
       <ScrollToTop />
+=======
+          <ScrollToTop />
+>>>>>>> mahathi
         </ClientErrorBoundary>
       </body>
     </html>

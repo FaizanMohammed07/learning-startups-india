@@ -40,7 +40,14 @@ const poppins = Poppins({
   subsets: ['latin'],
   display: 'swap', // Show fallback immediately, swap when Poppins loads
   preload: true, // Critical: preload in HTML head
-  fallback: ['system-ui', '-apple-system', 'BlinkMacSystemFont', 'Segoe UI', 'Roboto', 'sans-serif'],
+  fallback: [
+    'system-ui',
+    '-apple-system',
+    'BlinkMacSystemFont',
+    'Segoe UI',
+    'Roboto',
+    'sans-serif',
+  ],
   adjustFontFallback: true, // Match metrics to prevent layout shift
   variable: '--font-poppins',
   weight: ['300', '400', '500', '600', '700', '800', '900'], // All weights for consistency
@@ -68,15 +75,9 @@ export default function RootLayout({ children }) {
     <html lang="en" className={poppins.variable} suppressHydrationWarning>
       <body className={poppins.className} suppressHydrationWarning>
         <ClientErrorBoundary>
-          <ConditionalLayout>
-            {children}
-          </ConditionalLayout>
-<<<<<<< HEAD
-      <CustomCursor />
-      <ScrollToTop />
-=======
+          <ConditionalLayout>{children}</ConditionalLayout>
+          <CustomCursor />
           <ScrollToTop />
->>>>>>> mahathi
         </ClientErrorBoundary>
       </body>
     </html>

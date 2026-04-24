@@ -34,6 +34,15 @@ export default function DashboardSidebar({ user, isPro = false, onClose }) {
     setExpandedSection(prev => (prev === id ? null : id));
   };
 
+  const handleLogout = async () => {
+    try {
+      await signOut();
+      router.push('/login');
+    } catch (error) {
+      console.error('Logout failed:', error);
+    }
+  };
+
   const renderIcon = icon => (
     <div className="icon-frame">
       <Icon name={icon} size={20} color="currentColor" stroke={1.8} />
@@ -104,6 +113,20 @@ export default function DashboardSidebar({ user, isPro = false, onClose }) {
           </div>
         ))}
       </nav>
+      
+      {/* Sidebar Footer */}
+      <div className="sidebar-bottom">
+        <div className="nav-section-container">
+          <button className="nav-item-row logout-nav-item" onClick={handleLogout} style={{ cursor: 'pointer', background: 'transparent', border: 'none', textAlign: 'left', display: 'flex', alignItems: 'center' }}>
+            <div className="nav-item-left">
+              <div className="icon-frame">
+                <Icon name="logOut" size={20} color="currentColor" />
+              </div>
+              <span className="nav-item-label">Logout</span>
+            </div>
+          </button>
+        </div>
+      </div>
     </aside>
   );
 }

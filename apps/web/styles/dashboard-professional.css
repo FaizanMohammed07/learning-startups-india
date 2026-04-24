@@ -10,12 +10,12 @@
   --primary-red: rgb(235, 35, 39);
   --primary-red-light: rgba(235, 35, 39, 0.08);
   --primary-red-hover: rgb(210, 25, 29);
-  --bg-page: #F9FAFB;
+  --bg-page: #fff5f5;
   --card-bg: #ffffff;
   --text-main: #0f172a;
   --text-muted: #64748b;
   --text-soft: #94a3b8;
-  --border: #f1f5f9;
+  --border: rgba(235, 35, 39, 0.25);
   --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.04);
   --shadow-md: 0 8px 24px rgba(0, 0, 0, 0.06);
   --shadow-lg: 0 20px 50px rgba(0, 0, 0, 0.08);
@@ -34,7 +34,7 @@
 /* ── Page Container ── */
 .prof-dashboard-container {
   min-height: 100vh;
-  background: #F9FAFB;
+  background: #fff8f8;
   padding: 1.5rem 3rem 3rem;
   font-family: 'Outfit', -apple-system, sans-serif;
   color: var(--text-main);
@@ -549,7 +549,7 @@
 
 .course-prog-bar-base {
   width: 100%;
-  background: #f1f5f9;
+  background: rgba(235, 35, 39, 0.15);
   border-radius: 100px;
   overflow: hidden;
 }
@@ -613,7 +613,7 @@
 }
 
 .grid-line {
-  border-top: 1px dashed #f1f5f9;
+  border-top: 1px dashed rgba(235, 35, 39, 0.15);
   width: 100%;
 }
 
@@ -995,7 +995,7 @@
   font-size: 0.65rem;
   font-weight: 800;
   color: #64748b;
-  background: #f1f5f9;
+  background: rgba(235, 35, 39, 0.15);
   padding: 3px 10px;
   border-radius: 6px;
   margin-left: 4px;
@@ -1285,7 +1285,7 @@
 
 .strength-bar-container {
   height: 10px;
-  background: #f1f5f9;
+  background: rgba(235, 35, 39, 0.15);
   border-radius: 100px;
   margin: 15px 0;
   overflow: hidden;
@@ -1361,7 +1361,7 @@
   top: 0;
   bottom: 0;
   width: 2px;
-  background: #f1f5f9;
+  background: rgba(235, 35, 39, 0.15);
   z-index: 1;
 }
 
@@ -1671,3 +1671,36 @@
     -webkit-overflow-scrolling: touch !important;
   }
 }
+
+
+/* USER OVERRIDES: News Ticker Expansion */
+.live-ticker-card { width: calc(100% + 6rem) !important; margin-left: -3rem !important; border-radius: 0 !important; border-left: none !important; border-right: none !important; max-width: none !important; height: 32px !important; background: #ffffff !important; color: #000 !important; border-top: 1px solid #f1f1f1 !important; border-bottom: 1px solid #f1f1f1 !important; }
+.ticker-track { max-width: none !important; width: 100% !important; overflow: hidden !important; }
+.ticker-label-box { border-radius: 0 !important; padding: 0 1.5rem !important; font-weight: 950 !important; }
+.ticker-inner { animation-duration: 45s !important; }
+
+.ticker-track { display: block !important; overflow: hidden !important; width: 100% !important; }
+.ticker-inner { display: flex !important; width: max-content !important; min-width: 200vw !important; }
+
+:root { --bg-page: #fff0f0 !important; }
+.prof-dashboard-container { background: var(--bg-page) !important; }
+
+:root { --bg-page: #fff2f2 !important; }
+.prof-dashboard-container { background: var(--bg-page) !important; }
+
+:root { --bg-page: #f7eeee !important; }
+.prof-dashboard-container { background: var(--bg-page) !important; }
+
+:root { --bg-page: #efdede !important; }
+.prof-dashboard-container { background: var(--bg-page) !important; }
+
+/*   AURORA GLOW SYSTEM   */
+@keyframes aurora-float { 0% { transform: translate(0, 0) scale(1); } 50% { transform: translate(5 ?????????, 5 ?????????) scale(1.1); } 100% { transform: translate(0, 0) scale(1); } }
+.aurora-container { position: fixed; inset: 0; z-index: -1; overflow: hidden; background: #efdede; pointer-events: none; }
+.aurora-orb { position: absolute; filter: blur(120px); border-radius: 50%; opacity: 0.15; animation: aurora-float 20s infinite alternate cubic-bezier(0.4, 0, 0.2, 1); }
+.aurora-1 { width: 600px; height: 600px; background: #8E1C1F; top: -100px; right: -100px; }
+.aurora-2 { width: 500px; height: 500px; background: #FFD700; bottom: -100px; left: -100px; animation-duration: 25s; }
+.aurora-3 { width: 400px; height: 400px; background: #B91C1C; top: 30%; left: 20%; animation-duration: 18s; }
+
+.glass-card-premium { background: rgba(255, 255, 255, 0.7) !important; backdrop-filter: blur(15px) !important; border: 1px solid rgba(255, 255, 255, 0.4) !important; box-shadow: 0 8px 32px rgba(142, 28, 31, 0.08) !important; transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); }
+.glass-card-premium:hover { transform: translateY(-5px) scale(1.01); background: rgba(255, 255, 255, 0.85) !important; border-color: #8E1C1F !important; }

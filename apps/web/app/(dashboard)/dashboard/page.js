@@ -97,26 +97,36 @@ export default function DashboardPage() {
           <h1 style={{ fontFamily: "var(--font-inter), 'Inter', sans-serif" }}>Good Morning, {userName}</h1>
           <p style={{ marginBottom: '1.5rem' }}>Strategic overview of your startup journey.</p>
 
-          {/* ── INTEGRATED FULL-WIDTH NEWS RIBBON (AFTER SUBTITLE) ── */}
-          <div className="live-ticker-card ticker--wide ticker-container">
-            <div className="ticker-label-box" style={{ background: 'var(--brand-black)', flexShrink: 0, borderRadius: 0 }}>
-              <Icon name="zap" size={10} color="var(--brand-red)" />
-              <span style={{ fontSize: '0.55rem', fontWeight: 950 }}>LIVE NEWS</span>
-            </div>
-            <div className="ticker-track" style={{ flex: 1 }}>
-              <div className="ticker-inner">
-                <span className="ticker-item" style={{ fontSize: '0.65rem', fontWeight: 700 }}>DPIIT recognizes 1.41 Lakh+ startups across India</span>
-                <span className="ticker-sep" style={{ color: 'var(--brand-red)', fontSize: '1rem' }}>•</span>
-                <span className="ticker-item" style={{ fontSize: '0.65rem', fontWeight: 700 }}>Startup India Seed Fund: Rs 945 Cr disbursed to incubators</span>
-                <span className="ticker-sep" style={{ color: 'var(--brand-red)', fontSize: '1rem' }}>•</span>
-                <span className="ticker-item" style={{ fontSize: '0.65rem', fontWeight: 700 }}>GenAI &amp; DeepTech attract $2.1B in funding in 2025</span>
-                <span className="ticker-sep" style={{ color: 'var(--brand-red)', fontSize: '1rem' }}>•</span>
-                <span className="ticker-item" style={{ fontSize: '0.65rem', fontWeight: 700 }}>DPIIT recognizes 1.41 Lakh+ startups across India</span>
-                <span className="ticker-sep" style={{ color: 'var(--brand-red)', fontSize: '1rem' }}>•</span>
-              </div>
+        </header>
+        {/* ── INTEGRATED FULL-WIDTH NEWS RIBBON (AFTER SUBTITLE) ── */}
+        <div className="live-ticker-card ticker--wide ticker-container">
+          <div className="ticker-label-box" style={{ background: 'var(--brand-black)', color: '#ffffff', flexShrink: 0, borderRadius: '12px 0 0 12px', marginLeft: '1.5rem', padding: '4px 16px', height: '24px', display: 'flex', alignItems: 'center' }}>
+            <Icon name="zap" size={10} color="var(--brand-red)" />
+            <span style={{ fontSize: '0.55rem', fontWeight: 950, color: '#ffffff', marginLeft: '6px' }}>LIVE NEWS</span>
+          </div>
+          <div className="ticker-track" style={{ flex: 1, overflow: 'hidden' }}>
+            <div className="ticker-inner" style={{ display: 'flex', width: 'max-content' }}>
+              {[
+                "DPIIT recognizes 1.41 Lakh+ startups across India",
+                "Startup India Seed Fund: Rs 945 Cr disbursed to incubators",
+                "GenAI & DeepTech attract $2.1B in funding in 2025",
+                "Strategic investments in semiconductor manufacturing grow by 40%",
+                "New tax incentives announced for early-stage tech ventures"
+              ].concat([
+                "DPIIT recognizes 1.41 Lakh+ startups across India",
+                "Startup India Seed Fund: Rs 945 Cr disbursed to incubators",
+                "GenAI & DeepTech attract $2.1B in funding in 2025",
+                "Strategic investments in semiconductor manufacturing grow by 40%",
+                "New tax incentives announced for early-stage tech ventures"
+              ]).map((item, i) => (
+                <div key={i} style={{ display: 'flex', alignItems: 'center' }}>
+                  <span className="ticker-item" style={{ fontSize: '0.65rem', fontWeight: 700, whiteSpace: 'nowrap' }}>{item}</span>
+                  <span className="ticker-sep" style={{ color: 'var(--brand-red)', fontSize: '1rem', padding: '0 1rem' }}>•</span>
+                </div>
+              ))}
             </div>
           </div>
-        </header>
+        </div>
       </div>
 
 
@@ -130,7 +140,7 @@ export default function DashboardPage() {
 
           {/* Stats Row */}
           <section className="prof-stats-grid">
-            <Link href="/my-learning" className="stat-card-premium stat-card-lavender interactive-lift glass-card" style={{ border: 'none' }}>
+            <Link href="/my-learning" className="stat-card-premium stat-card-lavender interactive-lift glass-card" style={{ background: 'var(--color-lavender)', color: '#1e293b' }}>
               <div className="stat-header-p"><span className="stat-title-caps">Courses Enrolled</span></div>
               <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
                 <div className="stat-icon-box"><Icon name="book" size={22} color="#1e293b" /></div>
@@ -138,7 +148,7 @@ export default function DashboardPage() {
               </div>
               <span className="stat-subtext-p">3 Active • 1 Milestone</span>
             </Link>
-            <Link href="/completed-courses" className="stat-card-premium stat-card-slate interactive-lift glass-card" style={{ background: 'rgba(255,255,255,0.4)', color: '#1e293b', border: 'none' }}>
+            <Link href="/completed-courses" className="stat-card-premium stat-card-slate interactive-lift glass-card" style={{ background: '#ffffff', color: '#1e293b' }}>
               <div className="stat-header-p"><span className="stat-title-caps" style={{ color: '#64748b' }}>Certificates</span></div>
               <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
                 <div className="stat-icon-box" style={{ background: 'rgba(233, 34, 34, 0.1)' }}><Icon name="certificate" size={22} color="var(--brand-red)" /></div>
@@ -146,7 +156,7 @@ export default function DashboardPage() {
               </div>
               <span className="stat-subtext-p" style={{ color: '#64748b' }}>ISO Verified & Shared</span>
             </Link>
-            <Link href="/analytics/time" className="stat-card-premium stat-card-mint interactive-lift glass-card" style={{ border: 'none' }}>
+            <Link href="/analytics/time" className="stat-card-premium stat-card-mint interactive-lift glass-card" style={{ background: 'var(--color-mint)', color: '#1e293b' }}>
               <div className="stat-header-p"><span className="stat-title-caps">Learning Hours</span></div>
               <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
                 <div className="stat-icon-box"><Icon name="clock" size={22} color="#1e293b" /></div>
@@ -310,7 +320,7 @@ export default function DashboardPage() {
           <div className="analytics-overview-grid">
             {[
               { label: 'Leaderboard Rank', val: '#12', sub: 'Top 5% this month', icon: <Icon name="star" size={22} color="#f59e0b" />, bg: '#fffbeb', bc: '#fef3c7' },
-              { label: 'Community Posts', val: '28', sub: '+4 this week', icon: <Icon name="messageCircle" size={22} color="var(--brand-red)" />, bg: '#fff1f2', bc: '#fecaca' },
+              { label: 'Community Posts', val: '28', sub: '+4 this week', icon: <Icon name="messageCircle" size={22} color="var(--brand-red)" />, bg: '#ffffff', bc: 'rgba(235, 35, 39, 0.2)' },
               { label: 'Assessments Done', val: '7/10', sub: '3 remaining', icon: <Icon name="shield" size={22} color="#10b981" />, bg: '#f0fdf4', bc: '#d1fae5' },
             ].map((s, i) => (
               <div key={i} style={{ background: s.bg, border: `1px solid ${s.bc}`, borderRadius: 20, padding: '1.5rem', display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>

@@ -656,3 +656,17 @@
   color: var(--slate-900) !important;
   font-weight: 950 !important;
 }
+
+/* REFINED TABS: White Active, Red Hover */
+.platform-tab.active { background: #ffffff !important; color: var(--brand-red) !important; border: 1.5px solid var(--brand-red) !important; }
+.platform-tab:not(.active):hover { background: var(--brand-red) !important; color: #ffffff !important; }
+
+/* BOX STYLE FOR LEARNING TABS */
+.platform-tab { border-radius: 8px !important; }
+.platform-tabs { border-bottom: none !important; background: rgba(255,255,255,0.05) !important; padding: 10px !important; border-radius: 12px !important; }
+
+/* SEGMENTED CONTROL: 3 Buttons in 1 White Box */
+.platform-tabs { background: #ffffff !important; padding: 6px !important; border-radius: 14px !important; border: 1px solid rgba(0,0,0,0.08) !important; box-shadow: 0 4px 12px rgba(0,0,0,0.05) !important; display: inline-flex !important; gap: 4px !important; }
+.platform-tab { border-radius: 10px !important; padding: 10px 24px !important; background: transparent !important; color: #64748b !important; }
+.platform-tab.active { background: var(--brand-red) !important; color: #ffffff !important; box-shadow: 0 4px 10px rgba(233,34,34,0.3) !important; }
+.platform-tab:not(.active):hover { background: rgba(233,34,34,0.05) !important; color: var(--brand-red) !important; }

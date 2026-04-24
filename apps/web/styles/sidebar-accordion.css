@@ -24,7 +24,7 @@
 
 /* ── Logo Section ── */
 .sidebar-header {
-  padding: 2.5rem 1.75rem 2rem;
+  padding: 1.5rem 1.75rem 1rem;
   background: transparent;
   display: flex;
   justify-content: center;
@@ -372,3 +372,115 @@
     padding: 0 16px !important;
   }
 }
+
+.sidebar-drawer-content { background: #ea2124 !important; }
+.nav-item-label { color: #ffffff !important; font-weight: 950 !important; }
+.nav-section-title { color: rgba(255, 255, 255, 0.8) !important; font-weight: 900 !important; }
+.sidebar-logo { background: #ffffff !important; padding: 10px !important; border-radius: 12px !important; }
+
+
+/* USER OVERRIDES: Bold Red Sidebar Theme */
+.sidebar-drawer-content { background: #ea2124 !important; }
+.nav-item-row { color: #ffffff !important; }
+.nav-item-label { color: #ffffff !important; font-weight: 950 !important; }
+.nav-section-title { color: rgba(255, 255, 255, 0.9) !important; font-weight: 950 !important; }
+.sidebar-logo { background: #ffffff !important; padding: 10px !important; border-radius: 12px !important; margin: 10px !important; display: flex !important; align-items: center !important; justify-content: center !important; }
+.icon-frame svg, .icon-frame { color: #ffffff !important; }
+
+
+/* FINAL RESTORATION: Red Desktop Sidebar */
+.premium-sidebar.light-theme { background: #ea2124 !important; border-right: 1px solid rgba(255,255,255,0.1) !important; }
+.nav-item-row, .nav-section-header, .sidebar-bottom .nav-item-row { color: #ffffff !important; }
+.nav-item-label { color: #ffffff !important; font-weight: 950 !important; }
+.icon-frame { color: #ffffff !important; opacity: 1 !important; }
+.nav-section-header { opacity: 1 !important; color: #ffffff !important; font-weight: 950 !important; }
+.sidebar-bottom { border-top: 1px solid rgba(255,255,255,0.2) !important; }
+
+.nav-section-title { color: #ffffff !important; opacity: 1 !important; text-transform: uppercase !important; }
+
+.sidebar-bottom { margin-top: auto !important; padding: 10px 0 !important; background: rgba(0,0,0,0.05) !important; }
+.sidebar-nav { flex: 1 !important; display: flex !important; flex-direction: column !important; }
+
+/* FIXED HOVER & ACTIVE STATES */
+.nav-item-row:hover { background: rgba(255, 255, 255, 0.1) !important; color: #ffffff !important; }
+.nav-item-row.active { background: #ffffff !important; color: #ea2124 !important; }
+.nav-item-row.active .nav-item-label, .nav-item-row.active .icon-frame svg, .nav-item-row.active .icon-frame { color: #ea2124 !important; }
+.nav-item-row.active .icon-frame { background: rgba(235, 35, 39, 0.05) !important; }
+
+/* FORCE VISIBLE LOGOUT */
+.sidebar-bottom { display: block !important; visibility: visible !important; opacity: 1 !important; position: sticky !important; bottom: 0 !important; background: #ea2124 !important; border-top: 1px solid rgba(255,255,255,0.3) !important; z-index: 9999 !important; width: 100% !important; margin-top: auto !important; }
+.logout-nav-item, .sidebar-bottom .nav-item-row { background: rgba(0,0,0,0.2) !important; margin: 10px !important; border-radius: 8px !important; width: calc(100% - 20px) !important; }
+
+/* GLASS HOVER FOR CATEGORY HEADERS */
+.nav-section-header:hover { background: rgba(255, 255, 255, 0.1) !important; color: #ffffff !important; backdrop-filter: blur(5px) !important; -webkit-backdrop-filter: blur(5px) !important; border-radius: 8px !important; }
+
+/* FINAL ACTIVE STATE: Glass White */
+.nav-item-row.active { background: rgba(255, 255, 255, 0.2) !important; color: #ffffff !important; border-left: 4px solid #ffffff !important; font-weight: 950 !important; }
+.nav-item-row.active .nav-item-label, .nav-item-row.active .icon-frame svg, .nav-item-row.active .icon-frame { color: #ffffff !important; }
+
+.dashboard-layout:not(.learning-mode) .dashboard-main { background: #fff0f0 !important; }
+
+/* MAROON THEME OVERRIDE */
+.premium-sidebar.light-theme, .sidebar-drawer-content { background: #8E1C1F !important; }
+.sidebar-bottom { background: rgba(0,0,0,0.2) !important; }
+
+.dashboard-layout:not(.learning-mode) .dashboard-main { background: #fff2f2 !important; }
+
+.dashboard-layout:not(.learning-mode) .dashboard-main { background: #f7eeee !important; }
+
+.dashboard-layout:not(.learning-mode) .dashboard-main { background: #efdede !important; }
+
+/* SHIFT LOGO & NAV UPWARDS */
+.sidebar-header { padding-top: 20px !important; padding-bottom: 5px !important; }
+.sidebar-logo { border: none !important; box-shadow: none !important; }
+.sidebar-nav { padding-top: 0 !important; margin-top: -10px !important; }
+
+/* WHITE SECTION CHEVRONS */
+.section-chevron, .section-chevron svg { color: #ffffff !important; opacity: 1 !important; }
+
+/* LOGO: ABSOLUTE TOP ALIGNMENT */
+.sidebar-header { padding-top: 5px !important; margin-top: -10px !important; }
+.sidebar-logo { margin-top: 0 !important; top: -5px !important; }
+
+/* PULLING NAVIGATION LINE UPWARDS */
+.sidebar-nav { margin-top: -30px !important; }
+.nav-section-container:first-child { margin-top: 0 !important; padding-top: 0 !important; }
+
+/* CATEGORY HEADERS: Smaller & Professional */
+.nav-section-title { font-size: 0.62rem !important; letter-spacing: 0.07em !important; font-weight: 900 !important; }
+.nav-section-header { padding: 0.5rem 1.75rem !important; }
+
+/* COLLISION FIX: Restoring balance between logo and nav */
+.sidebar-nav { margin-top: -10px !important; }
+.sidebar-header { padding-bottom: 20px !important; padding-top: 15px !important; }
+.nav-section-container:first-child { margin-top: 5px !important; }
+
+/* READABILITY BOOST: Bolder & Larger Nav Text */
+.nav-section-title { font-size: 0.8rem !important; letter-spacing: 0.05em !important; font-weight: 950 !important; }
+.nav-item-label { font-size: 0.95rem !important; font-weight: 850 !important; }
+.nav-item-row { padding-top: 12px !important; padding-bottom: 12px !important; }
+
+/* SECTION HEADINGS: Large & Spaced */
+.nav-section-title { font-size: 0.9rem !important; margin-bottom: 8px !important; opacity: 0.9 !important; }
+.nav-section-container { margin-top: 2.5rem !important; }
+.nav-section-container:first-child { margin-top: 0 !important; }
+
+/* REDUCING SECTION SPACING */
+.nav-section-container { margin-top: 1.25rem !important; }
+
+/* ICON OVERRIDE: Forcing White Arrows */
+.section-chevron, .section-chevron svg, .section-chevron path { fill: #ffffff !important; stroke: #ffffff !important; color: #ffffff !important; opacity: 1 !important; }
+
+/* LOGO: HORIZONTAL & VERTICAL CENTERING */
+.sidebar-header { margin: 0 !important; padding: 30px 0 !important; width: 100% !important; display: flex !important; justify-content: center !important; }
+.sidebar-logo { margin: 0 auto !important; display: flex !important; justify-content: center !important; }
+.sidebar-nav { margin-top: 0 !important; }
+
+/* ULTIMATE READABILITY: Large Text & White Arrows */
+.nav-section-title { font-size: 1.05rem !important; letter-spacing: 0.02em !important; font-weight: 950 !important; margin-bottom: 12px !important; }
+.nav-item-label { font-size: 1.1rem !important; font-weight: 850 !important; }
+.section-chevron, .section-chevron svg, .section-chevron polyline { stroke: #ffffff !important; color: #ffffff !important; opacity: 1 !important; stroke-width: 3px !important; }
+
+/* SUB-NAV TEXT: Compact Size */
+.nav-item-label { font-size: 0.82rem !important; font-weight: 850 !important; }
+.nav-item-row { padding-top: 10px !important; padding-bottom: 10px !important; }

@@ -20,16 +20,17 @@ export default function SimpleCourseCard({ course, type = 'explore', layout = 'g
       margin: 0,
       display: 'flex',
       flexDirection: isList ? 'row' : 'column',
-      minHeight: isList ? '280px' : '600px',
+      minHeight: isList ? '200px' : '480px',
       overflow: 'hidden',
-      border: '1px solid rgba(0,0,0,0.05)',
-      background: '#fff'
+      border: '1px solid rgba(0,0,0,0.08)',
+      background: '#fff',
+      borderRadius: '16px'
     }}>
       {/* Thumbnail */}
       <div className="platform-card-v__thumb" style={{ 
         position: 'relative', 
-        height: isList ? '280px' : '340px', 
-        width: isList ? '360px' : '100%',
+        height: isList ? '200px' : '240px', 
+        width: isList ? '280px' : '100%',
         overflow: 'hidden',
         flexShrink: 0
       }}>
@@ -98,12 +99,12 @@ export default function SimpleCourseCard({ course, type = 'explore', layout = 'g
       </div>
       
       {/* Body */}
-      <div className="platform-card-v__body" style={{ padding: '1.5rem', flex: 1, display: 'flex', flexDirection: 'column' }}>
-        <h3 className="platform-card-v__title" style={{ fontSize: '1rem', fontWeight: 950, marginBottom: '8px', color: '#0f172a', lineHeight: 1.4, letterSpacing: '-0.01em' }}>
+      <div className="platform-card-v__body" style={{ padding: '1.25rem', flex: 1, display: 'flex', flexDirection: 'column' }}>
+        <h3 className="platform-card-v__title" style={{ fontSize: '0.9rem', fontWeight: 950, marginBottom: '6px', color: '#0f172a', lineHeight: 1.3, letterSpacing: '-0.01em' }}>
           {course.title?.replace(/\sCourse$/gi, '')}
         </h3>
         
-        <p className="platform-card-v__desc" style={{ fontSize: '0.8rem', color: '#64748b', fontWeight: 500, lineHeight: '1.6', margin: 0, display: '-webkit-box', WebkitLineClamp: 3, WebkitBoxOrient: 'vertical', overflow: 'hidden' }}>
+        <p className="platform-card-v__desc" style={{ fontSize: '0.75rem', color: '#64748b', fontWeight: 500, lineHeight: '1.5', margin: 0, display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical', overflow: 'hidden' }}>
           {course.description || course.module}
         </p>
 

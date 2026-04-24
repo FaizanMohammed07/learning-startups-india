@@ -1,11 +1,11 @@
-/* Premium Dashboard Styles - CodeDamn Inspired */
+﻿/* Premium Dashboard Styles - CodeDamn Inspired */
 
 /* Font loading handled in layout.js for optimal performance */
 /* Global reset removed - now in globals.css to prevent conflicts */
 .dashboard-layout {
   display: flex;
   min-height: 100vh;
-  background: #f9fafb;
+  background: #fff8f8;
 }
 
 /* Premium Sidebar */
@@ -202,7 +202,7 @@
 .dashboard-main {
   flex: 1;
   margin-left: 260px;
-  background: #f9fafb;
+  background: #fff8f8;
 }
 
 .learning-mode .dashboard-main {
@@ -321,7 +321,7 @@
 }
 
 .header-action-btn:hover {
-  background: #f9fafb;
+  background: #fff8f8;
   color: #374151;
 }
 
@@ -387,13 +387,13 @@
   display: flex;
   flex-direction: column;
   padding: 24px 32px;
-  background: #f9fafb;
+  background: #fff8f8;
 }
 
 .dashboard-right-column {
   display: flex;
   flex-direction: column;
-  background: #f9fafb;
+  background: #fff8f8;
   /* border-left: 1px solid #e5e7eb; */
   padding: 24px 32px;
 }
@@ -944,7 +944,7 @@
   flex-direction: column;
   align-items: center;
   text-align: center;
-  background: #f9fafb;
+  background: #fff8f8;
   border-radius: 12px;
   padding: 16px;
   gap: 8px;
@@ -1180,7 +1180,7 @@
   text-transform: uppercase;
   letter-spacing: 0.8px;
   padding: 4px 8px;
-  background: #f9fafb;
+  background: #fff8f8;
   border-radius: 6px;
 }
 
@@ -1242,7 +1242,7 @@
 }
 
 .stat-mini-card {
-  background: #f9fafb;
+  background: #fff8f8;
   border-radius: 12px;
   padding: 12px;
   text-align: center;
@@ -1464,7 +1464,7 @@
 }
 
 .activity-time::before {
-  content: '•';
+  content: 'â€¢';
   color: #9ca3af;
 }
 
@@ -1542,7 +1542,7 @@
 }
 
 .category-filter-btn:hover {
-  background: #f9fafb;
+  background: #fff8f8;
   border-color: #d1d5db;
 }
 
@@ -2096,7 +2096,7 @@ svg defs {
 
 .category-btn {
   padding: 8px 16px;
-  background: #f9fafb;
+  background: #fff8f8;
   border: 1px solid #e5e7eb;
   border-radius: 8px;
   font-size: 14px;
@@ -2168,7 +2168,7 @@ svg defs {
   gap: 8px;
   margin-bottom: 24px;
   padding: 4px;
-  background: #f9fafb;
+  background: #fff8f8;
   border-radius: 10px;
 }
 
@@ -2405,3 +2405,4 @@ svg defs {
     left: 100%;
   }
 }
+

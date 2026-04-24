@@ -57,7 +57,8 @@
 }
 
 @keyframes float {
-  0%, 100% {
+  0%,
+  100% {
     transform: translate(0, 0) scale(1);
   }
   33% {
@@ -153,7 +154,7 @@
   border-radius: 12px;
   text-decoration: none;
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  box-shadow: 
+  box-shadow:
     0 4px 16px rgba(230, 57, 70, 0.3),
     0 0 0 0 rgba(230, 57, 70, 0.4);
   position: relative;
@@ -177,7 +178,7 @@
 
 .intro-cta-button:hover {
   transform: translateY(-3px);
-  box-shadow: 
+  box-shadow:
     0 8px 24px rgba(230, 57, 70, 0.4),
     0 0 0 4px rgba(230, 57, 70, 0.1);
 }
@@ -247,7 +248,7 @@
   height: 100%;
   border-radius: 50%;
   overflow: hidden;
-  box-shadow: 
+  box-shadow:
     0 20px 60px rgba(0, 0, 0, 0.15),
     0 0 0 12px rgba(255, 255, 255, 0.8),
     0 0 0 14px rgba(230, 57, 70, 0.1);
@@ -285,7 +286,7 @@
   align-items: center;
   justify-content: center;
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  box-shadow: 
+  box-shadow:
     0 8px 24px rgba(230, 57, 70, 0.4),
     0 0 0 0 rgba(230, 57, 70, 0.4);
   z-index: 10;
@@ -293,7 +294,7 @@
 
 .play-button:hover {
   transform: translate(-50%, -50%) scale(1.1);
-  box-shadow: 
+  box-shadow:
     0 12px 32px rgba(230, 57, 70, 0.5),
     0 0 0 8px rgba(230, 57, 70, 0.1);
 }
@@ -321,9 +322,13 @@
   border-radius: 50%;
   border: 3px solid transparent;
   background: linear-gradient(135deg, #e63946, #ff6b6b, #f72585, #4361ee) border-box;
-  -webkit-mask: linear-gradient(#fff 0 0) padding-box, linear-gradient(#fff 0 0);
+  -webkit-mask:
+    linear-gradient(#fff 0 0) padding-box,
+    linear-gradient(#fff 0 0);
   -webkit-mask-composite: xor;
-  mask: linear-gradient(#fff 0 0) padding-box, linear-gradient(#fff 0 0);
+  mask:
+    linear-gradient(#fff 0 0) padding-box,
+    linear-gradient(#fff 0 0);
   mask-composite: exclude;
   opacity: 0.6;
 }
@@ -356,7 +361,7 @@
   background: white;
   border-radius: 20px;
   padding: 40px 32px;
-  box-shadow: 
+  box-shadow:
     0 4px 20px rgba(0, 0, 0, 0.06),
     0 0 0 1px rgba(0, 0, 0, 0.04);
   transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
@@ -397,7 +402,7 @@
 }
 
 .premium-stat-card:hover {
-  box-shadow: 
+  box-shadow:
     0 16px 48px rgba(0, 0, 0, 0.12),
     0 0 0 1px rgba(230, 57, 70, 0.08);
 }
@@ -412,7 +417,6 @@
   align-items: center;
   justify-content: center;
   color: white;
-  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
   box-shadow: 0 8px 24px rgba(230, 57, 70, 0.25);
   position: relative;
 }
@@ -424,16 +428,16 @@
   border-radius: 16px;
   background: linear-gradient(135deg, rgba(255, 255, 255, 0.2) 0%, transparent 100%);
   opacity: 0;
-  transition: opacity 0.3s;
 }
 
+/* Remove icon hover - keep only card hover */
 .premium-stat-card:hover .stat-icon-premium::before {
-  opacity: 1;
+  opacity: 0;
 }
 
 .premium-stat-card:hover .stat-icon-premium {
-  transform: translateY(-4px) scale(1.05);
-  box-shadow: 0 12px 32px rgba(230, 57, 70, 0.35);
+  transform: none;
+  box-shadow: 0 8px 24px rgba(230, 57, 70, 0.25);
 }
 
 .stat-number-premium {
@@ -559,7 +563,7 @@
   background: white;
   border-radius: 20px;
   padding: 36px 32px;
-  box-shadow: 
+  box-shadow:
     0 4px 20px rgba(0, 0, 0, 0.06),
     0 0 0 1px rgba(0, 0, 0, 0.04);
   transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
@@ -570,7 +574,7 @@
 }
 
 .ecosystem-card-advanced:hover .ecosystem-card-content {
-  box-shadow: 
+  box-shadow:
     0 20px 60px rgba(0, 0, 0, 0.12),
     0 0 0 1px rgba(0, 0, 0, 0.06);
 }
@@ -583,18 +587,17 @@
   align-items: center;
   justify-content: center;
   margin-bottom: 20px;
-  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+  box-shadow: 0 8px 24px rgba(220, 20, 60, 0.25);
+  background: linear-gradient(135deg, #dc143c 0%, #ff6b6b 100%) !important;
 }
 
 .ecosystem-card-advanced:hover .ecosystem-icon-advanced {
-  transform: translateY(-4px) scale(1.08);
-  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.2);
+  transform: none;
+  box-shadow: 0 8px 24px rgba(220, 20, 60, 0.25);
 }
 
 .ecosystem-emoji-large {
-  font-size: 32px;
-  line-height: 1;
+  color: #fff;
   filter: drop-shadow(0 2px 6px rgba(0, 0, 0, 0.1));
 }
 

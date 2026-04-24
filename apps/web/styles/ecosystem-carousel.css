@@ -872,11 +872,11 @@
   font-size: 28px;
   font-weight: 700;
   color: #ffffff;
-  transition: all 0.3s ease;
 }
 
+/* Remove hover effects - icons stay stable */
 .asset-icon-carousel:hover {
-  transform: scale(1.1);
+  transform: none;
 }
 
 .asset-0 {

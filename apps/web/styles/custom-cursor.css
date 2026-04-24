@@ -1,0 +1,104 @@
+/* Custom Cursor Desktop Optimization */
+@media (hover: hover) and (pointer: fine) {
+  * {
+    cursor: none !important;
+  }
+
+  /* Exclude text inputs to keep the default I-beam */
+  input:not([type="button"]):not([type="submit"]):not([type="image"]):not([type="radio"]):not([type="checkbox"]), 
+  textarea, 
+  [contenteditable="true"],
+  [contenteditable="plaintext-only"] {
+    cursor: text !important;
+  }
+
+  .custom-cursor-wrapper {
+    position: fixed;
+    top: 0;
+    left: 0;
+    pointer-events: none;
+    z-index: 999999;
+    will-change: transform;
+    opacity: 0;
+    transition: opacity 0.3s ease-in-out;
+  }
+
+  .custom-cursor-wrapper.is-moving {
+    opacity: 1;
+  }
+
+  /* The directional rotation container */
+  .custom-cursor-icon {
+    width: 28px;
+    height: 28px;
+    transform-origin: 0 0;
+    will-change: transform;
+  }
+
+  /* The actual SVG Plane */
+  .custom-cursor-plane {
+    transform-origin: 0 0; 
+    transition: transform 0.25s cubic-bezier(0.2, 0.8, 0.2, 1);
+  }
+
+  /* Hover Tilt & Thrust Animation */
+  @keyframes thrustPulse {
+    0% { transform: scale(1) translate(0, 0) rotate(0deg); }
+    50% { transform: scale(1.15) translate(-1px, -1px) rotate(-10deg); }
+    100% { transform: scale(1.1) translate(0, 0) rotate(-8deg); }
+  }
+
+  .custom-cursor-wrapper.is-hovering .custom-cursor-plane {
+    animation: thrustPulse 0.3s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
+  }
+
+  /* Click Forward Burst */
+  .custom-cursor-wrapper.is-clicking .custom-cursor-plane {
+    transform: translate(-3px, -3px) scale(0.95);
+    transition: transform 0.1s ease-out;
+  }
+
+  /* Focus Halo Effect */
+  .cursor-halo {
+    position: absolute;
+    top: -12px;
+    left: -12px;
+    width: 52px;
+    height: 52px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(229, 57, 53, 0.12) 0%, rgba(229, 57, 53, 0) 70%);
+    opacity: 0;
+    transform: scale(0.5);
+    transition: all 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
+    z-index: -1;
+  }
+
+  .custom-cursor-wrapper.is-hovering .cursor-halo {
+    opacity: 1;
+    transform: scale(1);
+  }
+
+  /* Ripple Click Feedback */
+  .cursor-ripple {
+    position: fixed;
+    width: 24px;
+    height: 24px;
+    border: 1px solid rgba(229, 57, 53, 0.6);
+    background: rgba(229, 57, 53, 0.15);
+    border-radius: 50%;
+    transform: translate(-50%, -50%) scale(0.5);
+    pointer-events: none;
+    z-index: 999998;
+    animation: rippleExpand 0.4s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
+  }
+
+  @keyframes rippleExpand {
+    0% { transform: translate(-50%, -50%) scale(0.5); opacity: 1; }
+    100% { transform: translate(-50%, -50%) scale(3); opacity: 0; }
+  }
+
+  /* Hide custom cursor when interacting with true text inputs */
+  .custom-cursor-wrapper.is-text-hover {
+    display: none !important;
+  }
+}

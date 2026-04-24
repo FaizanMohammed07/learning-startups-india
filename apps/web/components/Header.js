@@ -15,25 +15,8 @@ export default function Header() {
 
   const menuItems = [
     { label: 'Home', href: '/' },
-    {
-      label: 'About Us',
-      href: '/about',
-      hasDropdown: true,
-      dropdownItems: [
-        { label: 'About Us', href: '/about' },
-        { label: 'Team', href: '/team' },
-      ],
-    },
-    {
-      label: 'Our Programs',
-      href: '/programs',
-      hasDropdown: true,
-      dropdownItems: [
-        { label: 'Pre-Incubation', href: '/programs/pre-incubation' },
-        { label: 'Incubation', href: '/programs/incubation' },
-        { label: 'Growth Programs', href: '/programs/growth' },
-      ],
-    },
+    { label: 'About Us', href: '/about' },
+    { label: 'Our Programs', href: '/programs' },
     { label: 'Events', href: '/events' },
     { label: 'Mentors', href: '/mentors' },
     { label: 'Investors', href: '/investors' },
@@ -122,7 +105,7 @@ export default function Header() {
                   <button className="btn-header btn-signin">Sign in</button>
                 </Link>
                 <Link href="/signup">
-                  <button className="btn-header btn-signup">Sign Up</button>
+                  <button className="btn-header btn-signup">Apply Now</button>
                 </Link>
               </>
             )}
@@ -287,7 +270,7 @@ export default function Header() {
                   <button className="mobile-btn mobile-btn-secondary">Sign in</button>
                 </Link>
                 <Link href="/signup" onClick={closeMobileMenu}>
-                  <button className="mobile-btn mobile-btn-primary">Sign Up</button>
+                  <button className="mobile-btn mobile-btn-primary">Apply Now</button>
                 </Link>
               </>
             )}

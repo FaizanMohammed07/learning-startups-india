@@ -3,6 +3,7 @@
 import { motion } from 'framer-motion';
 import { useState, useRef } from 'react';
 import dynamic from 'next/dynamic';
+import { Rocket, BarChart3, IndianRupee, GraduationCap } from 'lucide-react';
 const VideoPlayerModal = dynamic(() => import('./VideoPlayerModal'), { ssr: false });
 
 export default function DemoClassesSection() {
@@ -15,41 +16,35 @@ export default function DemoClassesSection() {
     {
       id: 1,
       title: 'Why Pre incubation is important',
-      instructor: 'Vishwaraj Saude',
-      // duration: '45 min',
-
-      videoUrl: 'https://10ihs6meu0bf1qny.public.blob.vercel-storage.com/demo-1.mp4', // Replace with your video file
-      thumbnail: '/thumbnails/demo-1.jpg', // Replace with your thumbnail
+      instructor: 'Ravi Tilekar',
+      videoUrl: 'https://10ihs6meu0bf1qny.public.blob.vercel-storage.com/demo-1.mp4',
+      thumbnail: '/thumbnails/demo-1.jpg',
       topics: ['Clarity', 'Mindset', 'Entrepreneurship'],
       views: '12.5K',
       gradient: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
-      icon: '🚀',
+      icon: Rocket,
     },
     {
       id: 2,
       title: 'Market Research & Validation',
       instructor: 'Vishwaraj Saude',
-      // duration: '60 min',
-
-      videoUrl: 'https://10ihs6meu0bf1qny.public.blob.vercel-storage.com/demo-2.mp4', // Replace with your video file
-      thumbnail: '/thumbnails/demo-2.jpg', // Replace with your thumbnail
+      videoUrl: 'https://10ihs6meu0bf1qny.public.blob.vercel-storage.com/demo-2.mp4',
+      thumbnail: '/thumbnails/demo-2.jpg',
       topics: ['Idea Validation', 'Audience', 'Market'],
       views: '15.2K',
       gradient: 'linear-gradient(135deg, #f093fb 0%, #f5576c 100%)',
-      icon: '📊',
+      icon: BarChart3,
     },
     {
       id: 3,
-      title: 'Marketing and Go To Market Strategy',
-      instructor: 'Vishwaraj Saude',
-      // duration: '50 min',
-
-      videoUrl: 'https://10ihs6meu0bf1qny.public.blob.vercel-storage.com/demo-3.mp4', // Replace with your video file
-      thumbnail: '/thumbnails/demo-3.jpg', // Replace with your thumbnail
+      title: 'Business Model',
+      instructor: 'Avinash Tilekar',
+      videoUrl: 'https://10ihs6meu0bf1qny.public.blob.vercel-storage.com/demo-3.mp4',
+      thumbnail: '/thumbnails/demo-3.jpg',
       topics: ['Structure roadmap', 'business plan'],
       views: '18.7K',
       gradient: 'linear-gradient(135deg, #4facfe 0%, #00f2fe 100%)',
-      icon: '💰',
+      icon: IndianRupee,
     },
     // {
     //   id: 3,

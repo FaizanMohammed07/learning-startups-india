@@ -1,154 +1,154 @@
 'use client';
 
+import { useState, useEffect, useRef, useCallback } from 'react';
 import { motion } from 'framer-motion';
+import { Rocket, FileEdit, UserCheck, Zap, TrendingUp } from 'lucide-react';
+import '../styles/how-it-works.css';
+
+const steps = [
+  {
+    number: '1',
+    title: 'Apply',
+    description: 'Submit your startup details for evaluation by our core team.',
+    icon: <FileEdit size={24} />,
+  },
+  {
+    number: '2',
+    title: 'Get Selected',
+    description: 'Pass the screening process to join our exclusive platform.',
+    icon: <UserCheck size={24} />,
+  },
+  {
+    number: '3',
+    title: 'Build & Mentorship',
+    description: 'Work directly with leading industry experts and refine your model.',
+    icon: <Zap size={24} />,
+  },
+  {
+    number: '4',
+    title: 'Scale & Access Funding',
+    description: 'Pitch to investors, secure funding, and scale your growth rapidly.',
+    icon: <TrendingUp size={24} />,
+  },
+];
+
+// Node positions as % of axis width (node centres)
+const NODE_POSITIONS_PCT = [0, 33.333, 66.666, 100];
 
 export default function HowItWorksSection() {
-  const steps = [
-    {
-      number: '01',
-      title: 'Apply in 5 Minutes',
-      description: 'Submit a simple application with your startup idea. No lengthy forms, no business plan required — just your passion and vision.',
-      detail: 'Rolling applications. Selected candidates notified within 7 days.',
-      icon: (
-        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-          <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
-          <polyline points="14 2 14 8 20 8"/>
-          <line x1="16" y1="13" x2="8" y2="13"/>
-          <line x1="16" y1="17" x2="8" y2="17"/>
-          <polyline points="10 9 9 9 8 9"/>
-        </svg>
-      ),
-      duration: '5 min'
-    },
-    {
-      number: '02',
-      title: 'Learn, Build, Validate',
-      subtitle: '4 Weeks',
-      description: 'Join your cohort for live workshops, hands-on assignments, and weekly mentor sessions. Complete 2 modules per week, build your MVP, test with real customers, and refine your pitch.',
-      detail: 'Hybrid format: Online sessions + optional in-person workshops.',
-      icon: (
-        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-          <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/>
-          <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/>
-        </svg>
-      ),
-      duration: '4 weeks'
-    },
-    {
-      number: '03',
-      title: 'Pitch & Win on Demo Day',
-      description: 'Present your startup to a panel of investors, industry experts, and successful founders. Top teams unlock seed funding up to ₹5 Lakhs + incubation support.',
-      detail: 'All participants receive completion certificates & investor introductions.',
-      icon: (
-        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-          <path d="M12 2L2 7l10 5 10-5-10-5z"/>
-          <path d="M2 17l10 5 10-5"/>
-          <path d="M2 12l10 5 10-5"/>
-        </svg>
-      ),
-      duration: 'Demo Day'
-    }
-  ];
+  const axisRef = useRef(null);
+  const [rocketPct, setRocketPct] = useState(0);       // 0–100 %
+  const [activeStep, setActiveStep] = useState(0);
+  const [isHovering, setIsHovering] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    const handleResize = () => setIsMobile(window.innerWidth < 768);
+    handleResize();
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
+
+  const handleMouseMove = useCallback((e) => {
+    if (!axisRef.current || isMobile) return;
+    const rect = axisRef.current.getBoundingClientRect();
+    // cursor X relative to the left edge of the axis element itself
+    const rawX = e.clientX - rect.left;
+    // clamp to [0, rect.width] then convert to percentage
+    const clamped = Math.max(0, Math.min(rawX, rect.width));
+    const pct = (clamped / rect.width) * 100;
+
+    setRocketPct(pct);
+
+    // Snap active step to whichever node is closest
+    const nearest = NODE_POSITIONS_PCT.reduce((best, pos, idx) =>
+      Math.abs(pct - pos) < Math.abs(pct - NODE_POSITIONS_PCT[best]) ? idx : best
+    , 0);
+    setActiveStep(nearest);
+  }, [isMobile]);
+
+  const handleMouseEnter = useCallback(() => setIsHovering(true), []);
+  const handleMouseLeave = useCallback(() => {
+    setIsHovering(false);
+    setRocketPct(0);
+    setActiveStep(0);
+  }, []);
+
+  // When hovering a card, snap the rocket to that step
+  const handleCardHover = useCallback((idx) => {
+    setActiveStep(idx);
+    setRocketPct(NODE_POSITIONS_PCT[idx]);
+  }, []);
 
   return (
-    <section className="how-it-works-section">
-      <div className="how-it-works-bg-gradient"></div>
-      
-      <div className="how-it-works-container">
+    <section className="how-it-works-modern">
+      <div className="iec-container">
         {/* Header */}
-        <motion.div
-          className="how-it-works-header"
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6 }}
-        >
-          <div className="how-badge">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-              <circle cx="12" cy="12" r="10"/>
-              <polyline points="12 6 12 12 16 14"/>
-            </svg>
-            <span>How It Works</span>
-          </div>
-
-          <h2 className="how-title">
-            From Application to Demo Day —<br />
-            <span className="how-highlight">Here's Your Journey</span>
-          </h2>
-        </motion.div>
-
-        {/* Steps Container */}
-        <div className="steps-container">
-          {steps.map((step, index) => (
-            <motion.div
-              key={index}
-              className="step-wrapper"
-              initial={{ opacity: 0, y: 40 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.6, delay: index * 0.2 }}
-            >
-              {/* Connector Line */}
-              {index < steps.length - 1 && (
-                <div className="step-connector">
-                  <motion.div
-                    className="connector-line"
-                    initial={{ scaleX: 0 }}
-                    whileInView={{ scaleX: 1 }}
-                    viewport={{ once: true }}
-                    transition={{ duration: 0.8, delay: index * 0.2 + 0.4 }}
-                  />
-                  <div className="connector-arrow">
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
-                      <path d="M5 12h14M12 5l7 7-7 7"/>
-                    </svg>
-                  </div>
-                </div>
-              )}
-
-              {/* Step Card */}
-              <motion.div
-                className="step-card"
-                whileHover={{ y: -8 }}
-                transition={{ duration: 0.3 }}
-              >
-                <div className="step-card-glow"></div>
-
-                {/* Step Number Badge */}
-                <div className="step-number-badge">
-                  <span>{step.number}</span>
-                </div>
-
-                {/* Icon */}
-                <div className="step-icon-wrapper">
-                  <div className="step-icon">{step.icon}</div>
-                  <div className="step-duration">{step.duration}</div>
-                </div>
-
-                {/* Content */}
-                <div className="step-content">
-                  {step.subtitle && (
-                    <div className="step-subtitle">{step.subtitle}</div>
-                  )}
-                  <h3 className="step-title">{step.title}</h3>
-                  <p className="step-description">{step.description}</p>
-                  
-                  <div className="step-detail">
-                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                      <polyline points="20 6 9 17 4 12"/>
-                    </svg>
-                    <span>{step.detail}</span>
-                  </div>
-                </div>
-
-                {/* Background Number */}
-                <div className="step-bg-number">{step.number}</div>
-              </motion.div>
-            </motion.div>
-          ))}
+        <div className="roadmap-header">
+          <span className="sub-tag">THE INSTITUTIONAL PATHWAY</span>
+          <h2>A Strategic Trajectory for Founders</h2>
+          <p>From visionary concept to global market leader, our structured roadmap ensures every milestone is an engine for growth.</p>
         </div>
 
-       
+        <div className="roadmap-container">
+          {/* ── Axis: line + nodes + rocket ── */}
+          <div
+            className="roadmap-axis"
+            ref={axisRef}
+            onMouseMove={handleMouseMove}
+            onMouseEnter={handleMouseEnter}
+            onMouseLeave={handleMouseLeave}
+          >
+            {/* Faint base line */}
+            <div className="roadmap-base-line" />
+
+            {/* Glowing flame trail – grows with cursor */}
+            <div
+              className="roadmap-flame-trail"
+              style={{ width: `${rocketPct}%` }}
+            />
+
+            {/* Rocket – absolutely positioned, perfectly on the line */}
+            <div
+              className={`rocket-pilot${isHovering ? ' visible' : ''}`}
+              style={{ left: `${rocketPct}%` }}
+            >
+              <Rocket size={18} style={{ transform: 'rotate(90deg)' }} />
+            </div>
+
+            {/* Step nodes */}
+            <div className="roadmap-nodes-wrapper">
+              {steps.map((step, idx) => (
+                <div
+                  key={idx}
+                  className={`roadmap-node-item${activeStep >= idx ? ' active' : ''}${activeStep === idx ? ' current' : ''}`}
+                  onMouseEnter={() => handleCardHover(idx)}
+                >
+                  <span className="node-number">{idx + 1}</span>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* ── Cards ── */}
+          <div className="roadmap-cards-grid">
+            {steps.map((step, idx) => (
+              <motion.div
+                key={idx}
+                className={`roadmap-step-card-glass${activeStep === idx ? ' focused' : ''}`}
+                onMouseEnter={() => handleCardHover(idx)}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: idx * 0.1 }}
+              >
+                <div className="step-card-icon">{step.icon}</div>
+                <h4 className="step-card-title">{step.title}</h4>
+                <p className="step-card-desc">{step.description}</p>
+              </motion.div>
+            ))}
+          </div>
+        </div>
       </div>
     </section>
   );

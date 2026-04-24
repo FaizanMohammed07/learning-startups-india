@@ -2,6 +2,23 @@
 
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { 
+  Rocket, 
+  TrendingUp, 
+  GraduationCap, 
+  Network, 
+  Target, 
+  BookOpen, 
+  Lightbulb, 
+  ShieldCheck,
+  CheckCircle2,
+  AlertTriangle,
+  ArrowRight,
+  Star,
+  BriefcaseBusiness,
+  Building2,
+  Briefcase
+} from 'lucide-react';
 import MentorRegistrationModal from '@/components/MentorRegistrationModal';
 import ExploreMentorsModal from '@/components/ExploreMentorsModal';
 import ScrollToTop from '@/components/ScrollToTop';
@@ -320,7 +337,9 @@ export default function MentorsPage() {
                 transition={{ duration: 0.4, delay: 0.1 }}
                 viewport={{ once: true }}
               >
-                <div className="role-icon">🎯</div>
+                <div className="role-icon">
+                  <Target size={22} color="#E53935" />
+                </div>
                 <h3>Support Founders</h3>
                 <p>Guide founders through curated programs and initiatives</p>
               </motion.div>
@@ -332,7 +351,9 @@ export default function MentorsPage() {
                 transition={{ duration: 0.4, delay: 0.2 }}
                 viewport={{ once: true }}
               >
-                <div className="role-icon">📚</div>
+                <div className="role-icon">
+                  <BookOpen size={22} color="#E53935" />
+                </div>
                 <h3>Share Expertise</h3>
                 <p>Contribute during workshops and events</p>
               </motion.div>
@@ -344,7 +365,9 @@ export default function MentorsPage() {
                 transition={{ duration: 0.4, delay: 0.3 }}
                 viewport={{ once: true }}
               >
-                <div className="role-icon">🚀</div>
+                <div className="role-icon">
+                  <Rocket size={22} color="#E53935" />
+                </div>
                 <h3>Strengthen Innovation</h3>
                 <p>Support pre-incubation and incubation initiatives</p>
               </motion.div>
@@ -356,7 +379,9 @@ export default function MentorsPage() {
                 transition={{ duration: 0.4, delay: 0.4 }}
                 viewport={{ once: true }}
               >
-                <div className="role-icon">💡</div>
+                <div className="role-icon">
+                  <Lightbulb size={22} color="#E53935" />
+                </div>
                 <h3>Ecosystem Advisors</h3>
                 <p>Act as role models and strategic advisors</p>
               </motion.div>
@@ -453,7 +478,9 @@ export default function MentorsPage() {
             transition={{ duration: 0.6 }}
             viewport={{ once: true }}
           >
-            <div className="note-icon">🔐</div>
+            <div className="note-icon">
+              <ShieldCheck size={24} color="#E53935" />
+            </div>
             <h3>Important Note on Interaction</h3>
             <div className="note-content">
               <p>
@@ -652,23 +679,33 @@ export default function MentorsPage() {
 
             <div className="apply-grid">
               <div className="apply-card">
-                <div className="apply-icon">👨‍💼</div>
+                <div className="apply-icon">
+                  <Rocket size={28} />
+                </div>
                 <h4>Entrepreneurs & Startup Founders</h4>
               </div>
               <div className="apply-card">
-                <div className="apply-icon">🏢</div>
+                <div className="apply-icon">
+                  <Briefcase size={28} />
+                </div>
                 <h4>Industry Professionals</h4>
               </div>
               <div className="apply-card">
-                <div className="apply-icon">💼</div>
+                <div className="apply-icon">
+                  <Building2 size={28} />
+                </div>
                 <h4>Corporate Leaders</h4>
               </div>
               <div className="apply-card">
-                <div className="apply-icon">🎓</div>
+                <div className="apply-icon">
+                  <GraduationCap size={28} />
+                </div>
                 <h4>Subject Matter Experts</h4>
               </div>
               <div className="apply-card">
-                <div className="apply-icon">🤝</div>
+                <div className="apply-icon">
+                  <TrendingUp size={28} />
+                </div>
                 <h4>Advisors with Relevant Experience</h4>
               </div>
             </div>
@@ -677,19 +714,27 @@ export default function MentorsPage() {
               <h3>Our Commitment to Mentors</h3>
               <div className="commitment-items">
                 <div className="commitment-item">
-                  <span className="commitment-icon">✓</span>
+                  <span className="commitment-icon">
+                    <CheckCircle2 size={18} color="#E53935" />
+                  </span>
                   <span>Professional onboarding and recognition</span>
                 </div>
                 <div className="commitment-item">
-                  <span className="commitment-icon">✓</span>
+                  <span className="commitment-icon">
+                    <CheckCircle2 size={18} color="#E53935" />
+                  </span>
                   <span>Clear role definition</span>
                 </div>
                 <div className="commitment-item">
-                  <span className="commitment-icon">✓</span>
+                  <span className="commitment-icon">
+                    <CheckCircle2 size={18} color="#E53935" />
+                  </span>
                   <span>Structured engagement opportunities</span>
                 </div>
                 <div className="commitment-item">
-                  <span className="commitment-icon">✓</span>
+                  <span className="commitment-icon">
+                    <CheckCircle2 size={18} color="#E53935" />
+                  </span>
                   <span>Long-term association within the ecosystem</span>
                 </div>
               </div>

@@ -1,289 +1,366 @@
 'use client';
 
+import React, { useState, useEffect, useRef } from 'react';
 import { motion, useInView } from 'framer-motion';
-import { useRef, useState, useEffect } from 'react';
+import {
+  Users,
+  Award,
+  TrendingUp,
+  Handshake,
+  Globe,
+  Building2,
+  Calendar,
+  IndianRupee,
+  Landmark,
+  LayoutGrid,
+  UserCheck,
+  Briefcase,
+  Scale,
+} from 'lucide-react';
 
-export default function ImpactSection() {
-  const sectionRef = useRef(null);
-  const isInView = useInView(sectionRef, { once: true, amount: 0.3 });
-  const [hoveredIndex, setHoveredIndex] = useState(null);
+const iconMap = {
+  users: Users,
+  rupee: IndianRupee,
+  building: Building2,
+  globe: Globe,
+  handshake: Handshake,
+  briefcase: Briefcase,
+  scale: Scale,
+  grid: LayoutGrid,
+};
 
-  const impactStats = [
-    {
-      number: '500',
-      suffix: '+',
-      label: 'Startups Incubated',
-      description: 'Innovative ventures transforming industries',
-      icon: (
-        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-          <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
-          <circle cx="9" cy="7" r="4"/>
-          <path d="M23 21v-2a4 4 0 0 0-3-3.87"/>
-          <path d="M16 3.13a4 4 0 0 1 0 7.75"/>
-        </svg>
-      ),
-      gradient: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
-      delay: 0.1
+const impactMetrics = [
+  {
+    id: 1,
+    icon: Users,
+    value: 500,
+    suffix: '+',
+    label: 'Startups Incubated',
+    sub: 'Innovative ventures transforming industries',
+    gradient: 'from-violet-500 to-indigo-500',
+  },
+  {
+    id: 2,
+    icon: UserCheck,
+    value: 200,
+    suffix: '+',
+    label: 'Expert Mentors',
+    sub: 'Industry leaders guiding you',
+    gradient: 'from-purple-400 to-pink-400',
+  },
+  {
+    id: 3,
+    icon: TrendingUp,
+    value: 110,
+    prefix: '₹',
+    suffix: 'Cr+',
+    label: 'Funding Raised',
+    sub: 'Capital secured through our network',
+    gradient: 'from-rose-500 to-pink-500',
+  },
+  {
+    id: 4,
+    icon: Landmark,
+    value: 120,
+    prefix: '₹',
+    suffix: 'cr+',
+    label: 'Govt. Grants Raised',
+    sub: 'Global impact and presence',
+    gradient: 'from-cyan-400 to-blue-500',
+  },
+  {
+    id: 5,
+    icon: Building2,
+    value: 100,
+    suffix: '+',
+    label: 'Programs',
+    sub: 'Comprehensive training initiatives',
+    gradient: 'from-orange-400 to-amber-500',
+  },
+  {
+    id: 6,
+    icon: Handshake,
+    value: 100,
+    suffix: '+',
+    label: 'Value Partners',
+    sub: 'Strategic collaborations worldwide',
+    gradient: 'from-teal-400 to-cyan-500',
+  },
+  {
+    id: 7,
+    icon: Globe,
+    value: 1000,
+    suffix: '+',
+    label: 'Events',
+    sub: 'Networking and learning opportunities',
+    gradient: 'from-sky-400 to-blue-400',
+  },
+  {
+    id: 8,
+    icon: Calendar,
+    value: 100,
+    suffix: '+',
+    label: 'Corporate Engagements',
+    sub: 'Industry partnerships and collaborations',
+    gradient: 'from-pink-400 to-rose-400',
+  },
+];
+
+// Easing function for organic deceleration
+const easeOutQuart = t => 1 - Math.pow(1 - t, 4);
+
+const AnimatedCounter = ({ value, duration = 1500, trigger }) => {
+  const [count, setCount] = useState(0);
+
+  useEffect(() => {
+    if (!trigger) return;
+
+    let startTime;
+    let animationFrame;
+
+    const animate = currentTime => {
+      if (!startTime) startTime = currentTime;
+      const progress = Math.min((currentTime - startTime) / duration, 1);
+      const easedProgress = easeOutQuart(progress);
+
+      setCount(Math.floor(easedProgress * value));
+
+      if (progress < 1) {
+        animationFrame = requestAnimationFrame(animate);
+      }
+    };
+
+    animationFrame = requestAnimationFrame(animate);
+    return () => cancelAnimationFrame(animationFrame);
+  }, [value, duration, trigger]);
+
+  return <span>{count.toLocaleString()}</span>;
+};
+
+// Framer Motion Variants for Staggered Drop-In
+const containerVariants = {
+  hidden: { opacity: 0 },
+  show: {
+    opacity: 1,
+    transition: {
+      staggerChildren: 0.1, // 100ms stagger between cards
     },
-    {
-      number: '110',
-      suffix: 'Cr+',
-      prefix: '₹',
-      label: 'Funding Raised',
-      description: 'Capital secured through our network',
-      icon: (
-        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-          <rect x="1" y="4" width="22" height="16" rx="2" ry="2"/>
-          <line x1="1" y1="10" x2="23" y2="10"/>
-        </svg>
-      ),
-      gradient: 'linear-gradient(135deg, #f093fb 0%, #f5576c 100%)',
-      delay: 0.2
-    },
-    {
-      number: '100',
-      suffix: '+',
-      label: 'Programs',
-      description: 'Comprehensive training initiatives',
-      icon: (
-        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-          <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/>
-          <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/>
-        </svg>
-      ),
-      gradient: 'linear-gradient(135deg, #4facfe 0%, #00f2fe 100%)',
-      delay: 0.3
-    },
-    {
-      number: '100',
-      suffix: '+',
-      label: 'Value Partners',
-      description: 'Strategic collaborations worldwide',
-      icon: (
-        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-          <path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
-          <circle cx="8.5" cy="7" r="4"/>
-          <line x1="23" y1="11" x2="17" y2="11"/>
-        </svg>
-      ),
-      gradient: 'linear-gradient(135deg, #fa709a 0%, #fee140 100%)',
-      delay: 0.4
-    },
-    {
-      number: '1,000',
-      suffix: '+',
-      label: 'Events',
-      description: 'Networking and learning opportunities',
-      icon: (
-        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-          <rect x="3" y="4" width="18" height="18" rx="2" ry="2"/>
-          <line x1="16" y1="2" x2="16" y2="6"/>
-          <line x1="8" y1="2" x2="8" y2="6"/>
-          <line x1="3" y1="10" x2="21" y2="10"/>
-        </svg>
-      ),
-      gradient: 'linear-gradient(135deg, #30cfd0 0%, #330867 100%)',
-      delay: 0.5
-    },
-    {
-      number: '110',
-      suffix: '+',
-      label: 'Corporate Engagements',
-      description: 'Industry partnerships and collaborations',
-      icon: (
-        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-          <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
-          <polyline points="9 22 9 12 15 12 15 22"/>
-        </svg>
-      ),
-      gradient: 'linear-gradient(135deg, #a8edea 0%, #fed6e3 100%)',
-      delay: 0.6
-    },
-    {
-      number: '100',
-      suffix: '+',
-      label: 'International Connects',
-      description: 'Global network and partnerships',
-      icon: (
-        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-          <circle cx="12" cy="12" r="10"/>
-          <line x1="2" y1="12" x2="22" y2="12"/>
-          <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/>
-        </svg>
-      ),
-      gradient: 'linear-gradient(135deg, #ff9a9e 0%, #fecfef 100%)',
-      delay: 0.7
-    },
-    {
-      number: '200',
-      suffix: '+',
-      label: 'Mentors',
-      description: 'Expert guidance from industry leaders',
-      icon: (
-        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-          <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
-          <circle cx="12" cy="7" r="4"/>
-        </svg>
-      ),
-      gradient: 'linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%)',
-      delay: 0.8
-    }
-  ];
+  },
+};
 
-  // Animated counter hook
-  const useCounter = (end, duration = 2000, shouldStart) => {
-    const [count, setCount] = useState(0);
+const headerVariants = {
+  hidden: { opacity: 0, y: 20 },
+  show: { opacity: 1, y: 0, transition: { duration: 0.6, ease: 'easeOut' } },
+};
 
-    useEffect(() => {
-      if (!shouldStart) return;
+const itemVariants = {
+  hidden: { opacity: 0, y: 20 },
+  show: { opacity: 1, y: 0, transition: { duration: 0.5, ease: 'easeOut' } },
+};
 
-      let startTime;
-      let animationFrame;
+const MetricCard = ({ metric }) => {
+  const cardRef = useRef(null);
+  const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
+  const [tilt, setTilt] = useState({ x: 0, y: 0 });
+  const [isHovered, setIsHovered] = useState(false);
 
-      const animate = (currentTime) => {
-        if (!startTime) startTime = currentTime;
-        const progress = (currentTime - startTime) / duration;
+  // Use Framer Motion's useInView to trigger individual card animations optimally
+  const isInView = useInView(cardRef, { once: true, amount: 0.3 });
 
-        if (progress < 1) {
-          setCount(Math.floor(end * progress));
-          animationFrame = requestAnimationFrame(animate);
-        } else {
-          setCount(end);
-        }
-      };
+  const handleMouseMove = e => {
+    if (!cardRef.current) return;
+    const rect = cardRef.current.getBoundingClientRect();
+    const x = e.clientX - rect.left;
+    const y = e.clientY - rect.top;
 
-      animationFrame = requestAnimationFrame(animate);
-      return () => cancelAnimationFrame(animationFrame);
-    }, [end, duration, shouldStart]);
+    setMousePos({ x, y });
 
-    return count;
+    // 3D Tilt calculation (Subtle: max ~4 degrees)
+    const centerX = rect.width / 2;
+    const centerY = rect.height / 2;
+    const rotateX = ((y - centerY) / centerY) * -4;
+    const rotateY = ((x - centerX) / centerX) * 4;
+    setTilt({ x: rotateX, y: rotateY });
   };
 
-  return (
-    <section className="impact-section" ref={sectionRef}>
-      {/* Decorative Background Elements */}
-      <div className="impact-bg-decoration">
-        <div className="impact-grid-lines"></div>
-        <div className="impact-floating-shapes">
-          <div className="shape shape-1"></div>
-          <div className="shape shape-2"></div>
-          <div className="shape shape-3"></div>
-        </div>
-      </div>
-
-      <div className="container">
-        {/* Section Header */}
-        <motion.div 
-          className="impact-header"
-          initial={{ opacity: 0, y: 30 }}
-          animate={isInView ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 0.6 }}
-        >
-          <motion.div 
-            className="impact-label"
-            initial={{ opacity: 0, scale: 0.9 }}
-            animate={isInView ? { opacity: 1, scale: 1 } : {}}
-            transition={{ duration: 0.5, delay: 0.2 }}
-          >
-            Our Impact
-          </motion.div>
-          
-          <motion.h2 
-            className="impact-title"
-            initial={{ opacity: 0, y: 20 }}
-            animate={isInView ? { opacity: 1, y: 0 } : {}}
-            transition={{ duration: 0.6, delay: 0.3 }}
-          >
-            Our Impact on The <span className="impact-highlight">Innovation Ecosystem</span>
-          </motion.h2>
-          
-          <motion.p 
-            className="impact-description"
-            initial={{ opacity: 0, y: 20 }}
-            animate={isInView ? { opacity: 1, y: 0 } : {}}
-            transition={{ duration: 0.6, delay: 0.4 }}
-          >
-            Driving transformation across the startup landscape with measurable results and lasting partnerships
-          </motion.p>
-        </motion.div>
-
-        {/* Impact Stats Grid */}
-        <div className="impact-stats-grid">
-          {impactStats.map((stat, index) => (
-            <ImpactCard 
-              key={index}
-              stat={stat}
-              index={index}
-              isInView={isInView}
-              hoveredIndex={hoveredIndex}
-              setHoveredIndex={setHoveredIndex}
-              useCounter={useCounter}
-            />
-          ))}
-        </div>
-      </div>
-    </section>
-  );
-}
-
-// Separate component for impact card
-function ImpactCard({ stat, index, isInView, hoveredIndex, setHoveredIndex, useCounter }) {
-  const numericValue = parseFloat(stat.number.replace(/,/g, ''));
-  const animatedCount = useCounter(numericValue, 2000, isInView);
-  
-  const formatNumber = (num) => {
-    if (stat.suffix === 'B') {
-      return num.toFixed(2);
-    }
-    return num.toLocaleString();
+  const handleMouseLeave = () => {
+    setIsHovered(false);
+    setTilt({ x: 0, y: 0 }); // Reset to flat
   };
+
+  const Icon = metric.icon;
 
   return (
     <motion.div
-      className="impact-stat-card"
-      initial={{ opacity: 0, y: 40, scale: 0.9 }}
-      animate={isInView ? { opacity: 1, y: 0, scale: 1 } : {}}
-      transition={{ 
-        duration: 0.6, 
-        delay: stat.delay,
-        type: "spring",
-        stiffness: 100
+      variants={itemVariants}
+      ref={cardRef}
+      onMouseMove={handleMouseMove}
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={handleMouseLeave}
+      className="relative group transition-all duration-300 ease-out"
+      style={{
+        transformStyle: 'preserve-3d',
+        // Smooth tilt only applies on desktop when hovered
+        transform: isHovered
+          ? `perspective(1000px) rotateX(${tilt.x}deg) rotateY(${tilt.y}deg) translateY(-6px)`
+          : 'perspective(1000px) rotateX(0deg) rotateY(0deg) translateY(0px)',
       }}
-      whileHover={{ y: -8, scale: 1.02 }}
-      onHoverStart={() => setHoveredIndex(index)}
-      onHoverEnd={() => setHoveredIndex(null)}
     >
-      <div className="impact-card-inner">
-        {/* Icon with Gradient */}
-        <div className="impact-icon-wrapper">
-          <div className="impact-icon-box" style={{ background: stat.gradient }}>
-            {stat.icon}
-            <div className="impact-icon-glow" style={{ background: stat.gradient }}></div>
+      {/* CARD OUTER WRAPPER - Glass effect with hover glow */}
+      <div className="absolute inset-0 bg-white/[0.04] border border-white/[0.08] backdrop-blur-[16px] rounded-[18px] transition-all duration-300 group-hover:border-[#E53935]/40 group-hover:shadow-[0_0_20px_rgba(229,57,53,0.15),0_15px_40px_rgba(0,0,0,0.5)] group-hover:-translate-y-1 shadow-[0_10px_30px_rgba(0,0,0,0.3)] -z-10" />
+
+      {/* Inner Highlight Layer - Glass effect */}
+      <div
+        className="absolute inset-0 rounded-[18px] pointer-events-none -z-10"
+        style={{
+          background:
+            'linear-gradient(180deg, rgba(255,255,255,0.08) 0%, rgba(255,255,255,0) 100%)',
+          boxShadow: 'inset 0 1px 0 0 rgba(255,255,255,0.12)',
+        }}
+        aria-hidden="true"
+      />
+
+      {/* Soft Tint - Icon Color Match */}
+      <div
+        className={`absolute inset-0 bg-gradient-to-br ${metric.gradient} opacity-[0.03] group-hover:opacity-[0.08] transition-opacity duration-300 pointer-events-none rounded-[18px] -z-10`}
+        aria-hidden="true"
+      />
+
+      {/* Interactive Cursor Glow */}
+      <div
+        className="pointer-events-none absolute inset-0 opacity-0 transition-opacity duration-500 ease-out group-hover:opacity-100 hidden md:block rounded-[18px]"
+        style={{
+          background: `radial-gradient(350px circle at ${mousePos.x}px ${mousePos.y}px, rgba(229,57,53,0.15), transparent 60%)`,
+        }}
+        aria-hidden="true"
+      />
+
+      {/* Content Container - Centered alignment */}
+      <div
+        className="relative z-10 flex flex-col items-center text-center"
+        style={{
+          transform: 'translateZ(30px)',
+          height: '240px',
+          padding: '24px 20px',
+          justifyContent: 'space-between',
+        }}
+      >
+        {/* Gradient Icon - Centered with container */}
+        <div className="flex-shrink-0">
+          <div
+            className={`relative w-[44px] h-[44px] rounded-[12px] bg-gradient-to-br ${metric.gradient} flex items-center justify-center transition-all duration-300 ease-out group-hover:scale-105 group-hover:rotate-[3deg] shadow-[0_4px_12px_rgba(0,0,0,0.5),inset_0_1px_0_rgba(255,255,255,0.3)]`}
+          >
+            <Icon className="w-5 h-5 text-white drop-shadow-md" strokeWidth={2.5} />
           </div>
         </div>
 
-        {/* Number */}
-        <div className="impact-number-wrapper">
-          <span className="impact-number">
-            {stat.prefix}
-            {formatNumber(animatedCount)}
-            {stat.suffix}
-          </span>
+        {/* Text Details - Centered */}
+        <div className="flex flex-col items-center gap-1">
+          {/* Stat Number - Larger, bolder */}
+          <div className="flex items-baseline justify-center text-white drop-shadow-sm">
+            {metric.prefix && (
+              <span className="text-[24px] font-bold mr-1 opacity-90">{metric.prefix}</span>
+            )}
+            <span className="text-[38px] leading-none font-bold tracking-tight">
+              <AnimatedCounter value={metric.value} trigger={isInView} duration={1600} />
+            </span>
+            {metric.suffix && (
+              <span className="text-[24px] font-bold ml-1 opacity-90">{metric.suffix}</span>
+            )}
+          </div>
+
+          {/* Label - 16px, weight 600 */}
+          <h3 className="text-white opacity-90 font-semibold text-base mt-1 tracking-wide">
+            {metric.label}
+          </h3>
+
+          {/* Description - 13-14px, #9CA3AF, max-width 85% */}
+          <p className="text-[#9CA3AF] text-[13px] leading-relaxed mt-1 max-w-[85%]">
+            {metric.sub}
+          </p>
         </div>
-
-        {/* Label */}
-        <h3 className="impact-label-text">{stat.label}</h3>
-
-        {/* Description */}
-        <p className="impact-description-text">{stat.description}</p>
-
-        {/* Decorative Line */}
-        <motion.div 
-          className="impact-card-line"
-          animate={{ scaleX: hoveredIndex === index ? 1 : 0 }}
-          transition={{ duration: 0.3 }}
-        ></motion.div>
       </div>
     </motion.div>
+  );
+};
+
+export default function ImpactSection() {
+  return (
+    <section id="impact" className="iec-section relative bg-[#050505] overflow-hidden">
+      {/* --- LAYERED BACKGROUND DEPTH --- */}
+
+      {/* 1. Base Gradient */}
+      <div className="absolute inset-0 bg-gradient-to-b from-[#0A0A0A] to-[#111111] -z-20" />
+
+      {/* 2. Ultra-subtle Noise Texture Overlay */}
+      <div
+        className="absolute inset-0 opacity-[0.03] -z-10 mix-blend-overlay pointer-events-none"
+        style={{
+          backgroundImage:
+            'url("data:image/svg+xml,%3Csvg viewBox=%220 0 200 200%22 xmlns=%22http://www.w3.org/2000/svg%22%3E%3Cfilter id=%22noiseFilter%22%3E%3CfeTurbulence type=%22fractalNoise%22 baseFrequency=%220.85%22 numOctaves=%223%22 stitchTiles=%22stitch%22/%3E%3C/filter%3E%3Crect width=%22100%25%22 height=%22100%25%22 filter=%22url(%23noiseFilter)%22/%3E%3C/svg%3E")',
+        }}
+      />
+
+      {/* 3. Grid (Opacity Reduced) */}
+      <div className="absolute inset-0 bg-[linear-gradient(to_right,rgba(255,255,255,0.015)_1px,transparent_1px),linear-gradient(to_bottom,rgba(255,255,255,0.015)_1px,transparent_1px)] bg-[size:40px_40px] pointer-events-none -z-10" />
+
+      {/* 4. Animated Red Glow behind Heading */}
+      <motion.div
+        className="absolute top-[20%] left-[50%] -translate-x-1/2 -translate-y-1/2 w-[800px] h-[400px] bg-[#E53935] blur-[150px] rounded-[100%] pointer-events-none -z-10"
+        animate={{
+          scale: [1, 1.05, 1],
+          opacity: [0.03, 0.05, 0.03],
+        }}
+        transition={{ duration: 10, repeat: Infinity, ease: 'easeInOut' }}
+      />
+
+      {/* MAIN CONTENT CONTAINER */}
+      <motion.div
+        variants={containerVariants}
+        initial="hidden"
+        whileInView="show"
+        viewport={{ once: true, amount: 0.1 }}
+        className="iec-container relative z-10 w-full flex flex-col items-center"
+      >
+        {/* HEADER */}
+        <div className="text-center mb-[60px] relative w-full flex flex-col items-center">
+          <motion.div variants={headerVariants}>
+            <span className="inline-block text-[11px] font-bold text-[#E53935] uppercase tracking-wider border border-[#E53935]/40 rounded-full px-4 py-1.5 bg-[#E53935]/[0.06] mb-6 z-10 relative">
+              Our Impact
+            </span>
+          </motion.div>
+
+          <motion.div variants={headerVariants}>
+            <h2 className="font-display text-4xl md:text-[44px] font-bold tracking-tight leading-tight !text-white max-w-3xl z-10 relative">
+              Our Impact on The{' '}
+              <span className="relative inline-block">
+                <span className="relative z-10 text-[#E53935] drop-shadow-[0_2px_12px_rgba(0,0,0,0.8)] filter">
+                  Innovation Ecosystem
+                </span>
+                {/* Micro-Interaction: Soft red pulse strictly under highlight text */}
+                <span
+                  className="absolute inset-x-0 bottom-0 top-[20%] bg-[#E53935] blur-[20px] opacity-20"
+                  aria-hidden="true"
+                />
+              </span>
+            </h2>
+          </motion.div>
+
+          <motion.div variants={headerVariants}>
+            <p className="mt-5 text-[#A1A1AA] max-w-[600px] text-lg mx-auto leading-relaxed z-10">
+              Driving transformation across the startup landscape with measurable results and
+              lasting partnerships.
+            </p>
+          </motion.div>
+        </div>
+
+        {/* GRID */}
+        <div className="w-full grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-7">
+          {impactMetrics.map(metric => (
+            <MetricCard key={metric.id} metric={metric} />
+          ))}
+        </div>
+      </motion.div>
+    </section>
   );
 }

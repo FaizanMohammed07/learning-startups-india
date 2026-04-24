@@ -3,6 +3,16 @@
 import { useState } from 'react';
 import { motion } from 'framer-motion';
 import { useRouter } from 'next/navigation';
+import { 
+  Rocket, 
+  Building2, 
+  CheckCircle2, 
+  Clock, 
+  Mail, 
+  User, 
+  Home,
+  Check
+} from 'lucide-react';
 import '../styles/mentor-modal-premium.css';
 
 export default function MentorRegistrationModal({ onClose }) {
@@ -360,37 +370,17 @@ export default function MentorRegistrationModal({ onClose }) {
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.4 }}
             >
-              <h2 className="success-title-mentor">Thank You, {formData.fullName}! 🙏</h2>
+              <h2 className="success-title-mentor">Thank You, {formData.fullName}!</h2>
 
               <div className="success-user-details">
                 <div className="detail-row">
-                  <svg
-                    width="18"
-                    height="18"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth="2"
-                  >
-                    <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
-                    <circle cx="12" cy="7" r="4" />
-                  </svg>
+                   <User size={18} />
                   <span>
                     <strong>Name:</strong> {formData.fullName}
                   </span>
                 </div>
                 <div className="detail-row">
-                  <svg
-                    width="18"
-                    height="18"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth="2"
-                  >
-                    <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z" />
-                    <polyline points="22,6 12,13 2,6" />
-                  </svg>
+                  <Mail size={18} />
                   <span>
                     <strong>Email:</strong> {formData.email}
                   </span>
@@ -404,7 +394,9 @@ export default function MentorRegistrationModal({ onClose }) {
 
               <div className="success-info-boxes">
                 <div className="info-box">
-                  <div className="info-icon">✅</div>
+                  <div className="info-icon">
+                    <CheckCircle2 size={24} color="#10B981" />
+                  </div>
                   <div className="info-text">
                     <strong>Registration Successful</strong>
                     <span>
@@ -414,7 +406,9 @@ export default function MentorRegistrationModal({ onClose }) {
                 </div>
 
                 <div className="info-box">
-                  <div className="info-icon">⏳</div>
+                  <div className="info-icon">
+                    <Clock size={24} color="#F59E0B" />
+                  </div>
                   <div className="info-text">
                     <strong>Under Review</strong>
                     <span>Our team will carefully review your profile and credentials</span>
@@ -422,7 +416,9 @@ export default function MentorRegistrationModal({ onClose }) {
                 </div>
 
                 <div className="info-box">
-                  <div className="info-icon">📬</div>
+                  <div className="info-icon">
+                    <Mail size={24} color="#3B82F6" />
+                  </div>
                   <div className="info-text">
                     <strong>We'll Reach Out Soon</strong>
                     <span>
@@ -438,17 +434,7 @@ export default function MentorRegistrationModal({ onClose }) {
                   doing!
                 </p>
                 <a href="/" className="explore-link">
-                  <svg
-                    width="18"
-                    height="18"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth="2"
-                  >
-                    <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" />
-                    <polyline points="9 22 9 12 15 12 15 22" />
-                  </svg>
+                  <Home size={18} />
                   Explore Our Ecosystem
                 </a>
               </div>
@@ -674,7 +660,9 @@ export default function MentorRegistrationModal({ onClose }) {
             <div className="expertise-category-section">
               <div className="category-header">
                 <h4 className="category-title">
-                  <span className="category-icon">🚀</span>
+                  <span className="category-icon">
+                    <Rocket size={20} color="#E53935" />
+                  </span>
                   A. Core Startup & Business Expertise
                 </h4>
                 <span className="category-subtitle">Select up to 3 options per subcategory</span>
@@ -756,7 +744,9 @@ export default function MentorRegistrationModal({ onClose }) {
             <div className="expertise-category-section">
               <div className="category-header">
                 <h4 className="category-title">
-                  <span className="category-icon">🏭</span>
+                  <span className="category-icon">
+                    <Building2 size={20} color="#E53935" />
+                  </span>
                   B. Industry / Sector Expertise
                 </h4>
                 <span className="category-subtitle">Select up to 3 options per subcategory</span>

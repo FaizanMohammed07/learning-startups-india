@@ -45,7 +45,7 @@ export default function MyCoursesPage() {
       `}} />
 
       <div style={{ marginBottom: '2.5rem' }}>
-        <h1 style={{ fontSize: '2.25rem', fontWeight: 800, color: '#111827', margin: 0, letterSpacing: '-0.02em' }}>Adult Courses</h1>
+        <h1 style={{ fontSize: '2.25rem', fontWeight: 800, color: '#111827', margin: 0, letterSpacing: '-0.02em' }}>Enrolled Courses</h1>
         <p style={{ color: '#6b7280', marginTop: '0.5rem', fontSize: '1.05rem' }}>
           Continue your journey where you left off.
         </p>
@@ -63,7 +63,15 @@ export default function MyCoursesPage() {
         }}>
           <div style={{ position: 'relative', width: '100px', height: '100px', margin: '0 auto 2rem', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
             <div className="pulse-circle" style={{ width: '100%', height: '100%' }} />
-            <div className="rocket-icon" style={{ fontSize: '4rem', zIndex: 2 }}>🚀</div>
+            <div className="rocket-icon" style={{ zIndex: 2 }}>
+              <svg width="60" height="60" viewBox="0 0 24 24" fill="none" stroke="#3b82f6" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M4.5 16.5c-1.5 1.26-2 5-2 5s3.74-.5 5-2c.71-.84.7-2.13-.09-2.91a2.18 2.18 0 0 0-2.91-.09z" />
+                <path d="m12 15-3-3a22 22 0 0 1 2-3.95A12.88 12.88 0 0 1 22 2c0 2.72-.78 7.5-3.36 10.64A22.34 22.34 0 0 1 15 12z" />
+                <path d="M9 12H4s.5-1 1-4c2 1 2 1 4 4Z" />
+                <path d="M12 15v5s1 .5 4 1c-1-2-1-2-4-4Z" />
+                <path d="M15 12c2.72.1 4.5 1 4.5 1l-3 3s-1-1.78-1.5-4Z" />
+              </svg>
+            </div>
           </div>
           
           <h2 style={{ fontSize: '1.75rem', fontWeight: 800, color: '#1e293b', marginBottom: '1rem' }}>

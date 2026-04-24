@@ -24,11 +24,11 @@ export default function DashboardSidebar({ user, isPro = false }) {
       label: 'Courses',
       isDropdown: true,
       items: [
-        { id: 'explore', label: 'Expert Course', path: '/dashboard/explore', icon: 'explore' },
-        { id: 'my-courses', label: 'Adult Course', path: '/dashboard/my-courses', icon: 'courses' },
+        { id: 'explore', label: 'Expert Courses', path: '/dashboard/explore', icon: 'explore' },
+        { id: 'my-courses', label: 'Enrolled Courses', path: '/dashboard/my-courses', icon: 'courses' },
         { 
           id: 'wishlist', 
-          label: 'Specialist ✦', 
+          label: 'Wishlist', 
           path: '/dashboard/wishlist', 
           icon: 'wishlist',
           badge: (
@@ -44,7 +44,7 @@ export default function DashboardSidebar({ user, isPro = false }) {
             }}>NEW</span>
           )
         },
-        { id: 'completed', label: 'Committed Course', path: '/dashboard/completed-courses', icon: 'certificates' },
+        { id: 'completed', label: 'Completed Courses', path: '/dashboard/completed-courses', icon: 'certificates' },
       ],
     },
     {

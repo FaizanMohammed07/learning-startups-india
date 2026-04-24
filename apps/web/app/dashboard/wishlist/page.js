@@ -39,7 +39,7 @@ export default function WishlistPage() {
       `}} />
 
       <div style={{ marginBottom: '2.5rem' }}>
-        <h1 style={{ fontSize: '2.25rem', fontWeight: 800, color: '#111827', margin: 0, letterSpacing: '-0.02em' }}>Specialist Courses</h1>
+        <h1 style={{ fontSize: '2.25rem', fontWeight: 800, color: '#111827', margin: 0, letterSpacing: '-0.02em' }}>Wishlist</h1>
         <p style={{ color: '#6b7280', marginTop: '0.5rem', fontSize: '1.05rem' }}>
           Your selected curriculum for professional excellence.
         </p>
@@ -88,10 +88,10 @@ export default function WishlistPage() {
           </div>
           
           <h2 style={{ fontSize: '1.75rem', fontWeight: 800, color: '#111827', marginBottom: '1rem', position: 'relative', zIndex: 1 }}>
-            No specialist courses yet
+            Your wishlist is empty
           </h2>
           <p style={{ color: '#6b7280', marginBottom: '2.5rem', maxWidth: '450px', margin: '0 auto 2.5rem', lineHeight: 1.6, position: 'relative', zIndex: 1 }}>
-            Your specialist collection is empty. Explore our <strong style={{ color: '#6366f1' }}>Expert Courses</strong> to find learning paths that take your skills to the next level.
+            Save courses you&apos;re interested in to your wishlist and they will appear here. Explore our <strong style={{ color: '#6366f1' }}>Expert Courses</strong> to find your next challenge.
           </p>
           
           <Link href="/dashboard/explore" style={{ textDecoration: 'none', position: 'relative', zIndex: 1 }}>

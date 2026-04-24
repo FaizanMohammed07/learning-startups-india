@@ -38,7 +38,7 @@ export default function CompletedCoursesPage() {
 
       <div style={{ marginBottom: '2.5rem', display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end' }}>
         <div>
-          <h1 style={{ fontSize: '2.25rem', fontWeight: 800, color: '#111827', margin: 0, letterSpacing: '-0.02em' }}>Committed Courses</h1>
+          <h1 style={{ fontSize: '2.25rem', fontWeight: 800, color: '#111827', margin: 0, letterSpacing: '-0.02em' }}>Completed Courses</h1>
           <p style={{ color: '#6b7280', marginTop: '0.5rem', fontSize: '1.05rem' }}>
             Congratulations on your achievements! Your finished learning paths are here.
           </p>
@@ -80,11 +80,20 @@ export default function CompletedCoursesPage() {
             .sparkle-dot { position: absolute; width: 6px; height: 6px; background: #fbbf24; border-radius: 50%; animation: sparkle 2s infinite; }
           `}} />
           
-          <div style={{ position: 'relative', height: '100px', width: '100px', margin: '0 auto 2rem' }}>
+          <div style={{ position: 'relative', height: '100px', width: '100px', margin: '0 auto 2rem', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
             <div className="sparkle-dot" style={{ top: '10%', left: '20%', animationDelay: '0s' }} />
             <div className="sparkle-dot" style={{ top: '30%', right: '15%', animationDelay: '0.4s' }} />
             <div className="sparkle-dot" style={{ bottom: '20%', left: '30%', animationDelay: '0.8s' }} />
-            <div className="trophy-emoji" style={{ fontSize: '4.5rem' }}>🏆</div>
+            <div className="trophy-emoji" style={{ zIndex: 2 }}>
+              <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="#f59e0b" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6" />
+                <path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18" />
+                <path d="M4 22h16" />
+                <path d="M10 14.66V17c0 .55-.47.98-.97 1.21C7.85 18.75 7 20.24 7 22" />
+                <path d="M14 14.66V17c0 .55.47.98.97 1.21C16.15 18.75 17 20.24 17 22" />
+                <path d="M18 2H6v7a6 6 0 0 0 12 0V2Z" />
+              </svg>
+            </div>
           </div>
 
           <h2 style={{ fontSize: '1.75rem', fontWeight: 800, color: '#92400e', marginBottom: '1rem' }}>
@@ -106,7 +115,7 @@ export default function CompletedCoursesPage() {
               cursor: 'pointer',
               boxShadow: '0 10px 20px -5px rgba(245,158,11,0.4)'
             }}>
-              Go to Adult Courses
+              Go to Enrolled Courses
             </button>
           </Link>
         </div>

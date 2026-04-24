@@ -560,7 +560,7 @@ export default function DashboardPage() {
 
   if (isLoading) {
     return (
-      <div style={{ maxWidth: 1100, margin: '0 auto', padding: '2rem 1.5rem' }}>
+      <div style={{ maxWidth: 1600, margin: '0 auto', padding: '2rem 1.5rem' }}>
         <div
           style={{ height: 40, background: '#111', borderRadius: 12, marginBottom: 20 }}
           className="animate-pulse"
@@ -602,6 +602,7 @@ export default function DashboardPage() {
     <div
       className="dashboard-main-container"
       style={{
+        maxWidth: 1600,
         margin: '0 auto',
         fontFamily: "'Inter', system-ui, -apple-system, sans-serif",
         boxSizing: 'border-box',
@@ -789,7 +790,9 @@ export default function DashboardPage() {
           }}
         >
           <div>
-            <div style={{ marginBottom: '14px', display: 'flex', alignItems: 'center', gap: '8px' }}>
+            <div
+              style={{ marginBottom: '14px', display: 'flex', alignItems: 'center', gap: '8px' }}
+            >
               <span
                 style={{
                   padding: '3px 10px',
@@ -1100,10 +1103,12 @@ export default function DashboardPage() {
         >
           {filteredCourses.length > 0 ? (
             filteredCourses.map((c, i) => {
-              const isEnrolledOrCompleted = activeCategory === 'completed' || activeCategory === 'enrolled';
+              const isEnrolledOrCompleted =
+                activeCategory === 'completed' || activeCategory === 'enrolled';
               const courseId = c.courseId || c._id;
               const title = c.courseTitle || c.title;
-              const thumb = c.thumbnailUrl || c.thumbnail || 'https://via.placeholder.com/400x225?text=Course';
+              const thumb =
+                c.thumbnailUrl || c.thumbnail || 'https://via.placeholder.com/400x225?text=Course';
               const href = isEnrolledOrCompleted ? `/learn/${courseId}` : `/courses/${c.slug}`;
 
               return (
@@ -1364,53 +1369,88 @@ export default function DashboardPage() {
 
         {/* Founder Profile Summary */}
         <div className="da da5 dcard" style={{ padding: '1.75rem' }}>
-           <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', marginBottom: '1.5rem' }}>
-              <div style={{
-                width: 60, height: 60, borderRadius: '50%',
-                background: '#f3f4f6', display: 'flex', alignItems: 'center', justifyContent: 'center',
-                border: '2px solid #7A1F2B', padding: '3px'
-              }}>
-                <img
-                  src={user?.avatar || '/assets/images/default-avatar.png'}
-                  alt="Founder"
-                  style={{ width: '100%', height: '100%', borderRadius: '50%', objectFit: 'cover' }}
-                />
-              </div>
-              <div>
-                <h3 style={{ margin: 0, fontSize: '1.1rem', fontWeight: 900, color: '#111' }}>{founderName}</h3>
-                <p style={{ margin: 0, fontSize: '0.75rem', fontWeight: 700, color: '#7A1F2B', textTransform: 'uppercase' }}>
-                  {user?.role || 'Founder'} • {phase} Phase
-                </p>
-              </div>
-           </div>
-           <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
-              <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.85rem' }}>
-                <span style={{ color: '#888', fontWeight: 600 }}>Incubation ID</span>
-                <span style={{ color: '#111', fontWeight: 700 }}>#{user?._id?.slice(-6) || 'IND-2024'}</span>
-              </div>
-              <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.85rem' }}>
-                <span style={{ color: '#888', fontWeight: 600 }}>Startup Sector</span>
-                <span style={{ color: '#111', fontWeight: 700 }}>{user?.interest || 'General Tech'}</span>
-              </div>
-              <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.85rem' }}>
-                <span style={{ color: '#888', fontWeight: 600 }}>Focus Area</span>
-                <span style={{ color: '#111', fontWeight: 700 }}>{activeCategory === 'expert' ? 'Advanced Scaling' : 'Foundation'}</span>
-              </div>
-           </div>
-           <Link
-             href="/profile"
-             style={{
-               display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px',
-               marginTop: '1.5rem', padding: '10px', borderRadius: '10px',
-               background: '#f9fafb', border: '1.5px solid #e5e7eb',
-               textDecoration: 'none', color: '#374151', fontSize: '0.82rem', fontWeight: 700,
-               transition: 'all 0.2s'
-             }}
-             onMouseEnter={e => e.target.style.background = '#f3f4f6'}
-             onMouseLeave={e => e.target.style.background = '#f9fafb'}
-           >
-             <Icons.profile size={16} color="#7A1F2B" /> Complete Profile
-           </Link>
+          <div
+            style={{ display: 'flex', alignItems: 'center', gap: '1rem', marginBottom: '1.5rem' }}
+          >
+            <div
+              style={{
+                width: 60,
+                height: 60,
+                borderRadius: '50%',
+                background: '#f3f4f6',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                border: '2px solid #7A1F2B',
+                padding: '3px',
+              }}
+            >
+              <img
+                src={user?.avatar || '/assets/images/default-avatar.png'}
+                alt="Founder"
+                style={{ width: '100%', height: '100%', borderRadius: '50%', objectFit: 'cover' }}
+              />
+            </div>
+            <div>
+              <h3 style={{ margin: 0, fontSize: '1.1rem', fontWeight: 900, color: '#111' }}>
+                {founderName}
+              </h3>
+              <p
+                style={{
+                  margin: 0,
+                  fontSize: '0.75rem',
+                  fontWeight: 700,
+                  color: '#7A1F2B',
+                  textTransform: 'uppercase',
+                }}
+              >
+                {user?.role || 'Founder'} • {phase} Phase
+              </p>
+            </div>
+          </div>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.85rem' }}>
+              <span style={{ color: '#888', fontWeight: 600 }}>Incubation ID</span>
+              <span style={{ color: '#111', fontWeight: 700 }}>
+                #{user?._id?.slice(-6) || 'IND-2024'}
+              </span>
+            </div>
+            <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.85rem' }}>
+              <span style={{ color: '#888', fontWeight: 600 }}>Startup Sector</span>
+              <span style={{ color: '#111', fontWeight: 700 }}>
+                {user?.interest || 'General Tech'}
+              </span>
+            </div>
+            <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.85rem' }}>
+              <span style={{ color: '#888', fontWeight: 600 }}>Focus Area</span>
+              <span style={{ color: '#111', fontWeight: 700 }}>
+                {activeCategory === 'expert' ? 'Advanced Scaling' : 'Foundation'}
+              </span>
+            </div>
+          </div>
+          <Link
+            href="/profile"
+            style={{
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              gap: '8px',
+              marginTop: '1.5rem',
+              padding: '10px',
+              borderRadius: '10px',
+              background: '#f9fafb',
+              border: '1.5px solid #e5e7eb',
+              textDecoration: 'none',
+              color: '#374151',
+              fontSize: '0.82rem',
+              fontWeight: 700,
+              transition: 'all 0.2s',
+            }}
+            onMouseEnter={e => (e.target.style.background = '#f3f4f6')}
+            onMouseLeave={e => (e.target.style.background = '#f9fafb')}
+          >
+            <Icons.profile size={16} color="#7A1F2B" /> Complete Profile
+          </Link>
         </div>
 
         {/* Milestone Unlocks */}
@@ -1531,7 +1571,6 @@ export default function DashboardPage() {
           </div>
         </div>
       </div>
-
 
       {/* ═══════ MY COURSES + RECENT ACTIVITY ═══════ */}
       <div

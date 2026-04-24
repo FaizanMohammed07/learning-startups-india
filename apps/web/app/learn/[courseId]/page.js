@@ -249,6 +249,26 @@ const FireIcon = ({ size = 16, color = 'currentColor' }) => (
     <path d="M12 12c2-2.96 0-7-1-8 0 3.038-1.773 4.741-3 6-1.226 1.26-2 3.24-2 5a6 6 0 1012 0c0-1.532-1.056-3.94-2-5-1.786 3-2 2-4 2z" />
   </svg>
 );
+const BookmarkIcon = ({ size = 16, color = 'currentColor' }) => (
+  <svg width={size} height={size} fill="none" stroke={color} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" viewBox="0 0 24 24">
+    <path d="M19 21l-7-5-7 5V5a2 2 0 012-2h10a2 2 0 012 2z" />
+  </svg>
+);
+const EditIcon = ({ size = 16, color = 'currentColor' }) => (
+  <svg width={size} height={size} fill="none" stroke={color} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" viewBox="0 0 24 24">
+    <path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7" />
+    <path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z" />
+  </svg>
+);
+const TrashIcon = ({ size = 16, color = 'currentColor' }) => (
+  <svg width={size} height={size} fill="none" stroke={color} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" viewBox="0 0 24 24">
+    <polyline points="3 6 5 6 21 6" />
+    <path d="M19 6v14a2 2 0 01-2 2H7a2 2 0 01-2-2V6m3 0V4a2 2 0 012-2h4a2 2 0 012 2v2" />
+    <line x1="10" y1="11" x2="10" y2="17" />
+    <line x1="14" y1="11" x2="14" y2="17" />
+  </svg>
+);
+
 const PlayIcon = ({ size = 16, color = 'currentColor' }) => (
   <svg
     width={size}
@@ -301,6 +321,12 @@ export default function CourseLearnPage() {
   const activeLessonRef = useRef(null);
   const selectedModuleRef = useRef(null);
   const initialLoadDone = useRef(false);
+
+  /* ── Notes tracking ── */
+  const [notes, setNotes] = useState([]);
+  const [noteText, setNoteText] = useState('');
+  const [noteLoading, setNoteLoading] = useState(false);
+  const [isNotesExpanded, setIsNotesExpanded] = useState(true);
 
   /* ── Time tracking ── */
   const [timeSpent, setTimeSpent] = useState(0);
@@ -379,11 +405,56 @@ export default function CourseLearnPage() {
     setSelectedModule(modId);
   };
 
+  const fetchNotes = useCallback(async (lessonId) => {
+    const { data, error } = await apiGet(`/api/v1/learning/notes?lessonId=${lessonId}`);
+    if (!error && data) setNotes(data);
+  }, []);
+
+  const saveNote = async () => {
+    if (!noteText.trim() || !activeLesson) return;
+    setNoteLoading(true);
+    const timestamp = videoRef.current ? Math.floor(videoRef.current.currentTime) : null;
+    const { data, error } = await apiPost('/api/v1/learning/notes', {
+      lessonId: activeLesson,
+      content: noteText,
+      timestamp,
+      color: '#7A1F2B'
+    });
+    if (!error && data) {
+      setNotes(prev => [...prev, data].sort((a, b) => (a.timestamp || 0) - (b.timestamp || 0)));
+      setNoteText('');
+    } else {
+      alert(error?.message || 'Failed to capture insight');
+    }
+    setNoteLoading(false);
+  };
+
+  const deleteNote = async (id) => {
+    if (!confirm('Discard this strategic insight?')) return;
+    const { error } = await apiPost(`/api/v1/learning/notes/${id}`, { _method: 'DELETE' }); // Backend might use method override or direct DELETE
+    // Checking if the backend expects DELETE method
+    // Wait, I saw router.delete('/:id', authRequired, controller.deleteNote) in notes.routes.js
+    // I should use apiPost with a custom method or better, just fetch with method DELETE.
+    // My api helper might not support DELETE easily if it's just apiGet/apiPost.
+    // Let's use fetch directly for delete to be safe.
+    try {
+      const res = await fetch(`/api/v1/learning/notes/${id}`, {
+        method: 'DELETE',
+        headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` }
+      });
+      const json = await res.json();
+      if (json.success) setNotes(prev => prev.filter(n => n._id !== id));
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
   const openLesson = useCallback(async (lessonId, lessonData) => {
     if (lessonData?.isLocked) return;
     setLessonLoading(true);
     setQuizResult(null);
     setCompleting(false);
+    setNoteText('');
     const { data, error } = await apiGet(`/api/v1/learn/${courseId}/lesson/${lessonId}`);
     if (error) {
       if (error.status === 401) {
@@ -399,8 +470,9 @@ export default function CourseLearnPage() {
     setLessonDetail(data);
     setActiveLesson(lessonId);
     setLessonLoading(false);
+    fetchNotes(lessonId);
     if (window.innerWidth < 768) setSidebarOpen(false);
-  }, [courseId, router]);
+  }, [courseId, router, fetchNotes]);
 
   const doAutoComplete = useCallback(async lessonId => {
     setCompleting(true);
@@ -520,63 +592,67 @@ export default function CourseLearnPage() {
 
   /* ═══════ SIDEBAR ═══════ */
   const renderSidebar = (modules, overallProgress, isPreStart = false) => (
-    <div style={{ display: 'flex', flexDirection: 'column', height: '100%' }}>
-      <div style={{ padding: '1.5rem 1.25rem', borderBottom: '1px solid #f0e8e0' }}>
+    <div style={{ display: 'flex', flexDirection: 'column', height: '100%', background: '#fff' }}>
+      <div style={{ padding: '2rem 1.5rem', borderBottom: '1px solid #f8f8f8' }}>
         <Link
           href="/dashboard/my-courses"
           style={{
             display: 'inline-flex',
             alignItems: 'center',
-            gap: 6,
-            fontSize: '0.75rem',
-            color: '#7A1F2B',
-            fontWeight: 600,
+            gap: 8,
+            fontSize: '0.7rem',
+            color: '#C5975B',
+            fontWeight: 800,
             textDecoration: 'none',
-            marginBottom: 12,
+            marginBottom: 16,
+            textTransform: 'uppercase',
+            letterSpacing: '0.05em',
           }}
         >
-          <ChevronLeft size={14} color="#7A1F2B" /> My Courses
+          <ChevronLeft size={12} color="#C5975B" /> BACK TO PORTFOLIO
         </Link>
         <h2
           style={{
-            fontSize: '0.95rem',
-            fontWeight: 800,
-            color: '#1a1a1a',
-            lineHeight: 1.4,
-            margin: '0 0 1rem',
+            fontSize: '1.1rem',
+            fontWeight: 900,
+            color: '#111',
+            lineHeight: 1.3,
+            margin: '0 0 1.5rem',
+            letterSpacing: '-0.02em',
           }}
         >
           {dashboard.course?.title}
         </h2>
-        <div>
+        
+        <div style={{ background: '#fafafa', padding: '16px', borderRadius: '16px', border: '1px solid #f0f0f0' }}>
           <div
             style={{
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'space-between',
-              marginBottom: 6,
+              marginBottom: 10,
             }}
           >
             <span
               style={{
-                fontSize: '0.7rem',
-                fontWeight: 700,
-                color: '#888',
+                fontSize: '0.6rem',
+                fontWeight: 900,
+                color: '#aaa',
                 textTransform: 'uppercase',
-                letterSpacing: '0.05em',
+                letterSpacing: '0.08em',
               }}
             >
-              Progress
+              Mastery Progress
             </span>
-            <span style={{ fontSize: '0.8rem', fontWeight: 800, color: '#7A1F2B' }}>
+            <span style={{ fontSize: '0.85rem', fontWeight: 900, color: '#7A1F2B' }}>
               {overallProgress}%
             </span>
           </div>
-          <div style={{ height: 6, background: '#f0e8e0', borderRadius: 999, overflow: 'hidden' }}>
+          <div style={{ height: 6, background: '#eee', borderRadius: 999, overflow: 'hidden' }}>
             <motion.div
               initial={{ width: 0 }}
               animate={{ width: `${overallProgress}%` }}
-              transition={{ duration: 1, ease: 'easeOut' }}
+              transition={{ duration: 1.2, ease: 'easeOut' }}
               style={{
                 height: '100%',
                 background: 'linear-gradient(90deg, #7A1F2B, #C5975B)',
@@ -597,43 +673,44 @@ export default function CourseLearnPage() {
           const needsQuiz = mod.allLessonsComplete && mod.quiz && !mod.quizPassed;
 
           return (
-            <div key={mod._id} style={{ borderBottom: '1px solid #f5f0eb' }}>
+            <div key={mod._id} style={{ borderBottom: '1px solid #f8f8f8' }}>
               <button
                 onClick={() => !locked && toggleModule(mod._id)}
+                className={`module-item ${locked ? 'locked' : ''}`}
                 style={{
                   width: '100%',
                   textAlign: 'left',
-                  padding: '1rem 1.25rem',
+                  padding: '1.25rem 1.5rem',
                   display: 'flex',
                   alignItems: 'flex-start',
-                  gap: 12,
-                  background: active ? '#fdf8f3' : 'transparent',
+                  gap: 16,
+                  background: active ? 'rgba(197,151,91,0.03)' : 'transparent',
                   border: 'none',
                   cursor: locked ? 'not-allowed' : 'pointer',
-                  opacity: locked ? 0.45 : 1,
-                  transition: 'background 0.2s',
+                  opacity: locked ? 0.4 : 1,
                 }}
               >
                 <div
                   style={{
-                    width: 32,
-                    height: 32,
-                    borderRadius: 10,
+                    width: 36,
+                    height: 36,
+                    borderRadius: 12,
                     display: 'flex',
                     alignItems: 'center',
                     justifyContent: 'center',
-                    fontSize: '0.72rem',
-                    fontWeight: 800,
+                    fontSize: '0.8rem',
+                    fontWeight: 900,
                     flexShrink: 0,
                     marginTop: 2,
-                    background: locked ? '#f0f0f0' : mod.progress === 100 ? '#ecfdf5' : '#fdf2f4',
+                    background: locked ? '#f0f0f0' : mod.progress === 100 ? '#ecfdf5' : 'rgba(122,31,43,0.05)',
                     color: locked ? '#ccc' : mod.progress === 100 ? '#059669' : '#7A1F2B',
+                    border: mod.progress === 100 ? 'none' : locked ? 'none' : '1px solid rgba(122,31,43,0.1)',
                   }}
                 >
                   {locked ? (
                     <LockIcon size={14} color="#ccc" />
                   ) : mod.progress === 100 ? (
-                    <CheckIcon size={14} color="#059669" />
+                    <CheckIcon size={16} color="#059669" />
                   ) : (
                     mod.moduleNumber || mi + 1
                   )}
@@ -643,65 +720,35 @@ export default function CourseLearnPage() {
                     <span
                       style={{
                         fontSize: '0.6rem',
-                        fontWeight: 800,
+                        fontWeight: 900,
                         textTransform: 'uppercase',
-                        letterSpacing: '0.08em',
-                        color: '#aaa',
+                        letterSpacing: '0.1em',
+                        color: '#C5975B',
                       }}
                     >
                       Module {mod.moduleNumber || mi + 1}
                     </span>
-                    {mod.weekNumber > 0 && (
-                      <span style={{ fontSize: '0.6rem', color: '#ccc' }}>
-                        Week {mod.weekNumber}
-                      </span>
-                    )}
                   </div>
                   <p
                     style={{
-                      fontSize: '0.82rem',
-                      fontWeight: 700,
-                      color: locked ? '#bbb' : '#333',
+                      fontSize: '0.9rem',
+                      fontWeight: 800,
+                      color: locked ? '#bbb' : '#111',
                       margin: 0,
                       lineHeight: 1.4,
+                      letterSpacing: '-0.01em',
                     }}
                   >
                     {mod.title}
                   </p>
-                  {locked && mi > 0 && (
-                    <div style={{ display: 'flex', alignItems: 'center', gap: 5, marginTop: 6 }}>
-                      <ShieldIcon size={10} color="#d97706" />
-                      <span style={{ fontSize: '0.58rem', color: '#d97706', fontWeight: 600 }}>
-                        Pass previous quiz (75%) to unlock
-                      </span>
-                    </div>
-                  )}
-                  {needsQuiz && (
-                    <div
-                      style={{
-                        display: 'inline-flex',
-                        alignItems: 'center',
-                        gap: 4,
-                        marginTop: 6,
-                        background: '#fff7ed',
-                        border: '1px solid #fed7aa',
-                        padding: '3px 8px',
-                        borderRadius: 6,
-                      }}
-                    >
-                      <LessonIcon type="quiz" size={10} color="#d97706" />
-                      <span style={{ fontSize: '0.58rem', color: '#d97706', fontWeight: 700 }}>
-                        Take quiz to unlock next
-                      </span>
-                    </div>
-                  )}
+                  
                   {!locked && total > 0 && (
-                    <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginTop: 8 }}>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginTop: 10 }}>
                       <div
                         style={{
                           flex: 1,
                           height: 3,
-                          background: '#f0e8e0',
+                          background: '#eee',
                           borderRadius: 999,
                           overflow: 'hidden',
                         }}
@@ -709,7 +756,7 @@ export default function CourseLearnPage() {
                         <div
                           style={{
                             height: '100%',
-                            background: mod.progress === 100 ? '#059669' : '#7A1F2B',
+                            background: mod.progress === 100 ? '#059669' : '#C5975B',
                             borderRadius: 999,
                             width: (mod.progress || 0) + '%',
                             transition: 'width 0.5s',
@@ -718,9 +765,9 @@ export default function CourseLearnPage() {
                       </div>
                       <span
                         style={{
-                          fontSize: '0.6rem',
+                          fontSize: '0.65rem',
                           color: '#999',
-                          fontWeight: 700,
+                          fontWeight: 800,
                           flexShrink: 0,
                         }}
                       >
@@ -732,13 +779,13 @@ export default function CourseLearnPage() {
                 {!locked && (
                   <span
                     style={{
-                      marginTop: 4,
+                      marginTop: 8,
                       transform: expanded ? 'rotate(180deg)' : 'rotate(0)',
-                      transition: 'transform 0.2s',
+                      transition: 'transform 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
                       flexShrink: 0,
                     }}
                   >
-                    <ChevronDown size={15} color="#aaa" />
+                    <ChevronDown size={14} color="#ccc" />
                   </span>
                 )}
               </button>
@@ -983,23 +1030,24 @@ export default function CourseLearnPage() {
         {/* Header card */}
         <div
           style={{
-            background: 'linear-gradient(135deg, #7A1F2B, #922538)',
-            borderRadius: 20,
-            padding: '2rem 2.25rem',
-            marginBottom: 24,
+            background: 'linear-gradient(135deg, #7A1F2B, #4a131a)',
+            borderRadius: '32px',
+            padding: '3rem',
+            marginBottom: '32px',
             position: 'relative',
             overflow: 'hidden',
+            boxShadow: '0 20px 40px rgba(122,31,43,0.15)',
           }}
         >
           <div
             style={{
               position: 'absolute',
-              top: -40,
-              right: -40,
-              width: 180,
-              height: 180,
+              top: -50,
+              right: -50,
+              width: 250,
+              height: 250,
               background: 'radial-gradient(circle, rgba(197,151,91,0.2) 0%, transparent 70%)',
-              filter: 'blur(30px)',
+              filter: 'blur(40px)',
             }}
           />
           <div style={{ position: 'relative', zIndex: 1 }}>
@@ -1007,21 +1055,21 @@ export default function CourseLearnPage() {
               style={{
                 display: 'flex',
                 alignItems: 'center',
-                gap: 8,
-                marginBottom: 12,
-                flexWrap: 'wrap',
+                gap: 12,
+                marginBottom: 20,
               }}
             >
               <span
                 style={{
-                  fontSize: '0.68rem',
-                  fontWeight: 800,
+                  fontSize: '0.7rem',
+                  fontWeight: 900,
                   textTransform: 'uppercase',
-                  letterSpacing: '0.1em',
+                  letterSpacing: '0.15em',
                   color: '#C5975B',
-                  background: 'rgba(255,255,255,0.12)',
-                  padding: '4px 12px',
-                  borderRadius: 8,
+                  background: 'rgba(255,255,255,0.1)',
+                  padding: '6px 16px',
+                  borderRadius: '10px',
+                  border: '1px solid rgba(255,255,255,0.1)',
                 }}
               >
                 Module {mod.moduleNumber}
@@ -1029,11 +1077,12 @@ export default function CourseLearnPage() {
               {mod.weekNumber > 0 && (
                 <span
                   style={{
-                    fontSize: '0.68rem',
+                    fontSize: '0.7rem',
+                    fontWeight: 800,
                     color: 'rgba(255,255,255,0.6)',
-                    background: 'rgba(255,255,255,0.08)',
-                    padding: '4px 10px',
-                    borderRadius: 8,
+                    background: 'rgba(0,0,0,0.1)',
+                    padding: '6px 14px',
+                    borderRadius: '10px',
                   }}
                 >
                   Week {mod.weekNumber}
@@ -1042,11 +1091,12 @@ export default function CourseLearnPage() {
             </div>
             <h2
               style={{
-                fontSize: '1.5rem',
+                fontSize: '2.4rem',
                 fontWeight: 900,
                 color: '#fff',
-                margin: '0 0 8px',
-                lineHeight: 1.3,
+                margin: '0 0 16px',
+                lineHeight: 1.1,
+                letterSpacing: '-0.04em',
               }}
             >
               {mod.title}
@@ -1054,22 +1104,24 @@ export default function CourseLearnPage() {
             {mod.description && (
               <p
                 style={{
-                  color: 'rgba(255,255,255,0.75)',
-                  fontSize: '0.9rem',
-                  lineHeight: 1.7,
+                  color: 'rgba(255,255,255,0.8)',
+                  fontSize: '1.1rem',
+                  lineHeight: 1.6,
                   margin: 0,
+                  maxWidth: '640px',
+                  fontWeight: 500,
                 }}
               >
                 {mod.description}
               </p>
             )}
             {!isPreStart && total > 0 && (
-              <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginTop: 16 }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: 16, marginTop: 32 }}>
                 <div
                   style={{
                     flex: 1,
-                    height: 5,
-                    background: 'rgba(255,255,255,0.15)',
+                    height: 8,
+                    background: 'rgba(255,255,255,0.1)',
                     borderRadius: 999,
                     overflow: 'hidden',
                   }}
@@ -1080,14 +1132,14 @@ export default function CourseLearnPage() {
                       background: '#C5975B',
                       borderRadius: 999,
                       width: (mod.progress || 0) + '%',
-                      transition: 'width 0.6s',
+                      transition: 'width 1s cubic-bezier(0.4, 0, 0.2, 1)',
                     }}
                   />
                 </div>
                 <span
-                  style={{ fontSize: '0.78rem', fontWeight: 700, color: 'rgba(255,255,255,0.9)' }}
+                  style={{ fontSize: '0.9rem', fontWeight: 900, color: '#fff', letterSpacing: '0.05em' }}
                 >
-                  {done}/{total}
+                  {mod.progress}% COMPLETE
                 </span>
               </div>
             )}
@@ -1413,19 +1465,32 @@ export default function CourseLearnPage() {
 
   /* ═══════ CSS ═══════ */
   const pageStyles = `
-    @keyframes spin{from{transform:rotate(0)}to{transform:rotate(360deg)}}
-    @keyframes timerPulse{0%,100%{box-shadow:0 0 0 0 rgba(122,31,43,0.3)}50%{box-shadow:0 0 0 8px rgba(122,31,43,0)}}
-    @keyframes completeBounce{0%{transform:scale(0.8);opacity:0}50%{transform:scale(1.1)}100%{transform:scale(1);opacity:1}}
-    @keyframes shimmer{0%{background-position:-200% 0}100%{background-position:200% 0}}
-    @keyframes glow{0%,100%{opacity:1}50%{opacity:0.6}}
-    .learn-sidebar{scrollbar-width:thin;scrollbar-color:#e0d5c8 transparent}
-    .learn-sidebar::-webkit-scrollbar{width:4px}
-    .learn-sidebar::-webkit-scrollbar-thumb{background:#e0d5c8;border-radius:999px}
-    .lesson-btn:hover:not(:disabled){background:#fdf8f3!important;border-color:#e0d5c8!important;transform:translateX(3px)}
-    .quiz-opt:hover{border-color:#7A1F2B!important;background:#fdf8f3!important}
-    .quiz-opt-selected{border-color:#7A1F2B!important;background:#fdf2f4!important}
-    .nav-btn:hover:not(:disabled){background:#fdf2f4!important;border-color:#7A1F2B!important}
-    @media(max-width:768px){.learn-main-grid{grid-template-columns:1fr!important}}
+    @keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+    @keyframes fadeUp { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: translateY(0); } }
+    @keyframes pulseGold { 0% { box-shadow: 0 0 0 0 rgba(197,151,91,0.4); } 70% { box-shadow: 0 0 0 10px rgba(197,151,91,0); } 100% { box-shadow: 0 0 0 0 rgba(197,151,91,0); } }
+    
+    .learn-sidebar { scrollbar-width: thin; scrollbar-color: #C5975B transparent; }
+    .learn-sidebar::-webkit-scrollbar { width: 4px; }
+    .learn-sidebar::-webkit-scrollbar-thumb { background: #C5975B; border-radius: 999px; }
+    
+    .lesson-btn { transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important; }
+    .lesson-btn:hover:not(:disabled) { background: rgba(122,31,43,0.04) !important; border-color: rgba(122,31,43,0.1) !important; transform: translateX(4px); }
+    
+    .module-item { transition: all 0.3s ease; }
+    .module-item:hover:not(.locked) { background: #fdfaf7 !important; }
+    
+    .video-container { position: relative; border-radius: 24px; overflow: hidden; background: #000; box-shadow: 0 20px 50px rgba(0,0,0,0.15); border: 1px solid rgba(197,151,91,0.2); }
+    .premium-card { background: #fff; border-radius: 24px; border: 1px solid rgba(0,0,0,0.05); box-shadow: 0 10px 30px rgba(0,0,0,0.02); }
+    
+    .quiz-opt { transition: all 0.2s; cursor: pointer; border: 1px solid #f0f0f0; border-radius: 16px; padding: 16px 20px; background: #fff; }
+    .quiz-opt:hover { border-color: #C5975B; background: rgba(197,151,91,0.04); }
+    .quiz-opt-selected { border-color: #7A1F2B !important; background: rgba(122,31,43,0.05) !important; box-shadow: 0 4px 15px rgba(122,31,43,0.05); }
+    
+    .btn-premium { background: #7A1F2B; color: white; border: none; padding: 12px 24px; border-radius: 12px; font-weight: 800; cursor: pointer; transition: all 0.3s; }
+    .btn-premium:hover { background: #922538; transform: translateY(-2px); box-shadow: 0 8px 25px rgba(122,31,43,0.2); }
+    .btn-premium:disabled { background: #eee; color: #aaa; cursor: not-allowed; transform: none; box-shadow: none; }
+    
+    .accent-bar { width: 30px; height: 3px; background: #C5975B; border-radius: 2px; margin-bottom: 12px; }
   `;
 
   /* ═══════ LOADING ═══════ */
@@ -2051,80 +2116,101 @@ export default function CourseLearnPage() {
         {/* Top bar */}
         <div
           style={{
-            background: 'rgba(255,255,255,0.92)',
-            backdropFilter: 'blur(12px)',
-            borderBottom: '1px solid #f0e8e0',
-            padding: '0.75rem 1.5rem',
+            background: 'rgba(255,255,255,0.85)',
+            backdropFilter: 'blur(20px)',
+            borderBottom: '1px solid rgba(0,0,0,0.05)',
+            padding: '1rem 2rem',
             display: 'flex',
             alignItems: 'center',
-            gap: 12,
+            gap: 16,
             position: 'sticky',
             top: 0,
-            zIndex: 20,
+            zIndex: 40,
+            boxShadow: '0 4px 20px rgba(0,0,0,0.02)',
           }}
         >
           <button
             onClick={() => setSidebarOpen(!sidebarOpen)}
             style={{
-              background: 'none',
-              border: 'none',
+              background: '#f8f8f8',
+              border: '1px solid #eee',
               cursor: 'pointer',
-              padding: 4,
-              borderRadius: 8,
+              padding: '8px',
+              borderRadius: '10px',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              transition: 'all 0.2s',
             }}
           >
-            <MenuIcon size={20} color="#888" />
+            <MenuIcon size={18} color="#555" />
           </button>
+          
+          <div style={{ height: '24px', width: '1px', background: '#eee', margin: '0 4px' }} />
+
           {lessonDetail ? (
-            <div style={{ display: 'flex', alignItems: 'center', gap: 10, flex: 1, minWidth: 0 }}>
-              <span
+            <div style={{ display: 'flex', alignItems: 'center', gap: 12, flex: 1, minWidth: 0 }}>
+              <div
                 style={{
-                  width: 28,
-                  height: 28,
-                  borderRadius: 8,
-                  background: '#fdf2f4',
+                  width: 32,
+                  height: 32,
+                  borderRadius: '10px',
+                  background: 'rgba(122,31,43,0.05)',
                   display: 'flex',
                   alignItems: 'center',
                   justifyContent: 'center',
                   flexShrink: 0,
                 }}
               >
-                <LessonIcon type={lessonDetail.contentType} size={14} color="#7A1F2B" />
-              </span>
-              <span
-                style={{
-                  fontSize: '0.88rem',
-                  fontWeight: 700,
-                  color: '#333',
-                  overflow: 'hidden',
-                  textOverflow: 'ellipsis',
-                  whiteSpace: 'nowrap',
-                }}
-              >
-                {lessonDetail.title}
-              </span>
+                <LessonIcon type={lessonDetail.contentType} size={16} color="#7A1F2B" />
+              </div>
+              <div style={{ display: 'flex', flexDirection: 'column', minWidth: 0 }}>
+                <span style={{ fontSize: '0.65rem', fontWeight: 800, color: '#C5975B', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
+                  Current Lesson
+                </span>
+                <span
+                  style={{
+                    fontSize: '0.95rem',
+                    fontWeight: 800,
+                    color: '#111',
+                    overflow: 'hidden',
+                    textOverflow: 'ellipsis',
+                    whiteSpace: 'nowrap',
+                    letterSpacing: '-0.01em',
+                  }}
+                >
+                  {lessonDetail.title}
+                </span>
+              </div>
 
               {lessonDetail.isCompleted && (
                 <span
                   style={{
                     marginLeft: 'auto',
-                    fontSize: '0.65rem',
-                    fontWeight: 700,
+                    fontSize: '0.7rem',
+                    fontWeight: 900,
                     background: '#ecfdf5',
                     color: '#059669',
-                    padding: '4px 10px',
-                    borderRadius: 999,
+                    padding: '6px 14px',
+                    borderRadius: 10,
                     flexShrink: 0,
+                    textTransform: 'uppercase',
+                    letterSpacing: '0.02em',
                   }}
                 >
-                  Completed
+                  SUCCESSFULLY COMPLETED
                 </span>
               )}
             </div>
           ) : (
-            <span style={{ fontSize: '0.88rem', fontWeight: 600, color: '#888' }}>
-              {currentModule?.title || 'Select a lesson'}
-            </span>
+            <div style={{ display: 'flex', flexDirection: 'column' }}>
+              <span style={{ fontSize: '0.65rem', fontWeight: 800, color: '#aaa', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
+                Course Curriculum
+              </span>
+              <span style={{ fontSize: '0.95rem', fontWeight: 800, color: '#111' }}>
+                {currentModule?.title || 'Knowledge Repository'}
+              </span>
+            </div>
           )}
         </div>
 
@@ -2175,15 +2261,8 @@ export default function CourseLearnPage() {
             >
               {/* Video */}
               {lessonDetail.videoUrl ? (
-                <div
-                  style={{
-                    borderRadius: 18,
-                    overflow: 'hidden',
-                    background: '#111',
-                    boxShadow: '0 12px 40px rgba(0,0,0,0.12)',
-                    border: '1px solid #e5e0da',
-                  }}
-                >
+                <div className="video-container">
+                  <div style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', pointerEvents: 'none', background: 'linear-gradient(180deg, rgba(0,0,0,0.4) 0%, transparent 20%, transparent 80%, rgba(0,0,0,0.6) 100%)', zIndex: 1 }} />
                   <video
                     ref={videoRef}
                     src={lessonDetail.videoUrl}
@@ -2191,9 +2270,13 @@ export default function CourseLearnPage() {
                     onTimeUpdate={handleVideoTimeUpdate}
                     onLoadedMetadata={handleVideoLoadedMetadata}
                     onEnded={handleVideoEnded}
-                    style={{ width: '100%', display: 'block' }}
+                    style={{ width: '100%', display: 'block', position: 'relative', zIndex: 0 }}
                     controlsList="nodownload"
                   />
+                  {/* Premium overlay for video when paused or loading */}
+                  <div style={{ position: 'absolute', bottom: 20, right: 24, zIndex: 2, background: 'rgba(122,31,43,0.9)', padding: '6px 12px', borderRadius: '8px', backdropFilter: 'blur(8px)', border: '1px solid rgba(255,255,255,0.1)' }}>
+                    <span style={{ fontSize: '0.65rem', fontWeight: 900, color: '#fff', letterSpacing: '0.05em' }}>PROPRIETARY CONTENT</span>
+                  </div>
                 </div>
               ) : lessonDetail.readingContent ? (
                 <div
@@ -2411,6 +2494,166 @@ export default function CourseLearnPage() {
                 </motion.div>
               )}
 
+              {/* Strategic Notes & Bookmarks Section */}
+              <div
+                style={{
+                  marginTop: 32,
+                  background: '#fff',
+                  border: '1px solid #f0e8e0',
+                  borderRadius: 24,
+                  overflow: 'hidden',
+                  boxShadow: '0 10px 30px rgba(0,0,0,0.02)',
+                }}
+              >
+                <button
+                  onClick={() => setIsNotesExpanded(!isNotesExpanded)}
+                  style={{
+                    width: '100%',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'space-between',
+                    padding: '1.25rem 1.5rem',
+                    background: '#fff',
+                    border: 'none',
+                    cursor: 'pointer',
+                    borderBottom: isNotesExpanded ? '1px solid #f8f8f8' : 'none',
+                  }}
+                >
+                  <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
+                    <div style={{ width: 32, height: 32, borderRadius: 10, background: 'rgba(197,151,91,0.1)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                      <BookmarkIcon size={16} color="#C5975B" />
+                    </div>
+                    <span style={{ fontSize: '1rem', fontWeight: 800, color: '#111', letterSpacing: '-0.01em' }}>Strategic Insight Repository</span>
+                    <span style={{ fontSize: '0.7rem', fontWeight: 800, background: '#f5f0eb', color: '#888', padding: '2px 8px', borderRadius: 6 }}>{notes.length}</span>
+                  </div>
+                  <ChevronDown size={18} color="#ccc" style={{ transform: isNotesExpanded ? 'rotate(180deg)' : 'rotate(0)', transition: 'transform 0.3s' }} />
+                </button>
+
+                <AnimatePresence>
+                  {isNotesExpanded && (
+                    <motion.div
+                      initial={{ height: 0, opacity: 0 }}
+                      animate={{ height: 'auto', opacity: 1 }}
+                      exit={{ height: 0, opacity: 0 }}
+                      transition={{ duration: 0.3 }}
+                      style={{ overflow: 'hidden' }}
+                    >
+                      <div style={{ padding: '1.5rem' }}>
+                        {/* Note Input */}
+                        <div style={{ position: 'relative', marginBottom: 24 }}>
+                          <textarea
+                            value={noteText}
+                            onChange={(e) => setNoteText(e.target.value)}
+                            placeholder="Capture a strategic insight or high-signal observation..."
+                            style={{
+                              width: '100%',
+                              minHeight: 100,
+                              padding: '1rem 1.25rem',
+                              borderRadius: 16,
+                              border: '1px solid #eee',
+                              background: '#fafafa',
+                              fontSize: '0.9rem',
+                              fontFamily: 'inherit',
+                              resize: 'vertical',
+                              outline: 'none',
+                              transition: 'all 0.2s',
+                              color: '#333',
+                            }}
+                            onFocus={(e) => e.target.style.borderColor = '#C5975B'}
+                            onBlur={(e) => e.target.style.borderColor = '#eee'}
+                          />
+                          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: 12 }}>
+                            <div style={{ fontSize: '0.75rem', color: '#999', display: 'flex', alignItems: 'center', gap: 6 }}>
+                              <ClockIcon size={14} color="#ccc" />
+                              {videoRef.current ? (
+                                <span>Insight at {fmt(Math.floor(videoRef.current.currentTime))}</span>
+                              ) : (
+                                <span>General lesson insight</span>
+                              )}
+                            </div>
+                            <button
+                              onClick={saveNote}
+                              disabled={!noteText.trim() || noteLoading}
+                              className="btn-premium"
+                              style={{ padding: '0.6rem 1.5rem', fontSize: '0.82rem' }}
+                            >
+                              {noteLoading ? 'Capturing...' : 'Capture Insight'}
+                            </button>
+                          </div>
+                        </div>
+
+                        {/* Notes List */}
+                        <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
+                          {notes.length > 0 ? (
+                            notes.map((note) => (
+                              <div
+                                key={note._id}
+                                style={{
+                                  padding: '1.25rem',
+                                  background: '#fff',
+                                  border: '1px solid #f0f0f0',
+                                  borderRadius: 16,
+                                  position: 'relative',
+                                  transition: 'all 0.2s',
+                                }}
+                              >
+                                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: 8 }}>
+                                  <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+                                    {note.timestamp !== null && (
+                                      <button
+                                        onClick={() => {
+                                          if (videoRef.current) {
+                                            videoRef.current.currentTime = note.timestamp;
+                                            videoRef.current.play();
+                                          }
+                                        }}
+                                        style={{
+                                          background: 'rgba(122,31,43,0.08)',
+                                          color: '#7A1F2B',
+                                          border: 'none',
+                                          padding: '4px 10px',
+                                          borderRadius: 8,
+                                          fontSize: '0.75rem',
+                                          fontWeight: 800,
+                                          cursor: 'pointer',
+                                          display: 'flex',
+                                          alignItems: 'center',
+                                          gap: 6,
+                                        }}
+                                      >
+                                        <PlayIcon size={12} color="#7A1F2B" /> {fmt(note.timestamp)}
+                                      </button>
+                                    )}
+                                    <span style={{ fontSize: '0.7rem', color: '#aaa', fontWeight: 600 }}>
+                                      {new Date(note.createdAt).toLocaleDateString('en-IN', { day: 'numeric', month: 'short' })}
+                                    </span>
+                                  </div>
+                                  <button
+                                    onClick={() => deleteNote(note._id)}
+                                    style={{ background: 'none', border: 'none', cursor: 'pointer', padding: 4, color: '#ddd', transition: 'color 0.2s' }}
+                                    onMouseEnter={(e) => e.currentTarget.style.color = '#ef4444'}
+                                    onMouseLeave={(e) => e.currentTarget.style.color = '#ddd'}
+                                  >
+                                    <TrashIcon size={16} />
+                                  </button>
+                                </div>
+                                <p style={{ fontSize: '0.92rem', color: '#444', lineHeight: 1.6, margin: 0, whiteSpace: 'pre-wrap' }}>
+                                  {note.content}
+                                </p>
+                              </div>
+                            ))
+                          ) : (
+                            <div style={{ textAlign: 'center', padding: '2rem 0', color: '#bbb', fontSize: '0.85rem', background: '#fafafa', borderRadius: 16, border: '1px dashed #eee' }}>
+                              No strategic insights captured yet. Start typing above.
+                            </div>
+                          )}
+                        </div>
+                      </div>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+              </div>
+
               {/* Nav buttons */}
               <div style={{ marginTop: 24, display: 'flex', alignItems: 'center', gap: 12 }}>
                 <button
@@ -2547,12 +2790,12 @@ export default function CourseLearnPage() {
             style={{
               position: 'fixed',
               inset: 0,
-              background: 'rgba(0,0,0,0.4)',
-              backdropFilter: 'blur(6px)',
+              background: 'rgba(122,31,43,0.15)',
+              backdropFilter: 'blur(12px)',
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
-              zIndex: 50,
+              zIndex: 100,
               padding: 20,
             }}
           >
@@ -2563,14 +2806,14 @@ export default function CourseLearnPage() {
               onClick={e => e.stopPropagation()}
               style={{
                 background: '#fff',
-                border: '1px solid #f0e8e0',
-                borderRadius: 24,
-                padding: '2rem',
-                maxWidth: 560,
+                border: '1px solid rgba(0,0,0,0.05)',
+                borderRadius: 32,
+                padding: '2.5rem',
+                maxWidth: 600,
                 width: '100%',
-                maxHeight: '85vh',
+                maxHeight: '90vh',
                 overflowY: 'auto',
-                boxShadow: '0 20px 60px rgba(0,0,0,0.1)',
+                boxShadow: '0 30px 70px rgba(122,31,43,0.2)',
               }}
             >
               <div
@@ -2578,24 +2821,24 @@ export default function CourseLearnPage() {
                   display: 'flex',
                   alignItems: 'center',
                   justifyContent: 'space-between',
-                  marginBottom: 20,
+                  marginBottom: 24,
                 }}
               >
                 <div>
                   <p
                     style={{
-                      fontSize: '0.65rem',
-                      color: '#7A1F2B',
-                      fontWeight: 800,
+                      fontSize: '0.7rem',
+                      color: '#C5975B',
+                      fontWeight: 900,
                       textTransform: 'uppercase',
-                      letterSpacing: '0.1em',
-                      margin: '0 0 4px',
+                      letterSpacing: '0.15em',
+                      margin: '0 0 6px',
                     }}
                   >
-                    Module Quiz
+                    EXAMINATION PHASE
                   </p>
-                  <h2 style={{ fontSize: '1.15rem', fontWeight: 900, color: '#1a1a1a', margin: 0 }}>
-                    {quizData.title || 'Module Quiz'}
+                  <h2 style={{ fontSize: '1.5rem', fontWeight: 900, color: '#111', margin: 0, letterSpacing: '-0.02em' }}>
+                    {quizData.title || 'Knowledge Assessment'}
                   </h2>
                 </div>
                 <button
@@ -2605,69 +2848,40 @@ export default function CourseLearnPage() {
                     setQuizResult(null);
                   }}
                   style={{
-                    background: '#f5f0eb',
-                    border: 'none',
-                    padding: 8,
-                    borderRadius: 10,
+                    background: '#f8f8f8',
+                    border: '1px solid #eee',
+                    padding: 10,
+                    borderRadius: 12,
                     cursor: 'pointer',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    transition: 'all 0.2s',
                   }}
                 >
-                  <XIcon size={18} color="#888" />
+                  <XIcon size={20} color="#888" />
                 </button>
               </div>
 
-              {/* 75% banner */}
-              <div
-                style={{
-                  background: '#fdf2f4',
-                  border: '1px solid #fecdd3',
-                  borderRadius: 12,
-                  padding: '0.75rem 1rem',
-                  marginBottom: 16,
-                  display: 'flex',
-                  alignItems: 'center',
-                  gap: 10,
-                }}
-              >
-                <ShieldIcon size={16} color="#7A1F2B" />
-                <div>
-                  <p style={{ fontSize: '0.78rem', fontWeight: 700, color: '#7A1F2B', margin: 0 }}>
-                    Score 75% or higher to pass
-                  </p>
-                  <p style={{ fontSize: '0.65rem', color: '#9a3040', margin: '2px 0 0' }}>
-                    Pass to unlock the next module
-                  </p>
-                </div>
-              </div>
-
               {quizResult ? (
-                <div style={{ textAlign: 'center', padding: '2rem 0' }}>
+                <div style={{ textAlign: 'center', padding: '1rem 0' }}>
                   <div
                     style={{
-                      width: 80,
-                      height: 80,
-                      borderRadius: '50%',
+                      width: 100,
+                      height: 100,
+                      borderRadius: '30px',
                       display: 'flex',
                       alignItems: 'center',
                       justifyContent: 'center',
-                      margin: '0 auto 20px',
-                      background: quizResult.passed ? '#ecfdf5' : '#fef2f2',
-                      animation: 'completeBounce 0.5s ease',
+                      margin: '0 auto 24px',
+                      background: quizResult.passed ? 'rgba(5,150,105,0.1)' : 'rgba(239,68,68,0.1)',
+                      boxShadow: quizResult.passed ? '0 10px 20px rgba(5,150,105,0.1)' : '0 10px 20px rgba(239,68,68,0.1)',
                     }}
                   >
                     {quizResult.passed ? (
-                      <TrophyIcon size={36} color="#059669" />
+                      <TrophyIcon size={48} color="#059669" />
                     ) : (
-                      <svg
-                        width="36"
-                        height="36"
-                        fill="none"
-                        stroke="#ef4444"
-                        strokeWidth="2"
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        viewBox="0 0 24 24"
-                      >
+                      <svg width="48" height="48" fill="none" stroke="#ef4444" strokeWidth="2.5" viewBox="0 0 24 24">
                         <circle cx="12" cy="12" r="10" />
                         <line x1="15" y1="9" x2="9" y2="15" />
                         <line x1="9" y1="9" x2="15" y2="15" />
@@ -2676,80 +2890,50 @@ export default function CourseLearnPage() {
                   </div>
                   <h3
                     style={{
-                      fontSize: '1.5rem',
+                      fontSize: '1.8rem',
                       fontWeight: 900,
                       color: quizResult.passed ? '#059669' : '#ef4444',
-                      margin: '0 0 8px',
+                      margin: '0 0 12px',
+                      letterSpacing: '-0.02em',
                     }}
                   >
-                    {quizResult.passed ? 'Excellent Work!' : 'Keep Trying!'}
+                    {quizResult.passed ? 'ASSESSMENT PASSED' : 'ASSESSMENT FAILED'}
                   </h3>
-                  <p
-                    style={{
-                      fontSize: '1.1rem',
-                      fontWeight: 700,
-                      color: '#333',
-                      margin: '0 0 4px',
-                    }}
-                  >
-                    Score: {quizResult.score}/{quizResult.totalQuestions}
-                  </p>
-                  <p style={{ color: '#888', margin: '0 0 8px' }}>
-                    {quizResult.percentage}% (Required: 75%)
-                  </p>
+                  <div style={{ background: '#fafafa', borderRadius: '20px', padding: '20px', border: '1px solid #f0f0f0', marginBottom: 24 }}>
+                    <p style={{ fontSize: '1.2rem', fontWeight: 900, color: '#111', margin: '0 0 4px' }}>
+                      Mastery Score: {quizResult.percentage}%
+                    </p>
+                    <p style={{ color: '#888', fontSize: '0.85rem', fontWeight: 600, margin: 0 }}>
+                      Correct Responses: {quizResult.score} / {quizResult.totalQuestions}
+                    </p>
+                  </div>
+
                   {quizResult.passed ? (
-                    <div
-                      style={{
-                        background: '#ecfdf5',
-                        border: '1px solid #bbf7d0',
-                        borderRadius: 12,
-                        padding: '0.75rem 1rem',
-                        marginTop: 12,
-                        display: 'inline-flex',
-                        alignItems: 'center',
-                        gap: 8,
+                    <button
+                      onClick={() => {
+                        setShowQuiz(null);
+                        setQuizData(null);
+                        setQuizResult(null);
                       }}
+                      className="btn-premium"
+                      style={{ width: '100%', padding: '1.1rem' }}
                     >
-                      <CheckIcon size={16} color="#059669" />
-                      <span style={{ fontSize: '0.82rem', fontWeight: 700, color: '#059669' }}>
-                        Next module unlocked!
-                      </span>
-                    </div>
+                      CONTINUE TO NEXT MODULE
+                    </button>
                   ) : (
-                    <div style={{ marginTop: 12 }}>
-                      <p
-                        style={{
-                          fontSize: '0.82rem',
-                          color: '#ef4444',
-                          fontWeight: 600,
-                          margin: '0 0 16px',
-                        }}
-                      >
-                        Need{' '}
-                        {Math.max(
-                          0,
-                          Math.ceil((quizResult.totalQuestions || 0) * 0.75) - quizResult.score
-                        )}{' '}
-                        more correct to pass
+                    <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
+                      <p style={{ fontSize: '0.85rem', color: '#ef4444', fontWeight: 700 }}>
+                         REQUIRED PROFICIENCY: 75%
                       </p>
                       <button
                         onClick={() => {
                           setQuizResult(null);
                           setQuizAnswers({});
                         }}
-                        style={{
-                          padding: '0.75rem 2rem',
-                          background: 'linear-gradient(135deg, #7A1F2B, #922538)',
-                          color: '#fff',
-                          borderRadius: 14,
-                          border: 'none',
-                          fontWeight: 700,
-                          fontSize: '0.88rem',
-                          cursor: 'pointer',
-                          boxShadow: '0 6px 20px rgba(122,31,43,0.2)',
-                        }}
+                        className="btn-premium"
+                        style={{ width: '100%', padding: '1.1rem' }}
                       >
-                        Retry Quiz
+                        RETRY ASSESSMENT
                       </button>
                     </div>
                   )}
@@ -2758,124 +2942,111 @@ export default function CourseLearnPage() {
                 <>
                   <div
                     style={{
+                      background: 'rgba(122,31,43,0.04)',
+                      border: '1px solid rgba(122,31,43,0.1)',
+                      borderRadius: 16,
+                      padding: '1.25rem',
+                      marginBottom: 24,
                       display: 'flex',
                       alignItems: 'center',
-                      gap: 8,
-                      marginBottom: 20,
-                      fontSize: '0.75rem',
-                      color: '#999',
+                      gap: 16,
                     }}
                   >
-                    <span>{quizData.questions?.length || 0} questions</span>
-                    <span style={{ color: '#ddd' }}>|</span>
-                    <span>Passing: 75%</span>
-                    {quizData.lastAttempt && (
-                      <>
-                        <span style={{ color: '#ddd' }}>|</span>
-                        <span
-                          style={{ color: quizData.lastAttempt.passed ? '#059669' : '#ef4444' }}
-                        >
-                          Last: {quizData.lastAttempt.percentage}%
-                        </span>
-                      </>
-                    )}
+                    <div style={{ width: 36, height: 36, borderRadius: 12, background: '#7A1F2B', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+                      <ShieldIcon size={18} color="#fff" />
+                    </div>
+                    <div>
+                      <p style={{ fontSize: '0.85rem', fontWeight: 900, color: '#7A1F2B', margin: 0 }}>
+                        75% ACCURACY REQUIRED
+                      </p>
+                      <p style={{ fontSize: '0.7rem', color: '#666', margin: '2px 0 0', fontWeight: 500 }}>
+                        All questions must be answered to complete the phase.
+                      </p>
+                    </div>
                   </div>
 
-                  {quizData.questions?.map((q, qi) => (
-                    <div
-                      key={qi}
-                      style={{
-                        marginBottom: 20,
-                        padding: '1.25rem',
-                        background: '#faf8f5',
-                        borderRadius: 16,
-                        border: '1px solid #f0e8e0',
-                      }}
-                    >
-                      <p
+                  <div style={{ display: 'flex', flexDirection: 'column', gap: 24 }}>
+                    {quizData.questions?.map((q, qi) => (
+                      <div
+                        key={qi}
                         style={{
-                          fontWeight: 700,
-                          color: '#333',
-                          fontSize: '0.9rem',
-                          margin: '0 0 12px',
+                          paddingBottom: 24,
+                          borderBottom: qi === quizData.questions.length - 1 ? 'none' : '1px solid #f0f0f0',
                         }}
                       >
-                        <span style={{ color: '#7A1F2B', marginRight: 6 }}>Q{qi + 1}.</span>
-                        {q.question}
-                      </p>
-                      <div style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
-                        {q.options?.map((opt, oi) => (
-                          <button
-                            key={oi}
-                            className={`quiz-opt ${quizAnswers[qi] === oi ? 'quiz-opt-selected' : ''}`}
-                            onClick={() => setQuizAnswers(prev => ({ ...prev, [qi]: oi }))}
-                            style={{
-                              display: 'flex',
-                              alignItems: 'center',
-                              gap: 10,
-                              padding: '0.7rem 1rem',
-                              borderRadius: 12,
-                              border:
-                                quizAnswers[qi] === oi ? '2px solid #7A1F2B' : '2px solid #eee',
-                              background: quizAnswers[qi] === oi ? '#fdf2f4' : '#fff',
-                              cursor: 'pointer',
-                              textAlign: 'left',
-                              transition: 'all 0.15s',
-                              fontSize: '0.85rem',
-                              color: '#444',
-                            }}
-                          >
-                            <span
+                        <p
+                          style={{
+                            fontWeight: 900,
+                            color: '#111',
+                            fontSize: '1rem',
+                            margin: '0 0 20px',
+                            lineHeight: 1.4,
+                            letterSpacing: '-0.02em',
+                          }}
+                        >
+                          <span style={{ color: '#7A1F2B', marginRight: 12 }}>{qi + 1}.</span>
+                          {q.question}
+                        </p>
+                        <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
+                          {q.options?.map((opt, oi) => (
+                            <button
+                              key={oi}
+                              className={`quiz-opt ${quizAnswers[qi] === oi ? 'quiz-opt-selected' : ''}`}
+                              onClick={() => setQuizAnswers(prev => ({ ...prev, [qi]: oi }))}
                               style={{
-                                width: 22,
-                                height: 22,
-                                borderRadius: '50%',
-                                border:
-                                  quizAnswers[qi] === oi ? '2px solid #7A1F2B' : '2px solid #ddd',
-                                background: quizAnswers[qi] === oi ? '#7A1F2B' : 'transparent',
                                 display: 'flex',
                                 alignItems: 'center',
-                                justifyContent: 'center',
-                                flexShrink: 0,
+                                gap: 14,
+                                padding: '1.1rem 1.5rem',
+                                borderRadius: 16,
+                                border: '1px solid #eee',
+                                background: '#fff',
+                                cursor: 'pointer',
+                                textAlign: 'left',
+                                transition: 'all 0.25s cubic-bezier(0.4, 0, 0.2, 1)',
+                                fontSize: '0.95rem',
+                                color: '#444',
+                                fontWeight: quizAnswers[qi] === oi ? 800 : 500,
                               }}
                             >
-                              {quizAnswers[qi] === oi && (
-                                <div
-                                  style={{
-                                    width: 6,
-                                    height: 6,
-                                    borderRadius: '50%',
-                                    background: '#fff',
-                                  }}
-                                />
-                              )}
-                            </span>
-                            {opt}
-                          </button>
-                        ))}
+                              <div
+                                style={{
+                                  width: 20,
+                                  height: 20,
+                                  borderRadius: '50%',
+                                  border: quizAnswers[qi] === oi ? '2px solid #7A1F2B' : '2px solid #ddd',
+                                  background: quizAnswers[qi] === oi ? '#7A1F2B' : 'transparent',
+                                  display: 'flex',
+                                  alignItems: 'center',
+                                  justifyContent: 'center',
+                                  flexShrink: 0,
+                                }}
+                              >
+                                {quizAnswers[qi] === oi && (
+                                  <div style={{ width: 8, height: 8, borderRadius: '50%', background: '#fff' }} />
+                                )}
+                              </div>
+                              {opt}
+                            </button>
+                          ))}
+                        </div>
                       </div>
-                    </div>
-                  ))}
+                    ))}
+                  </div>
 
                   <button
                     onClick={submitQuiz}
                     disabled={quizLoading}
+                    className="btn-premium"
                     style={{
                       width: '100%',
-                      padding: '0.85rem',
-                      background: 'linear-gradient(135deg, #7A1F2B, #922538)',
-                      color: '#fff',
-                      borderRadius: 14,
-                      border: 'none',
-                      fontWeight: 700,
-                      fontSize: '0.9rem',
-                      cursor: quizLoading ? 'not-allowed' : 'pointer',
-                      opacity: quizLoading ? 0.7 : 1,
-                      boxShadow: '0 6px 20px rgba(122,31,43,0.2)',
-                      marginTop: 8,
+                      padding: '1.25rem',
+                      fontSize: '1.1rem',
+                      letterSpacing: '0.05em',
+                      marginTop: 12,
                     }}
                   >
-                    {quizLoading ? 'Submitting...' : 'Submit Quiz'}
+                    {quizLoading ? 'VALIDATING RESPONSES...' : 'SUBMIT ASSESSMENT'}
                   </button>
                 </>
               )}

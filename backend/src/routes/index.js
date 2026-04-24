@@ -1,4 +1,5 @@
 const { authRouter } = require('../modules/auth/auth.routes');
+const { assessmentsRouter } = require('../modules/assessments/assessments.routes');
 const { usersRouter } = require('../modules/users/users.routes');
 const { coursesRouter } = require('../modules/courses/courses.routes');
 const { enrollmentsRouter } = require('../modules/enrollments/enrollments.routes');
@@ -9,6 +10,10 @@ const { learningRouter } = require('../modules/learning/learning.routes');
 const { learnRouter } = require('../modules/learning/learningEngine.routes');
 const { dataRouter } = require('../modules/data/data.routes');
 const { adminRouter } = require('../modules/admin/admin.routes');
+const { analyticsRouter } = require('../modules/analytics/analytics.routes');
+const { achievementsRouter } = require('../modules/achievements/achievements.routes');
+const { communityRouter } = require('../modules/community/community.routes');
+const { settingsRouter } = require('../modules/settings/settings.routes');
 const { mediaRouter } = require('../modules/media/media.routes');
 const { asyncHandler } = require('../utils/asyncHandler');
 const { authRequired } = require('../middlewares/authMiddleware');
@@ -24,7 +29,12 @@ function registerRoutes(app) {
   app.use('/api/v1/profiles', profilesRouter);
   app.use('/api/v1/learning', learningRouter);
   app.use('/api/v1/learn', learnRouter);
+  app.use('/api/v1/assessments', assessmentsRouter);
   app.use('/api/v1/admin', adminRouter);
+  app.use('/api/v1/analytics', analyticsRouter);
+  app.use('/api/v1/achievements', achievementsRouter);
+  app.use('/api/v1/community', communityRouter);
+  app.use('/api/v1/settings', settingsRouter);
   app.use('/api/v1/media', mediaRouter);
 
   // Public upload URL endpoint (alias to media/upload-url)

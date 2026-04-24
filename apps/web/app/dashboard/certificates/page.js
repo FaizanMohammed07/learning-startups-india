@@ -1,4 +1,4 @@
-﻿'use client';
+'use client';
 
 import Link from 'next/link';
 import { useDashboard } from '@/contexts/DashboardProvider';
@@ -8,7 +8,7 @@ export default function CertificatesPage() {
 
   if (isLoading) {
     return (
-      <div style={{ padding: '2rem', maxWidth: 900, margin: '0 auto' }}>
+      <div style={{ padding: '2rem', maxWidth: 1600, margin: '0 auto' }}>
         <div
           style={{
             height: 24,
@@ -39,7 +39,7 @@ export default function CertificatesPage() {
   }
 
   return (
-    <div style={{ padding: '2rem', maxWidth: 900, margin: '0 auto' }}>
+    <div style={{ padding: '2rem', maxWidth: 1600, margin: '0 auto' }}>
       <h1 style={{ fontSize: '1.5rem', fontWeight: 700, marginBottom: '1.5rem' }}>
         My Certificates
       </h1>
@@ -72,7 +72,7 @@ export default function CertificatesPage() {
               }}
             >
               <div style={{ marginBottom: 12 }}>
-                <span style={{ fontSize: '2rem' }}>🏆</span>
+                <span style={{ fontSize: '2rem' }}>??</span>
               </div>
               <h3 style={{ fontWeight: 600, marginBottom: 4 }}>
                 {cert.courseTitle || 'Certificate'}
@@ -125,3 +125,4 @@ export default function CertificatesPage() {
     </div>
   );
 }
+

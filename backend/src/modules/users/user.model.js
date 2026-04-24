@@ -13,10 +13,21 @@ const userSchema = new mongoose.Schema(
     },
     authProviders: { type: [String], default: ['email'] },
     role: { type: String, enum: ['admin', 'user', 'mentor', 'investor'], default: 'user' },
-    metadata: {
-      emailNotifications: { type: Boolean, default: true },
-      courseUpdates: { type: Boolean, default: true },
-      marketingEmails: { type: Boolean, default: false },
+    bio: { type: String, trim: true },
+    socialLinks: {
+      linkedin: { type: String },
+      twitter: { type: String },
+      github: { type: String }
+    },
+    notificationPrefs: {
+      learning: { type: Boolean, default: true },
+      assessments: { type: Boolean, default: true },
+      community: { type: Boolean, default: true },
+      payments: { type: Boolean, default: true }
+    },
+    privacySettings: {
+      profileVisibility: { type: String, enum: ['public', 'private'], default: 'public' },
+      activityVisibility: { type: String, enum: ['public', 'private'], default: 'public' }
     },
     isActive: { type: Boolean, default: true },
     wishlist: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Course' }],

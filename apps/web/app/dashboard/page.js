@@ -450,7 +450,7 @@ export default function DashboardPage() {
 
   if (isLoading) {
     return (
-      <div style={{ maxWidth: 1100, margin: '0 auto', padding: '2rem 1.5rem' }}>
+      <div style={{ maxWidth: 1600, margin: '0 auto', padding: '2rem 1.5rem' }}>
         <div
           style={{ height: 40, background: '#111', borderRadius: 12, marginBottom: 20 }}
           className="animate-pulse"
@@ -491,7 +491,7 @@ export default function DashboardPage() {
   return (
     <div
       style={{
-        maxWidth: 1100,
+        maxWidth: 1600,
         margin: '0 auto',
         padding: '2rem 1.5rem 3rem',
         fontFamily: "'Inter', system-ui, -apple-system, sans-serif",
@@ -1695,3 +1695,4 @@ export default function DashboardPage() {
     </div>
   );
 }
+

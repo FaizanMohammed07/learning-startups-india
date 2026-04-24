@@ -1,4 +1,4 @@
-﻿'use client';
+'use client';
 
 import { useState } from 'react';
 import { apiPost } from '@/lib/api';
@@ -26,7 +26,7 @@ export default function ContactPage() {
   }
 
   return (
-    <div style={{ padding: '2rem', maxWidth: 600, margin: '0 auto' }}>
+    <div style={{ padding: '2rem', maxWidth: 1600, margin: '0 auto' }}>
       <h1 style={{ fontSize: '1.5rem', fontWeight: 700, marginBottom: '0.5rem' }}>
         Contact Support
       </h1>
@@ -120,15 +120,16 @@ export default function ContactPage() {
           Other ways to reach us
         </h3>
         <p style={{ fontSize: '0.85rem', color: '#6b7280' }}>
-          📧 Email:{' '}
+          ?? Email:{' '}
           <a href="mailto:info@startupsindia.in" style={{ color: '#3b82f6' }}>
             info@startupsindia.in
           </a>
         </p>
         <p style={{ fontSize: '0.85rem', color: '#6b7280' }}>
-          📞 Phone: Available during business hours (Mon-Fri, 10 AM - 6 PM IST)
+          ?? Phone: Available during business hours (Mon-Fri, 10 AM - 6 PM IST)
         </p>
       </div>
     </div>
   );
 }
+

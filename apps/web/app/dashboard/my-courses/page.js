@@ -8,7 +8,7 @@ export default function MyCoursesPage() {
 
   if (isLoading) {
     return (
-      <div style={{ padding: '2rem', maxWidth: 900, margin: '0 auto' }}>
+      <div style={{ padding: '2rem', maxWidth: 1600, margin: '0 auto' }}>
         <div
           style={{
             height: 24,
@@ -191,3 +191,4 @@ export default function MyCoursesPage() {
     </div>
   );
 }
+

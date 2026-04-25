@@ -27,18 +27,15 @@ router.post(
   asyncHandler(controller.submitQuiz)
 );
 
-router.get('/progress', authRequired, asyncHandler(controller.listProgress));
-router.post(
-  '/progress',
-  authRequired,
-  validateBody(
-    z.object({
-      videoId: z.string().min(1),
-      watchedSeconds: z.number().nonnegative().optional(),
-      completed: z.boolean().optional(),
-    })
-  ),
-  asyncHandler(controller.saveProgress)
-);
+const liveClassRouter = require('./liveClass.routes');
+const recordedClassRouter = require('./recordedClass.routes');
+const notesRouter = require('./notes.routes');
+
+router.use('/live', liveClassRouter);
+router.use('/recorded', recordedClassRouter);
+router.use('/notes', notesRouter);
+
+router.get('/continue', authRequired, asyncHandler(controller.listProgress)); // Alias for simplicity
+router.get('/continue-learning', authRequired, asyncHandler(require('./learningExperience.controller').getContinueLearning));
 
 module.exports = { learningRouter: router };

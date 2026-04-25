@@ -324,6 +324,33 @@ async function processRazorpayWebhook(rawBody, signature) {
   return { received: true, payment: updated };
 }
 
+const { Subscription } = require('./subscription.model');
+
+async function listPurchasesForUser(userId) {
+  return Payment.find({ userId, status: 'succeeded' })
+    .populate('courseId', 'title')
+    .sort({ createdAt: -1 })
+    .lean();
+}
+
+async function listBillingHistory(userId) {
+  return Payment.find({ userId })
+    .sort({ createdAt: -1 })
+    .lean();
+}
+
+async function getSubscriptions(userId) {
+  return Subscription.find({ userId }).sort({ createdAt: -1 }).lean();
+}
+
+async function cancelSubscription(subscriptionId, userId) {
+  return Subscription.findOneAndUpdate(
+    { _id: subscriptionId, userId },
+    { status: 'cancelled', autoRenew: false },
+    { new: true }
+  );
+}
+
 module.exports = {
   listPaymentsForUser,
   createPaymentForUser,
@@ -332,4 +359,8 @@ module.exports = {
   createRazorpayOrder,
   verifyRazorpayPayment,
   processRazorpayWebhook,
+  listPurchasesForUser,
+  listBillingHistory,
+  getSubscriptions,
+  cancelSubscription,
 };

@@ -69,4 +69,9 @@ router.post(
   asyncHandler(controller.verifyRazorpayPayment)
 );
 
+router.get('/purchases', authRequired, asyncHandler(controller.getPurchases));
+router.get('/billing', authRequired, asyncHandler(controller.getBillingHistory));
+router.get('/subscriptions', authRequired, asyncHandler(controller.getSubscriptions));
+router.patch('/subscriptions/:id/cancel', authRequired, asyncHandler(controller.cancelSubscription));
+
 module.exports = { paymentsRouter: router };

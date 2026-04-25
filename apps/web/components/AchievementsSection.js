@@ -12,8 +12,7 @@ const achievementsData = [
     year: '2025',
     category: 'Innovation Event',
     index: '01',
-    image:
-      'https://images.unsplash.com/photo-1540575467063-178a50c2df87?ixlib=rb-4.0.3&auto=format&fit=crop&w=1600&q=80',
+    image: '/assets/images/Demo-class.jpg',
   },
   {
     id: 'hackathon',
@@ -36,8 +35,7 @@ const achievementsData = [
     year: '2025',
     category: 'Pitching',
     index: '03',
-    image:
-      'https://images.unsplash.com/photo-1475721025871-ed975878ab91?ixlib=rb-4.0.3&auto=format&fit=crop&w=1600&q=80',
+    image: '/assets/images/IDEAX PITCHFEST.JPG',
   },
   {
     id: 'awareness',
@@ -72,8 +70,7 @@ const achievementsData = [
     year: '2024-25',
     category: 'Mentoring',
     index: '06',
-    image:
-      'https://images.unsplash.com/photo-1515162816999-a0c47dc192f7?ixlib=rb-4.0.3&auto=format&fit=crop&w=1600&q=80',
+    image: '/assets/images/mentoring image.jpg',
   },
 ];
 

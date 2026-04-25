@@ -27,6 +27,9 @@ import '@/styles/home-enterprise.css';
 // 6. Layout Components - Shared across all pages (SIXTH)
 import '@/styles/footer.css';
 
+// 7. Global Responsive Overrides - Applied LAST for global responsiveness (SEVENTH)
+import '@/styles/responsive-overrides.css';
+
 // Page-specific CSS moved to their respective page/layout files for better code splitting
 // This prevents CSS conflicts and improves production bundle optimization
 import ClientErrorBoundary from '@/components/ClientErrorBoundary';
@@ -75,10 +78,18 @@ export default function RootLayout({ children }) {
     <html lang="en" className={poppins.variable} suppressHydrationWarning>
       <body className={poppins.className} suppressHydrationWarning>
         <ClientErrorBoundary>
+<<<<<<< HEAD
           <ConditionalLayout>{children}</ConditionalLayout>
           <CustomCursor />
           <ScrollToTop />
           <ScrollToTop />
+=======
+          <ConditionalLayout>
+            {children}
+          </ConditionalLayout>
+          <CustomCursor />
+          <ScrollToTop />
+>>>>>>> test-G1
         </ClientErrorBoundary>
       </body>
     </html>

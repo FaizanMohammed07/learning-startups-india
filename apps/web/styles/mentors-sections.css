@@ -632,14 +632,16 @@
   background: #111112;
   border: 1px solid rgba(255, 255, 255, 0.07);
   border-radius: 16px;
-  text-align: center;
-  border: 1px solid #e5e7eb;
-  transition: all 0.3s ease;
+  padding: 36px 28px;
   display: flex;
   flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  height: 100%;
+  align-items: flex-start;
+  gap: 18px;
+  transition:
+    border-color 0.3s ease,
+    box-shadow 0.3s ease,
+    transform 0.3s ease;
+  cursor: default;
 }
 
 .apply-card-dark:hover {
@@ -648,17 +650,17 @@
   transform: translateY(-4px);
 }
 
-.apply-icon {
-  margin-bottom: 14px;
-  color: #111111;
-  transition: color 0.3s ease;
+.apply-icon-dark {
+  width: 52px;
+  height: 52px;
+  background: rgba(220, 38, 38, 0.12);
+  border-radius: 14px;
   display: flex;
   align-items: center;
   justify-content: center;
-}
-
-.apply-card:hover .apply-icon {
-  color: #e53935;
+  color: #dc2626;
+  flex-shrink: 0;
+  transition: background 0.3s ease;
 }
 
 .apply-card-dark:hover .apply-icon-dark {
@@ -1050,5 +1052,359 @@
   .bmc-register-btn {
     padding: 18px 40px;
     font-size: 14px;
+  }
+}
+
+/* ==============================================
+   SUPPLEMENTAL MOBILE RESPONSIVE — MENTORS PAGE
+   ============================================== */
+
+@media (max-width: 768px) {
+  /* Become a mentor CTA inline wrapper */
+  .bmc-inline-wrapper,
+  .become-mentor-cta {
+    padding: 60px 0;
+  }
+
+  .bmc-title {
+    font-size: clamp(30px, 8vw, 48px);
+    letter-spacing: -1px;
+  }
+
+  .bmc-subtitle {
+    font-size: clamp(14px, 3.5vw, 18px);
+  }
+
+  .bmc-features-grid {
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+  }
+
+  .bmc-register-btn {
+    padding: 16px 32px;
+    font-size: 14px;
+    width: 100%;
+    max-width: 360px;
+    justify-content: center;
+  }
+
+  /* Who can apply section */
+  .who-can-apply-section {
+    padding: 60px 0;
+  }
+
+  .wca-title {
+    font-size: clamp(26px, 7vw, 44px);
+    letter-spacing: -1px;
+  }
+
+  .apply-grid-top,
+  .apply-grid-bottom,
+  .apply-grid {
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+  }
+
+  .apply-card-dark {
+    padding: 24px 16px;
+  }
+
+  /* Commitment block */
+  .commitment-dark {
+    margin: 0 16px;
+  }
+
+  .commitment-heading {
+    font-size: clamp(20px, 5vw, 28px);
+  }
+
+  /* Mentors final grid overflow prevention */
+  .mentors-scroll-track,
+  .mentors-marquee-track {
+    padding: 0;
+  }
+}
+
+@media (max-width: 480px) {
+  .apply-grid-top,
+  .apply-grid-bottom,
+  .apply-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .bmc-features-grid {
+    grid-template-columns: 1fr;
+    padding: 0;
+  }
+
+  .commitment-dark-left {
+    padding: 36px 28px;
+    border-right: none;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.07);
+  }
+
+  .commitment-dark-right {
+    padding: 36px 28px;
+  }
+}
+
+/* ==========================================
+   BECOME A MENTOR CTA SECTION
+   ========================================== */
+
+.become-mentor-cta {
+  padding: 140px 0;
+  background: #0a0a0b;
+  position: relative;
+  overflow: hidden;
+  text-align: center;
+}
+
+/* Inline variant — breaks out of parent container to go full viewport width */
+.bmc-inline-wrapper {
+  padding: 140px 0;
+  background: #0a0a0b;
+  position: relative;
+  overflow: hidden;
+  text-align: center;
+  margin-top: 48px;
+  /* Break out of parent container */
+  width: 100vw;
+  left: 50%;
+  right: 50%;
+  margin-left: -50vw;
+  margin-right: -50vw;
+}
+
+/* Dot-grid background pattern */
+.bmc-dot-pattern {
+  position: absolute;
+  inset: 0;
+  background-image: radial-gradient(
+    circle at 1px 1px,
+    rgba(255, 255, 255, 0.04) 1px,
+    transparent 0
+  );
+  background-size: 28px 28px;
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* Subtle warm glow in the center */
+.bmc-gradient-orb {
+  position: absolute;
+  width: 700px;
+  height: 700px;
+  border-radius: 50%;
+  background: radial-gradient(
+    circle,
+    rgba(239, 78, 60, 0.12) 0%,
+    rgba(220, 38, 38, 0.06) 40%,
+    transparent 70%
+  );
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+.bmc-inner {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 0 24px;
+}
+
+/* "OPPORTUNITY" badge */
+.opportunity-badge {
+  display: inline-flex;
+  padding: 7px 18px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 100px;
+  color: rgba(255, 255, 255, 0.55);
+  font-size: 10px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 2.5px;
+  margin-bottom: 28px;
+}
+
+/* Main heading */
+.bmc-title {
+  font-size: 88px;
+  font-weight: 800;
+  color: #ffffff;
+  line-height: 1;
+  letter-spacing: -4px;
+  margin-bottom: 20px;
+}
+
+/* Subtitle */
+.bmc-subtitle {
+  font-size: 22px;
+  color: rgba(255, 255, 255, 0.45);
+  font-weight: 400;
+  margin-bottom: 72px;
+  letter-spacing: -0.2px;
+}
+
+/* Feature items row */
+.bmc-features {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  gap: 80px;
+  margin-bottom: 80px;
+  flex-wrap: wrap;
+}
+
+.bmc-feature-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 14px;
+}
+
+.bmc-icon-circle {
+  width: 64px;
+  height: 64px;
+  background: #1a1a1c;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  color: #ef4444;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5);
+  transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.bmc-feature-item:hover .bmc-icon-circle {
+  transform: translateY(-6px);
+  background: rgba(239, 68, 68, 0.12);
+  border-color: rgba(239, 68, 68, 0.3);
+  box-shadow: 0 16px 36px rgba(239, 68, 68, 0.2);
+}
+
+.bmc-feature-item span {
+  font-size: 15px;
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.6);
+  letter-spacing: -0.1px;
+  transition: color 0.3s ease;
+}
+
+.bmc-feature-item:hover span {
+  color: rgba(255, 255, 255, 0.9);
+}
+
+/* Register Now button */
+.bmc-register-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  padding: 22px 56px;
+  background: linear-gradient(90deg, #f87171 0%, #ef4444 55%, #dc2626 100%);
+  color: #1a0a0a;
+  border: none;
+  border-radius: 100px;
+  font-size: 16px;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  cursor: pointer;
+  box-shadow:
+    0 16px 48px rgba(239, 68, 68, 0.35),
+    0 4px 12px rgba(0, 0, 0, 0.4);
+  transition:
+    box-shadow 0.35s ease,
+    filter 0.35s ease;
+  font-family: inherit;
+}
+
+.bmc-register-btn:hover {
+  box-shadow:
+    0 24px 64px rgba(239, 68, 68, 0.55),
+    0 6px 16px rgba(0, 0, 0, 0.5);
+  filter: brightness(1.08);
+}
+
+.bmc-register-btn svg {
+  transition: transform 0.3s ease;
+}
+
+.bmc-register-btn:hover svg {
+  transform: translateX(6px);
+}
+
+/* Responsive */
+@media (max-width: 900px) {
+  .bmc-title {
+    font-size: 56px;
+    letter-spacing: -2px;
+  }
+
+  .bmc-subtitle {
+    font-size: 18px;
+  }
+
+  .bmc-features {
+    gap: 48px;
+  }
+}
+
+@media (max-width: 600px) {
+  .bmc-title {
+    font-size: 40px;
+    letter-spacing: -1.5px;
+  }
+
+  .bmc-features {
+    gap: 36px;
+  }
+
+  .bmc-register-btn {
+    padding: 18px 40px;
+    font-size: 14px;
+  }
+
+  .role-section h2 {
+    font-size: clamp(22px, 7vw, 36px);
+  }
+
+  .role-section h2 .highlight-red {
+    font-size: clamp(28px, 9vw, 44px);
+  }
+}
+
+/* Tablet breakpoint — mentors */
+@media (min-width: 769px) and (max-width: 1024px) {
+  .role-section {
+    padding: 80px 0;
+  }
+
+  .role-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+  }
+
+  .onboarding-steps {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 24px;
+  }
+
+  .bmc-inline-wrapper,
+  .become-mentor-cta {
+    padding: 80px 0;
+  }
+
+  .bmc-title {
+    font-size: clamp(40px, 6vw, 64px);
   }
 }

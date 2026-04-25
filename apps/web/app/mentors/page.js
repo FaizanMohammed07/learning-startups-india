@@ -40,7 +40,7 @@ export default function MentorsPage() {
       company: 'PRAGMA EDUCATION',
       expertise: ['Startup Mentor', 'Life Skills Coach', 'Political Strategist'],
       experience: '8+ years',
-      previous_companies: ['Microsoft', 'Amazon'],
+      previous_companies: ['Government of India'],
       profile_image: '/assets/images/Bhushan-pragma.jpg',
       rating: 4.9,
       total_mentees: 120,
@@ -66,7 +66,7 @@ export default function MentorsPage() {
       company: 'Teleperformance Global Services Ltd',
       expertise: ['Cyber Security Expert', 'AI Driven Expert', 'Team Management'],
       experience: '10+ years',
-      previous_companies: ['Adobe', 'Figma'],
+      previous_companies: ['IT Infrastructure'],
       profile_image: '/assets/images/Dr.Venugopal Gandham.jpg',
       rating: 4.9,
       total_mentees: 110,
@@ -79,7 +79,7 @@ export default function MentorsPage() {
       company: 'Supreme Court of India',
       expertise: ['Criminal Law', 'Labor Law', 'Legal Aid'],
       experience: '14+ years',
-      previous_companies: ['Oracle', 'Series A Founder'],
+      previous_companies: ['Legal Services'],
       profile_image: '/assets/images/raghu-vasishth.jpg',
       rating: 4.9,
       total_mentees: 85,
@@ -87,16 +87,55 @@ export default function MentorsPage() {
     },
     {
       id: 5,
-      full_name: 'Meera Patel',
-      current_role: 'Engineering & CTO Advisor',
-      company: 'Netflix',
-      expertise: ['System Architecture', 'Team Building', 'Technical Leadership'],
-      experience: '16+ years',
-      previous_companies: ['Uber', 'CTO at Series B'],
-      profile_image: 'https://randomuser.me/api/portraits/women/5.jpg',
+      full_name: 'Avinash Tilekar',
+      current_role: 'Business Model Expert',
+      company: 'Startups India',
+      expertise: ['Business Planning', 'Market Strategy', 'Scaling'],
+      experience: '12+ years',
+      previous_companies: ['Strategy Consultant'],
+      profile_image: '/assets/images/Avinash Tilekar.jpg',
+      rating: 4.8,
+      total_mentees: 70,
+      total_sessions: 280,
+    },
+    {
+      id: 6,
+      full_name: 'Ravi Tilekar',
+      current_role: 'Pre-incubation Specialist',
+      company: 'Startups India',
+      expertise: ['Entrepreneurship', 'Idea Validation', 'Mindset'],
+      experience: '10+ years',
+      previous_companies: ['Incubation Lead'],
+      profile_image: '/assets/images/Ravi Tilekar.jpg',
       rating: 4.9,
-      total_mentees: 100,
-      total_sessions: 400,
+      total_mentees: 90,
+      total_sessions: 320,
+    },
+    {
+      id: 7,
+      full_name: 'Vishwaraj Saude',
+      current_role: 'Product & Tech Advisor',
+      company: 'Innovation Lab',
+      expertise: ['Product Management', 'Tech Strategy', 'MVP Development'],
+      experience: '8+ years',
+      previous_companies: ['Tech Lead'],
+      profile_image: '/assets/images/Vishwaraj.jpg',
+      rating: 4.7,
+      total_mentees: 65,
+      total_sessions: 240,
+    },
+    {
+      id: 8,
+      full_name: 'Vijay',
+      current_role: 'Operations Head',
+      company: 'Startups India',
+      expertise: ['Operations', 'Supply Chain', 'Logistics'],
+      experience: '15+ years',
+      previous_companies: ['Logistics Expert'],
+      profile_image: '/assets/images/Vijay.jpg',
+      rating: 4.9,
+      total_mentees: 150,
+      total_sessions: 600,
     },
   ];
 
@@ -316,6 +355,19 @@ export default function MentorsPage() {
 
       {/* Role of Mentors Section */}
       <section className="role-section">
+        {/* Background Asset Integration */}
+        <div
+          className="role-bg-asset opacity-20"
+          style={{
+            backgroundImage: 'url("/assets/images/mentors-role-bg.png")',
+            backgroundSize: 'cover',
+            backgroundPosition: 'center',
+            position: 'absolute',
+            inset: 0,
+            zIndex: 0,
+            pointerEvents: 'none',
+          }}
+        />
         <div className="container">
           <motion.div
             className="role-header"
@@ -333,68 +385,6 @@ export default function MentorsPage() {
               Mentors associated with Startups India contribute meaningfully to our startup
               community
             </p>
-
-            <div className="role-grid">
-              <motion.div
-                className="role-card"
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.4, delay: 0.1 }}
-                viewport={{ once: true }}
-              >
-                <div className="role-icon">
-                  <Target size={22} color="#E53935" />
-                </div>
-                <h3>Support Founders</h3>
-                <p>Guide founders through curated programs and initiatives</p>
-              </motion.div>
-
-              <motion.div
-                className="role-card"
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.4, delay: 0.2 }}
-                viewport={{ once: true }}
-              >
-                <div className="role-icon">
-                  <BookOpen size={22} color="#E53935" />
-                </div>
-                <h3>Share Expertise</h3>
-                <p>Contribute during workshops and events</p>
-              </motion.div>
-
-              <motion.div
-                className="role-card"
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.4, delay: 0.3 }}
-                viewport={{ once: true }}
-              >
-                <div className="role-icon">
-                  <Rocket size={22} color="#E53935" />
-                </div>
-                <h3>Strengthen Innovation</h3>
-                <p>Support pre-incubation and incubation initiatives</p>
-              </motion.div>
-
-              <motion.div
-                className="role-card"
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.4, delay: 0.4 }}
-                viewport={{ once: true }}
-              >
-                <div className="role-icon">
-                  <Lightbulb size={22} color="#E53935" />
-                </div>
-                <h3>Ecosystem Advisors</h3>
-                <p>Act as role models and strategic advisors</p>
-              </motion.div>
-            </div>
-
-            {/* <div className="role-note">
-              <p>Mentors are engaged only through our official programs and activities, ensuring structured and meaningful involvement.</p>
-            </div> */}
           </motion.div>
 
           <div className="role-grid">
@@ -794,17 +784,17 @@ export default function MentorsPage() {
                     <div className="avatar-group-listing">
                       <img
                         className="avatar-listing"
-                        src="https://randomuser.me/api/portraits/men/32.jpg"
+                        src="/assets/images/Bhushan-pragma.jpg"
                         alt="Mentor"
                       />
                       <img
                         className="avatar-listing"
-                        src="https://randomuser.me/api/portraits/women/44.jpg"
+                        src="/assets/images/Raghunatha-Chary.jpg"
                         alt="Mentor"
                       />
                       <img
                         className="avatar-listing"
-                        src="https://randomuser.me/api/portraits/men/45.jpg"
+                        src="/assets/images/Dr.Venugopal Gandham.jpg"
                         alt="Mentor"
                       />
                       <div className="avatar-plus-listing">+</div>
@@ -833,38 +823,65 @@ export default function MentorsPage() {
             transition={{ duration: 0.8, ease: 'easeOut' }}
             viewport={{ once: true }}
           >
-            <div className="note-icon">
-              <ShieldCheck size={24} color="#E53935" />
-            </div>
-            <h3>Important Note on Interaction</h3>
-            <div className="note-content">
-              <p>
-                <strong>
-                  Mentors do not directly interact with founders or participants through the
-                  website.
-                </strong>
-              </p>
-              <ul>
-                <li>No direct messaging, booking, or live interaction features are provided</li>
-                <li>
-                  All mentor engagement happens through Startups India–managed programs, events, and
-                  initiatives
-                </li>
-              </ul>
-              <div className="note-benefits">
-                <span>✓ Quality control</span>
-                <span>✓ Structured mentorship</span>
-                <span>✓ Respect for mentors' time</span>
-                <span>✓ Aligned ecosystem outcomes</span>
+            {/* Animated Border Decoration */}
+            <motion.div
+              className="note-animated-border"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: [0.3, 0.6, 0.3] }}
+              transition={{ duration: 4, repeat: Infinity, ease: 'linear' }}
+            ></motion.div>
+
+            <div className="note-card-glow"></div>
+
+            <div className="note-header-premium">
+              <div className="lock-icon-wrapper">
+                <div className="lock-glow"></div>
+                <svg
+                  width="28"
+                  height="28"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="#ff4d4d"
+                  strokeWidth="2.5"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  style={{ overflow: 'visible' }}
+                >
+                  <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+                  <motion.path
+                    d="M7 11V7a5 5 0 0 1 10 0v4"
+                    variants={{
+                      closed: {
+                        y: 0,
+                        x: 0,
+                        rotate: 0,
+                        originX: '7px',
+                        originY: '11px',
+                        transition: { type: 'spring', stiffness: 400, damping: 10 },
+                      },
+                      open: {
+                        y: -6,
+                        x: 4,
+                        rotate: 30,
+                        originX: '7px',
+                        originY: '11px',
+                        transition: { type: 'spring', stiffness: 500, damping: 15 },
+                      },
+                    }}
+                  />
+                  <circle cx="12" cy="16" r="1.5" fill="#ff4d4d"></circle>
+                </svg>
               </div>
               <h2 className="note-title-premium">IMPORTANT NOTE</h2>
               <motion.p
                 className="note-subtitle-premium"
-                initial={{ opacity: 0 }}
-                whileInView={{ opacity: 1 }}
-                transition={{ delay: 0.3 }}
+                variants={{
+                  closed: { opacity: 0.6, y: 0 },
+                  open: { opacity: 1, y: -2, transition: { duration: 0.3 } },
+                }}
               >
-                Mentors do not directly interact with founders or participants through the website.
+                Mentors do not directly interact with founders or participants through this
+                platform.
               </motion.p>
             </div>
 
@@ -1254,67 +1271,136 @@ export default function MentorsPage() {
               If you have knowledge to share and want to contribute to the ecosystem, we welcome you
             </p>
 
-            <div className="apply-grid">
-              <div className="apply-card">
-                <div className="apply-icon">
-                  <Rocket size={28} />
-                </div>
-                <h4>Entrepreneurs & Startup Founders</h4>
-              </div>
-              <div className="apply-card">
-                <div className="apply-icon">
-                  <Briefcase size={28} />
-                </div>
-                <h4>Industry Professionals</h4>
-              </div>
-              <div className="apply-card">
-                <div className="apply-icon">
-                  <Building2 size={28} />
-                </div>
-                <h4>Corporate Leaders</h4>
-              </div>
-              <div className="apply-card">
-                <div className="apply-icon">
-                  <GraduationCap size={28} />
-                </div>
-                <h4>Subject Matter Experts</h4>
-              </div>
-              <div className="apply-card">
-                <div className="apply-icon">
-                  <TrendingUp size={28} />
-                </div>
-                <h4>Advisors with Relevant Experience</h4>
-              </div>
+            {/* Top row — 3 cards */}
+            <div className="apply-grid-top">
+              {[
+                {
+                  label: 'Entrepreneurs & Startup Founders',
+                  icon: (
+                    <svg
+                      width="28"
+                      height="28"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth="2"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    >
+                      <path d="M4.5 16.5c-1.5 1.26-2 5-2 5s3.74-.5 5-2c.71-.84.7-2.13-.09-2.91a2.18 2.18 0 0 0-2.91-.09z" />
+                      <path d="m12 15-3-3a22 22 0 0 1 2-3.95A12.88 12.88 0 0 1 22 2c0 2.72-.78 7.5-6 11a22.35 22.35 0 0 1-4 2z" />
+                      <path d="M9 12H4s.5-1 1.35-2.35L12 15Z" />
+                      <path d="M12 15v5s1-.5 2.35-1.35L9 12Z" />
+                    </svg>
+                  ),
+                },
+                {
+                  label: 'Industry Professionals',
+                  icon: (
+                    <svg
+                      width="28"
+                      height="28"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth="2"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    >
+                      <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" />
+                      <circle cx="9" cy="7" r="4" />
+                      <path d="M23 21v-2a4 4 0 0 0-3-3.87" />
+                      <path d="M16 3.13a4 4 0 0 1 0 7.75" />
+                    </svg>
+                  ),
+                },
+                {
+                  label: 'Corporate Leaders',
+                  icon: (
+                    <svg
+                      width="28"
+                      height="28"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth="2"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    >
+                      <rect x="2" y="7" width="20" height="14" rx="2" ry="2" />
+                      <path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16" />
+                    </svg>
+                  ),
+                },
+              ].map((item, i) => (
+                <motion.div
+                  key={i}
+                  className="apply-card-dark"
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.5, delay: i * 0.1 }}
+                  viewport={{ once: true }}
+                  whileHover={{ scale: 1.03, borderColor: 'rgba(220,38,38,0.5)' }}
+                >
+                  <div className="apply-icon-dark">{item.icon}</div>
+                  <h4 className="apply-label-dark">{item.label}</h4>
+                </motion.div>
+              ))}
             </div>
 
-            <div className="commitment-box">
-              <h3>Our Commitment to Mentors</h3>
-              <div className="commitment-items">
-                <div className="commitment-item">
-                  <span className="commitment-icon">
-                    <CheckCircle2 size={18} color="#E53935" />
-                  </span>
-                  <span>Professional onboarding and recognition</span>
-                </div>
-                <div className="commitment-item">
-                  <span className="commitment-icon">
-                    <CheckCircle2 size={18} color="#E53935" />
-                  </span>
-                  <span>Clear role definition</span>
-                </div>
-                <div className="commitment-item">
-                  <span className="commitment-icon">
-                    <CheckCircle2 size={18} color="#E53935" />
-                  </span>
-                  <span>Structured engagement opportunities</span>
-                </div>
-                <div className="commitment-item">
-                  <span className="commitment-icon">
-                    <CheckCircle2 size={18} color="#E53935" />
-                  </span>
-                  <span>Long-term association within the ecosystem</span>
-                </div>
-              </div>
+            {/* Bottom row — 2 wider cards */}
+            <div className="apply-grid-bottom">
+              {[
+                {
+                  label: 'Subject Matter Experts',
+                  icon: (
+                    <svg
+                      width="28"
+                      height="28"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth="2"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    >
+                      <circle cx="12" cy="12" r="10" />
+                      <circle cx="12" cy="12" r="3" />
+                    </svg>
+                  ),
+                },
+                {
+                  label: 'Advisors with Relevant Experience',
+                  icon: (
+                    <svg
+                      width="28"
+                      height="28"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth="2"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    >
+                      <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
+                      <polyline points="9 12 11 14 15 10" />
+                    </svg>
+                  ),
+                },
+              ].map((item, i) => (
+                <motion.div
+                  key={i}
+                  className="apply-card-dark"
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.5, delay: 0.3 + i * 0.1 }}
+                  viewport={{ once: true }}
+                  whileHover={{ scale: 1.03, borderColor: 'rgba(220,38,38,0.5)' }}
+                >
+                  <div className="apply-icon-dark">{item.icon}</div>
+                  <h4 className="apply-label-dark">{item.label}</h4>
+                </motion.div>
+              ))}
             </div>
 
             {/* Commitment Block */}

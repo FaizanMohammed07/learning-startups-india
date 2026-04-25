@@ -8,12 +8,11 @@ const trainingData = [
     description:
       'Understand the significance of pre-incubation and how it sets the foundation for startup success.',
     instructorName: 'Ravi Tilekar',
-    instructorRole: 'Expert Instructor',
-    instructorAvatar: 'https://randomuser.me/api/portraits/men/32.jpg',
+    instructorRole: 'Pre-incubation Specialist',
+    instructorAvatar: '/assets/images/Ravi Tilekar.jpg',
     tags: ['Clarity', 'Mindset', 'Entrepreneurship'],
     views: '12.5K Views',
-    image:
-      'https://images.unsplash.com/photo-1531482615713-2afd69097998?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80',
+    image: '/assets/images/Demo-class.jpg',
   },
   {
     id: 2,
@@ -21,12 +20,11 @@ const trainingData = [
     description:
       'Learn systematic approaches to validate your startup idea before investing significant resources.',
     instructorName: 'Vishwaraj Saude',
-    instructorRole: 'Expert Instructor',
-    instructorAvatar: 'https://randomuser.me/api/portraits/men/67.jpg',
+    instructorRole: 'Product & Tech Advisor',
+    instructorAvatar: '/assets/images/Vishwaraj.jpg',
     tags: ['Idea Validation', 'Audience', 'Market'],
     views: '15.2K Views',
-    image:
-      'https://images.unsplash.com/photo-1551288049-bebda4e38f71?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80',
+    image: '/assets/images/IDEAX PITCHFEST.JPG',
   },
   {
     id: 3,
@@ -34,12 +32,11 @@ const trainingData = [
     description:
       'Structure your roadmap with a solid business plan that attracts investors and guides growth.',
     instructorName: 'Avinash Tilekar',
-    instructorRole: 'Expert Instructor',
-    instructorAvatar: 'https://randomuser.me/api/portraits/men/75.jpg',
+    instructorRole: 'Business Model Expert',
+    instructorAvatar: '/assets/images/Avinash Tilekar.jpg',
     tags: ['Structure', 'Roadmap', 'Business Plan'],
     views: '18.7K Views',
-    image:
-      'https://images.unsplash.com/photo-1460925895917-afdab827c52f?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80',
+    image: '/assets/images/Mentoring  .jpg',
   },
 ];
 

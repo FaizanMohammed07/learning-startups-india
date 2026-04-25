@@ -91,63 +91,86 @@ export default function HowItWorksSection() {
         </div>
 
         <div className="roadmap-container">
-          {/* ── Axis: line + nodes + rocket ── */}
-          <div
-            className="roadmap-axis"
-            ref={axisRef}
-            onMouseMove={handleMouseMove}
-            onMouseEnter={handleMouseEnter}
-            onMouseLeave={handleMouseLeave}
-          >
-            {/* Faint base line */}
-            <div className="roadmap-base-line" />
-
-            {/* Glowing flame trail – grows with cursor */}
-            <div
-              className="roadmap-flame-trail"
-              style={{ width: `${rocketPct}%` }}
-            />
-
-            {/* Rocket – absolutely positioned, perfectly on the line */}
-            <div
-              className={`rocket-pilot${isHovering ? ' visible' : ''}`}
-              style={{ left: `${rocketPct}%` }}
-            >
-              <Rocket size={18} style={{ transform: 'rotate(90deg)' }} />
-            </div>
-
-            {/* Step nodes */}
-            <div className="roadmap-nodes-wrapper">
-              {steps.map((step, idx) => (
+          {!isMobile ? (
+            <>
+              {/* ── Desktop View: Axis + Cards Grid ── */}
+              <div
+                className="roadmap-axis"
+                ref={axisRef}
+                onMouseMove={handleMouseMove}
+                onMouseEnter={handleMouseEnter}
+                onMouseLeave={handleMouseLeave}
+              >
+                <div className="roadmap-base-line" />
                 <div
-                  key={idx}
-                  className={`roadmap-node-item${activeStep >= idx ? ' active' : ''}${activeStep === idx ? ' current' : ''}`}
-                  onMouseEnter={() => handleCardHover(idx)}
+                  className="roadmap-flame-trail"
+                  style={{ width: `${rocketPct}%` }}
+                />
+                <div
+                  className={`rocket-pilot${isHovering ? ' visible' : ''}`}
+                  style={{ left: `${rocketPct}%` }}
                 >
-                  <span className="node-number">{idx + 1}</span>
+                  <Rocket size={18} style={{ transform: 'rotate(90deg)' }} />
                 </div>
+
+                <div className="roadmap-nodes-wrapper">
+                  {steps.map((step, idx) => (
+                    <div
+                      key={idx}
+                      className={`roadmap-node-item${activeStep >= idx ? ' active' : ''}${activeStep === idx ? ' current' : ''}`}
+                      onMouseEnter={() => handleCardHover(idx)}
+                    >
+                      <span className="node-number">{idx + 1}</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              <div className="roadmap-cards-grid">
+                {steps.map((step, idx) => (
+                  <motion.div
+                    key={idx}
+                    className={`roadmap-step-card-glass${activeStep === idx ? ' focused' : ''}`}
+                    onMouseEnter={() => handleCardHover(idx)}
+                    initial={{ opacity: 0, y: 20 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true }}
+                    transition={{ delay: idx * 0.1 }}
+                  >
+                    <div className="step-card-icon">{step.icon}</div>
+                    <h4 className="step-card-title">{step.title}</h4>
+                    <p className="step-card-desc">{step.description}</p>
+                  </motion.div>
+                ))}
+              </div>
+            </>
+          ) : (
+            /* ── Mobile View: Vertical Step Items (Aligned) ── */
+            <div className="roadmap-mobile-list">
+              {steps.map((step, idx) => (
+                <motion.div 
+                  key={idx} 
+                  className="mobile-step-item"
+                  initial={{ opacity: 0, x: -20 }}
+                  whileInView={{ opacity: 1, x: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: idx * 0.1 }}
+                >
+                  <div className="mobile-step-node-col">
+                    <div className="roadmap-node-item active">
+                      <span className="node-number">{idx + 1}</span>
+                    </div>
+                    {idx < steps.length - 1 && <div className="mobile-step-line" />}
+                  </div>
+                  <div className="roadmap-step-card-glass">
+                    <div className="step-card-icon">{step.icon}</div>
+                    <h4 className="step-card-title">{step.title}</h4>
+                    <p className="step-card-desc">{step.description}</p>
+                  </div>
+                </motion.div>
               ))}
             </div>
-          </div>
-
-          {/* ── Cards ── */}
-          <div className="roadmap-cards-grid">
-            {steps.map((step, idx) => (
-              <motion.div
-                key={idx}
-                className={`roadmap-step-card-glass${activeStep === idx ? ' focused' : ''}`}
-                onMouseEnter={() => handleCardHover(idx)}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: idx * 0.1 }}
-              >
-                <div className="step-card-icon">{step.icon}</div>
-                <h4 className="step-card-title">{step.title}</h4>
-                <p className="step-card-desc">{step.description}</p>
-              </motion.div>
-            ))}
-          </div>
+          )}
         </div>
       </div>
     </section>

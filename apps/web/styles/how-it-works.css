@@ -240,50 +240,66 @@
 }
 
 @media (max-width: 767px) {
-  .roadmap-axis {
+  /* ── Vertical Mobile List (New) ── */
+  .roadmap-mobile-list {
+    display: flex;
     flex-direction: column;
-    height: auto;
-    padding: 0 20px 0 40px;
+    gap: 40px;
+    padding: 0 10px;
+  }
+
+  .mobile-step-item {
+    display: flex;
+    gap: 20px;
     align-items: flex-start;
-    margin-bottom: 40px;
   }
 
-  .roadmap-base-line {
-    left: 44px;
-    right: auto;
-    top: 0;
-    bottom: 0;
-    width: 3px;
-    height: 100%;
-    transform: none;
-  }
-
-  .roadmap-flame-trail {
-    left: 44px;
-    top: 0;
-    width: 3px;
-    background: linear-gradient(180deg, #E53935, rgba(255, 120, 80, 0.6), transparent);
-    transform: none;
-  }
-
-  .roadmap-nodes-wrapper {
+  .mobile-step-node-col {
+    display: flex;
     flex-direction: column;
-    left: 23px;
-    top: 0;
-    bottom: 0;
-    right: auto;
-    height: 100%;
-    transform: none;
-    padding: 20px 0;
-    gap: 80px;
+    align-items: center;
+    flex-shrink: 0;
+    width: 44px;
+    position: relative;
+  }
+
+  .mobile-step-line {
+    width: 2px;
+    background: rgba(229, 57, 53, 0.15);
+    flex-grow: 1;
+    margin-top: 10px;
+    min-height: 40px;
+    position: absolute;
+    top: 44px;
+    bottom: -40px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 1;
+  }
+
+  .mobile-step-item .roadmap-node-item {
+    z-index: 2;
+    background: #E53935;
+    border-color: #E53935;
+    box-shadow: 0 4px 12px rgba(229, 57, 53, 0.2);
+  }
+
+  .mobile-step-item .node-number {
+    color: #fff;
+  }
+
+  .mobile-step-item .roadmap-step-card-glass {
+    flex-grow: 1;
+    margin: 0;
+    padding: 24px;
+  }
+
+  /* Hide Desktop specific axis parts on mobile */
+  .roadmap-axis {
+    display: none;
   }
 
   .roadmap-cards-grid {
-    grid-template-columns: 1fr;
-    padding-left: 60px;
-  }
-
-  .rocket-pilot {
-    left: 44px !important;
+    display: none;
   }
 }

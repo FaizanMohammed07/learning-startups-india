@@ -970,6 +970,225 @@
 }
 
 /* ==========================================
+   ECOSYSTEM SECTION - PREMIUM DARK (New)
+   ========================================== */
+
+.ecosystem-section-premium {
+  background: #080808;
+  padding: 120px 0;
+  position: relative;
+  overflow: hidden;
+}
+
+.eco-main-title {
+  font-size: 56px;
+  font-weight: 800;
+  color: #ffffff;
+  line-height: 1.1;
+  letter-spacing: -2.5px;
+  text-align: center;
+  margin-bottom: 24px;
+}
+
+.eco-title-red {
+  color: #dc2626;
+  display: block;
+}
+
+.eco-main-subtitle {
+  font-size: 16px;
+  color: rgba(255, 255, 255, 0.4);
+  text-align: center;
+  max-width: 580px;
+  margin: 0 auto 80px;
+  line-height: 1.8;
+  letter-spacing: -0.1px;
+}
+
+.eco-stack {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0;
+  max-width: 800px;
+  margin: 0 auto 80px;
+}
+
+/* Central Vertical Line - Animated Glow */
+.eco-stack::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 50%;
+  width: 3px;         /* Broadened line */
+  background: linear-gradient(to bottom, 
+    transparent 0%, 
+    rgba(153, 27, 27, 0.6) 15%,     /* Darker red */
+    rgba(153, 27, 27, 0.6) 85%, 
+    transparent 100%
+  );
+  transform: translateX(-1.5px);
+  z-index: 1;
+}
+
+.eco-stack::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 50%;
+  width: 4px;         /* Broadened glow */
+  height: 120px;
+  background: linear-gradient(to bottom, transparent, #991b1b, transparent);
+  transform: translateX(-2px);
+  z-index: 1;
+  animation: line-glow 5s linear infinite;
+  opacity: 0.8;
+}
+
+@keyframes line-glow {
+  0% { top: -10%; }
+  100% { top: 110%; }
+}
+
+/* Individual Segment Wrapper */
+.eco-segment {
+  position: relative;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  z-index: 2;
+  margin-bottom: 32px;
+}
+
+.eco-segment:last-child {
+  margin-bottom: 0;
+}
+
+/* Arrow Connector */
+.eco-arrow-connector {
+  margin-top: 12px;
+  color: #7f1d1d;    /* Darker arrow color */
+  z-index: 3;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  animation: arrow-bounce 2s ease-in-out infinite;
+}
+
+@keyframes arrow-bounce {
+  0%, 100% { transform: translateY(0); opacity: 0.6; }
+  50% { transform: translateY(5px); opacity: 1; }
+}
+
+/* Icon Box on the line */
+.eco-card-icon {
+  width: 56px;         /* Increased from 44px */
+  height: 56px;        /* Increased from 44px */
+  background: #111112;
+  border: 1px solid rgba(220, 38, 38, 0.4);
+  border-radius: 14px; /* Slightly more rounded for larger size */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #dc2626;
+  margin-bottom: 24px;
+  position: relative;
+  z-index: 3;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+  transition: all 0.35s ease;
+  animation: icon-pulse 3s ease-in-out infinite;
+}
+
+@keyframes icon-pulse {
+  0%, 100% { box-shadow: 0 0 20px rgba(0, 0, 0, 0.5); border-color: rgba(220, 38, 38, 0.4); }
+  50% { box-shadow: 0 0 25px rgba(220, 38, 38, 0.15); border-color: rgba(220, 38, 38, 0.7); }
+}
+
+.eco-segment:hover .eco-card-icon {
+  transform: scale(1.1);
+  background: #1a1a1c;
+  border-color: #dc2626;
+  box-shadow: 0 0 30px rgba(220, 38, 38, 0.2);
+}
+
+.eco-card {
+  background: #111112;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 20px;
+  padding: 32px 40px;
+  width: 100%;
+  max-width: 600px;
+  text-align: center;
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  cursor: default;
+  position: relative;
+  z-index: 2;
+}
+
+.eco-card:hover {
+  border-color: rgba(220, 38, 38, 0.4);
+  transform: translateY(-5px);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4), 0 0 20px rgba(220, 38, 38, 0.05);
+}
+
+.eco-card-title {
+  font-size: 20px;
+  font-weight: 700;
+  color: #ffffff;
+  margin-bottom: 12px;
+  letter-spacing: -0.5px;
+}
+
+.eco-card-desc {
+  font-size: 14px;
+  color: rgba(255, 255, 255, 0.4);
+  line-height: 1.6;
+  margin: 0;
+  max-width: 100% !important;
+}
+
+/* Quote Section */
+.eco-quote {
+  max-width: 900px !important;
+  margin: 100px auto 0 !important;
+  text-align: center;
+  font-size: 32px;
+  font-weight: 700;
+  color: #ffffff;
+  line-height: 1.3;
+  letter-spacing: -1.2px;
+  padding: 80px 40px;
+  background: #111112;
+  border: 1px solid rgba(220, 38, 38, 0.2); /* More prominent red-tinted border */
+  border-radius: 32px;
+  position: relative;
+  z-index: 2;
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.3);
+}
+
+.eco-quote-red {
+  color: #dc2626;
+}
+
+@media (max-width: 768px) {
+  .eco-main-title {
+    font-size: 36px;
+    letter-spacing: -1px;
+  }
+
+  .eco-card {
+    padding: 24px 20px;
+  }
+
+  .eco-quote {
+    font-size: 18px;
+  }
+}
+
+/* ==========================================
    ECOSYSTEM ROADMAP - IMPROVED
    ========================================== */
 
@@ -1317,6 +1536,7 @@
     font-size: 16px;
   }
 }
+
 
 /* ==========================================
    APPROACH - LIGHT
@@ -1814,3 +2034,132 @@ section[class*='hero'] .stat-number {
   background-clip: unset !important;
   -webkit-text-fill-color: #dc2626 !important;
 }
+
+/* ==============================================
+   SUPPLEMENTAL MOBILE RESPONSIVE — ABOUT PAGE
+   ============================================== */
+
+@media (max-width: 768px) {
+  /* Hero */
+  .about-hero {
+    min-height: auto;
+    padding: 80px 0 60px;
+  }
+
+  .about-hero-content {
+    text-align: center;
+  }
+
+  .hero-title-about,
+  .about-page h1 {
+    font-size: clamp(28px, 7vw, 44px);
+    letter-spacing: -1px;
+  }
+
+  /* Ecosystem section */
+  .ecosystem-section-premium {
+    padding: 60px 0;
+  }
+
+  .eco-main-title {
+    font-size: clamp(24px, 7vw, 40px);
+    letter-spacing: -1px;
+  }
+
+  .eco-main-subtitle {
+    font-size: clamp(14px, 3.5vw, 16px);
+  }
+
+  .eco-stack {
+    padding: 0;
+    gap: 16px;
+  }
+
+  .eco-card {
+    padding: 24px 20px;
+  }
+
+  .eco-quote {
+    font-size: clamp(16px, 4vw, 24px);
+    padding: 32px 20px;
+    margin-top: 40px;
+  }
+
+  /* Ecosystem statement */
+  .ecosystem-statement {
+    padding: 28px 20px;
+    margin-top: 40px;
+  }
+
+  .ecosystem-statement p {
+    font-size: clamp(14px, 3.5vw, 18px);
+  }
+
+  /* Stats grid */
+  .hero-stats {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 16px;
+    margin-top: 32px;
+  }
+
+  .hero-stat {
+    padding: 20px 12px;
+  }
+
+  .stat-number {
+    font-size: clamp(28px, 7vw, 44px);
+  }
+
+  /* About sections padding normalization */
+  .founding-story-section,
+  .mission-vision-section,
+  .team-section,
+  .values-section,
+  .impact-section {
+    padding: 60px 0;
+  }
+
+  /* Container override for about */
+  .about-page .container {
+    padding: 0 16px;
+  }
+
+  /* About page section title */
+  .about-page .section-title {
+    font-size: clamp(22px, 6vw, 36px);
+  }
+}
+
+@media (max-width: 480px) {
+  .about-hero {
+    padding: 64px 0 40px;
+  }
+
+  .eco-main-title {
+    font-size: clamp(22px, 8vw, 32px);
+  }
+
+  .hero-stats {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+/* Tablet — about page */
+@media (min-width: 769px) and (max-width: 1024px) {
+  .about-hero {
+    padding: 100px 0 80px;
+  }
+
+  .eco-main-title {
+    font-size: clamp(36px, 5vw, 48px);
+  }
+
+  .ecosystem-section-premium {
+    padding: 80px 0;
+  }
+
+  .hero-stats {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+

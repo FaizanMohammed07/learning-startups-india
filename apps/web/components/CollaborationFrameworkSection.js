@@ -123,15 +123,32 @@ export default function CollaborationFrameworkSection() {
             <motion.div
               key={pillar.number}
               variants={cardVariants}
-              className="collab-card"
-              whileHover={{ y: -4 }}
-              transition={{ type: 'spring', stiffness: 300, damping: 24 }}
+              className="collab-card group"
+              whileHover={{ 
+                y: -12,
+                rotateX: 4,
+                rotateY: -2,
+                transition: { type: 'spring', stiffness: 400, damping: 20 }
+              }}
+              style={{ transformStyle: 'preserve-3d', perspective: '1000px' }}
             >
+              {/* Shine effect overlay */}
+              <div className="collab-card-shine" />
+
               {/* Step badge */}
               <div className="collab-step-badge">{pillar.number}</div>
 
-              {/* Icon */}
-              <div className="collab-icon">{pillar.icon}</div>
+              {/* Icon with float animation */}
+              <motion.div 
+                className="collab-icon"
+                whileHover={{ 
+                  scale: 1.1, 
+                  rotate: [0, -5, 5, 0],
+                  transition: { duration: 0.4 }
+                }}
+              >
+                {pillar.icon}
+              </motion.div>
 
               {/* Title block */}
               <div className="collab-text">
@@ -140,13 +157,18 @@ export default function CollaborationFrameworkSection() {
                 <p className="collab-card-desc">{pillar.description}</p>
               </div>
 
-              {/* Bullet points */}
+              {/* Bullet points with staggered hover effect */}
               <ul className="collab-points">
                 {pillar.points.map((pt, i) => (
-                  <li key={i} className="collab-point">
+                  <motion.li 
+                    key={i} 
+                    className="collab-point"
+                    whileHover={{ x: 6, color: '#dc2626' }}
+                    transition={{ type: 'spring', stiffness: 300 }}
+                  >
                     <span className="collab-point-dot" aria-hidden="true" />
                     {pt}
-                  </li>
+                  </motion.li>
                 ))}
               </ul>
 
@@ -156,7 +178,7 @@ export default function CollaborationFrameworkSection() {
               {/* CTA */}
               <div className="collab-cta">
                 <span>Read More</span>
-                <svg
+                <motion.svg
                   className="collab-cta-arrow"
                   width="14"
                   height="14"
@@ -166,10 +188,12 @@ export default function CollaborationFrameworkSection() {
                   strokeWidth="2.4"
                   strokeLinecap="round"
                   strokeLinejoin="round"
+                  animate={{ x: [0, 5, 0] }}
+                  transition={{ duration: 1.5, repeat: Infinity, ease: "easeInOut" }}
                 >
                   <line x1="5" y1="12" x2="19" y2="12" />
                   <polyline points="12 5 19 12 12 19" />
-                </svg>
+                </motion.svg>
               </div>
 
               {/* Inner top-edge highlight (glass rim light) */}

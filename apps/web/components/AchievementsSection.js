@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
-import { ChevronLeft, ChevronRight } from 'lucide-react';
+import { motion, AnimatePresence } from 'framer-motion';
+import { ChevronLeft, ChevronRight, Award, Calendar, ExternalLink } from 'lucide-react';
 import '../styles/achievements.css';
 
 const achievementsData = [
@@ -12,7 +13,7 @@ const achievementsData = [
     year: '2025',
     category: 'Innovation Event',
     index: '01',
-    image: '/assets/images/Demo-class.jpg',
+    image: '/assets/images/inspirex-new.jpg',
   },
   {
     id: 'hackathon',
@@ -76,111 +77,137 @@ const achievementsData = [
 
 export default function AchievementsSection() {
   const [activeIndex, setActiveIndex] = useState(0);
-  const [isTransitioning, setIsTransitioning] = useState(false);
-
-  const activeItem = achievementsData[activeIndex];
+  const [direction, setDirection] = useState(0);
 
   const handleNext = () => {
-    if (isTransitioning) return;
-    setIsTransitioning(true);
+    setDirection(1);
     setActiveIndex(prev => (prev + 1) % achievementsData.length);
   };
 
   const handlePrev = () => {
-    if (isTransitioning) return;
-    setIsTransitioning(true);
+    setDirection(-1);
     setActiveIndex(prev => (prev - 1 + achievementsData.length) % achievementsData.length);
   };
 
-  const handleTabClick = index => {
-    if (isTransitioning || index === activeIndex) return;
-    setIsTransitioning(true);
-    setActiveIndex(index);
-  };
-
-  // Reset transition state after animation completes
-  useEffect(() => {
-    if (isTransitioning) {
-      const timer = setTimeout(() => {
-        setIsTransitioning(false);
-      }, 500); // match with CSS transition duration
-      return () => clearTimeout(timer);
-    }
-  }, [activeIndex, isTransitioning]);
+  const activeItem = achievementsData[activeIndex];
 
   return (
-    <section className="achievements-section">
-      <div className="achievements-container">
-        <div className="achievements-header">
-          <h2>
-            Celebrating <span className="highlight-red">Achievements</span> & Milestones
-          </h2>
-          <p className="achievements-subtext">
-            A journey of excellence, recognition, and transformative impact in the startup ecosystem
-          </p>
+    <section className="achievements-section overflow-hidden">
+      <div className="iec-container relative z-10">
+        <div className="achievements-header text-center mb-16">
+          <motion.span 
+            className="section-label-premium"
+            initial={{ opacity: 0, y: 10 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+          >
+            Our Journey
+          </motion.span>
+          <motion.h2 
+            className="text-4xl md:text-5xl font-bold mb-6 !text-white"
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ delay: 0.1 }}
+          >
+            Celebrating <span className="text-[#e53935]">Achievements</span> & Milestones
+          </motion.h2>
+          <motion.p 
+            className="text-[#9ca3af] max-w-2xl mx-auto"
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ delay: 0.2 }}
+          >
+            A journey of excellence, recognition, and transformative impact in the startup ecosystem.
+          </motion.p>
         </div>
 
-        <div className="achievements-card-wrapper">
-          <div className="achievements-main-card">
-            <div
-              className={`achievements-content-transition ${isTransitioning ? 'transitioning' : ''}`}
+        <div className="relative">
+          <AnimatePresence mode="wait" custom={direction}>
+            <motion.div
+              key={activeIndex}
+              custom={direction}
+              initial={{ opacity: 0, x: direction > 0 ? 50 : -50 }}
+              animate={{ opacity: 1, x: 0 }}
+              exit={{ opacity: 0, x: direction > 0 ? -50 : 50 }}
+              transition={{ duration: 0.5, ease: [0.23, 1, 0.32, 1] }}
+              className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center"
             >
-              <div className="achievements-card-left">
-                <div className="achievements-image-container">
-                  <img
-                    src={activeItem.image}
-                    alt={activeItem.title}
-                    className="achievements-image"
-                  />
-                  <div className="achievements-badges">
-                    <span className="badge-year">{activeItem.year}</span>
-                    <span className="badge-category">{activeItem.category}</span>
+              {/* Image side */}
+              <div className="lg:col-span-7">
+                <div className="relative group">
+                  <div className="absolute -inset-4 bg-[#e53935]/20 blur-2xl rounded-[32px] opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
+                  <div className="relative rounded-[24px] overflow-hidden border border-white/10 shadow-2xl aspect-[16/9]">
+                    <motion.img
+                      src={activeItem.image}
+                      alt={activeItem.title}
+                      className="w-full h-full object-cover"
+                      initial={{ scale: 1.1 }}
+                      animate={{ scale: 1 }}
+                      transition={{ duration: 0.8 }}
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent" />
+                    
+                    <div className="absolute bottom-8 left-8 flex gap-4">
+                      <div className="flex items-center gap-2 px-4 py-2 bg-white/10 backdrop-blur-md border border-white/20 rounded-full">
+                        <Calendar size={14} className="text-[#e53935]" />
+                        <span className="text-sm font-bold text-white">{activeItem.year}</span>
+                      </div>
+                      <div className="flex items-center gap-2 px-4 py-2 bg-white/10 backdrop-blur-md border border-white/20 rounded-full">
+                        <Award size={14} className="text-[#e53935]" />
+                        <span className="text-sm font-bold text-white">{activeItem.category}</span>
+                      </div>
+                    </div>
                   </div>
                 </div>
               </div>
-              <div className="achievements-card-right">
-                <div className="achievements-index">{activeItem.index}</div>
-                <h3 className="achievements-card-title">{activeItem.title}</h3>
-                <p className="achievements-card-desc">{activeItem.description}</p>
-                <button className="achievements-cta">Read More</button>
-              </div>
-            </div>
 
-            {/* Slider Controls */}
-            <div className="achievements-controls">
-              <div className="achievements-progress">
-                <span>0{activeIndex + 1}</span>
-                <div className="progress-bar-bg">
-                  <div
-                    className="progress-bar-fill"
-                    style={{ width: `${((activeIndex + 1) / achievementsData.length) * 100}%` }}
-                  ></div>
+              {/* Text side */}
+              <div className="lg:col-span-5 flex flex-col gap-6">
+                <span className="text-6xl font-black text-white/5 font-mono">{activeItem.index}</span>
+                <h3 className="text-3xl font-bold text-white leading-tight">{activeItem.title}</h3>
+                <p className="text-lg text-[#9ca3af] leading-relaxed">{activeItem.description}</p>
+                
+                <div className="flex items-center gap-6 mt-4">
+                  <button className="flex items-center gap-2 text-white font-bold group">
+                    Explore Event 
+                    <ExternalLink size={18} className="text-[#e53935] group-hover:translate-x-1 transition-transform" />
+                  </button>
                 </div>
-                <span>0{achievementsData.length}</span>
-              </div>
-              <div className="achievements-arrows">
-                <button className="arrow-btn" onClick={handlePrev} aria-label="Previous">
-                  <ChevronLeft size={20} />
-                </button>
-                <button className="arrow-btn" onClick={handleNext} aria-label="Next">
-                  <ChevronRight size={20} />
-                </button>
-              </div>
-            </div>
-          </div>
-        </div>
 
-        {/* Bottom Nav Tabs */}
-        <div className="achievements-tabs">
-          {achievementsData.map((item, index) => (
-            <button
-              key={item.id}
-              className={`achievements-tab ${index === activeIndex ? 'active' : ''}`}
-              onClick={() => handleTabClick(index)}
-            >
-              {item.label}
-            </button>
-          ))}
+                <div className="flex items-center gap-6 mt-8">
+                  <div className="flex gap-2">
+                    <button 
+                      onClick={handlePrev}
+                      className="w-12 h-12 flex items-center justify-center rounded-full border border-white/10 hover:border-[#e53935]/50 transition-colors bg-white/5"
+                    >
+                      <ChevronLeft size={20} className="text-white" />
+                    </button>
+                    <button 
+                      onClick={handleNext}
+                      className="w-12 h-12 flex items-center justify-center rounded-full border border-white/10 hover:border-[#e53935]/50 transition-colors bg-white/5"
+                    >
+                      <ChevronRight size={20} className="text-white" />
+                    </button>
+                  </div>
+                  
+                  <div className="flex-1 h-[2px] bg-white/5 relative overflow-hidden rounded-full">
+                    <motion.div 
+                      className="absolute inset-y-0 left-0 bg-[#e53935]"
+                      initial={{ width: 0 }}
+                      animate={{ width: `${((activeIndex + 1) / achievementsData.length) * 100}%` }}
+                      transition={{ duration: 0.5 }}
+                    />
+                  </div>
+                  
+                  <span className="text-white/40 font-mono text-sm">
+                    {activeIndex + 1} / {achievementsData.length}
+                  </span>
+                </div>
+              </div>
+            </motion.div>
+          </AnimatePresence>
         </div>
       </div>
     </section>

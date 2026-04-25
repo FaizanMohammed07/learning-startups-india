@@ -10,7 +10,7 @@
 - `[x]` Final visualization and walkthrough 
 - `[x]` Implement premium "Become a Mentor" CTA section with tech-pattern bg */
 .role-section {
-  padding: 120px 0;
+  padding: 120px 0 40px; /* Reduced bottom padding from 120px */
   background: #000000;
   position: relative;
   overflow: hidden;
@@ -142,7 +142,7 @@
 
 /* Onboarding Process Section */
 .onboarding-section {
-  padding: 120px 0;
+  padding: 40px 0 120px; /* Reduced top padding from 120px */
   background: #000000;
   position: relative;
   overflow: hidden;
@@ -584,8 +584,8 @@
 
 /* Who Can Apply Section — Premium Dark */
 .who-can-apply-section {
-  padding: 100px 0;
-  background: #080808;
+  padding: 40px 0 100px; /* Reduced top padding from 100px */
+  background: #000000; /* Unified with rest of the page */
   position: relative;
 }
 
@@ -1162,8 +1162,8 @@
 
 /* Inline variant — breaks out of parent container to go full viewport width */
 .bmc-inline-wrapper {
-  padding: 140px 0;
-  background: #0a0a0b;
+  padding: 140px 0 40px; /* Reduced bottom padding from 140px */
+  background: #000000; /* Unified with rest of the page */
   position: relative;
   overflow: hidden;
   text-align: center;

@@ -68,12 +68,52 @@ const progressSchema = new mongoose.Schema(
 
 progressSchema.index({ userId: 1, videoId: 1 }, { unique: true });
 
+const liveClassSchema = new mongoose.Schema(
+  {
+    courseId: { type: mongoose.Schema.Types.ObjectId, ref: 'Course', required: true, index: true },
+    instructorId: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
+    title: { type: String, required: true },
+    description: { type: String },
+    startTime: { type: Date, required: true },
+    endTime: { type: Date, required: true },
+    meetingLink: { type: String, required: true },
+    recordingUrl: { type: String },
+    status: {
+      type: String,
+      enum: ['scheduled', 'live', 'completed', 'cancelled'],
+      default: 'scheduled',
+    },
+    attendees: [
+      {
+        userId: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
+        joinedAt: { type: Date, default: Date.now },
+      },
+    ],
+    maxCapacity: { type: Number, default: 100 },
+  },
+  { timestamps: true }
+);
+
+const noteSchema = new mongoose.Schema(
+  {
+    userId: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true, index: true },
+    lessonId: { type: mongoose.Schema.Types.ObjectId, ref: 'Lesson', index: true },
+    videoId: { type: mongoose.Schema.Types.ObjectId, ref: 'Video', index: true },
+    content: { type: String, required: true },
+    timestamp: { type: Number }, // seconds into the video
+    color: { type: String, default: '#ffffff' },
+  },
+  { timestamps: true }
+);
+
 const Video = mongoose.model('Video', videoSchema);
 const Quiz = mongoose.model('Quiz', quizSchema);
 const QuizResponse = mongoose.model('QuizResponse', quizResponseSchema);
 const QuizAttempt = mongoose.model('QuizAttempt', quizAttemptSchema);
 const Assignment = mongoose.model('Assignment', assignmentSchema);
 const Progress = mongoose.model('Progress', progressSchema);
+const LiveClass = mongoose.model('LiveClass', liveClassSchema);
+const Note = mongoose.model('Note', noteSchema);
 
 module.exports = {
   Video,
@@ -82,4 +122,6 @@ module.exports = {
   QuizAttempt,
   Assignment,
   Progress,
+  LiveClass,
+  Note,
 };

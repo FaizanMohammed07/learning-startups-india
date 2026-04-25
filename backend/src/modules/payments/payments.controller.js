@@ -42,6 +42,26 @@ async function handleRazorpayWebhook(req, res) {
   res.json(result);
 }
 
+async function getPurchases(req, res) {
+  const data = await paymentsService.listPurchasesForUser(req.user.userId);
+  res.json({ success: true, data });
+}
+
+async function getBillingHistory(req, res) {
+  const data = await paymentsService.listBillingHistory(req.user.userId);
+  res.json({ success: true, data });
+}
+
+async function getSubscriptions(req, res) {
+  const data = await paymentsService.getSubscriptions(req.user.userId);
+  res.json({ success: true, data });
+}
+
+async function cancelSubscription(req, res) {
+  const data = await paymentsService.cancelSubscription(req.params.id, req.user.userId);
+  res.json({ success: true, data });
+}
+
 module.exports = {
   listPayments,
   createPayment,
@@ -50,4 +70,8 @@ module.exports = {
   createRazorpayOrder,
   verifyRazorpayPayment,
   handleRazorpayWebhook,
+  getPurchases,
+  getBillingHistory,
+  getSubscriptions,
+  cancelSubscription,
 };

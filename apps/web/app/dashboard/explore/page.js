@@ -1,4 +1,4 @@
-﻿'use client';
+'use client';
 
 import { useState, useMemo, useRef } from 'react';
 import Link from 'next/link';
@@ -110,12 +110,11 @@ function SkeletonCard() {
 }
 
 export default function ExplorePage() {
-  const { courses, enrolledCourses, certificates, isLoading } = useDashboard();
+  const { courses, enrolledCourses, certificates, isLoading, wishlist: wishlistArr, toggleWishlist } = useDashboard();
   const [search, setSearch] = useState('');
   const [activeCategory, setActiveCategory] = useState('All');
   const [sortBy, setSortBy] = useState('default');
   const [viewMode, setViewMode] = useState('grid');
-  const [wishlist, setWishlist] = useState(new Set());
   const [previewId, setPreviewId] = useState(null);
   const catScrollRef = useRef(null);
 
@@ -127,6 +126,11 @@ export default function ExplorePage() {
   const certifiedIds = useMemo(
     () => new Set(certificates?.map(c => c.courseId) || []),
     [certificates]
+  );
+
+  const wishlist = useMemo(
+    () => new Set(wishlistArr?.map(w => w._id) || []),
+    [wishlistArr]
   );
 
   const categories = useMemo(() => {
@@ -175,14 +179,6 @@ export default function ExplorePage() {
     return result;
   }, [courses, search, activeCategory, sortBy]);
 
-  const toggleWishlist = id => {
-    setWishlist(prev => {
-      const next = new Set(prev);
-      if (next.has(id)) next.delete(id);
-      else next.add(id);
-      return next;
-    });
-  };
 
   const totalEnrolled = enrolledCourses?.length || 0;
   const totalCerts = certificates?.length || 0;
@@ -265,7 +261,12 @@ export default function ExplorePage() {
       />
 
       {/* Main Content Area */}
-      <div style={{ padding: '2rem 2.5rem 0' }}>
+      <div style={{ padding: '0.5rem 2.5rem 0' }}>
+        <h1 style={{ fontSize: '2.25rem', fontWeight: 800, color: '#111827', margin: '0 0 0.5rem 0', letterSpacing: '-0.02em' }}>Expert Courses</h1>
+        <p style={{ color: '#6b7280', fontSize: '1.05rem', marginBottom: '2rem' }}>
+          Accelerate your startup journey with our curated expert curriculum.
+        </p>
+
         {/* Search + Sort + View Toolbar */}
         <div
           className="toolbar-row"
@@ -1490,3 +1491,4 @@ export default function ExplorePage() {
     </div>
   );
 }
+

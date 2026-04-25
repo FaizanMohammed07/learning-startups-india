@@ -22,14 +22,104 @@ async function decorateCourseMedia(course) {
   };
 }
 
-async function listCourses(slug) {
+async function listCourses({ slug, search, category, level, minPrice, maxPrice, page = 1, limit = 10 }) {
   const filter = { isPublished: true };
   if (slug) {
     filter.slug = String(slug);
   }
 
-  const courses = await Course.find(filter).sort({ createdAt: -1 }).lean();
-  return Promise.all(courses.map(decorateCourseMedia));
+  if (category && category !== 'All') {
+    filter.category = category;
+  }
+
+  if (level) {
+    filter.level = level;
+  }
+
+  if (search) {
+    filter.$or = [
+      { title: { $regex: search, $options: 'i' } },
+      { subtitle: { $regex: search, $options: 'i' } },
+      { description: { $regex: search, $options: 'i' } },
+    ];
+  }
+
+  if (minPrice !== undefined || maxPrice !== undefined) {
+    filter.priceInr = {};
+    if (minPrice !== undefined) filter.priceInr.$gte = Number(minPrice);
+    if (maxPrice !== undefined) filter.priceInr.$lte = Number(maxPrice);
+  }
+
+  const skip = (page - 1) * limit;
+  const total = await Course.countDocuments(filter);
+  const courses = await Course.find(filter)
+    .sort({ createdAt: -1 })
+    .skip(skip)
+    .limit(limit)
+    .lean();
+
+  const data = await Promise.all(courses.map(decorateCourseMedia));
+  return {
+    items: data,
+    pagination: {
+      total,
+      page: Number(page),
+      limit: Number(limit),
+      pages: Math.ceil(total / limit),
+    },
+  };
+}
+
+async function toggleWishlist(userId, courseId) {
+  const { User } = require('../users/user.model');
+  const user = await User.findById(userId);
+  if (!user) throw new Error('User not found');
+
+  const index = user.wishlist.indexOf(courseId);
+  if (index > -1) {
+    user.wishlist.splice(index, 1);
+  } else {
+    // Validate course exists
+    const course = await Course.findById(courseId).select('_id');
+    if (!course) throw new Error('Course not found');
+    user.wishlist.push(courseId);
+  }
+
+  await user.save();
+  return user.wishlist;
+}
+
+async function getWishlist(userId) {
+  const { User } = require('../users/user.model');
+  const user = await User.findById(userId).populate({
+    path: 'wishlist',
+    select: 'title subtitle priceInr thumbnailUrl slug category level enrolledCount',
+  });
+  if (!user) return [];
+
+  return Promise.all(user.wishlist.map(w => decorateCourseMedia(w.toObject())));
+}
+
+async function markCourseCompleted(userId, courseId) {
+  const { Enrollment } = require('../enrollments/enrollment.model');
+
+  const enrollment = await Enrollment.findOne({ userId, courseId });
+  if (!enrollment) throw new Error('Not enrolled in this course');
+
+  if (enrollment.status === 'completed') return enrollment;
+
+  enrollment.status = 'completed';
+  enrollment.completed = true;
+  enrollment.completedAt = new Date();
+  enrollment.progress = 100;
+
+  await enrollment.save();
+
+  // Invalidate cache
+  const { cacheDel } = require('../../infrastructure/cache/redis');
+  cacheDel(`enrollment:${userId}:${courseId}`, `progress:${userId}:${courseId}`).catch(() => {});
+
+  return enrollment;
 }
 
 async function getCourseById(id) {
@@ -109,4 +199,7 @@ module.exports = {
   listModulesByCourse,
   submitQuiz,
   trackProgress,
+  toggleWishlist,
+  getWishlist,
+  markCourseCompleted,
 };

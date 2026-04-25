@@ -105,7 +105,9 @@
   transform: translateY(-12px) rotateX(4deg);
   background: #1c1c1d;
   border-color: rgba(220, 38, 38, 0.4);
-  box-shadow: 0 40px 80px -20px rgba(0, 0, 0, 0.6), 0 0 20px rgba(220, 38, 38, 0.15);
+  box-shadow:
+    0 40px 80px -20px rgba(0, 0, 0, 0.6),
+    0 0 20px rgba(220, 38, 38, 0.15);
 }
 
 .role-icon-box {
@@ -178,8 +180,13 @@
 }
 
 @keyframes float-step {
-  0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(-10px); }
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
 }
 
 .onboarding-step:hover {
@@ -240,7 +247,9 @@
   padding: 8px 0 8px 32px;
   position: relative;
   line-height: 1.5;
-  transition: transform 0.3s ease, color 0.3s ease;
+  transition:
+    transform 0.3s ease,
+    color 0.3s ease;
 }
 
 .onboarding-step:hover .premium-list li {
@@ -373,7 +382,9 @@
   padding: 64px 40px;
   position: relative;
   text-align: center;
-  box-shadow: 0 40px 100px -20px rgba(0, 0, 0, 0.8), 0 0 40px rgba(255, 77, 77, 0.05);
+  box-shadow:
+    0 40px 100px -20px rgba(0, 0, 0, 0.8),
+    0 0 40px rgba(255, 77, 77, 0.05);
   overflow: hidden;
 }
 
@@ -432,8 +443,17 @@
 }
 
 @keyframes lock-pulse {
-  0%, 100% { opacity: 0.2; transform: scale(1); filter: blur(20px); }
-  50% { opacity: 0.4; transform: scale(1.1); filter: blur(30px); }
+  0%,
+  100% {
+    opacity: 0.2;
+    transform: scale(1);
+    filter: blur(20px);
+  }
+  50% {
+    opacity: 0.4;
+    transform: scale(1.1);
+    filter: blur(30px);
+  }
 }
 
 .note-title-premium {
@@ -552,7 +572,7 @@
   .note-benefits-grid {
     grid-template-columns: 1fr;
   }
-  
+
   .note-container-premium {
     padding: 48px 24px;
   }
@@ -617,7 +637,10 @@
   flex-direction: column;
   align-items: flex-start;
   gap: 18px;
-  transition: border-color 0.3s ease, box-shadow 0.3s ease, transform 0.3s ease;
+  transition:
+    border-color 0.3s ease,
+    box-shadow 0.3s ease,
+    transform 0.3s ease;
   cursor: default;
 }
 
@@ -837,7 +860,11 @@
 .bmc-dot-pattern {
   position: absolute;
   inset: 0;
-  background-image: radial-gradient(circle at 1px 1px, rgba(255, 255, 255, 0.04) 1px, transparent 0);
+  background-image: radial-gradient(
+    circle at 1px 1px,
+    rgba(255, 255, 255, 0.04) 1px,
+    transparent 0
+  );
   background-size: 28px 28px;
   pointer-events: none;
   z-index: 0;
@@ -849,7 +876,12 @@
   width: 700px;
   height: 700px;
   border-radius: 50%;
-  background: radial-gradient(circle, rgba(239, 78, 60, 0.12) 0%, rgba(220, 38, 38, 0.06) 40%, transparent 70%);
+  background: radial-gradient(
+    circle,
+    rgba(239, 78, 60, 0.12) 0%,
+    rgba(220, 38, 38, 0.06) 40%,
+    transparent 70%
+  );
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
@@ -967,13 +999,19 @@
   text-transform: uppercase;
   letter-spacing: 1.5px;
   cursor: pointer;
-  box-shadow: 0 16px 48px rgba(239, 68, 68, 0.35), 0 4px 12px rgba(0, 0, 0, 0.4);
-  transition: box-shadow 0.35s ease, filter 0.35s ease;
+  box-shadow:
+    0 16px 48px rgba(239, 68, 68, 0.35),
+    0 4px 12px rgba(0, 0, 0, 0.4);
+  transition:
+    box-shadow 0.35s ease,
+    filter 0.35s ease;
   font-family: inherit;
 }
 
 .bmc-register-btn:hover {
-  box-shadow: 0 24px 64px rgba(239, 68, 68, 0.55), 0 6px 16px rgba(0, 0, 0, 0.5);
+  box-shadow:
+    0 24px 64px rgba(239, 68, 68, 0.55),
+    0 6px 16px rgba(0, 0, 0, 0.5);
   filter: brightness(1.08);
 }
 
@@ -1096,6 +1134,244 @@
 
   .bmc-features-grid {
     grid-template-columns: 1fr;
+    padding: 0;
+  }
+
+  .commitment-dark-left {
+    padding: 36px 28px;
+    border-right: none;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.07);
+  }
+
+  .commitment-dark-right {
+    padding: 36px 28px;
+  }
+}
+
+/* ==========================================
+   BECOME A MENTOR CTA SECTION
+   ========================================== */
+
+.become-mentor-cta {
+  padding: 140px 0;
+  background: #0a0a0b;
+  position: relative;
+  overflow: hidden;
+  text-align: center;
+}
+
+/* Inline variant — breaks out of parent container to go full viewport width */
+.bmc-inline-wrapper {
+  padding: 140px 0;
+  background: #0a0a0b;
+  position: relative;
+  overflow: hidden;
+  text-align: center;
+  margin-top: 48px;
+  /* Break out of parent container */
+  width: 100vw;
+  left: 50%;
+  right: 50%;
+  margin-left: -50vw;
+  margin-right: -50vw;
+}
+
+/* Dot-grid background pattern */
+.bmc-dot-pattern {
+  position: absolute;
+  inset: 0;
+  background-image: radial-gradient(
+    circle at 1px 1px,
+    rgba(255, 255, 255, 0.04) 1px,
+    transparent 0
+  );
+  background-size: 28px 28px;
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* Subtle warm glow in the center */
+.bmc-gradient-orb {
+  position: absolute;
+  width: 700px;
+  height: 700px;
+  border-radius: 50%;
+  background: radial-gradient(
+    circle,
+    rgba(239, 78, 60, 0.12) 0%,
+    rgba(220, 38, 38, 0.06) 40%,
+    transparent 70%
+  );
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+.bmc-inner {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 0 24px;
+}
+
+/* "OPPORTUNITY" badge */
+.opportunity-badge {
+  display: inline-flex;
+  padding: 7px 18px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 100px;
+  color: rgba(255, 255, 255, 0.55);
+  font-size: 10px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 2.5px;
+  margin-bottom: 28px;
+}
+
+/* Main heading */
+.bmc-title {
+  font-size: 88px;
+  font-weight: 800;
+  color: #ffffff;
+  line-height: 1;
+  letter-spacing: -4px;
+  margin-bottom: 20px;
+}
+
+/* Subtitle */
+.bmc-subtitle {
+  font-size: 22px;
+  color: rgba(255, 255, 255, 0.45);
+  font-weight: 400;
+  margin-bottom: 72px;
+  letter-spacing: -0.2px;
+}
+
+/* Feature items row */
+.bmc-features {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  gap: 80px;
+  margin-bottom: 80px;
+  flex-wrap: wrap;
+}
+
+.bmc-feature-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 14px;
+}
+
+.bmc-icon-circle {
+  width: 64px;
+  height: 64px;
+  background: #1a1a1c;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  color: #ef4444;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5);
+  transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.bmc-feature-item:hover .bmc-icon-circle {
+  transform: translateY(-6px);
+  background: rgba(239, 68, 68, 0.12);
+  border-color: rgba(239, 68, 68, 0.3);
+  box-shadow: 0 16px 36px rgba(239, 68, 68, 0.2);
+}
+
+.bmc-feature-item span {
+  font-size: 15px;
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.6);
+  letter-spacing: -0.1px;
+  transition: color 0.3s ease;
+}
+
+.bmc-feature-item:hover span {
+  color: rgba(255, 255, 255, 0.9);
+}
+
+/* Register Now button */
+.bmc-register-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  padding: 22px 56px;
+  background: linear-gradient(90deg, #f87171 0%, #ef4444 55%, #dc2626 100%);
+  color: #1a0a0a;
+  border: none;
+  border-radius: 100px;
+  font-size: 16px;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  cursor: pointer;
+  box-shadow:
+    0 16px 48px rgba(239, 68, 68, 0.35),
+    0 4px 12px rgba(0, 0, 0, 0.4);
+  transition:
+    box-shadow 0.35s ease,
+    filter 0.35s ease;
+  font-family: inherit;
+}
+
+.bmc-register-btn:hover {
+  box-shadow:
+    0 24px 64px rgba(239, 68, 68, 0.55),
+    0 6px 16px rgba(0, 0, 0, 0.5);
+  filter: brightness(1.08);
+}
+
+.bmc-register-btn svg {
+  transition: transform 0.3s ease;
+}
+
+.bmc-register-btn:hover svg {
+  transform: translateX(6px);
+}
+
+/* Responsive */
+@media (max-width: 900px) {
+  .bmc-title {
+    font-size: 56px;
+    letter-spacing: -2px;
+  }
+
+  .bmc-subtitle {
+    font-size: 18px;
+  }
+
+  .bmc-features {
+    gap: 48px;
+  }
+}
+
+@media (max-width: 600px) {
+  .bmc-title {
+    font-size: 40px;
+    letter-spacing: -1.5px;
+  }
+
+  .bmc-features {
+    gap: 36px;
+  }
+
+  .bmc-register-btn {
+    padding: 18px 40px;
+    font-size: 14px;
   }
 
   .role-section h2 {
@@ -1132,4 +1408,3 @@
     font-size: clamp(40px, 6vw, 64px);
   }
 }
-

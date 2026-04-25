@@ -240,7 +240,7 @@ const MetricCard = ({ metric }) => {
         className="relative z-10 flex flex-col items-center text-center"
         style={{
           transform: 'translateZ(30px)',
-          height: '240px',
+          minHeight: '240px',
           padding: '24px 20px',
           justifyContent: 'space-between',
         }}
@@ -286,7 +286,7 @@ const MetricCard = ({ metric }) => {
 
 export default function ImpactSection() {
   return (
-    <section id="impact" className="iec-section relative bg-[#050505] overflow-hidden">
+    <section id="impact" className="iec-section !pt-12 relative bg-[#050505] overflow-hidden">
       {/* --- LAYERED BACKGROUND DEPTH --- */}
 
       {/* 1. Base Gradient */}
@@ -323,7 +323,7 @@ export default function ImpactSection() {
         className="iec-container relative z-10 w-full flex flex-col items-center"
       >
         {/* HEADER */}
-        <div className="text-center mb-[60px] relative w-full flex flex-col items-center">
+        <div className="text-center mb-24 relative w-full flex flex-col items-center">
           <motion.div variants={headerVariants}>
             <span className="inline-block text-[11px] font-bold text-[#E53935] uppercase tracking-wider border border-[#E53935]/40 rounded-full px-4 py-1.5 bg-[#E53935]/[0.06] mb-6 z-10 relative">
               Our Impact
@@ -355,7 +355,7 @@ export default function ImpactSection() {
         </div>
 
         {/* GRID */}
-        <div className="w-full grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-7">
+        <div className="w-full grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-7 stats-grid">
           {impactMetrics.map(metric => (
             <MetricCard key={metric.id} metric={metric} />
           ))}

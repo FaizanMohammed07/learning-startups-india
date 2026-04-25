@@ -394,9 +394,10 @@
   gap: 1.75rem;
 }
 
-@media (max-width: 1024px) {
-  .iec-impact-grid {
-    grid-template-columns: repeat(2, 1fr);
+@media (min-width: 768px) and (max-width: 1024px) {
+  .stats-grid {
+    grid-template-columns: repeat(2, 1fr) !important;
+    gap: 20px !important;
   }
 }
 

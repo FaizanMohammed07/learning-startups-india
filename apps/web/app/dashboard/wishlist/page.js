@@ -1,241 +1,251 @@
 'use client';
 
 import { useDashboard } from '@/contexts/DashboardProvider';
+import { apiPost } from '@/lib/api';
 import Link from 'next/link';
-import Image from 'next/image';
 
 export default function WishlistPage() {
-  const { wishlist, toggleWishlist, isLoading } = useDashboard();
+  const { wishlist, isLoading, refresh } = useDashboard();
+
+  async function handleRemove(id) {
+    const res = await apiPost(`/api/v1/courses/${id}/wishlist`, {});
+    if (res.success) {
+      refresh();
+    }
+  }
 
   if (isLoading) {
     return (
-      <div style={{ padding: '2rem 2.5rem', maxWidth: '1200px', margin: '0 auto' }}>
-        <div style={{ height: '40px', width: '200px', background: '#e5e7eb', borderRadius: '8px', marginBottom: '2rem' }} className="animate-pulse" />
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(300px, 1fr))', gap: '1.5rem' }}>
-          {[1, 2, 3].map(i => (
-            <div key={i} style={{ height: '300px', background: '#f3f4f6', borderRadius: '20px' }} className="animate-pulse" />
-          ))}
-        </div>
+      <div style={{ padding: '2rem', maxWidth: 900, margin: '0 auto' }}>
+        <div
+          style={{
+            height: 24,
+            width: 160,
+            background: '#e5e7eb',
+            borderRadius: 8,
+            marginBottom: '1.5rem',
+          }}
+          className="animate-pulse"
+        />
+        {[1, 2].map(i => (
+          <div
+            key={i}
+            style={{ height: 60, background: '#f3f4f6', borderRadius: 12, marginBottom: '1rem' }}
+            className="animate-pulse"
+          />
+        ))}
       </div>
     );
   }
 
   return (
-    <div style={{ padding: '2rem 2.5rem', maxWidth: '1200px', margin: '0 auto', fontFamily: "'Inter', sans-serif" }}>
+    <div className="wishlist-container">
       <style dangerouslySetInnerHTML={{ __html: `
-        @keyframes fadeInUp { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-        @keyframes float { 0% { transform: translateY(0px); } 50% { transform: translateY(-10px); } 100% { transform: translateY(0px); } }
-        @keyframes paper-plane { 
-          0% { transform: translate(-10%, 10%) rotate(0deg); opacity: 0; }
-          20% { opacity: 1; }
-          80% { opacity: 1; }
-          100% { transform: translate(110%, -110%) rotate(15deg); opacity: 0; }
+        .wishlist-container { padding: 2rem; maxWidth: 1280px; margin: 0 auto; }
+        .wishlist-grid { display: grid; gridTemplateColumns: repeat(auto-fill, minmax(320px, 1fr)); gap: 1.5rem; }
+        @media (max-width: 768px) {
+          .wishlist-container { padding: 1.25rem 1rem; }
+          .wishlist-container h1 { font-size: 1.5rem !important; margin-bottom: 1.5rem !important; }
+          .wishlist-grid { grid-template-columns: 1fr !important; gap: 1rem !important; }
+          .wishlist-item-card { border-radius: 16px !important; }
+          .wishlist-item-thumb { height: 140px !important; }
         }
-        .wishlist-card { animation: fadeInUp 0.4s ease-out both; transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); }
-        .wishlist-card:hover { transform: translateY(-5px); box-shadow: 0 20px 40px -15px rgba(0,0,0,0.12); }
-        .action-btn { transition: all 0.2s; }
-        .action-btn:hover { transform: scale(1.03); filter: brightness(1.1); }
-        .plane { position: absolute; opacity: 0; animation: paper-plane 4s infinite linear; pointer-events: none; }
       `}} />
-
-      <div style={{ marginBottom: '2.5rem' }}>
-        <h1 style={{ fontSize: '2.25rem', fontWeight: 800, color: '#111827', margin: 0, letterSpacing: '-0.02em' }}>Wishlist</h1>
-        <p style={{ color: '#6b7280', marginTop: '0.5rem', fontSize: '1.05rem' }}>
-          Your selected curriculum for professional excellence.
-        </p>
-      </div>
+      <h1
+        style={{
+          fontSize: '2rem',
+          fontWeight: 800,
+          marginBottom: '2rem',
+          color: '#111827',
+          letterSpacing: '-0.025em',
+        }}
+      >
+        Wishlist
+      </h1>
 
       {wishlist.length === 0 ? (
-        <div style={{
-          textAlign: 'center',
-          padding: '6rem 2rem',
-          background: '#fff',
-          borderRadius: '32px',
-          border: '1px solid #f3f4f6',
-          boxShadow: '0 20px 50px -12px rgba(0,0,0,0.05)',
-          position: 'relative',
-          overflow: 'hidden'
-        }}>
-          {/* Paper Planes background */}
-          {[1,2,3].map(i => (
-            <div key={i} className="plane" style={{ 
-              top: 20 + (i*20) + '%', 
-              left: 0, 
-              animationDelay: i*1.3 + 's' 
-            }}>
-              <svg width="24" height="24" transform="rotate(90)" viewBox="0 0 24 24" fill="#6366f1">
-                <path d="M22 2L11 13M22 2l-7 20-4-9-9-4 20-7z" />
-              </svg>
-            </div>
-          ))}
-
-          <div style={{
-            width: '100px',
-            height: '100px',
-            background: 'linear-gradient(135deg, #eef2ff, #e0e7ff)',
-            borderRadius: '30px',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            margin: '0 auto 2rem',
-            animation: 'float 3s ease-in-out infinite',
-            position: 'relative',
-            zIndex: 1
-          }}>
-            <svg width="48" height="48" fill="none" stroke="#6366f1" strokeWidth="2" viewBox="0 0 24 24">
+        <div
+          style={{
+            textAlign: 'center',
+            padding: '5rem 2rem',
+            background: '#fff',
+            borderRadius: '24px',
+            border: '2px dashed #e5e7eb',
+          }}
+        >
+          <div style={{ marginBottom: '1.5rem' }}>
+            <svg
+              width="64"
+              height="64"
+              fill="none"
+              stroke="#9ca3af"
+              strokeWidth="1.5"
+              viewBox="0 0 24 24"
+            >
               <path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z" />
             </svg>
           </div>
-          
-          <h2 style={{ fontSize: '1.75rem', fontWeight: 800, color: '#111827', marginBottom: '1rem', position: 'relative', zIndex: 1 }}>
+          <h2 style={{ fontSize: '1.25rem', fontWeight: 700, color: '#111827', marginBottom: '0.5rem' }}>
             Your wishlist is empty
           </h2>
-          <p style={{ color: '#6b7280', marginBottom: '2.5rem', maxWidth: '450px', margin: '0 auto 2.5rem', lineHeight: 1.6, position: 'relative', zIndex: 1 }}>
-            Save courses you&apos;re interested in to your wishlist and they will appear here. Explore our <strong style={{ color: '#6366f1' }}>Expert Courses</strong> to find your next challenge.
+          <p style={{ color: '#6b7280', marginBottom: '1.5rem', fontSize: '0.95rem' }}>
+            Save courses you're interested in for later.
           </p>
-          
-          <Link href="/dashboard/explore" style={{ textDecoration: 'none', position: 'relative', zIndex: 1 }}>
-            <button className="action-btn" style={{
-              background: 'linear-gradient(135deg, #6366f1, #4f46e5)',
+          <Link
+            href="/dashboard/explore"
+            style={{
+              display: 'inline-flex',
+              alignItems: 'center',
+              background: '#111827',
               color: '#fff',
-              border: 'none',
-              padding: '1rem 2.5rem',
-              borderRadius: '16px',
-              fontWeight: 700,
-              fontSize: '1.05rem',
-              cursor: 'pointer',
-              boxShadow: '0 12px 24px -6px rgba(79,70,229,0.4)'
-            }}>
-              Go to Expert Courses
-            </button>
+              padding: '0.75rem 1.5rem',
+              borderRadius: '12px',
+              fontWeight: 600,
+              textDecoration: 'none',
+              transition: 'all 0.2s',
+            }}
+          >
+            Explore Courses
           </Link>
         </div>
       ) : (
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(320px, 1fr))', gap: '2rem' }}>
-          {wishlist.map((course, i) => (
-            <div key={course._id} className="wishlist-card" style={{
-              background: '#fff',
-              borderRadius: '24px',
-              border: '1px solid #f3f4f6',
-              overflow: 'hidden',
-              display: 'flex',
-              flexDirection: 'column',
-              animationDelay: i * 0.05 + 's',
-            }}>
-              <div style={{ position: 'relative', height: '180px', flexShrink: 0 }}>
-                {course.thumbnailUrl ? (
-                  <Image
+        <div className="wishlist-grid">
+          {wishlist.map(course => (
+            <div
+              key={course._id}
+              className="wishlist-item-card"
+              style={{
+                background: '#fff',
+                borderRadius: 20,
+                overflow: 'hidden',
+                border: '1px solid #e5e7eb',
+                display: 'flex',
+                flexDirection: 'column',
+                transition: 'transform 0.2s, box-shadow 0.2s',
+              }}
+              onMouseEnter={e => {
+                e.currentTarget.style.transform = 'translateY(-4px)';
+                e.currentTarget.style.boxShadow = '0 12px 24px -10px rgba(0,0,0,0.1)';
+              }}
+              onMouseLeave={e => {
+                e.currentTarget.style.transform = 'translateY(0)';
+                e.currentTarget.style.boxShadow = 'none';
+              }}
+            >
+              <div
+                className="wishlist-item-thumb"
+                style={{ height: 160, background: '#f3f4f6', position: 'relative', overflow: 'hidden' }}
+              >
+                {course.thumbnailUrl && (
+                  <img
                     src={course.thumbnailUrl}
                     alt={course.title}
-                    fill
-                    style={{ objectFit: 'cover' }}
+                    style={{ width: '100%', height: '100%', objectFit: 'cover' }}
                   />
-                ) : (
-                  <div style={{
-                    height: '100%',
-                    background: 'linear-gradient(135deg, #8b5cf6, #d946ef)',
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center'
-                  }}>
-                    <span style={{ fontSize: '3rem', color: '#fff', fontWeight: 900, opacity: 0.8 }}>
-                      {course.title.charAt(0)}
-                    </span>
-                  </div>
                 )}
-                <div style={{ position: 'absolute', top: '1rem', right: '1rem' }}>
-                  <button
-                    onClick={() => toggleWishlist(course._id)}
+                <div
+                  style={{
+                    position: 'absolute',
+                    top: 12,
+                    right: 12,
+                    background: 'rgba(255,255,255,0.9)',
+                    padding: '4px 8px',
+                    borderRadius: 8,
+                    fontSize: '0.75rem',
+                    fontWeight: 800,
+                    color: '#111827',
+                  }}
+                >
+                  {course.price > 0 ? `₹${course.price.toLocaleString()}` : 'FREE'}
+                </div>
+              </div>
+              <div style={{ padding: '1.25rem' }}>
+                <div
+                  style={{
+                    fontSize: '0.7rem',
+                    fontWeight: 700,
+                    textTransform: 'uppercase',
+                    color: '#6366f1',
+                    marginBottom: '0.5rem',
+                    letterSpacing: '0.05em',
+                  }}
+                >
+                  {course.category}
+                </div>
+                <h3
+                  style={{
+                    fontWeight: 700,
+                    fontSize: '1.1rem',
+                    color: '#111827',
+                    marginBottom: '0.5rem',
+                    lineHeight: 1.4,
+                  }}
+                >
+                  {course.title}
+                </h3>
+                <p
+                  style={{
+                    fontSize: '0.85rem',
+                    color: '#6b7280',
+                    marginBottom: '1.25rem',
+                    display: '-webkit-box',
+                    WebkitLineClamp: 2,
+                    WebkitBoxOrient: 'vertical',
+                    overflow: 'hidden',
+                  }}
+                >
+                  {course.description}
+                </p>
+                <div
+                  style={{
+                    display: 'flex',
+                    gap: '0.75rem',
+                    marginTop: 'auto',
+                    borderTop: '1px solid #f3f4f6',
+                    paddingTop: '1rem',
+                  }}
+                >
+                  <Link
+                    href={`/courses/${course.slug || course._id}`}
                     style={{
-                      width: '36px',
-                      height: '36px',
-                      borderRadius: '50%',
-                      background: 'rgba(255,255,255,0.95)',
+                      flex: 1,
+                      textAlign: 'center',
+                      background: '#111827',
+                      color: '#fff',
+                      padding: '0.6rem',
+                      borderRadius: '10px',
+                      fontSize: '0.85rem',
+                      fontWeight: 600,
+                      textDecoration: 'none',
+                    }}
+                  >
+                    View Details
+                  </Link>
+                  <button
+                    onClick={() => handleRemove(course._id)}
+                    style={{
+                      padding: '0.6rem',
+                      borderRadius: '10px',
+                      background: '#fee2e2',
+                      color: '#ef4444',
                       border: 'none',
+                      cursor: 'pointer',
                       display: 'flex',
                       alignItems: 'center',
                       justifyContent: 'center',
-                      cursor: 'pointer',
-                      boxShadow: '0 4px 12px rgba(0,0,0,0.1)',
-                      transition: 'all 0.2s'
                     }}
-                    className="heart-btn"
                   >
-                    <svg width="18" height="18" fill="#e11d48" stroke="#e11d48" strokeWidth="2" viewBox="0 0 24 24">
-                      <path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z" />
+                    <svg
+                      width="20"
+                      height="20"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth="2"
+                      viewBox="0 0 24 24"
+                    >
+                      <path d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-4v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
                     </svg>
                   </button>
-                </div>
-                <div style={{
-                  position: 'absolute',
-                  bottom: '1rem',
-                  left: '1rem',
-                  background: '#111827',
-                  color: '#fff',
-                  padding: '0.4rem 0.75rem',
-                  borderRadius: '10px',
-                  fontSize: '0.85rem',
-                  fontWeight: 800,
-                  backdropFilter: 'blur(10px)'
-                }}>
-                  ₹{(course.priceInr || 0).toLocaleString()}
-                </div>
-              </div>
-
-              <div style={{ padding: '1.5rem', flex: 1, display: 'flex', flexDirection: 'column' }}>
-                <span style={{
-                  fontSize: '0.7rem',
-                  fontWeight: 800,
-                  color: '#3b82f6',
-                  textTransform: 'uppercase',
-                  letterSpacing: '0.05em',
-                  marginBottom: '0.5rem',
-                  display: 'inline-block'
-                }}>
-                  {course.category || 'General'}
-                </span>
-                <h3 style={{
-                  fontSize: '1.15rem',
-                  fontWeight: 800,
-                  color: '#111827',
-                  margin: '0 0 0.75rem',
-                  lineHeight: 1.4,
-                  display: '-webkit-box',
-                  WebkitLineClamp: 2,
-                  WebkitBoxOrient: 'vertical',
-                  overflow: 'hidden'
-                }}>
-                  {course.title}
-                </h3>
-                <p style={{
-                  fontSize: '0.9rem',
-                  color: '#6b7280',
-                  margin: '0 0 1.5rem',
-                  lineHeight: 1.5,
-                  display: '-webkit-box',
-                  WebkitLineClamp: 2,
-                  WebkitBoxOrient: 'vertical',
-                  overflow: 'hidden'
-                }}>
-                  {course.subtitle || course.description}
-                </p>
-
-                <div style={{ marginTop: 'auto', display: 'flex', gap: '0.75rem' }}>
-                  <Link href={`/courses/${course.slug || course._id}`} style={{ textDecoration: 'none', flex: 1 }}>
-                    <button className="action-btn" style={{
-                      width: '100%',
-                      background: '#111827',
-                      color: '#fff',
-                      border: 'none',
-                      padding: '0.75rem',
-                      borderRadius: '12px',
-                      fontWeight: 700,
-                      fontSize: '0.9rem',
-                      cursor: 'pointer'
-                    }}>
-                      View Course
-                    </button>
-                  </Link>
                 </div>
               </div>
             </div>
@@ -245,4 +255,3 @@ export default function WishlistPage() {
     </div>
   );
 }
-

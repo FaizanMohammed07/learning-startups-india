@@ -152,71 +152,89 @@ function CheckoutContent() {
   }
 
   return (
-    <div
-      style={{
-        minHeight: '100vh',
-        background: '#f9fafb',
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-      }}
-    >
-      <div
-        style={{
-          background: '#fff',
-          borderRadius: 16,
-          padding: '2.5rem',
-          maxWidth: 450,
-          width: '100%',
-          border: '1px solid #e5e7eb',
-        }}
-      >
-        <h1 style={{ fontSize: '1.5rem', fontWeight: 700, marginBottom: '1.5rem' }}>Checkout</h1>
+    <div className="checkout-container">
+      <style dangerouslySetInnerHTML={{ __html: `
+        .checkout-container {
+          min-height: 100vh;
+          background: #fafafa;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          padding: 1.5rem;
+          font-family: 'Inter', system-ui, -apple-system, sans-serif;
+        }
+        .checkout-card {
+          background: #fff;
+          border-radius: 24px;
+          padding: 3rem;
+          maxWidth: 480px;
+          width: 100%;
+          border: 1px solid #eee;
+          box-shadow: 0 20px 40px rgba(0,0,0,0.04);
+          position: relative;
+        }
+        .back-link {
+          display: inline-flex;
+          align-items: center;
+          gap: 6px;
+          color: #666;
+          font-size: 0.85rem;
+          text-decoration: none;
+          margin-bottom: 2rem;
+          transition: color 0.2s;
+        }
+        .back-link:hover { color: #000; }
+        
+        @media (max-width: 640px) {
+          .checkout-container { padding: 1rem; }
+          .checkout-card { padding: 2rem 1.5rem; border-radius: 20px; }
+          .checkout-card h1 { font-size: 1.35rem !important; }
+        }
+      `}} />
+      
+      <div className="checkout-card">
+        <Link href={`/courses/${course.slug || course._id}`} className="back-link">
+          <svg width="16" height="16" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
+            <path d="M15 19l-7-7 7-7" />
+          </svg>
+          Back to Course
+        </Link>
+        
+        <h1 style={{ fontSize: '1.75rem', fontWeight: 800, color: '#111', marginBottom: '1.5rem', letterSpacing: '-0.02em' }}>Checkout</h1>
 
         <div
           style={{
-            background: '#f9fafb',
-            borderRadius: 12,
-            padding: '1.25rem',
-            marginBottom: '1.5rem',
+            background: '#f8f9fa',
+            borderRadius: 16,
+            padding: '1.5rem',
+            marginBottom: '2rem',
+            border: '1px solid #f1f3f5'
           }}
         >
-          <h3 style={{ fontWeight: 600, marginBottom: 4 }}>{course.title}</h3>
+          <span style={{ fontSize: '0.65rem', fontWeight: 800, color: '#7A1F2B', textTransform: 'uppercase', letterSpacing: '0.1em', marginBottom: '0.5rem', display: 'block' }}>Course Seleted</span>
+          <h3 style={{ fontWeight: 700, color: '#111', fontSize: '1.1rem', lineHeight: 1.4 }}>{course.title}</h3>
           {course.category && (
-            <span style={{ fontSize: '0.7rem', color: '#3b82f6' }}>{course.category}</span>
+            <p style={{ fontSize: '0.85rem', color: '#666', marginTop: '0.25rem' }}>{course.category}</p>
           )}
         </div>
 
-        <div
-          style={{
-            display: 'flex',
-            justifyContent: 'space-between',
-            padding: '0.75rem 0',
-            borderTop: '1px solid #e5e7eb',
-            fontSize: '0.9rem',
-          }}
-        >
-          <span style={{ color: '#6b7280' }}>Course Price</span>
-          <span style={{ fontWeight: 600 }}>₹{course.priceInr || course.price}</span>
-        </div>
-        <div
-          style={{
-            display: 'flex',
-            justifyContent: 'space-between',
-            padding: '0.75rem 0',
-            borderTop: '1px solid #e5e7eb',
-            borderBottom: '1px solid #e5e7eb',
-            fontSize: '1rem',
-          }}
-        >
-          <span style={{ fontWeight: 700 }}>Total</span>
-          <span style={{ fontWeight: 700, fontSize: '1.25rem' }}>
-            ₹{course.priceInr || course.price}
-          </span>
+        <div style={{ spaceY: '0.75rem', marginBottom: '2rem' }}>
+          <div style={{ display: 'flex', justifyContent: 'space-between', padding: '0.75rem 0', fontSize: '0.95rem' }}>
+            <span style={{ color: '#666' }}>Subtotal</span>
+            <span style={{ fontWeight: 600, color: '#111' }}>₹{course.priceInr || course.price}</span>
+          </div>
+          <div style={{ display: 'flex', justifyContent: 'space-between', padding: '1rem 0', borderTop: '1px solid #eee', fontSize: '1.1rem' }}>
+            <span style={{ fontWeight: 800, color: '#111' }}>Total Amount</span>
+            <span style={{ fontWeight: 800, color: '#7A1F2B', fontSize: '1.4rem' }}>
+              ₹{course.priceInr || course.price}
+            </span>
+          </div>
         </div>
 
         {error && (
-          <p style={{ color: '#ef4444', fontSize: '0.85rem', marginTop: '1rem' }}>{error}</p>
+          <div style={{ background: '#fff5f5', color: '#e03131', padding: '1rem', borderRadius: '12px', fontSize: '0.85rem', marginBottom: '1.5rem', border: '1px solid #ffc9c9' }}>
+            {error}
+          </div>
         )}
 
         <button
@@ -224,26 +242,35 @@ function CheckoutContent() {
           disabled={processing}
           style={{
             width: '100%',
-            marginTop: '1.5rem',
-            padding: '0.85rem',
-            background: '#1f2937',
+            padding: '1rem',
+            background: '#111',
             color: '#fff',
             border: 'none',
-            borderRadius: 10,
+            borderRadius: '14px',
             fontWeight: 700,
-            fontSize: '1rem',
+            fontSize: '1.05rem',
             cursor: processing ? 'not-allowed' : 'pointer',
             opacity: processing ? 0.6 : 1,
+            transition: 'all 0.2s',
+            boxShadow: '0 8px 20px rgba(0,0,0,0.1)'
           }}
         >
-          {processing ? 'Processing...' : `Pay ₹${course.priceInr || course.price}`}
+          {processing ? (
+            <span style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px' }}>
+              <span className="animate-spin" style={{ width: '18px', height: '18px', border: '2.5px solid rgba(255,255,255,0.3)', borderTopColor: '#fff', borderRadius: '50%' }}></span>
+              Processing...
+            </span>
+          ) : `Secure Checkout • ₹${course.priceInr || course.price}`}
         </button>
 
-        <p
-          style={{ fontSize: '0.75rem', color: '#9ca3af', textAlign: 'center', marginTop: '1rem' }}
-        >
-          Secured by Razorpay. You will be enrolled automatically after payment.
-        </p>
+        <div style={{ marginTop: '1.5rem', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px' }}>
+          <svg width="14" height="14" fill="none" stroke="#9ca3af" strokeWidth="2.5" viewBox="0 0 24 24">
+            <path d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+          </svg>
+          <p style={{ fontSize: '0.75rem', color: '#9ca3af', textAlign: 'center' }}>
+            Encrypted Payment Gateway
+          </p>
+        </div>
       </div>
     </div>
   );

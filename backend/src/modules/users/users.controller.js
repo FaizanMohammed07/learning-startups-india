@@ -10,7 +10,14 @@ async function listUsersForAdmin(req, res) {
   res.json({ success: true, data: { users } });
 }
 
+async function getWishlist(req, res) {
+  const coursesService = require('../courses/courses.service');
+  const wishlist = await coursesService.getUserWishlist(req.user.userId);
+  res.json({ success: true, message: 'Wishlist fetched successfully', data: wishlist });
+}
+
 module.exports = {
   updateMe,
   listUsersForAdmin,
+  getWishlist,
 };

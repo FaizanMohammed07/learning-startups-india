@@ -31,5 +31,8 @@ router.patch(
   ),
   asyncHandler(controller.updateMe)
 );
+ 
+// GET /api/v1/users/wishlist
+router.get('/wishlist', authRequired, asyncHandler(controller.getWishlist));
 
 module.exports = { usersRouter: router };

@@ -44,35 +44,107 @@ html, body {
 
 /* Below 1060px - Hide sidebar, show mobile header */
 @media (max-width: 1060px) {
-  /* Hide the entire sidebar */
-  .premium-sidebar,
-  .dashboard-sidebar {
-    display: none !important;
+  /* Hide the entire sidebar by default on mobile, but allow it to be shown as a drawer */
+  .premium-sidebar {
+    display: flex !important;
+    position: fixed !important;
+    top: 0 !important;
+    left: 0 !important;
+    bottom: 0 !important;
+    width: 280px !important;
+    max-width: 85vw !important;
+    transform: translateX(-100%) !important;
+    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+    z-index: 2000 !important; 
+    background: #ffffff !important;
+    box-shadow: none !important;
+    visibility: visible !important;
   }
   
-  /* CRITICAL: Force main content to full width - Override all other stylesheets */
+  /* Buttons should always be visible in the sidebar */
+  .premium-sidebar .nav-item,
+  .premium-sidebar .bottom-action {
+    display: flex !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+  }
+
+  
+  /* When open on mobile */
+  .premium-sidebar.mobile-open,
+  .dashboard-sidebar.mobile-open {
+    transform: translateX(0) !important;
+    visibility: visible !important;
+  }
+
+  /* Body lock when sidebar is open */
+  body.sidebar-open {
+    overflow: hidden !important;
+  }
+
+  /* Ensure the overlay is clickable and visible */
+  .sidebar-overlay.active {
+    display: block !important;
+    opacity: 1 !important;
+  }
+  
+  /* Dashboard layout - ensure scroll works */
+  html, body {
+    overflow-x: hidden !important;
+    overflow-y: scroll !important; /* Force scrollbar */
+    height: auto !important;
+    min-height: 100vh;
+    -webkit-overflow-scrolling: touch;
+  }
+  
+  .dashboard-layout {
+    display: flex !important;
+    flex-direction: column !important;
+    overflow-x: hidden !important;
+    overflow-y: visible !important;
+    max-width: 100vw !important;
+    height: auto !important;
+    min-height: 100vh;
+    position: relative !important;
+  }
+
+  /* CRITICAL: Force main content to allow scroll */
   .dashboard-layout .dashboard-main {
     margin-left: 0 !important;
     margin-right: 0 !important;
     width: 100% !important;
     max-width: 100vw !important;
     padding: 0 !important;
-    padding-left: 0 !important;
-    padding-right: 0 !important;
+    overflow-y: visible !important;
+    height: auto !important;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
   }
   
-  /* Dashboard content - remove side padding */
+  /* Dashboard content - ensure vertical scroll */
   .dashboard-content {
-    padding: 20px 16px !important;
+    padding: 10px 16px !important; /* Reduced top padding from 20px */
     max-width: 100vw !important;
     width: 100% !important;
     overflow-x: hidden !important;
+    overflow-y: visible !important;
+    height: auto !important;
+    min-height: calc(100vh - 60px);
   }
   
-  /* Dashboard layout - ensure no overflow */
+  /* Dashboard layout - ensure scroll works */
+  html, body {
+    overflow-y: visible !important;
+    height: auto !important;
+  }
+  
   .dashboard-layout {
     overflow-x: hidden !important;
+    overflow-y: visible !important;
     max-width: 100vw !important;
+    height: auto !important;
+    min-height: 100vh;
   }
   
   /* Prevent horizontal scroll from any child elements */
@@ -216,16 +288,18 @@ html, body {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 12px 20px;
+    padding: 0 16px; /* Reduced vertical padding */
     background: white;
     border-bottom: 1px solid #e5e7eb;
     position: sticky;
     top: 0;
-    z-index: 100;
-    max-width: 100vw !important;
+    left: 0;
+    right: 0;
+    height: 60px; /* Standard mobile header height */
+    z-index: 1000;
     width: 100% !important;
     box-sizing: border-box !important;
-    overflow: hidden;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
   }
   
   .mobile-nav-left {
@@ -234,6 +308,20 @@ html, body {
     gap: 16px;
   }
   
+  .mobile-nav-logo {
+    height: 24px !important;
+    width: auto !important;
+    max-width: 140px !important;
+    margin-left: 8px;
+    display: block;
+    object-fit: contain;
+  }
+
+  .mobile-nav-brand {
+    display: flex;
+    align-items: center;
+  }
+
   .hamburger-menu-btn {
     background: none;
     border: none;
@@ -301,103 +389,66 @@ html, body {
     to { opacity: 1; }
   }
   
-  /* Mobile Menu Drawer */
-  .mobile-menu-drawer {
-    position: fixed;
-    top: 0;
-    left: 0;
-    bottom: 0;
-    width: 280px;
-    max-width: 85vw;
-    background: white;
-    box-shadow: 2px 0 12px rgba(0, 0, 0, 0.15);
-    display: flex;
-    flex-direction: column;
-    animation: slideIn 0.3s ease;
-    overflow-y: auto;
-  }
+  /* Cleaned up stale mobile menu drawer classes - now uses premium-sidebar classes directly */
   
-  @keyframes slideIn {
-    from { transform: translateX(-100%); }
-    to { transform: translateX(0); }
+  /* Sidebar Bottom & Action Visibility */
+  .premium-sidebar .sidebar-bottom {
+    display: flex !important;
+    flex-direction: column !important;
+    padding: 20px 16px !important;
+    background: #ffffff !important;
+    border-top: 1px solid #f1f5f9 !important;
+    margin-top: auto !important; /* Push to bottom */
+    visibility: visible !important;
+    opacity: 1 !important;
   }
+
+  .premium-sidebar .bottom-actions {
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 8px !important;
+    visibility: visible !important;
+  }
+
+  .premium-sidebar .bottom-action {
+    display: flex !important;
+    align-items: center !important;
+    gap: 12px !important;
+    padding: 12px 16px !important;
+    color: #4b5563 !important;
+    text-decoration: none !important;
+    font-size: 15px !important;
+    font-weight: 600 !important;
+    border-radius: 12px !important;
+    background: #f9fafb !important;
+    transition: all 0.2s ease !important;
+    visibility: visible !important;
+  }
+
+  .premium-sidebar .bottom-action:hover {
+    background: #f3f4f6 !important;
+    color: #111827 !important;
+  }
+
+  .premium-sidebar .bottom-action svg {
+    color: #6b7280 !important;
+    flex-shrink: 0 !important;
+  }
+
   
-  /* Mobile Menu Header Bar */
-  .mobile-menu-header-bar {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 20px;
-    border-bottom: 1px solid #e5e7eb;
-    flex-shrink: 0;
+  /* Mobile Navigation Visibility */
+  .premium-sidebar .sidebar-nav {
+    flex: 1 !important;
+    overflow-y: auto !important;
+    padding: 16px 12px !important;
+    visibility: visible !important;
   }
-  
-  .mobile-menu-title {
-    font-size: 20px;
-    font-weight: 700;
-    color: #111827;
-    margin: 0;
+
+  /* Footer removal */
+  .mobile-menu-footer, .mobile-menu-user {
+    display: none !important;
   }
-  
-  .mobile-menu-close {
-    background: none;
-    border: none;
-    padding: 8px;
-    cursor: pointer;
-    color: #6b7280;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    border-radius: 6px;
-    transition: all 0.2s;
-  }
-  
-  .mobile-menu-close:hover {
-    background: #f3f4f6;
-    color: #111827;
-  }
-  
-  /* Mobile Menu Navigation */
-  .mobile-menu-nav {
-    flex: 1;
-    padding: 8px;
-    overflow-y: auto;
-  }
-  
-  .mobile-menu-item {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    padding: 14px 16px;
-    border-radius: 10px;
-    color: #6b7280;
-    text-decoration: none;
-    font-size: 15px;
-    font-weight: 500;
-    transition: all 0.2s;
-    margin-bottom: 4px;
-  }
-  
-  .mobile-menu-item:hover {
-    background: #f9fafb;
-    color: #111827;
-  }
-  
-  .mobile-menu-item.active {
-    background: linear-gradient(135deg, #e63946 0%, #ff6b7a 100%);
-    color: white;
-  }
-  
-  .mobile-menu-item svg {
-    flex-shrink: 0;
-  }
-  
-  /* Mobile Menu Footer */
-  .mobile-menu-footer {
-    padding: 16px;
-    border-top: 1px solid #e5e7eb;
-    flex-shrink: 0;
-  }
+
   
   .mobile-menu-user {
     display: flex;
@@ -515,9 +566,6 @@ html, body {
 
 /* Smaller screens - More compact */
 @media (max-width: 768px) {
-
- 
-
   .dashboard-content {
     padding: 16px 12px !important;
   }
@@ -617,4 +665,65 @@ html, body {
   .activity-card {
     padding: 16px !important;
   }
+}
+
+/* Collapsible Navigation Styles */
+.nav-section-header.collapsible {
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 12px;
+  margin: 4px 0;
+  border-radius: 10px;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  user-select: none;
+}
+
+.nav-section-header.collapsible:hover {
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.nav-section-header.collapsible .nav-section-label {
+  margin-bottom: 0;
+  color: #9ca3af;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+.chevron-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #6b7280;
+  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.chevron-icon.expanded {
+  transform: rotate(180deg);
+  color: #e63946;
+}
+
+.nav-items-container {
+  overflow: hidden;
+  max-height: 500px;
+  transition: max-height 0.4s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.3s ease;
+  opacity: 1;
+}
+
+.nav-items-container.collapsed {
+  max-height: 0;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.nav-items-container .nav-items {
+  padding-top: 4px;
+}
+
+.premium-sidebar .nav-item {
+  margin-left: 4px;
+  margin-right: 4px;
 }

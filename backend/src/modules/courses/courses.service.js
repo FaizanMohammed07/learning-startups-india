@@ -22,18 +22,20 @@ async function decorateCourseMedia(course) {
   };
 }
 
-async function listCourses({ slug, search, category, level, minPrice, maxPrice, page = 1, limit = 10 }) {
+async function listCourses(options = {}) {
+  const { slug, category, level, search, minPrice, maxPrice, page = 1, limit = 10 } = options;
   const filter = { isPublished: true };
+
   if (slug) {
     filter.slug = String(slug);
   }
 
-  if (category && category !== 'All') {
+  if (category) {
     filter.category = category;
   }
 
   if (level) {
-    filter.level = level;
+    filter.difficultyLevel = level;
   }
 
   if (search) {
@@ -41,6 +43,7 @@ async function listCourses({ slug, search, category, level, minPrice, maxPrice, 
       { title: { $regex: search, $options: 'i' } },
       { subtitle: { $regex: search, $options: 'i' } },
       { description: { $regex: search, $options: 'i' } },
+      { introCopy: { $regex: search, $options: 'i' } },
     ];
   }
 
@@ -51,21 +54,26 @@ async function listCourses({ slug, search, category, level, minPrice, maxPrice, 
   }
 
   const skip = (page - 1) * limit;
-  const total = await Course.countDocuments(filter);
-  const courses = await Course.find(filter)
-    .sort({ createdAt: -1 })
-    .skip(skip)
-    .limit(limit)
-    .lean();
 
-  const data = await Promise.all(courses.map(decorateCourseMedia));
+  const [courses, total] = await Promise.all([
+    Course.find(filter)
+      .sort({ createdAt: -1 })
+      .skip(skip)
+      .limit(Number(limit))
+      .lean(),
+    Course.countDocuments(filter),
+  ]);
+
+  const decorated = await Promise.all(courses.map(decorateCourseMedia));
+
   return {
-    items: data,
+    items: decorated,
     pagination: {
       total,
       page: Number(page),
       limit: Number(limit),
       pages: Math.ceil(total / limit),
+      totalPages: Math.ceil(total / limit),
     },
   };
 }
@@ -120,6 +128,15 @@ async function markCourseCompleted(userId, courseId) {
   cacheDel(`enrollment:${userId}:${courseId}`, `progress:${userId}:${courseId}`).catch(() => {});
 
   return enrollment;
+}
+
+async function getUserWishlist(userId) {
+  const { User } = require('../users/user.model');
+  const user = await User.findById(userId).populate('wishlist').lean();
+  if (!user) throw new Error('User not found');
+
+  const courses = await Promise.all((user.wishlist || []).map(decorateCourseMedia));
+  return courses;
 }
 
 async function getCourseById(id) {
@@ -192,6 +209,26 @@ async function submitQuiz(userId, { responses, courseId }) {
   return { score: percentage, passed, correctCount, totalQuestions };
 }
 
+async function markCourseComplete(userId, courseId) {
+  const { Enrollment } = require('../enrollments/enrollment.model');
+  const enrollment = await Enrollment.findOne({ userId, courseId });
+
+  if (!enrollment) {
+    throw new Error('You are not enrolled in this course');
+  }
+
+  if (enrollment.status === 'completed') {
+    return enrollment;
+  }
+
+  enrollment.status = 'completed';
+  enrollment.completed = true;
+  enrollment.completedAt = new Date();
+  await enrollment.save();
+
+  return enrollment;
+}
+
 module.exports = {
   getCourseById,
   listCourses,
@@ -202,4 +239,6 @@ module.exports = {
   toggleWishlist,
   getWishlist,
   markCourseCompleted,
+  getUserWishlist,
+  markCourseComplete,
 };

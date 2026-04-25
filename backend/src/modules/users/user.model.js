@@ -32,6 +32,7 @@ const userSchema = new mongoose.Schema(
     isActive: { type: Boolean, default: true },
     wishlist: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Course' }],
     refreshTokenHash: { type: String, default: null },
+    wishlist: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Course' }],
   },
   { timestamps: true }
 );

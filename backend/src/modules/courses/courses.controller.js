@@ -65,20 +65,35 @@ async function submitQuiz(req, res) {
 }
 
 async function toggleWishlist(req, res) {
-  const { courseId } = req.params;
-  const wishlist = await service.toggleWishlist(req.user.userId, courseId);
-  res.json({ success: true, message: 'Wishlist updated successfully', data: wishlist });
+  const userId = req.user.userId;
+  const courseId = req.params.courseId;
+  const result = await service.toggleWishlist(userId, courseId);
+  res.json({
+    success: true,
+    message: `Course ${result.status} wishlist successfully`,
+    data: result,
+  });
 }
 
 async function getWishlist(req, res) {
-  const wishlist = await service.getWishlist(req.user.userId);
-  res.json({ success: true, message: 'Wishlist fetched successfully', data: wishlist });
+  const userId = req.user.userId;
+  const wishlist = await service.getUserWishlist(userId);
+  res.json({
+    success: true,
+    message: 'Wishlist fetched successfully',
+    data: wishlist,
+  });
 }
 
 async function completeCourse(req, res) {
-  const { courseId } = req.params;
-  const enrollment = await service.markCourseCompleted(req.user.userId, courseId);
-  res.json({ success: true, message: 'Course marked as completed', data: enrollment });
+  const userId = req.user.userId;
+  const courseId = req.params.courseId;
+  const enrollment = await service.markCourseComplete(userId, courseId);
+  res.json({
+    success: true,
+    message: 'Course marked as completed',
+    data: enrollment,
+  });
 }
 
 module.exports = {

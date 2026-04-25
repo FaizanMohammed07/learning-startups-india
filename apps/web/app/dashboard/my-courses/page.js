@@ -8,21 +8,26 @@ export default function MyCoursesPage() {
 
   if (isLoading) {
     return (
-      <div style={{ padding: '2rem', maxWidth: 1600, margin: '0 auto' }}>
+      <div style={{ padding: '2rem', maxWidth: 1280, margin: '0 auto' }}>
         <div
           style={{
-            height: 24,
-            width: 160,
+            height: 32,
+            width: 240,
             background: '#e5e7eb',
             borderRadius: 8,
-            marginBottom: '1.5rem',
+            marginBottom: '2rem',
           }}
           className="animate-pulse"
         />
-        {[1, 2, 3].map(i => (
+        {[1, 2].map(i => (
           <div
             key={i}
-            style={{ height: 80, background: '#f3f4f6', borderRadius: 12, marginBottom: '1rem' }}
+            style={{
+              height: 100,
+              background: '#f3f4f6',
+              borderRadius: 20,
+              marginBottom: '1rem',
+            }}
             className="animate-pulse"
           />
         ))}
@@ -31,164 +36,162 @@ export default function MyCoursesPage() {
   }
 
   return (
-    <div style={{ padding: '2rem 2.5rem', maxWidth: '1200px', margin: '0 auto', fontFamily: "'Inter', sans-serif" }}>
+    <div className="my-courses-container">
       <style dangerouslySetInnerHTML={{ __html: `
-        @keyframes fadeInUp { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-        @keyframes rocket-float { 0%, 100% { transform: translateY(0) rotate(0); } 50% { transform: translateY(-15px) rotate(5deg); } }
-        @keyframes pulse-ring { 0% { transform: scale(0.8); opacity: 0.5; } 100% { transform: scale(1.3); opacity: 0; } }
-        .course-card { animation: fadeInUp 0.4s ease-out both; transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); }
-        .course-card:hover { transform: translateY(-5px); box-shadow: 0 20px 40px -15px rgba(0,0,0,0.1); }
-        .rocket-icon { animation: rocket-float 3s ease-in-out infinite; }
-        .pulse-circle { position: absolute; border: 4px solid #3b82f6; border-radius: 50%; animation: pulse-ring 2s infinite; }
-        .action-btn { transition: all 0.2s; }
-        .action-btn:hover { transform: scale(1.02); filter: brightness(1.1); }
+        .my-courses-container { padding: 2rem; maxWidth: 1280px; margin: 0 auto; }
+        @media (max-width: 768px) {
+          .my-courses-container { padding: 1.25rem 1rem; }
+          .my-courses-container h1 { font-size: 1.5rem !important; margin-bottom: 1.5rem !important; }
+          .course-item-card { padding: 1rem !important; gap: 0.75rem !important; }
+          .course-item-info { min-width: 100% !important; }
+          .course-item-progress { min-width: 100% !important; align-items: flex-start !important; }
+          .course-item-action { display: none !important; }
+        }
       `}} />
-
-      <div style={{ marginBottom: '2.5rem' }}>
-        <h1 style={{ fontSize: '2.25rem', fontWeight: 800, color: '#111827', margin: 0, letterSpacing: '-0.02em' }}>Enrolled Courses</h1>
-        <p style={{ color: '#6b7280', marginTop: '0.5rem', fontSize: '1.05rem' }}>
-          Continue your journey where you left off.
-        </p>
-      </div>
+      <h1
+        style={{
+          fontSize: '2rem',
+          fontWeight: 800,
+          marginBottom: '2rem',
+          color: '#111827',
+          letterSpacing: '-0.025em',
+        }}
+      >
+        My Courses
+      </h1>
 
       {enrolledCourses.length === 0 ? (
-        <div style={{ 
-          textAlign: 'center', 
-          padding: '6rem 2rem', 
-          background: 'linear-gradient(135deg, #f8fafc, #f1f5f9)', 
-          borderRadius: '32px',
-          border: '2px dashed #e2e8f0',
-          position: 'relative',
-          overflow: 'hidden'
-        }}>
-          <div style={{ position: 'relative', width: '100px', height: '100px', margin: '0 auto 2rem', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-            <div className="pulse-circle" style={{ width: '100%', height: '100%' }} />
-            <div className="rocket-icon" style={{ zIndex: 2 }}>
-              <svg width="60" height="60" viewBox="0 0 24 24" fill="none" stroke="#3b82f6" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
-                <path d="M4.5 16.5c-1.5 1.26-2 5-2 5s3.74-.5 5-2c.71-.84.7-2.13-.09-2.91a2.18 2.18 0 0 0-2.91-.09z" />
-                <path d="m12 15-3-3a22 22 0 0 1 2-3.95A12.88 12.88 0 0 1 22 2c0 2.72-.78 7.5-3.36 10.64A22.34 22.34 0 0 1 15 12z" />
-                <path d="M9 12H4s.5-1 1-4c2 1 2 1 4 4Z" />
-                <path d="M12 15v5s1 .5 4 1c-1-2-1-2-4-4Z" />
-                <path d="M15 12c2.72.1 4.5 1 4.5 1l-3 3s-1-1.78-1.5-4Z" />
-              </svg>
-            </div>
+        <div
+          style={{
+            textAlign: 'center',
+            padding: '5rem 2rem',
+            background: '#fff',
+            borderRadius: '24px',
+            border: '2px dashed #e5e7eb',
+          }}
+        >
+          <div style={{ marginBottom: '1.5rem' }}>
+            <svg
+              width="64"
+              height="64"
+              fill="none"
+              stroke="#9ca3af"
+              strokeWidth="1.5"
+              viewBox="0 0 24 24"
+            >
+              <path d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
+            </svg>
           </div>
-          
-          <h2 style={{ fontSize: '1.75rem', fontWeight: 800, color: '#1e293b', marginBottom: '1rem' }}>
-            Ready for takeoff?
+          <h2 style={{ fontSize: '1.25rem', fontWeight: 700, color: '#111827', marginBottom: '0.5rem' }}>
+            Your learning journey starts here
           </h2>
-          <p style={{ color: '#64748b', marginBottom: '2.5rem', maxWidth: '400px', margin: '0 auto 2.5rem', lineHeight: 1.6, fontSize: '1.1rem' }}>
-            You haven&apos;t enrolled in any courses yet. Your next big career move is just one click away!
+          <p style={{ color: '#6b7280', marginBottom: '1.5rem', fontSize: '0.95rem' }}>
+            Explore our curriculum and enroll in your first course to begin.
           </p>
-          
-          <Link href="/dashboard/explore" style={{ textDecoration: 'none' }}>
-            <button className="action-btn" style={{ 
-              background: 'linear-gradient(135deg, #3b82f6, #2563eb)', 
-              color: '#fff', 
-              padding: '1rem 2.5rem', 
-              borderRadius: '16px', 
-              border: 'none', 
-              fontWeight: 800, 
-              fontSize: '1rem', 
-              cursor: 'pointer',
-              boxShadow: '0 10px 25px -5px rgba(59,130,246,0.4)',
-            }}>
-              Discover Expert Courses →
-            </button>
+          <Link
+            href="/dashboard/explore"
+            style={{
+              display: 'inline-flex',
+              alignItems: 'center',
+              background: '#111827',
+              color: '#fff',
+              padding: '0.75rem 1.5rem',
+              borderRadius: '12px',
+              fontWeight: 600,
+              textDecoration: 'none',
+            }}
+          >
+            Explore Courses
           </Link>
         </div>
       ) : (
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(340px, 1fr))', gap: '2rem' }}>
-          {enrolledCourses.map((e, index) => (
-            <div key={e._id} className="course-card" style={{
-              background: '#fff',
-              borderRadius: '24px',
-              border: '1px solid #f3f4f6',
-              overflow: 'hidden',
-              display: 'flex',
-              flexDirection: 'column',
-              animationDelay: index * 0.05 + 's',
-            }}>
-              <div style={{ padding: '1.5rem', flex: 1, display: 'flex', flexDirection: 'column' }}>
-                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '1rem' }}>
-                  <div style={{
-                    background: 'rgba(59, 130, 246, 0.1)',
-                    color: '#3b82f6',
-                    padding: '0.4rem 0.75rem',
-                    borderRadius: '10px',
-                    fontSize: '0.75rem',
-                    fontWeight: 800
-                  }}>
-                    {e.courseCategory || 'COURSE'}
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+          {enrolledCourses.map(e => {
+            const isCompleted = e.status === 'completed' || e.completed;
+            return (
+              <Link
+                key={e._id}
+                href={`/learn/${e.courseId}`}
+                style={{ textDecoration: 'none', color: 'inherit' }}
+              >
+                <div
+                  className="course-item-card"
+                  style={{
+                    background: '#fff',
+                    borderRadius: 20,
+                    padding: '1.5rem',
+                    border: '1px solid #e5e7eb',
+                    display: 'flex',
+                    flexWrap: 'wrap',
+                    justifyContent: 'space-between',
+                    alignItems: 'center',
+                    gap: '1rem',
+                    transition: 'transform 0.2s, border-color 0.2s',
+                  }}
+                  onMouseEnter={e => {
+                    e.currentTarget.style.transform = 'translateY(-2px)';
+                    e.currentTarget.style.borderColor = '#111827';
+                  }}
+                  onMouseLeave={e => {
+                    e.currentTarget.style.transform = 'translateY(0)';
+                    e.currentTarget.style.borderColor = '#e5e7eb';
+                  }}
+                >
+                  <div className="course-item-info" style={{ flex: 1, minWidth: 280 }}>
+                     <div style={{ display: 'flex', gap: '0.5rem', marginBottom: '0.5rem' }}>
+                        <span style={{ fontSize: '0.7rem', fontWeight: 800, color: isCompleted ? '#10b981' : '#6366f1', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
+                            {isCompleted ? 'COMPLETED' : 'IN PROGRESS'}
+                        </span>
+                     </div>
+                    <h3 style={{ fontWeight: 800, fontSize: '1.2rem', color: '#111827', marginBottom: 4 }}>
+                      {e.courseTitle || 'Course'}
+                    </h3>
+                    <p style={{ fontSize: '0.85rem', color: '#6b7280' }}>
+                      Joined on {e.createdAt ? new Date(e.createdAt).toLocaleDateString(undefined, { month: 'short', day: 'numeric', year: 'numeric' }) : 'N/A'}
+                    </p>
                   </div>
-                  {e.completed && (
-                    <div style={{ color: '#10b981', display: 'flex', alignItems: 'center', gap: '0.25rem', fontSize: '0.75rem', fontWeight: 800 }}>
-                      <svg width="14" height="14" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/></svg>
-                      COMPLETED
+
+                  <div className="course-item-progress" style={{ minWidth: 200, display: 'flex', flexDirection: 'column', alignItems: 'flex-end', gap: '0.5rem' }}>
+                    <div style={{ width: '100%', maxWidth: 200 }}>
+                        <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '0.4rem', fontSize: '0.8rem', fontWeight: 700 }}>
+                            <span style={{ color: '#111827' }}>Progress</span>
+                            <span style={{ color: isCompleted ? '#10b981' : '#6b7280' }}>{isCompleted ? '100%' : `${e.progress || 0}%`}</span>
+                        </div>
+                        <div
+                            style={{
+                                height: 10,
+                                background: '#f3f4f6',
+                                borderRadius: 5,
+                                overflow: 'hidden',
+                                border: '1px solid #f3f4f6'
+                            }}
+                        >
+                            <div
+                                style={{
+                                    height: '100%',
+                                    width: isCompleted ? '100%' : `${e.progress || 0}%`,
+                                    background: isCompleted ? 'linear-gradient(90deg, #10b981, #34d399)' : 'linear-gradient(90deg, #111827, #4b5563)',
+                                    borderRadius: 5,
+                                    transition: 'width 0.6s cubic-bezier(0.4, 0, 0.2, 1)',
+                                }}
+                            />
+                        </div>
                     </div>
-                  )}
-                </div>
-
-                <h3 style={{
-                  fontSize: '1.25rem',
-                  fontWeight: 800,
-                  color: '#111827',
-                  margin: '0 0 1.25rem',
-                  lineHeight: 1.4,
-                }}>
-                  {e.courseTitle || 'Course'}
-                </h3>
-                
-                <div style={{ marginTop: 'auto' }}>
-                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.5rem' }}>
-                    <span style={{ fontSize: '0.85rem', color: '#6b7280', fontWeight: 600 }}>Progress</span>
-                    <span style={{ fontSize: '0.85rem', color: '#111827', fontWeight: 800 }}>{e.progress || 0}%</span>
-                  </div>
-                  <div style={{
-                    height: '8px',
-                    background: '#f3f4f6',
-                    borderRadius: '10px',
-                    overflow: 'hidden',
-                    marginBottom: '1.5rem'
-                  }}>
-                    <div style={{
-                      height: '100%',
-                      width: `${e.progress || 0}%`,
-                      background: 'linear-gradient(90deg, #3b82f6, #6366f1)',
-                      borderRadius: '10px',
-                      transition: 'width 0.5s cubic-bezier(0.4, 0, 0.2, 1)'
-                    }} />
                   </div>
 
-                  <Link href={`/learn/${e.courseId}`} style={{ textDecoration: 'none' }}>
-                    <button className="action-btn" style={{
-                      width: '100%',
-                      background: '#111827',
-                      color: '#fff',
-                      border: 'none',
-                      padding: '0.85rem',
-                      borderRadius: '14px',
-                      fontWeight: 700,
-                      fontSize: '0.95rem',
-                      cursor: 'pointer',
-                      display: 'flex',
-                      alignItems: 'center',
-                      justifyContent: 'center',
-                      gap: '0.5rem'
-                    }}>
-                      {e.progress > 0 ? 'Continue Learning' : 'Start Course'}
-                      <svg width="18" height="18" fill="none" stroke="currentColor" strokeWidth="2.5" viewBox="0 0 24 24">
-                        <path d="M5 12h14m-7-7l7 7-7 7" />
-                      </svg>
-                    </button>
-                  </Link>
+                  <div className="course-item-action" style={{ marginLeft: '1rem' }}>
+                    <div style={{ width: 40, height: 40, borderRadius: 12, background: '#f3f4f6', display: 'flex', alignItems: 'center', justifyContent: 'center', transition: 'background 0.2s' }}>
+                        <svg width="20" height="20" fill="none" stroke="#111827" strokeWidth="2.5" viewBox="0 0 24 24">
+                            <path d="M5 12h14m-7-7l7 7-7 7" />
+                        </svg>
+                    </div>
+                  </div>
                 </div>
-              </div>
-            </div>
-          ))}
+              </Link>
+            );
+          })}
         </div>
       )}
     </div>
   );
 }
-

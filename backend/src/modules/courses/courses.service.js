@@ -56,11 +56,7 @@ async function listCourses(options = {}) {
   const skip = (page - 1) * limit;
 
   const [courses, total] = await Promise.all([
-    Course.find(filter)
-      .sort({ createdAt: -1 })
-      .skip(skip)
-      .limit(Number(limit))
-      .lean(),
+    Course.find(filter).sort({ createdAt: -1 }).skip(skip).limit(Number(limit)).lean(),
     Course.countDocuments(filter),
   ]);
 

@@ -2,14 +2,14 @@
 
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { 
-  Rocket, 
-  TrendingUp, 
-  GraduationCap, 
-  Network, 
-  Target, 
-  BookOpen, 
-  Lightbulb, 
+import {
+  Rocket,
+  TrendingUp,
+  GraduationCap,
+  Network,
+  Target,
+  BookOpen,
+  Lightbulb,
   ShieldCheck,
   CheckCircle2,
   AlertTriangle,
@@ -17,7 +17,7 @@ import {
   Star,
   BriefcaseBusiness,
   Building2,
-  Briefcase
+  Briefcase,
 } from 'lucide-react';
 import MentorRegistrationModal from '@/components/MentorRegistrationModal';
 import ExploreMentorsModal from '@/components/ExploreMentorsModal';
@@ -356,16 +356,16 @@ export default function MentorsPage() {
       {/* Role of Mentors Section */}
       <section className="role-section">
         {/* Background Asset Integration */}
-        <div 
-          className="role-bg-asset opacity-20" 
-          style={{ 
+        <div
+          className="role-bg-asset opacity-20"
+          style={{
             backgroundImage: 'url("/assets/images/mentors-role-bg.png")',
             backgroundSize: 'cover',
             backgroundPosition: 'center',
             position: 'absolute',
             inset: 0,
             zIndex: 0,
-            pointerEvents: 'none'
+            pointerEvents: 'none',
           }}
         />
         <div className="container">
@@ -373,14 +373,12 @@ export default function MentorsPage() {
             className="role-header"
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 1.2, ease: "easeOut" }}
+            transition={{ duration: 1.2, ease: 'easeOut' }}
             viewport={{ once: true }}
           >
-            <div className="impact-badge">
-              ECOSYSTEM IMPACT
-            </div>
+            <div className="impact-badge">ECOSYSTEM IMPACT</div>
             <h2>
-              Role of Mentors in Our 
+              Role of Mentors in Our
               <span className="highlight-red">Ecosystem</span>
             </h2>
             <p className="section-subtitle">
@@ -395,11 +393,20 @@ export default function MentorsPage() {
               className="role-card"
               initial={{ opacity: 0, y: 40 }}
               whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8, delay: 0.1, ease: "backOut" }}
+              transition={{ duration: 0.8, delay: 0.1, ease: 'backOut' }}
               viewport={{ once: true }}
             >
               <div className="role-icon-box">
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#f472b6" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <svg
+                  width="24"
+                  height="24"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="#f472b6"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                >
                   <path d="M17 18a2 2 0 0 0-2-2H9a2 2 0 0 0-2 2"></path>
                   <rect x="3" y="4" width="18" height="12" rx="2"></rect>
                   <circle cx="12" cy="10" r="2"></circle>
@@ -408,7 +415,10 @@ export default function MentorsPage() {
                 </svg>
               </div>
               <h3>Support Founders</h3>
-              <p>Guide founders through curated programs and initiatives designed to accelerate growth and operational excellence.</p>
+              <p>
+                Guide founders through curated programs and initiatives designed to accelerate
+                growth and operational excellence.
+              </p>
             </motion.div>
 
             {/* Share Expertise */}
@@ -416,17 +426,29 @@ export default function MentorsPage() {
               className="role-card"
               initial={{ opacity: 0, y: 40 }}
               whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8, delay: 0.25, ease: "backOut" }}
+              transition={{ duration: 0.8, delay: 0.25, ease: 'backOut' }}
               viewport={{ once: true }}
             >
               <div className="role-icon-box">
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#22d3ee" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <svg
+                  width="24"
+                  height="24"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="#22d3ee"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                >
                   <path d="M9.5 2C11.5 2 13 3.5 13 5.5v0c0 .8-.3 1.5-.8 2.1L10.5 10H14c2.2 0 4 1.8 4 4v0c0 2.2-1.8 4-4 4h-4l-3 3v-3H6c-2.2 0-4-1.8-4-4v0c0-2.2 1.8-4 4-4h1l1.5-2.3c-.5-.6-.8-1.3-.8-2.1v0C7.7 3.5 9.2 2 11.2 2h-1.7Z"></path>
                   <circle cx="10" cy="6" r="1" fill="#22d3ee"></circle>
                 </svg>
               </div>
               <h3>Share Expertise</h3>
-              <p>Contribute during workshops and events, translating complex industry insights into actionable strategies for emerging talent.</p>
+              <p>
+                Contribute during workshops and events, translating complex industry insights into
+                actionable strategies for emerging talent.
+              </p>
             </motion.div>
 
             {/* Strengthen Innovation */}
@@ -434,11 +456,20 @@ export default function MentorsPage() {
               className="role-card"
               initial={{ opacity: 0, y: 40 }}
               whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8, delay: 0.4, ease: "backOut" }}
+              transition={{ duration: 0.8, delay: 0.4, ease: 'backOut' }}
               viewport={{ once: true }}
             >
               <div className="role-icon-box">
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#fb923c" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <svg
+                  width="24"
+                  height="24"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="#fb923c"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                >
                   <path d="M4.5 16.5c-1.5 1.26-2 5-2 5s3.74-.5 5-2c.71-.84.7-2.13-.09-2.91a2.18 2.18 0 0 0-2.91-.09z"></path>
                   <path d="m12 15-3-3a22 22 0 0 1 2-3.95A12.88 12.88 0 0 1 22 2c0 2.72-.78 7.5-6 11a22.35 22.35 0 0 1-4 2z"></path>
                   <path d="M9 12H4s.5-1 1.35-2.35L12 15Z"></path>
@@ -446,7 +477,10 @@ export default function MentorsPage() {
                 </svg>
               </div>
               <h3>Strengthen Innovation</h3>
-              <p>Support pre-incubation and incubation initiatives to foster disruptive technologies and sustainable business models.</p>
+              <p>
+                Support pre-incubation and incubation initiatives to foster disruptive technologies
+                and sustainable business models.
+              </p>
             </motion.div>
 
             {/* Ecosystem Advisors */}
@@ -454,17 +488,29 @@ export default function MentorsPage() {
               className="role-card"
               initial={{ opacity: 0, y: 40 }}
               whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8, delay: 0.55, ease: "backOut" }}
+              transition={{ duration: 0.8, delay: 0.55, ease: 'backOut' }}
               viewport={{ once: true }}
             >
               <div className="role-icon-box">
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#60a5fa" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <svg
+                  width="24"
+                  height="24"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="#60a5fa"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                >
                   <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
                   <polyline points="9 11 11 13 15 9"></polyline>
                 </svg>
               </div>
               <h3>Ecosystem Advisors</h3>
-              <p>Act as role models and strategic advisors, shaping the long-term vision and ethical standards of the startup landscape.</p>
+              <p>
+                Act as role models and strategic advisors, shaping the long-term vision and ethical
+                standards of the startup landscape.
+              </p>
             </motion.div>
           </div>
         </div>
@@ -486,7 +532,7 @@ export default function MentorsPage() {
 
             <div className="onboarding-steps">
               {/* Step 01 */}
-              <motion.div 
+              <motion.div
                 className="onboarding-step"
                 initial={{ opacity: 0, y: 30 }}
                 whileInView={{ opacity: 1, y: 0 }}
@@ -496,11 +542,17 @@ export default function MentorsPage() {
                 viewport={{ once: true }}
               >
                 <div className="step-header-meta">
-                  <motion.div 
-                    className="step-icon-premium"
-                    whileHover={{ rotate: 15 }}
-                  >
-                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                  <motion.div className="step-icon-premium" whileHover={{ rotate: 15 }}>
+                    <svg
+                      width="24"
+                      height="24"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth="2.5"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    >
                       <path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
                       <circle cx="8.5" cy="7" r="4"></circle>
                       <line x1="20" y1="8" x2="20" y2="14"></line>
@@ -510,22 +562,36 @@ export default function MentorsPage() {
                   <span className="step-label-top">Step 01</span>
                 </div>
                 <div className="step-content">
-                  <h3>Mentor <br/>Registration</h3>
+                  <h3>
+                    Mentor <br />
+                    Registration
+                  </h3>
                   <ul className="premium-list">
                     {[
-                      "Full name & contact details",
-                      "Professional background",
-                      "Area of expertise & years of experience",
-                      "LinkedIn / professional profile"
+                      'Full name & contact details',
+                      'Professional background',
+                      'Area of expertise & years of experience',
+                      'LinkedIn / professional profile',
                     ].map((item, idx) => (
-                      <motion.li 
+                      <motion.li
                         key={idx}
                         initial={{ opacity: 0, x: -10 }}
                         whileInView={{ opacity: 1, x: 0 }}
                         transition={{ delay: 0.2 + idx * 0.1 }}
                         viewport={{ once: true }}
                       >
-                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                        <svg
+                          width="18"
+                          height="18"
+                          viewBox="0 0 24 24"
+                          fill="none"
+                          stroke="currentColor"
+                          strokeWidth="3"
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                        >
+                          <polyline points="20 6 9 17 4 12"></polyline>
+                        </svg>
                         {item}
                       </motion.li>
                     ))}
@@ -537,7 +603,7 @@ export default function MentorsPage() {
               </motion.div>
 
               {/* Step 02 */}
-              <motion.div 
+              <motion.div
                 className="onboarding-step"
                 initial={{ opacity: 0, y: 30 }}
                 whileInView={{ opacity: 1, y: 0 }}
@@ -547,47 +613,88 @@ export default function MentorsPage() {
                 viewport={{ once: true }}
               >
                 <div className="step-header-meta">
-                  <motion.div 
-                    className="step-icon-premium"
-                    whileHover={{ rotate: 15 }}
-                  >
-                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                  <motion.div className="step-icon-premium" whileHover={{ rotate: 15 }}>
+                    <svg
+                      width="24"
+                      height="24"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth="2.5"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    >
                       <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
                     </svg>
                   </motion.div>
                   <span className="step-label-top">Step 02</span>
                 </div>
                 <div className="step-content">
-                  <h3>Internal Review <br/>& Approval</h3>
+                  <h3>
+                    Internal Review <br />& Approval
+                  </h3>
                   <ul className="premium-list">
                     {[
-                      { icon: <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>, text: "Relevant experience evaluation" },
-                      { icon: <circle cx="12" cy="12" r="10"></circle>, text: "Domain knowledge assessment" },
-                      { icon: <path d="M12 2L2 7l10 5 10-5-10-5z"></path>, text: "Ecosystem contribution potential" }
+                      {
+                        icon: (
+                          <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                        ),
+                        text: 'Relevant experience evaluation',
+                      },
+                      {
+                        icon: <circle cx="12" cy="12" r="10"></circle>,
+                        text: 'Domain knowledge assessment',
+                      },
+                      {
+                        icon: <path d="M12 2L2 7l10 5 10-5-10-5z"></path>,
+                        text: 'Ecosystem contribution potential',
+                      },
                     ].map((item, idx) => (
-                      <motion.li 
+                      <motion.li
                         key={idx}
                         initial={{ opacity: 0, x: -10 }}
                         whileInView={{ opacity: 1, x: 0 }}
                         transition={{ delay: 0.3 + idx * 0.1 }}
                         viewport={{ once: true }}
                       >
-                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
+                        <svg
+                          width="18"
+                          height="18"
+                          viewBox="0 0 24 24"
+                          fill="none"
+                          stroke="currentColor"
+                          strokeWidth="3"
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                        >
                           {item.icon}
                         </svg>
                         {item.text}
                       </motion.li>
                     ))}
                   </ul>
-                  
-                  <motion.div 
+
+                  <motion.div
                     className="priority-review-block"
                     initial={{ opacity: 0, scale: 0.9 }}
                     whileInView={{ opacity: 1, scale: 1 }}
                     transition={{ delay: 0.6 }}
                   >
                     <div className="priority-header">
-                      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg>
+                      <svg
+                        width="14"
+                        height="14"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        strokeWidth="3"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                      >
+                        <circle cx="12" cy="12" r="10"></circle>
+                        <line x1="12" y1="16" x2="12" y2="12"></line>
+                        <line x1="12" y1="8" x2="12.01" y2="8"></line>
+                      </svg>
                       PRIORITY REVIEW
                     </div>
                     <p className="priority-text">
@@ -598,7 +705,7 @@ export default function MentorsPage() {
               </motion.div>
 
               {/* Step 03 */}
-              <motion.div 
+              <motion.div
                 className="onboarding-step"
                 initial={{ opacity: 0, y: 30 }}
                 whileInView={{ opacity: 1, y: 0 }}
@@ -608,11 +715,17 @@ export default function MentorsPage() {
                 viewport={{ once: true }}
               >
                 <div className="step-header-meta">
-                  <motion.div 
-                    className="step-icon-premium"
-                    whileHover={{ rotate: 15 }}
-                  >
-                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                  <motion.div className="step-icon-premium" whileHover={{ rotate: 15 }}>
+                    <svg
+                      width="24"
+                      height="24"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth="2.5"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    >
                       <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
                       <circle cx="12" cy="12" r="3"></circle>
                     </svg>
@@ -620,21 +733,41 @@ export default function MentorsPage() {
                   <span className="step-label-top">Step 03</span>
                 </div>
                 <div className="step-content">
-                  <h3>Profile Creation <br/>& Listing</h3>
+                  <h3>
+                    Profile Creation <br />& Listing
+                  </h3>
                   <ul className="premium-list">
                     {[
-                      { icon: <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>, text: "Verified mentor profile created" },
-                      { icon: <circle cx="12" cy="12" r="10"></circle>, text: "Featured on website & ecosystem materials" },
-                      { icon: <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>, text: "Showcased to strengthen network diversity" }
+                      {
+                        icon: <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>,
+                        text: 'Verified mentor profile created',
+                      },
+                      {
+                        icon: <circle cx="12" cy="12" r="10"></circle>,
+                        text: 'Featured on website & ecosystem materials',
+                      },
+                      {
+                        icon: <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>,
+                        text: 'Showcased to strengthen network diversity',
+                      },
                     ].map((item, idx) => (
-                      <motion.li 
+                      <motion.li
                         key={idx}
                         initial={{ opacity: 0, x: -10 }}
                         whileInView={{ opacity: 1, x: 0 }}
                         transition={{ delay: 0.4 + idx * 0.1 }}
                         viewport={{ once: true }}
                       >
-                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
+                        <svg
+                          width="18"
+                          height="18"
+                          viewBox="0 0 24 24"
+                          fill="none"
+                          stroke="currentColor"
+                          strokeWidth="3"
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                        >
                           {item.icon}
                         </svg>
                         {item.text}
@@ -642,16 +775,28 @@ export default function MentorsPage() {
                     ))}
                   </ul>
 
-                  <motion.div 
+                  <motion.div
                     className="listing-preview-block"
                     initial={{ opacity: 0, x: 20 }}
                     whileInView={{ opacity: 1, x: 0 }}
                     transition={{ delay: 0.7 }}
                   >
                     <div className="avatar-group-listing">
-                      <img className="avatar-listing" src="/assets/images/Bhushan-pragma.jpg" alt="Mentor" />
-                      <img className="avatar-listing" src="/assets/images/Raghunatha-Chary.jpg" alt="Mentor" />
-                      <img className="avatar-listing" src="/assets/images/Dr.Venugopal Gandham.jpg" alt="Mentor" />
+                      <img
+                        className="avatar-listing"
+                        src="/assets/images/Bhushan-pragma.jpg"
+                        alt="Mentor"
+                      />
+                      <img
+                        className="avatar-listing"
+                        src="/assets/images/Raghunatha-Chary.jpg"
+                        alt="Mentor"
+                      />
+                      <img
+                        className="avatar-listing"
+                        src="/assets/images/Dr.Venugopal Gandham.jpg"
+                        alt="Mentor"
+                      />
                       <div className="avatar-plus-listing">+</div>
                     </div>
                   </motion.div>
@@ -672,64 +817,75 @@ export default function MentorsPage() {
             animate="closed"
             variants={{
               closed: { opacity: 0, scale: 0.95 },
-              open: { opacity: 1, scale: 1 }
+              open: { opacity: 1, scale: 1 },
             }}
             whileInView={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.8, ease: "easeOut" }}
+            transition={{ duration: 0.8, ease: 'easeOut' }}
             viewport={{ once: true }}
           >
             {/* Animated Border Decoration */}
-            <motion.div 
+            <motion.div
               className="note-animated-border"
               initial={{ opacity: 0 }}
               animate={{ opacity: [0.3, 0.6, 0.3] }}
-              transition={{ duration: 4, repeat: Infinity, ease: "linear" }}
+              transition={{ duration: 4, repeat: Infinity, ease: 'linear' }}
             ></motion.div>
-            
+
             <div className="note-card-glow"></div>
-            
+
             <div className="note-header-premium">
               <div className="lock-icon-wrapper">
                 <div className="lock-glow"></div>
-                <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#ff4d4d" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" style={{ overflow: 'visible' }}>
+                <svg
+                  width="28"
+                  height="28"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="#ff4d4d"
+                  strokeWidth="2.5"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  style={{ overflow: 'visible' }}
+                >
                   <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
-                  <motion.path 
+                  <motion.path
                     d="M7 11V7a5 5 0 0 1 10 0v4"
                     variants={{
-                      closed: { 
-                        y: 0, 
-                        x: 0, 
-                        rotate: 0, 
-                        originX: "7px", 
-                        originY: "11px",
-                        transition: { type: "spring", stiffness: 400, damping: 10 } 
+                      closed: {
+                        y: 0,
+                        x: 0,
+                        rotate: 0,
+                        originX: '7px',
+                        originY: '11px',
+                        transition: { type: 'spring', stiffness: 400, damping: 10 },
                       },
-                      open: { 
-                        y: -6, 
-                        x: 4, 
-                        rotate: 30, 
-                        originX: "7px", 
-                        originY: "11px",
-                        transition: { type: "spring", stiffness: 500, damping: 15 } 
-                      }
+                      open: {
+                        y: -6,
+                        x: 4,
+                        rotate: 30,
+                        originX: '7px',
+                        originY: '11px',
+                        transition: { type: 'spring', stiffness: 500, damping: 15 },
+                      },
                     }}
                   />
                   <circle cx="12" cy="16" r="1.5" fill="#ff4d4d"></circle>
                 </svg>
               </div>
               <h2 className="note-title-premium">IMPORTANT NOTE</h2>
-              <motion.p 
+              <motion.p
                 className="note-subtitle-premium"
                 variants={{
                   closed: { opacity: 0.6, y: 0 },
-                  open: { opacity: 1, y: -2, transition: { duration: 0.3 } }
+                  open: { opacity: 1, y: -2, transition: { duration: 0.3 } },
                 }}
               >
-                Mentors do not directly interact with founders or participants through this platform.
+                Mentors do not directly interact with founders or participants through this
+                platform.
               </motion.p>
             </div>
 
-            <motion.div 
+            <motion.div
               className="note-bullets-container"
               initial={{ opacity: 0, x: -20 }}
               whileInView={{ opacity: 1, x: 0 }}
@@ -737,10 +893,10 @@ export default function MentorsPage() {
             >
               <ul className="note-bullets-premium">
                 {[
-                  "No direct messaging, booking, or live interaction features are provided",
-                  "All mentor engagement happens through Startups India-managed programs, events, and initiatives"
+                  'No direct messaging, booking, or live interaction features are provided',
+                  'All mentor engagement happens through Startups India-managed programs, events, and initiatives',
                 ].map((text, i) => (
-                  <motion.li 
+                  <motion.li
                     key={i}
                     initial={{ opacity: 0, x: -10 }}
                     whileInView={{ opacity: 1, x: 0 }}
@@ -754,21 +910,57 @@ export default function MentorsPage() {
 
             <div className="note-benefits-grid">
               {[
-                { label: "QUALITY CONTROL", icon: <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10zM9 12l2 2 4-4" /> },
-                { label: "STRUCTURED MENTORSHIP", icon: <><path d="M20 7h-9M14 17H5" /><circle cx="17" cy="17" r="3" /><circle cx="7" cy="7" r="3" /></> },
-                { label: "RESPECT FOR MENTORS' TIME", icon: <><circle cx="12" cy="12" r="10" /><polyline points="12 6 12 12 16 14" /></> },
-                { label: "ALIGNED ECOSYSTEM OUTCOMES", icon: <><path d="M12 2L2 7l10 5 10-5-10-5zM21 17l-9 5-9-5M21 12l-9 5-9-5" /></> }
+                {
+                  label: 'QUALITY CONTROL',
+                  icon: <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10zM9 12l2 2 4-4" />,
+                },
+                {
+                  label: 'STRUCTURED MENTORSHIP',
+                  icon: (
+                    <>
+                      <path d="M20 7h-9M14 17H5" />
+                      <circle cx="17" cy="17" r="3" />
+                      <circle cx="7" cy="7" r="3" />
+                    </>
+                  ),
+                },
+                {
+                  label: "RESPECT FOR MENTORS' TIME",
+                  icon: (
+                    <>
+                      <circle cx="12" cy="12" r="10" />
+                      <polyline points="12 6 12 12 16 14" />
+                    </>
+                  ),
+                },
+                {
+                  label: 'ALIGNED ECOSYSTEM OUTCOMES',
+                  icon: (
+                    <>
+                      <path d="M12 2L2 7l10 5 10-5-10-5zM21 17l-9 5-9-5M21 12l-9 5-9-5" />
+                    </>
+                  ),
+                },
               ].map((benefit, i) => (
-                <motion.div 
+                <motion.div
                   key={i}
                   className="benefit-card-premium"
                   initial={{ opacity: 0, y: 20 }}
                   whileInView={{ opacity: 1, y: 0 }}
-                  whileHover={{ scale: 1.05, borderColor: "rgba(255, 77, 77, 0.5)" }}
+                  whileHover={{ scale: 1.05, borderColor: 'rgba(255, 77, 77, 0.5)' }}
                   transition={{ delay: 1 + i * 0.1, duration: 0.5 }}
                 >
                   <div className="benefit-icon-premium">
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#ff4d4d" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                    <svg
+                      width="20"
+                      height="20"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="#ff4d4d"
+                      strokeWidth="2.5"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    >
                       {benefit.icon}
                     </svg>
                   </div>
@@ -877,7 +1069,16 @@ export default function MentorsPage() {
                         <div className="back-footer">
                           <button className="connect-btn-back">
                             Connect with Mentor
-                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                            <svg
+                              width="16"
+                              height="16"
+                              viewBox="0 0 24 24"
+                              fill="none"
+                              stroke="currentColor"
+                              strokeWidth="2.5"
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                            >
                               <line x1="7" y1="17" x2="17" y2="7"></line>
                               <polyline points="7 7 17 7 17 17"></polyline>
                             </svg>
@@ -966,9 +1167,18 @@ export default function MentorsPage() {
                       {
                         label: 'Flexible Schedule',
                         icon: (
-                          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                            <circle cx="12" cy="12" r="10"/>
-                            <polyline points="12 6 12 12 16 14"/>
+                          <svg
+                            width="24"
+                            height="24"
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            stroke="currentColor"
+                            strokeWidth="2"
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                          >
+                            <circle cx="12" cy="12" r="10" />
+                            <polyline points="12 6 12 12 16 14" />
                           </svg>
                         ),
                       },
@@ -976,18 +1186,27 @@ export default function MentorsPage() {
                         label: 'Ecosystem Recognition',
                         icon: (
                           <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
-                            <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/>
+                            <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
                           </svg>
                         ),
                       },
                       {
                         label: 'Impact Innovation',
                         icon: (
-                          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                            <path d="M4.5 16.5c-1.5 1.26-2 5-2 5s3.74-.5 5-2c.71-.84.7-2.13-.09-2.91a2.18 2.18 0 0 0-2.91-.09z"/>
-                            <path d="m12 15-3-3a22 22 0 0 1 2-3.95A12.88 12.88 0 0 1 22 2c0 2.72-.78 7.5-6 11a22.35 22.35 0 0 1-4 2z"/>
-                            <path d="M9 12H4s.5-1 1.35-2.35L12 15Z"/>
-                            <path d="M12 15v5s1-.5 2.35-1.35L9 12Z"/>
+                          <svg
+                            width="24"
+                            height="24"
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            stroke="currentColor"
+                            strokeWidth="2"
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                          >
+                            <path d="M4.5 16.5c-1.5 1.26-2 5-2 5s3.74-.5 5-2c.71-.84.7-2.13-.09-2.91a2.18 2.18 0 0 0-2.91-.09z" />
+                            <path d="m12 15-3-3a22 22 0 0 1 2-3.95A12.88 12.88 0 0 1 22 2c0 2.72-.78 7.5-6 11a22.35 22.35 0 0 1-4 2z" />
+                            <path d="M9 12H4s.5-1 1.35-2.35L12 15Z" />
+                            <path d="M12 15v5s1-.5 2.35-1.35L9 12Z" />
                           </svg>
                         ),
                       },
@@ -1000,9 +1219,7 @@ export default function MentorsPage() {
                         transition={{ duration: 0.5, delay: 0.4 + i * 0.1 }}
                         viewport={{ once: true }}
                       >
-                        <div className="bmc-icon-circle">
-                          {feature.icon}
-                        </div>
+                        <div className="bmc-icon-circle">{feature.icon}</div>
                         <span>{feature.label}</span>
                       </motion.div>
                     ))}
@@ -1019,9 +1236,18 @@ export default function MentorsPage() {
                     whileTap={{ scale: 0.98 }}
                   >
                     REGISTER NOW
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-                      <line x1="5" y1="12" x2="19" y2="12"/>
-                      <polyline points="12 5 19 12 12 19"/>
+                    <svg
+                      width="20"
+                      height="20"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth="2.5"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    >
+                      <line x1="5" y1="12" x2="19" y2="12" />
+                      <polyline points="12 5 19 12 12 19" />
                     </svg>
                   </motion.button>
                 </div>
@@ -1051,31 +1277,58 @@ export default function MentorsPage() {
                 {
                   label: 'Entrepreneurs & Startup Founders',
                   icon: (
-                    <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                      <path d="M4.5 16.5c-1.5 1.26-2 5-2 5s3.74-.5 5-2c.71-.84.7-2.13-.09-2.91a2.18 2.18 0 0 0-2.91-.09z"/>
-                      <path d="m12 15-3-3a22 22 0 0 1 2-3.95A12.88 12.88 0 0 1 22 2c0 2.72-.78 7.5-6 11a22.35 22.35 0 0 1-4 2z"/>
-                      <path d="M9 12H4s.5-1 1.35-2.35L12 15Z"/>
-                      <path d="M12 15v5s1-.5 2.35-1.35L9 12Z"/>
+                    <svg
+                      width="28"
+                      height="28"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth="2"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    >
+                      <path d="M4.5 16.5c-1.5 1.26-2 5-2 5s3.74-.5 5-2c.71-.84.7-2.13-.09-2.91a2.18 2.18 0 0 0-2.91-.09z" />
+                      <path d="m12 15-3-3a22 22 0 0 1 2-3.95A12.88 12.88 0 0 1 22 2c0 2.72-.78 7.5-6 11a22.35 22.35 0 0 1-4 2z" />
+                      <path d="M9 12H4s.5-1 1.35-2.35L12 15Z" />
+                      <path d="M12 15v5s1-.5 2.35-1.35L9 12Z" />
                     </svg>
                   ),
                 },
                 {
                   label: 'Industry Professionals',
                   icon: (
-                    <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                      <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
-                      <circle cx="9" cy="7" r="4"/>
-                      <path d="M23 21v-2a4 4 0 0 0-3-3.87"/>
-                      <path d="M16 3.13a4 4 0 0 1 0 7.75"/>
+                    <svg
+                      width="28"
+                      height="28"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth="2"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    >
+                      <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" />
+                      <circle cx="9" cy="7" r="4" />
+                      <path d="M23 21v-2a4 4 0 0 0-3-3.87" />
+                      <path d="M16 3.13a4 4 0 0 1 0 7.75" />
                     </svg>
                   ),
                 },
                 {
                   label: 'Corporate Leaders',
                   icon: (
-                    <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                      <rect x="2" y="7" width="20" height="14" rx="2" ry="2"/>
-                      <path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/>
+                    <svg
+                      width="28"
+                      height="28"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth="2"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    >
+                      <rect x="2" y="7" width="20" height="14" rx="2" ry="2" />
+                      <path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16" />
                     </svg>
                   ),
                 },
@@ -1101,18 +1354,36 @@ export default function MentorsPage() {
                 {
                   label: 'Subject Matter Experts',
                   icon: (
-                    <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                      <circle cx="12" cy="12" r="10"/>
-                      <circle cx="12" cy="12" r="3"/>
+                    <svg
+                      width="28"
+                      height="28"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth="2"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    >
+                      <circle cx="12" cy="12" r="10" />
+                      <circle cx="12" cy="12" r="3" />
                     </svg>
                   ),
                 },
                 {
                   label: 'Advisors with Relevant Experience',
                   icon: (
-                    <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                      <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
-                      <polyline points="9 12 11 14 15 10"/>
+                    <svg
+                      width="28"
+                      height="28"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth="2"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    >
+                      <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
+                      <polyline points="9 12 11 14 15 10" />
                     </svg>
                   ),
                 },
@@ -1142,7 +1413,11 @@ export default function MentorsPage() {
             >
               <div className="commitment-dark-left">
                 <div className="commitment-badge">INSTITUTIONAL STANDARD</div>
-                <h3 className="commitment-heading">Our Commitment to<br/>Mentors</h3>
+                <h3 className="commitment-heading">
+                  Our Commitment to
+                  <br />
+                  Mentors
+                </h3>
                 <div className="commitment-underline" />
               </div>
               <div className="commitment-dark-right">
@@ -1161,8 +1436,17 @@ export default function MentorsPage() {
                     viewport={{ once: true }}
                   >
                     <span className="commitment-dark-check">
-                      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
-                        <polyline points="20 6 9 17 4 12"/>
+                      <svg
+                        width="14"
+                        height="14"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        strokeWidth="3"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                      >
+                        <polyline points="20 6 9 17 4 12" />
                       </svg>
                     </span>
                     <span>{text}</span>
@@ -1174,8 +1458,6 @@ export default function MentorsPage() {
         </div>
       </section>
 
-
-
       {/* Testimonials Section */}
       <section className="testimonials-section">
         <div className="container">
@@ -1185,8 +1467,12 @@ export default function MentorsPage() {
             transition={{ duration: 0.6 }}
             viewport={{ once: true }}
           >
-            <h2 className="section-title-center">Don't Just Take Our <span style={{ color: '#dc2626' }}>Word for it!</span></h2>
-            <p className="section-subtitle-center" style={{ color: 'rgba(255, 255, 255, 0.6)' }}>Hear what the community is saying about us</p>
+            <h2 className="section-title-center">
+              Don't Just Take Our <span style={{ color: '#dc2626' }}>Word for it!</span>
+            </h2>
+            <p className="section-subtitle-center" style={{ color: 'rgba(255, 255, 255, 0.6)' }}>
+              Hear what the community is saying about us
+            </p>
 
             <div className="testimonials-grid">
               <motion.div

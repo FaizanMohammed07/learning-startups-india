@@ -1,134 +1,15 @@
 'use client';
 
 import { motion } from 'framer-motion';
+import MarketAccessHero from '../../components/MarketAccessHero';
 import '../../styles/market-access.css';
 
 export default function MarketAccessPage() {
-  // Market opportunity cards data
-  const marketCards = [
-    { label: "Industry Partners", value: "150+", icon: "🤝", delay: 0 },
-    { label: "Market Pilots", value: "80+", icon: "🚀", delay: 1.5 },
-    { label: "Success Rate", value: "92%", icon: "📈", delay: 3 },
-    { label: "Active Markets", value: "25+", icon: "🌍", delay: 4.5 },
-    { label: "Customer Connects", value: "500+", icon: "👥", delay: 6 },
-  ];
-
   return (
     <>
       <div className="market-access-page">
         
-        {/* Hero Section - Dark Greenish Premium */}
-        <section className="market-hero">
-          {/* Animated Background */}
-          <div className="hero-animated-bg">
-            <div className="gradient-orb orb-1"></div>
-            <div className="gradient-orb orb-2"></div>
-            <div className="gradient-orb orb-3"></div>
-          </div>
-
-          {/* Floating Grid Pattern with Stars */}
-          <div className="hero-grid-pattern"></div>
-
-          <div className="container">
-            <div className="hero-content">
-              <motion.h1 
-                className="hero-title"
-                initial={{ opacity: 0, y: 30 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.8 }}
-              >
-                From Idea Validation to <br/>
-                <span className="hero-highlight">Real-World Market Exposure</span>
-              </motion.h1>
-              
-              <motion.p 
-                className="hero-description"
-                initial={{ opacity: 0, y: 30 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.8, delay: 0.2 }}
-              >
-                Market Access is the bridge connecting startup ideas with real customers, industries, and markets. 
-                We help startups test, validate, and enter the market through structured support, curated exposure, 
-                and meaningful partnerships.
-              </motion.p>
-              
-              <motion.div 
-                className="hero-features"
-                initial={{ opacity: 0, y: 30 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.8, delay: 0.4 }}
-              >
-                <div className="hero-feature">
-                  <div className="feature-icon">
-                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                      <circle cx="12" cy="12" r="10"/>
-                      <path d="M12 6v6l4 2"/>
-                    </svg>
-                  </div>
-                  <div className="feature-text">
-                    <h3>Structured Process</h3>
-                    <p>5-step guided approach</p>
-                  </div>
-                </div>
-                <div className="hero-feature">
-                  <div className="feature-icon">
-                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                      <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/>
-                      <circle cx="9" cy="7" r="4"/>
-                      <path d="M22 21v-2a4 4 0 0 0-3-3.87"/>
-                      <path d="M16 3.13a4 4 0 0 1 0 7.75"/>
-                    </svg>
-                  </div>
-                  <div className="feature-text">
-                    <h3>Industry Partners</h3>
-                    <p>Connect with real markets</p>
-                  </div>
-                </div>
-                <div className="hero-feature">
-                  <div className="feature-icon">
-                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                      <line x1="12" y1="20" x2="12" y2="10"/>
-                      <line x1="18" y1="20" x2="18" y2="4"/>
-                      <line x1="6" y1="20" x2="6" y2="16"/>
-                    </svg>
-                  </div>
-                  <div className="feature-text">
-                    <h3>Validation & Feedback</h3>
-                    <p>Real-world insights</p>
-                  </div>
-                </div>
-              </motion.div>
-            </div>
-
-            {/* Floating Market Opportunity Cards */}
-            <div className="market-cards-container">
-              {marketCards.map((card, index) => (
-                <motion.div
-                  key={index}
-                  className={`market-card market-card-${index + 1}`}
-                  initial={{ opacity: 0, x: -50, y: 50, scale: 0.9 }}
-                  animate={{ 
-                    opacity: [0, 1, 1, 0],
-                    x: [-50, 0, 0, 50],
-                    y: [50, 0, -30, -80],
-                    scale: [0.9, 1, 1, 0.95]
-                  }}
-                  transition={{
-                    duration: 4,
-                    delay: card.delay,
-                    repeat: Infinity,
-                    repeatDelay: 2,
-                    ease: [0.43, 0.13, 0.23, 0.96]
-                  }}
-                >
-                  <div className="market-card-icon">{card.icon}</div>
-                  <div className="market-card-value">{card.value}</div>
-                  <div className="market-card-label">{card.label}</div>
-                </motion.div>
-              ))}
-            </div>
-          </div>
-        </section>
+        <MarketAccessHero />
 
         {/* What is Market Access - Dark */}
         <section className="what-section">

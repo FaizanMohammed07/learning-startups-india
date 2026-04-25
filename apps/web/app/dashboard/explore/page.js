@@ -110,7 +110,8 @@ function SkeletonCard() {
 }
 
 export default function ExplorePage() {
-  const { courses, enrolledCourses, wishlist, setWishlist, certificates, isLoading, refresh } = useDashboard();
+  const { courses, enrolledCourses, wishlist, setWishlist, certificates, isLoading, refresh } =
+    useDashboard();
   const [search, setSearch] = useState('');
   const [activeCategory, setActiveCategory] = useState('All');
   const [sortBy, setSortBy] = useState('default');
@@ -231,7 +232,7 @@ export default function ExplorePage() {
         fontFamily: "'Inter', system-ui, -apple-system, sans-serif",
         minHeight: '100vh',
         display: 'flex',
-        flexDirection: 'column'
+        flexDirection: 'column',
       }}
     >
       <style
@@ -290,12 +291,16 @@ export default function ExplorePage() {
 
       {/* Main Content Area */}
       <div className="explore-content-container">
-        <style dangerouslySetInnerHTML={{ __html: `
+        <style
+          dangerouslySetInnerHTML={{
+            __html: `
           .explore-content-container { padding: 0.75rem 2.5rem 0; }
           @media (max-width: 768px) {
             .explore-content-container { padding: 0.5rem 1rem 0; }
           }
-        `}} />
+        `,
+          }}
+        />
         {/* Search + Sort + View Toolbar */}
         <div
           className="toolbar-row"

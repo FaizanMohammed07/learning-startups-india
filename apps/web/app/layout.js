@@ -78,18 +78,9 @@ export default function RootLayout({ children }) {
     <html lang="en" className={poppins.variable} suppressHydrationWarning>
       <body className={poppins.className} suppressHydrationWarning>
         <ClientErrorBoundary>
-<<<<<<< HEAD
           <ConditionalLayout>{children}</ConditionalLayout>
           <CustomCursor />
           <ScrollToTop />
-          <ScrollToTop />
-=======
-          <ConditionalLayout>
-            {children}
-          </ConditionalLayout>
-          <CustomCursor />
-          <ScrollToTop />
->>>>>>> test-G1
         </ClientErrorBoundary>
       </body>
     </html>

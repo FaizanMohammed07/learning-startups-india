@@ -7,7 +7,7 @@ const controller = require('./courses.controller');
 const router = express.Router();
 
 // GET /api/v1/courses
-router.get('/', cacheMiddleware('courses:all', 300), asyncHandler(controller.listCourses));
+router.get('/', asyncHandler(controller.listCourses));
 
 // GET /api/v1/courses/wishlist
 router.get('/wishlist', authRequired, asyncHandler(controller.getWishlist));

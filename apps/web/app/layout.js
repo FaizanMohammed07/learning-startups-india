@@ -66,9 +66,9 @@ export const metadata = {
     type: 'website',
   },
   icons: {
-    icon: '/assets/images/logo.png',
-    shortcut: '/assets/images/logo.png',
-    apple: '/assets/images/logo.png',
+    icon: '/Startupsindia-favicon.png',
+    shortcut: '/Startupsindia-favicon.png',
+    apple: '/Startupsindia-favicon.png',
   },
 };
 

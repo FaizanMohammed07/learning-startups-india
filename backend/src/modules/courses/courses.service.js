@@ -1,6 +1,7 @@
 const { Course, Module, Lesson } = require('./course.model');
 const { Progress, Quiz, QuizResponse, QuizAttempt } = require('../learning/learning.model');
 const { extractS3Key, generateDownloadUrl } = require('../../utils/s3');
+const { cacheGet, cacheSet, cacheDel } = require('../../infrastructure/cache/redis');
 
 const DOWNLOAD_URL_EXPIRY_SECONDS = 3600;
 
@@ -23,6 +24,10 @@ async function decorateCourseMedia(course) {
 }
 
 async function listCourses(options = {}) {
+  const cacheKey = `courses:list:${JSON.stringify(options, Object.keys(options).sort())}`;
+  const cached = await cacheGet(cacheKey);
+  if (cached) return cached;
+
   const { slug, category, level, search, minPrice, maxPrice, page = 1, limit = 10 } = options;
   const filter = { isPublished: true };
 
@@ -62,7 +67,7 @@ async function listCourses(options = {}) {
 
   const decorated = await Promise.all(courses.map(decorateCourseMedia));
 
-  return {
+  const result = {
     items: decorated,
     pagination: {
       total,
@@ -72,6 +77,9 @@ async function listCourses(options = {}) {
       totalPages: Math.ceil(total / limit),
     },
   };
+
+  await cacheSet(cacheKey, result, 300); // Cache for 5 minutes
+  return result;
 }
 
 async function toggleWishlist(userId, courseId) {

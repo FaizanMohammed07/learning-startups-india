@@ -9,6 +9,15 @@ const router = express.Router();
 // GET /api/v1/courses
 router.get('/', cacheMiddleware('courses:all', 300), asyncHandler(controller.listCourses));
 
+// GET /api/v1/courses/wishlist
+router.get('/wishlist', authRequired, asyncHandler(controller.getWishlist));
+
+// POST /api/v1/courses/:courseId/wishlist
+router.post('/:courseId/wishlist', authRequired, asyncHandler(controller.toggleWishlist));
+
+// POST /api/v1/courses/:courseId/complete
+router.post('/:courseId/complete', authRequired, asyncHandler(controller.completeCourse));
+
 // Static routes MUST come before dynamic /:courseId
 // GET /api/v1/courses/modules/:moduleId/lessons
 router.get(

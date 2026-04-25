@@ -55,6 +55,11 @@ export const metadata = {
     description: 'Premium code-based incubation platform for aspiring entrepreneurs',
     type: 'website',
   },
+  icons: {
+    icon: '/assets/images/logo.png',
+    shortcut: '/assets/images/logo.png',
+    apple: '/assets/images/logo.png',
+  },
 };
 
 export const viewport = {

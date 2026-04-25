@@ -5,18 +5,50 @@ import Link from 'next/link';
 import { useState } from 'react';
 import { signOut } from '@/lib/auth';
 
-export default function DashboardSidebar({ user, isPro = false }) {
+export default function DashboardSidebar({ user, isPro = false, isOpen = false, onClose = () => {} }) {
   const router = useRouter();
   const pathname = usePathname();
   const [showLogoutModal, setShowLogoutModal] = useState(false);
+  const [expandedSections, setExpandedSections] = useState({ courses: true });
+
+  const toggleSection = sectionId => {
+    setExpandedSections(prev => ({
+      ...prev,
+      [sectionId]: !prev[sectionId],
+    }));
+  };
 
   const navigation = [
     {
       id: 'main',
       items: [
-        { id: 'home', label: 'Home', path: '/', icon: 'home' },
         { id: 'dashboard', label: 'Dashboard', path: '/dashboard', icon: 'dashboard' },
-        { id: 'courses', label: 'My Courses', path: '/dashboard/my-courses', icon: 'courses' },
+      ],
+    },
+    {
+      id: 'courses',
+      label: 'Courses',
+      isCollapsible: true,
+      items: [
+        { id: 'explore', label: 'Explore Courses', path: '/dashboard/explore', icon: 'explore' },
+        {
+          id: 'enrolled',
+          label: 'Enrolled Courses',
+          path: '/dashboard/my-courses',
+          icon: 'courses',
+        },
+        { id: 'wishlist', label: 'Wishlist', path: '/dashboard/wishlist', icon: 'wishlist' },
+        {
+          id: 'completed',
+          label: 'Completed Courses',
+          path: '/dashboard/completed',
+          icon: 'completed',
+        },
+      ],
+    },
+    {
+      id: 'personal',
+      items: [
         {
           id: 'certificates',
           label: 'My Certificates',
@@ -27,14 +59,18 @@ export default function DashboardSidebar({ user, isPro = false }) {
       ],
     },
     {
-      id: 'learn',
-      label: 'Learn',
-      items: [{ id: 'explore', label: 'Explore all', path: '/dashboard/explore', icon: 'explore' }],
+      id: 'support',
+      label: 'Support & Account',
+      items: [
+        { id: 'settings', label: 'Account Settings', path: '/dashboard/settings', icon: 'settings' },
+        { id: 'contact', label: 'Contact Support', path: '/dashboard/contact', icon: 'contact' },
+        { id: 'logout', label: 'Logout', path: '/logout', icon: 'logout', isAction: true },
+      ],
     },
   ];
 
   const isActive = path => {
-    if (path === '/') return pathname === '/';
+    if (path === '/dashboard') return pathname === '/dashboard';
     return pathname === path || pathname.startsWith(path + '/');
   };
 
@@ -123,20 +159,100 @@ export default function DashboardSidebar({ user, isPro = false }) {
           <circle cx="12" cy="7" r="4" />
         </svg>
       ),
+      wishlist: (
+        <svg
+          width="18"
+          height="18"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="2"
+        >
+          <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z" />
+        </svg>
+      ),
+      completed: (
+        <svg
+          width="18"
+          height="18"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="2"
+        >
+          <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14" />
+          <polyline points="22 4 12 14.01 9 11.01" />
+        </svg>
+      ),
+      settings: (
+        <svg
+          width="18"
+          height="18"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="2"
+        >
+          <circle cx="12" cy="12" r="3" />
+          <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z" />
+        </svg>
+      ),
+      logout: (
+        <svg
+          width="18"
+          height="18"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="2"
+        >
+          <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" />
+          <polyline points="16 17 21 12 16 7" />
+          <line x1="21" y1="12" x2="9" y2="12" />
+        </svg>
+      ),
+      contact: (
+        <svg
+          width="18"
+          height="18"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="2"
+        >
+          <circle cx="12" cy="12" r="10" />
+          <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3" />
+          <line x1="12" y1="17" x2="12.01" y2="17" />
+        </svg>
+      ),
     };
     return icons[icon] || null;
   };
 
   return (
-    <aside className="premium-sidebar">
-      {/* Logo */}
+    <>
+      <div 
+        className={`sidebar-overlay ${isOpen ? 'active' : ''}`} 
+        onClick={onClose}
+        style={{
+          position: 'fixed',
+          inset: 0,
+          background: 'rgba(0,0,0,0.5)',
+          backdropFilter: 'blur(4px)',
+          zIndex: 1050,
+          display: isOpen ? 'block' : 'none',
+          animation: 'fadeIn 0.2s ease-out'
+        }}
+      />
+      <aside className={`premium-sidebar ${isOpen ? 'mobile-open' : ''}`}>
+      {/* Logo and Branding */}
       <div className="sidebar-header">
-        <Link href="/dashboard" className="sidebar-logo">
+        <Link href="/dashboard" className="sidebar-logo" onClick={onClose}>
           <img
             src="/assets/images/logo.png"
             alt="Startups India Logo"
             className="sidebar-logo-img"
-            style={{ height: '40px', width: 'auto' }}
+            style={{ height: '32px', width: 'auto' }}
           />
         </Link>
       </div>
@@ -145,28 +261,85 @@ export default function DashboardSidebar({ user, isPro = false }) {
       <nav className="sidebar-nav">
         {navigation.map(section => (
           <div key={section.id} className="nav-section">
-            {section.label && <div className="nav-section-label">{section.label}</div>}
-            <div className="nav-items">
-              {section.items.map(item => (
-                <Link
-                  key={item.id}
-                  href={item.path}
-                  className={`nav-item ${isActive(item.path) ? 'active' : ''}`}
-                  prefetch={true}
-                >
-                  <span className="nav-item-icon">{renderIcon(item.icon)}</span>
-                  <span className="nav-item-label">{item.label}</span>
-                </Link>
-              ))}
+            {section.label && (
+              <div
+                className={`nav-section-header ${section.isCollapsible ? 'collapsible' : ''}`}
+                onClick={() => section.isCollapsible && toggleSection(section.id)}
+              >
+                <div className="nav-section-label">{section.label}</div>
+                {section.isCollapsible && (
+                  <span
+                    className={`chevron-icon ${expandedSections[section.id] ? 'expanded' : ''}`}
+                  >
+                    <svg
+                      width="12"
+                      height="12"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth="3"
+                    >
+                      <path d="M6 9l6 6 6-6" />
+                    </svg>
+                  </span>
+                )}
+              </div>
+            )}
+            <div
+              className={`nav-items-container ${section.isCollapsible && !expandedSections[section.id] ? 'collapsed' : ''}`}
+            >
+              <div className="nav-items">
+                {section.items.map(item => (
+                  item.isAction ? (
+                    <button
+                      key={item.id}
+                      className="nav-item action-button-nav"
+                      onClick={() => {
+                        if (item.id === 'logout') {
+                          onClose();
+                          setShowLogoutModal(true);
+                        }
+                      }}
+                      style={{
+                        background: 'none',
+                        border: 'none',
+                        width: 'calc(100% - 24px)',
+                        textAlign: 'left',
+                        fontFamily: 'inherit'
+                      }}
+                    >
+                      <span className="nav-item-icon">{renderIcon(item.icon)}</span>
+                      <span className="nav-item-label">{item.label}</span>
+                    </button>
+                  ) : (
+                    <Link
+                      key={item.id}
+                      href={item.path}
+                      className={`nav-item ${isActive(item.path) ? 'active' : ''}`}
+                      prefetch={true}
+                      onClick={onClose}
+                    >
+                      <span className="nav-item-icon">{renderIcon(item.icon)}</span>
+                      <span className="nav-item-label">{item.label}</span>
+                    </Link>
+                  )
+                ))}
+              </div>
             </div>
           </div>
         ))}
       </nav>
 
-      {/* Bottom Actions */}
-      <div className="sidebar-bottom">
+      {/* Keep desktop bottom sidebar - but hidden on mobile to avoid double buttons */}
+      <div className="sidebar-bottom desktop-only">
+        <style dangerouslySetInnerHTML={{ __html: `
+          @media (max-width: 1060px) {
+            .desktop-only { display: none !important; }
+          }
+        `}} />
+
         <div className="bottom-actions">
-          <Link href="/dashboard/settings" className="bottom-action">
+          <Link href="/dashboard/settings" className="bottom-action" onClick={onClose}>
             <svg
               width="18"
               height="18"
@@ -186,7 +359,10 @@ export default function DashboardSidebar({ user, isPro = false }) {
 
           <button
             className="bottom-action"
-            onClick={() => setShowLogoutModal(true)}
+            onClick={() => {
+              onClose();
+              setShowLogoutModal(true);
+            }}
           >
             <svg
               width="18"
@@ -203,7 +379,7 @@ export default function DashboardSidebar({ user, isPro = false }) {
             <span>Logout</span>
           </button>
 
-          <Link href="/dashboard/contact" className="bottom-action">
+          <Link href="/dashboard/contact" className="bottom-action" onClick={onClose}>
             <svg
               width="18"
               height="18"
@@ -299,6 +475,7 @@ export default function DashboardSidebar({ user, isPro = false }) {
           `}} />
         </div>
       )}
-    </aside>
+      </aside>
+    </>
   );
 }

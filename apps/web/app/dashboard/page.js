@@ -96,6 +96,89 @@ const Icons = {
       <circle cx="12" cy="12" r="2" />
     </svg>
   ),
+  shield: props => (
+    <svg
+      width={props.size || 20}
+      height={props.size || 20}
+      fill="none"
+      stroke={props.color || 'currentColor'}
+      strokeWidth="2"
+      viewBox="0 0 24 24"
+    >
+      <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
+    </svg>
+  ),
+  activity: props => (
+    <svg
+      width={props.size || 20}
+      height={props.size || 20}
+      fill="none"
+      stroke={props.color || 'currentColor'}
+      strokeWidth="2"
+      viewBox="0 0 24 24"
+    >
+      <polyline points="22 12 18 12 15 21 9 3 6 12 2 12" />
+    </svg>
+  ),
+  trendUp: props => (
+    <svg
+      width={props.size || 20}
+      height={props.size || 20}
+      fill="none"
+      stroke={props.color || 'currentColor'}
+      strokeWidth="2"
+      viewBox="0 0 24 24"
+    >
+      <polyline points="23 6 13.5 15.5 8.5 10.5 1 18" />
+      <polyline points="17 6 23 6 23 12" />
+    </svg>
+  ),
+  cpu: props => (
+    <svg
+      width={props.size || 20}
+      height={props.size || 20}
+      fill="none"
+      stroke={props.color || 'currentColor'}
+      strokeWidth="2"
+      viewBox="0 0 24 24"
+    >
+      <rect x="4" y="4" width="16" height="16" rx="2" ry="2" />
+      <rect x="9" y="9" width="6" height="6" />
+      <line x1="9" y1="1" x2="9" y2="4" />
+      <line x1="15" y1="1" x2="15" y2="4" />
+      <line x1="9" y1="20" x2="9" y2="23" />
+      <line x1="15" y1="20" x2="15" y2="23" />
+      <line x1="20" y1="9" x2="23" y2="9" />
+      <line x1="20" y1="15" x2="23" y2="15" />
+      <line x1="1" y1="9" x2="4" y2="9" />
+      <line x1="1" y1="15" x2="4" y2="15" />
+    </svg>
+  ),
+  sparkles: props => (
+    <svg
+      width={props.size || 20}
+      height={props.size || 20}
+      fill="none"
+      stroke={props.color || 'currentColor'}
+      strokeWidth="2"
+      viewBox="0 0 24 24"
+    >
+      <path d="M12 3l1.912 3.873 4.276.621-3.094 3.016.73 4.259L12 12.757l-3.824 2.012.73-4.259-3.094-3.016 4.276-.621L12 3z" />
+    </svg>
+  ),
+  profile: props => (
+    <svg
+      width={props.size || 20}
+      height={props.size || 20}
+      fill="none"
+      stroke={props.color || 'currentColor'}
+      strokeWidth="2"
+      viewBox="0 0 24 24"
+    >
+      <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
+      <circle cx="12" cy="7" r="4" />
+    </svg>
+  ),
   arrow: props => (
     <svg
       width={props.size || 16}
@@ -387,13 +470,17 @@ const AI_INSIGHTS = [
 
 export default function DashboardPage() {
   const { user, enrolledCourses, courses, certificates, activities, isLoading } = useDashboard();
-  const [streak, setStreak] = useState({ current: 0, lastDate: null });
+  const [activeCategory, setActiveCategory] = useState('expert');
+  const [wishlist, setWishlist] = useState([]);
+  const [streak, setStreak] = useState({ current: 0 });
   const [insight, setInsight] = useState('');
   const [insightVisible, setInsightVisible] = useState(false);
   const founderName = user?.fullName || user?.full_name || user?.name || 'Founder';
 
   useEffect(() => {
     setStreak(recordStreak());
+    const list = JSON.parse(localStorage.getItem('wishlist') || '[]');
+    setWishlist(list);
     setInsight(AI_INSIGHTS[Math.floor(Math.random() * AI_INSIGHTS.length)]);
     const t = setTimeout(() => setInsightVisible(true), 600);
     return () => clearTimeout(t);
@@ -418,6 +505,29 @@ export default function DashboardPage() {
       ),
     [enrolledCourses, completedCourses, streak, certificates]
   );
+
+  const currentHour = new Date().getHours();
+  const getGreeting = () => {
+    if (currentHour < 12) return 'Good Morning';
+    if (currentHour < 17) return 'Good Afternoon';
+    return 'Good Evening';
+  };
+
+  const filteredCourses = useMemo(() => {
+    if (activeCategory === 'expert') {
+      return courses.filter(c => c.difficultyLevel?.toLowerCase() === 'advanced');
+    }
+    if (activeCategory === 'android') {
+      return courses.filter(c => c.category?.toLowerCase().includes('android'));
+    }
+    if (activeCategory === 'wishlist') {
+      return wishlist;
+    }
+    if (activeCategory === 'completed') {
+      return enrolledCourses.filter(e => e.completed);
+    }
+    return enrolledCourses;
+  }, [activeCategory, courses, enrolledCourses, wishlist]);
 
   // Compute Incubation Phase
   const phase = useMemo(() => {
@@ -490,11 +600,11 @@ export default function DashboardPage() {
 
   return (
     <div
+      className="dashboard-main-container"
       style={{
-        maxWidth: 1100,
         margin: '0 auto',
-        padding: '2rem 1.5rem 3rem',
         fontFamily: "'Inter', system-ui, -apple-system, sans-serif",
+        boxSizing: 'border-box',
       }}
     >
       <style
@@ -503,6 +613,11 @@ export default function DashboardPage() {
         @keyframes fadeUp { from { opacity:0; transform:translateY(18px); } to { opacity:1; transform:translateY(0); } }
         @keyframes slideRight { from { width: 0; } to { width: var(--bar-w); } }
         @keyframes popIn { from { opacity:0; transform:scale(0.8); } to { opacity:1; transform:scale(1); } }
+        @keyframes glowPulse {
+          0% { box-shadow: 0 0 5px rgba(16, 185, 129, 0.4); }
+          50% { box-shadow: 0 0 15px rgba(16, 185, 129, 0.8); }
+          100% { box-shadow: 0 0 5px rgba(16, 185, 129, 0.4); }
+        }
         @keyframes tickerScroll { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
         @keyframes blobFloat { 0%,100% { transform: translate(0,0) scale(1); } 50% { transform: translate(30px,-30px) scale(1.08); } }
         @keyframes scanline { 0% { top: -60px; opacity:0; } 10% { opacity:1; } 90% { opacity:1; } 100% { top: calc(100% + 60px); opacity:0; } }
@@ -512,6 +627,7 @@ export default function DashboardPage() {
         @keyframes redPulse { 0%,100% { opacity:0.6; } 50% { opacity:1; } }
         @keyframes shimmer { 0% { background-position: -200% 0; } 100% { background-position: 200% 0; } }
 
+        .dashboard-main-container { max-width: 1160px; padding: 1.5rem 1rem 3rem; transition: all 0.3s ease; }
         .da { animation: fadeUp .5s cubic-bezier(0.16,1,0.3,1) both; }
         .da1 { animation-delay:0.05s; } .da2 { animation-delay:0.12s; } .da3 { animation-delay:0.18s; } .da4 { animation-delay:0.24s; } .da5 { animation-delay:0.3s; } .da6 { animation-delay:0.36s; }
 
@@ -538,11 +654,31 @@ export default function DashboardPage() {
         .action-card { transition:all .3s; }
         .action-card:hover { transform:translateY(-5px); box-shadow:0 14px 30px -8px rgba(0,0,0,0.12); }
 
+        @media (max-width:1060px) {
+          .d4col { grid-template-columns: repeat(2, 1fr) !important; }
+          .d2col { grid-template-columns: 1fr !important; }
+        }
         @media (max-width:768px) {
-          .d2col { grid-template-columns:1fr !important; }
-          .d4col { grid-template-columns:repeat(2,1fr) !important; }
-          .banner-inner { flex-direction:column !important; text-align:center !important; }
-          .banner-right { justify-content:center !important; }
+          .d4col { grid-template-columns: repeat(2, 1fr) !important; gap: 12px !important; }
+          .banner-inner { flex-direction:column !important; text-align:center !important; padding: 1rem !important; }
+          .banner-right { justify-content:center !important; width: 100% !important; flex-wrap: wrap !important; margin-top: 1.5rem !important; }
+          .banner-right > div { flex: 1; min-width: 100px; padding: 12px !important; }
+          h1 { font-size: 1.5rem !important; line-height: 1.2 !important; }
+          .ai-glass { padding: 1.25rem !important; }
+          .stats-grid { gap: 12px !important; }
+          .dashboard-main-container { padding: 1rem 0.75rem 2rem !important; }
+        }
+        @media (max-width:480px) {
+           .d4col { grid-template-columns: 1fr !important; }
+           .banner-inner { padding: 0.75rem !important; }
+           .ai-glass { padding: 1rem !important; }
+           .ticker-wrap { display: none; }
+           .banner-right > div { min-width: 100%; border-right: none !important; border-bottom: 1px solid rgba(255,255,255,0.1) !important; }
+           .banner-right > div:last-child { border-bottom: none !important; }
+        }
+        /* Huge PC / Ultra-wide support */
+        @media (min-width: 1800px) {
+          .dashboard-main-container { max-width: 1600px !important; }
         }
       `,
         }}
@@ -627,19 +763,6 @@ export default function DashboardPage() {
             animation: 'blobFloat 10s ease-in-out infinite reverse',
           }}
         />
-        <div
-          style={{
-            position: 'absolute',
-            top: '50%',
-            left: '50%',
-            transform: 'translate(-50%,-50%)',
-            width: 400,
-            height: 400,
-            background: 'radial-gradient(circle, rgba(255,80,80,0.1) 0%, transparent 60%)',
-            filter: 'blur(60px)',
-            animation: 'redPulse 4s ease-in-out infinite',
-          }}
-        />
 
         {/* Tech grid pattern */}
         <div
@@ -659,71 +782,43 @@ export default function DashboardPage() {
             position: 'relative',
             zIndex: 1,
             display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'space-between',
-            gap: '2rem',
-            flexWrap: 'wrap',
+            flexDirection: 'column',
+            justifyContent: 'center',
+            gap: '1rem',
+            padding: '1.5rem 0',
           }}
         >
           <div>
-            {/* Status indicator */}
-            <div
-              style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '10px' }}
-            >
+            <div style={{ marginBottom: '14px', display: 'flex', alignItems: 'center', gap: '8px' }}>
               <span
                 style={{
-                  display: 'inline-block',
-                  width: 8,
-                  height: 8,
-                  borderRadius: '50%',
-                  background: '#10b981',
-                  boxShadow: '0 0 12px #10b981',
-                  animation: 'glowPulse 2s infinite',
-                }}
-              />
-              <span
-                style={{
-                  fontSize: '0.72rem',
+                  padding: '3px 10px',
+                  borderRadius: '6px',
+                  background: 'rgba(0,0,0,0.3)',
+                  border: '1px solid rgba(255,255,255,0.4)',
+                  color: '#fff',
+                  fontSize: '0.68rem',
                   fontWeight: 800,
-                  color: '#C5975B',
-                  letterSpacing: '0.14em',
+                  letterSpacing: '0.05em',
                   textTransform: 'uppercase',
                 }}
               >
-                System Online
-              </span>
-              <span
-                style={{
-                  width: 1,
-                  height: 12,
-                  background: 'rgba(255,255,255,0.25)',
-                  margin: '0 4px',
-                }}
-              />
-              <span
-                style={{
-                  fontSize: '0.72rem',
-                  fontWeight: 600,
-                  color: 'rgba(255,255,255,0.65)',
-                  letterSpacing: '0.06em',
-                  textTransform: 'uppercase',
-                }}
-              >
-                {getGreeting()}
+                Live Schedule
               </span>
             </div>
 
             <h1
               style={{
-                fontSize: '2.4rem',
+                fontSize: 'clamp(1.8rem, 5vw, 2.4rem)',
                 fontWeight: 900,
                 color: '#fff',
-                margin: '0 0 0.6rem',
+                margin: '0 0 0.8rem',
                 letterSpacing: '-0.03em',
                 textShadow: '0 2px 20px rgba(0,0,0,0.3)',
+                lineHeight: 1.2,
               }}
             >
-              {`${getGreeting()} Founder ${founderName}`}
+              {`${getGreeting()}, ${founderName}`}
             </h1>
 
             {/* Phase badge + Readiness */}
@@ -733,13 +828,12 @@ export default function DashboardPage() {
                   display: 'inline-flex',
                   alignItems: 'center',
                   gap: '6px',
-                  background: 'rgba(255,255,255,0.12)',
+                  background: 'rgba(0,0,0,0.3)',
                   padding: '7px 16px',
                   borderRadius: 20,
                   fontSize: '0.75rem',
                   color: '#fff',
-                  border: '1px solid rgba(255,255,255,0.2)',
-                  backdropFilter: 'blur(8px)',
+                  border: '1px solid rgba(255,255,255,0.4)',
                 }}
               >
                 <Icons.network size={14} color="#C5975B" />
@@ -750,13 +844,12 @@ export default function DashboardPage() {
                   display: 'inline-flex',
                   alignItems: 'center',
                   gap: '6px',
-                  background: 'rgba(255,255,255,0.15)',
+                  background: 'rgba(0,0,0,0.3)',
                   padding: '7px 16px',
                   borderRadius: 20,
                   fontSize: '0.75rem',
                   color: '#fff',
-                  border: '1px solid rgba(255,255,255,0.2)',
-                  backdropFilter: 'blur(8px)',
+                  border: '1px solid rgba(255,255,255,0.4)',
                 }}
               >
                 <Icons.target size={14} color="#C5975B" />
@@ -772,123 +865,7 @@ export default function DashboardPage() {
             </div>
           </div>
 
-          {/* Velocity Tracker + Streak Reactor */}
-          <div
-            className="banner-right"
-            style={{
-              background: 'rgba(255,255,255,0.08)',
-              border: '1px solid rgba(255,255,255,0.15)',
-              borderRadius: 20,
-              padding: '1.25rem 1.5rem',
-              display: 'flex',
-              alignItems: 'center',
-              gap: '1.5rem',
-              backdropFilter: 'blur(16px)',
-              boxShadow: '0 0 30px rgba(0,0,0,0.1) inset',
-            }}
-          >
-            {/* Velocity bars */}
-            <div
-              style={{
-                display: 'flex',
-                flexDirection: 'column',
-                alignItems: 'center',
-                gap: '0.5rem',
-              }}
-            >
-              <span
-                style={{
-                  fontSize: '0.6rem',
-                  fontWeight: 800,
-                  color: '#C5975B',
-                  letterSpacing: '0.12em',
-                  textTransform: 'uppercase',
-                }}
-              >
-                VELOCITY
-              </span>
-              <div style={{ display: 'flex', gap: '0.35rem' }}>
-                {weekDays.map((d, i) => (
-                  <div
-                    key={i}
-                    style={{
-                      display: 'flex',
-                      flexDirection: 'column',
-                      alignItems: 'center',
-                      gap: '0.3rem',
-                    }}
-                  >
-                    <div
-                      style={{
-                        width: 24,
-                        height: 6,
-                        borderRadius: 3,
-                        background: d.active ? '#C5975B' : 'rgba(255,255,255,0.2)',
-                        boxShadow: d.active ? '0 0 12px rgba(197,151,91,0.7)' : 'none',
-                        transition: 'all 0.3s',
-                      }}
-                    />
-                    <span
-                      style={{
-                        fontSize: '0.55rem',
-                        color: d.isToday ? '#fff' : 'rgba(255,255,255,0.45)',
-                        fontWeight: d.isToday ? 800 : 500,
-                      }}
-                    >
-                      {d.label}
-                    </span>
-                  </div>
-                ))}
-              </div>
-            </div>
-
-            <div style={{ width: 1, height: 40, background: 'rgba(255,255,255,0.15)' }} />
-
-            {/* Streak reactor */}
-            <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-              <div
-                style={{
-                  width: 50,
-                  height: 50,
-                  borderRadius: '50%',
-                  background: 'rgba(255,255,255,0.1)',
-                  border: '2px solid #C5975B',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  animation: 'glowPulse 2s infinite',
-                }}
-              >
-                <Icons.streak size={24} color="#C5975B" />
-              </div>
-              <div>
-                <p
-                  style={{
-                    fontSize: '1.8rem',
-                    fontWeight: 900,
-                    color: '#fff',
-                    margin: 0,
-                    lineHeight: 1,
-                    textShadow: '0 0 12px rgba(197,151,91,0.4)',
-                  }}
-                >
-                  {streak.current}
-                </p>
-                <p
-                  style={{
-                    fontSize: '0.6rem',
-                    fontWeight: 800,
-                    color: '#a1a1aa',
-                    margin: 0,
-                    letterSpacing: '0.06em',
-                    textTransform: 'uppercase',
-                  }}
-                >
-                  Day Streak
-                </p>
-              </div>
-            </div>
-          </div>
+          <div />
         </div>
       </div>
 
@@ -957,7 +934,7 @@ export default function DashboardPage() {
 
       {/* ═══════ DEEP TECH METRIC CARDS ═══════ */}
       <div
-        className="d4col"
+        className="d4col da"
         style={{
           display: 'grid',
           gridTemplateColumns: 'repeat(4, 1fr)',
@@ -1052,9 +1029,197 @@ export default function DashboardPage() {
         ))}
       </div>
 
+      {/* ═══════ COURSE EXPLORER TOGGLES ═══════ */}
+      <div className="da da6" style={{ marginBottom: 24 }}>
+        <div
+          style={{
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'space-between',
+            marginBottom: '1rem',
+            flexWrap: 'wrap',
+            gap: '1rem',
+          }}
+        >
+          <h2 style={{ fontSize: '1.25rem', fontWeight: 900, color: '#111', margin: 0 }}>
+            Explore Courses
+          </h2>
+          <div
+            style={{
+              display: 'flex',
+              background: '#f3f4f6',
+              padding: '4px',
+              borderRadius: '12px',
+              gap: '4px',
+              flexWrap: 'nowrap',
+              overflowX: 'auto',
+              msOverflowStyle: 'none',
+              scrollbarWidth: 'none',
+            }}
+          >
+            {[
+              { id: 'expert', label: 'Expert', icon: Icons.award },
+              { id: 'android', label: 'Android', icon: Icons.cpu },
+              { id: 'wishlist', label: 'Wishlist', icon: Icons.sparkles },
+              { id: 'completed', label: 'Completed', icon: Icons.check },
+            ].map(cat => (
+              <button
+                key={cat.id}
+                onClick={() => setActiveCategory(cat.id)}
+                style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '6px',
+                  padding: '8px 16px',
+                  borderRadius: '10px',
+                  fontSize: '0.82rem',
+                  fontWeight: 700,
+                  border: 'none',
+                  cursor: 'pointer',
+                  whiteSpace: 'nowrap',
+                  transition: 'all 0.2s cubic-bezier(0.4, 0, 0.2, 1)',
+                  background: activeCategory === cat.id ? '#7A1F2B' : 'transparent',
+                  color: activeCategory === cat.id ? '#fff' : '#6b7280',
+                  boxShadow:
+                    activeCategory === cat.id ? '0 4px 12px rgba(122, 31, 43, 0.2)' : 'none',
+                }}
+              >
+                <cat.icon size={14} color={activeCategory === cat.id ? '#fff' : '#9ca3af'} />
+                {cat.label}
+              </button>
+            ))}
+          </div>
+        </div>
+
+        <div
+          style={{
+            display: 'grid',
+            gridTemplateColumns: 'repeat(auto-fill, minmax(260px, 1fr))',
+            gap: '1.25rem',
+          }}
+        >
+          {filteredCourses.length > 0 ? (
+            filteredCourses.map((c, i) => {
+              const isEnrolledOrCompleted = activeCategory === 'completed' || activeCategory === 'enrolled';
+              const courseId = c.courseId || c._id;
+              const title = c.courseTitle || c.title;
+              const thumb = c.thumbnailUrl || c.thumbnail || 'https://via.placeholder.com/400x225?text=Course';
+              const href = isEnrolledOrCompleted ? `/learn/${courseId}` : `/courses/${c.slug}`;
+
+              return (
+                <Link key={c._id || c.id || i} href={href} style={{ textDecoration: 'none' }}>
+                  <div
+                    className="dcard"
+                    style={{
+                      height: '100%',
+                      display: 'flex',
+                      flexDirection: 'column',
+                      overflow: 'hidden',
+                      transition: 'transform 0.2s',
+                    }}
+                    onMouseEnter={e => (e.currentTarget.style.transform = 'translateY(-4px)')}
+                    onMouseLeave={e => (e.currentTarget.style.transform = 'translateY(0)')}
+                  >
+                    <div style={{ position: 'relative', height: '140px' }}>
+                      <img
+                        src={thumb}
+                        alt={title}
+                        style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+                      />
+                      {c.difficultyLevel && (
+                        <span
+                          style={{
+                            position: 'absolute',
+                            top: '10px',
+                            left: '10px',
+                            background: 'rgba(0,0,0,0.6)',
+                            backdropFilter: 'blur(4px)',
+                            color: '#fff',
+                            padding: '3px 8px',
+                            borderRadius: '6px',
+                            fontSize: '0.65rem',
+                            fontWeight: 700,
+                          }}
+                        >
+                          {c.difficultyLevel}
+                        </span>
+                      )}
+                      {activeCategory === 'completed' && (
+                        <div
+                          style={{
+                            position: 'absolute',
+                            bottom: '10px',
+                            right: '10px',
+                            background: '#059669',
+                            color: '#fff',
+                            padding: '4px 10px',
+                            borderRadius: '20px',
+                            fontSize: '0.65rem',
+                            fontWeight: 800,
+                            display: 'flex',
+                            alignItems: 'center',
+                            gap: '4px',
+                          }}
+                        >
+                          <Icons.check size={10} color="#fff" /> PASSED
+                        </div>
+                      )}
+                    </div>
+                    <div
+                      style={{ padding: '1rem', flex: 1, display: 'flex', flexDirection: 'column' }}
+                    >
+                      <h3
+                        style={{
+                          fontSize: '0.95rem',
+                          fontWeight: 800,
+                          color: '#111',
+                          margin: '0 0 0.5rem',
+                          lineHeight: 1.4,
+                        }}
+                      >
+                        {title}
+                      </h3>
+                      <div
+                        style={{
+                          marginTop: 'auto',
+                          display: 'flex',
+                          alignItems: 'center',
+                          gap: '8px',
+                        }}
+                      >
+                        <Icons.clock size={12} color="#888" />
+                        <span style={{ fontSize: '0.72rem', color: '#888' }}>
+                          {c.durationWeeks || 8} Weeks
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+                </Link>
+              );
+            })
+          ) : (
+            <div
+              style={{
+                gridColumn: '1 / -1',
+                textAlign: 'center',
+                padding: '3rem 1rem',
+                background: '#f9fafb',
+                borderRadius: '16px',
+                border: '1px dashed #e5e7eb',
+              }}
+            >
+              <Icons.book size={40} color="#d1d5db" />
+              <p style={{ marginTop: '1rem', color: '#6b7280', fontWeight: 600 }}>
+                No courses found in this category.
+              </p>
+            </div>
+          )}
+        </div>
+      </div>
+
       {/* ═══════ PITCH READINESS + MILESTONE UNLOCKS ═══════ */}
       <div
-        className="d2col"
+        className="d2col da"
         style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 16, marginBottom: 24 }}
       >
         {/* Pitch Readiness */}
@@ -1197,6 +1362,57 @@ export default function DashboardPage() {
           </div>
         </div>
 
+        {/* Founder Profile Summary */}
+        <div className="da da5 dcard" style={{ padding: '1.75rem' }}>
+           <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', marginBottom: '1.5rem' }}>
+              <div style={{
+                width: 60, height: 60, borderRadius: '50%',
+                background: '#f3f4f6', display: 'flex', alignItems: 'center', justifyContent: 'center',
+                border: '2px solid #7A1F2B', padding: '3px'
+              }}>
+                <img
+                  src={user?.avatar || '/assets/images/default-avatar.png'}
+                  alt="Founder"
+                  style={{ width: '100%', height: '100%', borderRadius: '50%', objectFit: 'cover' }}
+                />
+              </div>
+              <div>
+                <h3 style={{ margin: 0, fontSize: '1.1rem', fontWeight: 900, color: '#111' }}>{founderName}</h3>
+                <p style={{ margin: 0, fontSize: '0.75rem', fontWeight: 700, color: '#7A1F2B', textTransform: 'uppercase' }}>
+                  {user?.role || 'Founder'} • {phase} Phase
+                </p>
+              </div>
+           </div>
+           <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
+              <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.85rem' }}>
+                <span style={{ color: '#888', fontWeight: 600 }}>Incubation ID</span>
+                <span style={{ color: '#111', fontWeight: 700 }}>#{user?._id?.slice(-6) || 'IND-2024'}</span>
+              </div>
+              <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.85rem' }}>
+                <span style={{ color: '#888', fontWeight: 600 }}>Startup Sector</span>
+                <span style={{ color: '#111', fontWeight: 700 }}>{user?.interest || 'General Tech'}</span>
+              </div>
+              <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.85rem' }}>
+                <span style={{ color: '#888', fontWeight: 600 }}>Focus Area</span>
+                <span style={{ color: '#111', fontWeight: 700 }}>{activeCategory === 'expert' ? 'Advanced Scaling' : 'Foundation'}</span>
+              </div>
+           </div>
+           <Link
+             href="/profile"
+             style={{
+               display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px',
+               marginTop: '1.5rem', padding: '10px', borderRadius: '10px',
+               background: '#f9fafb', border: '1.5px solid #e5e7eb',
+               textDecoration: 'none', color: '#374151', fontSize: '0.82rem', fontWeight: 700,
+               transition: 'all 0.2s'
+             }}
+             onMouseEnter={e => e.target.style.background = '#f3f4f6'}
+             onMouseLeave={e => e.target.style.background = '#f9fafb'}
+           >
+             <Icons.profile size={16} color="#7A1F2B" /> Complete Profile
+           </Link>
+        </div>
+
         {/* Milestone Unlocks */}
         <div
           className="da da5 dcard"
@@ -1316,9 +1532,10 @@ export default function DashboardPage() {
         </div>
       </div>
 
+
       {/* ═══════ MY COURSES + RECENT ACTIVITY ═══════ */}
       <div
-        className="d2col"
+        className="d2col da"
         style={{ display: 'grid', gridTemplateColumns: '1.15fr 0.85fr', gap: 16, marginBottom: 24 }}
       >
         {/* My Courses */}
@@ -1625,7 +1842,7 @@ export default function DashboardPage() {
             {
               href: '/dashboard/explore',
               label: 'Explore Courses',
-              desc: 'Browse catalog',
+              desc: 'Explore catalog',
               Icon: Icons.compass,
               color: '#7A1F2B',
               bg: 'rgba(122,31,43,0.06)',

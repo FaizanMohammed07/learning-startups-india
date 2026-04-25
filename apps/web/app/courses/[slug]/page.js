@@ -492,7 +492,7 @@ export default function CourseDetailPage() {
             The course you&apos;re looking for doesn&apos;t exist or has been removed.
           </p>
           <Link
-            href="/courses"
+            href="/dashboard/explore"
             className="inline-flex items-center gap-2 px-6 py-3 bg-[#7A1F2B] text-white rounded-xl font-medium hover:bg-[#5C1520] transition-colors"
           >
             {Icons.back} Browse Courses
@@ -521,7 +521,7 @@ export default function CourseDetailPage() {
           <div className="flex items-center justify-between mb-8">
             <motion.div initial={{ opacity: 0, x: -10 }} animate={{ opacity: 1, x: 0 }}>
               <Link
-                href="/courses"
+                href="/dashboard/explore"
                 className="inline-flex items-center gap-1.5 text-sm text-white/60 hover:text-white transition-colors group"
               >
                 <span className="group-hover:-translate-x-0.5 transition-transform">
@@ -757,33 +757,34 @@ export default function CourseDetailPage() {
       </div>
 
       {/* ── Mobile Sticky CTA ── */}
-      <div className="lg:hidden sticky top-0 z-30 bg-white/95 backdrop-blur-md border-b border-gray-200 shadow-sm">
-        <div className="max-w-7xl mx-auto px-4 py-3 flex items-center justify-between">
-          <div>
-            <span className="text-xl font-extrabold text-gray-900">
+      <div className="lg:hidden sticky bottom-0 z-30 bg-white/95 backdrop-blur-md border-t border-gray-200 shadow-[0_-4px_12px_rgba(0,0,0,0.05)]">
+        <div className="max-w-7xl mx-auto px-4 py-4 flex items-center justify-between gap-4">
+          <div className="flex-1">
+            <span className="text-2xl font-extrabold text-gray-900">
               {price > 0 ? `\u20B9${price.toLocaleString()}` : 'Free'}
             </span>
             {hasDiscount && (
-              <span className="text-sm text-gray-400 line-through ml-2">
-                \u20B9{course.originalPriceInr.toLocaleString()}
-              </span>
+              <p className="text-xs text-gray-400">
+                <span className="line-through">\u20B9{course.originalPriceInr.toLocaleString()}</span>
+                <span className="ml-1 text-emerald-600 font-bold">{discountPercent}% OFF</span>
+              </p>
             )}
           </div>
           {enrolled ? (
             <Link
               href={`/learn/${course._id}`}
-              className="px-6 py-2.5 bg-emerald-600 text-white rounded-xl font-bold text-sm hover:bg-emerald-700 transition-colors"
+              className="flex-1 text-center py-3 bg-emerald-600 text-white rounded-xl font-bold text-sm"
             >
-              Continue
+              Learn Now
             </Link>
           ) : (
             <motion.button
               onClick={handleEnroll}
               disabled={enrolling}
               whileTap={{ scale: 0.95 }}
-              className="px-6 py-2.5 bg-gradient-to-r from-[#7A1F2B] to-[#5C1520] text-white rounded-xl font-bold text-sm disabled:opacity-50"
+              className="flex-1 py-3 bg-gradient-to-r from-[#7A1F2B] to-[#5C1520] text-white rounded-xl font-bold text-sm"
             >
-              {enrolling ? 'Processing...' : 'Enroll Now'}
+              {enrolling ? '...' : (price > 0 ? 'Enroll Now' : 'Join Free')}
             </motion.button>
           )}
         </div>

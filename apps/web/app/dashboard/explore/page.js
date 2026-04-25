@@ -1,4 +1,4 @@
-﻿'use client';
+'use client';
 
 import { useState, useMemo, useRef } from 'react';
 import Link from 'next/link';
@@ -110,14 +110,23 @@ function SkeletonCard() {
 }
 
 export default function ExplorePage() {
-  const { courses, enrolledCourses, certificates, isLoading } = useDashboard();
+  const { courses, enrolledCourses, wishlist, setWishlist, certificates, isLoading, refresh } = useDashboard();
   const [search, setSearch] = useState('');
   const [activeCategory, setActiveCategory] = useState('All');
   const [sortBy, setSortBy] = useState('default');
   const [viewMode, setViewMode] = useState('grid');
-  const [wishlist, setWishlist] = useState(new Set());
   const [previewId, setPreviewId] = useState(null);
   const catScrollRef = useRef(null);
+
+  const wishlistSet = useMemo(() => new Set(wishlist.map(w => w._id || w.id)), [wishlist]);
+
+  const toggleWishlist = async id => {
+    const { apiPost } = await import('@/lib/api');
+    const res = await apiPost(`/api/v1/courses/${id}/wishlist`, {});
+    if (res.success) {
+      refresh(); // Sync everything
+    }
+  };
 
   const enrolledIds = useMemo(
     () => new Set(enrolledCourses?.map(e => e.courseId) || []),
@@ -175,15 +184,6 @@ export default function ExplorePage() {
     return result;
   }, [courses, search, activeCategory, sortBy]);
 
-  const toggleWishlist = id => {
-    setWishlist(prev => {
-      const next = new Set(prev);
-      if (next.has(id)) next.delete(id);
-      else next.add(id);
-      return next;
-    });
-  };
-
   const totalEnrolled = enrolledCourses?.length || 0;
   const totalCerts = certificates?.length || 0;
   const freeCount = courses?.filter(c => !(c.priceInr || c.price)).length || 0;
@@ -229,6 +229,9 @@ export default function ExplorePage() {
         maxWidth: '1280px',
         margin: '0 auto',
         fontFamily: "'Inter', system-ui, -apple-system, sans-serif",
+        minHeight: '100vh',
+        display: 'flex',
+        flexDirection: 'column'
       }}
     >
       <style
@@ -257,15 +260,42 @@ export default function ExplorePage() {
         .price-badge { animation: pulseGlow 2s infinite; }
         @media (max-width: 768px) {
           .stats-grid { grid-template-columns: repeat(2, 1fr) !important; }
-          .toolbar-row { flex-direction: column !important; }
+          .toolbar-row { 
+            flex-direction: column !important; 
+            align-items: stretch !important;
+            gap: 0.75rem !important;
+          }
+          .search-box { 
+            min-width: 100% !important; 
+            flex: none !important;
+          }
+          .search-box input {
+            padding: 0.7rem 1rem 0.7rem 2.5rem !important;
+            font-size: 0.875rem !important;
+          }
+          .sort-select {
+            padding: 0.7rem 1rem !important;
+            font-size: 0.875rem !important;
+            min-width: 100% !important;
+          }
           .explore-grid-view { grid-template-columns: 1fr !important; }
+        }
+        @media (max-width: 480px) {
+          .stats-grid { grid-template-columns: 1fr !important; }
+          .explore-grid-view { padding: 0 !important; }
         }
       `,
         }}
       />
 
       {/* Main Content Area */}
-      <div style={{ padding: '2rem 2.5rem 0' }}>
+      <div className="explore-content-container">
+        <style dangerouslySetInnerHTML={{ __html: `
+          .explore-content-container { padding: 0.75rem 2.5rem 0; }
+          @media (max-width: 768px) {
+            .explore-content-container { padding: 0.5rem 1rem 0; }
+          }
+        `}} />
         {/* Search + Sort + View Toolbar */}
         <div
           className="toolbar-row"
@@ -314,7 +344,7 @@ export default function ExplorePage() {
               onChange={e => setSearch(e.target.value)}
               style={{
                 width: '100%',
-                padding: '0.875rem 1rem',
+                padding: '0.875rem 1rem 0.875rem 2.85rem',
                 background: 'transparent',
                 border: 'none',
                 fontSize: '0.95rem',
@@ -531,7 +561,7 @@ export default function ExplorePage() {
               </button>
             )}
           </div>
-          {wishlist.size > 0 && (
+          {wishlist?.length > 0 && (
             <div
               style={{
                 fontSize: '0.85rem',
@@ -552,7 +582,7 @@ export default function ExplorePage() {
               >
                 <path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z" />
               </svg>{' '}
-              {wishlist.size} wishlisted
+              {wishlist.length} wishlisted
             </div>
           )}
         </div>
@@ -638,7 +668,7 @@ export default function ExplorePage() {
               const price = course.priceInr || course.price || 0;
               const thumbnailUrl = course.thumbnailUrl || course.thumbnail;
               const levelStyle = getLevelStyle(course.level);
-              const isWishlisted = wishlist.has(course._id);
+              const isWishlisted = wishlistSet.has(course._id);
 
               return (
                 <div
@@ -1139,7 +1169,7 @@ export default function ExplorePage() {
               const price = course.priceInr || course.price || 0;
               const thumbnailUrl = course.thumbnailUrl || course.thumbnail;
               const levelStyle = getLevelStyle(course.level);
-              const isWishlisted = wishlist.has(course._id);
+              const isWishlisted = wishlistSet.has(course._id);
 
               return (
                 <div

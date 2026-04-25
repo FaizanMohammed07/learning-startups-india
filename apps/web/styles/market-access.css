@@ -1214,21 +1214,20 @@
 
 /* Simulated Tech Background Gradients matching the dashboard aesthetic */
 .tech-bg-1 {
-  background: linear-gradient(135deg, rgba(8, 145, 178, 0.15) 0%, rgba(15, 23, 42, 0.6) 100%), repeating-linear-gradient(45deg, rgba(8, 145, 178, 0.05) 0, rgba(8, 145, 178, 0.05) 1px, transparent 1px, transparent 15px);
+  background: url('/assets/images/speaker-auditorium.jpg') center/cover no-repeat;
 }
 .tech-bg-2 {
-  background: linear-gradient(135deg, rgba(139, 92, 246, 0.15) 0%, rgba(15, 23, 42, 0.6) 100%), radial-gradient(circle, rgba(139, 92, 246, 0.1) 1px, transparent 1px);
-  background-size: 100% 100%, 20px 20px;
+  background: url('/assets/images/market-readiness.png') center/cover no-repeat;
 }
 .tech-bg-3 {
-  background: linear-gradient(135deg, rgba(234, 179, 8, 0.15) 0%, rgba(15, 23, 42, 0.6) 100%);
+  background: url('/assets/images/industry-partner.jpg') center/cover no-repeat;
   border-left: 1px solid rgba(255,255,255,0.03);
 }
 .tech-bg-4 {
-  background: linear-gradient(135deg, rgba(239, 68, 68, 0.1) 0%, rgba(15, 23, 42, 0.6) 100%);
+  background: url('/assets/images/market-exposure.png') center/cover no-repeat;
 }
 .tech-bg-5 {
-  background: linear-gradient(135deg, rgba(20, 184, 166, 0.15) 0%, rgba(15, 23, 42, 0.6) 100%);
+  background: url('/assets/images/feedback-learning.jpg') center/cover no-repeat;
 }
 
 @media (max-width: 900px) {

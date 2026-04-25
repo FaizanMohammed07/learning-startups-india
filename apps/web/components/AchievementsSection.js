@@ -12,7 +12,7 @@ const achievementsData = [
     year: '2025',
     category: 'Innovation Event',
     index: '01',
-    image: '/assets/images/Demo-class.jpg',
+    image: '/assets/images/inspirex-new.jpg',
   },
   {
     id: 'hackathon',

@@ -7,10 +7,21 @@
 }
 
 .iec-container {
-  max-width: 1200px;
+  max-width: 1400px; /* Increased for a more premium wide feel */
   margin-left: auto !important;
   margin-right: auto !important;
-  padding: 0 2rem;
+  padding: 0 4rem;
+}
+
+/* Global Mesh Background */
+.super-ui-mesh {
+  position: absolute;
+  inset: 0;
+  background-image: 
+    radial-gradient(circle at 10% 20%, rgba(229, 57, 53, 0.03) 0%, transparent 20%),
+    radial-gradient(circle at 90% 80%, rgba(229, 57, 53, 0.03) 0%, transparent 20%);
+  pointer-events: none;
+  z-index: -1;
 }
 
 .iec-section {
@@ -40,6 +51,22 @@
 
 .iec-text-red {
   color: #e53935;
+}
+
+.section-label-premium {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 16px;
+  background: rgba(229, 57, 53, 0.05);
+  border: 1px solid rgba(229, 57, 53, 0.1);
+  border-radius: 100px;
+  color: #e53935;
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  margin-bottom: 24px;
 }
 
 /* Buttons */

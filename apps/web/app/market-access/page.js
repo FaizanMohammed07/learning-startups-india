@@ -1,136 +1,15 @@
 'use client';
 
 import { motion } from 'framer-motion';
+import MarketAccessHero from '../../components/MarketAccessHero';
 import '../../styles/market-access.css';
-import ParticleCursor from '@/components/ParticleCursor';
 
 export default function MarketAccessPage() {
-  // Market opportunity cards data
-  const marketCards = [
-    { label: "Industry Partners", value: "150+", icon: "🤝", delay: 0 },
-    { label: "Market Pilots", value: "80+", icon: "🚀", delay: 1.5 },
-    { label: "Success Rate", value: "92%", icon: "📈", delay: 3 },
-    { label: "Active Markets", value: "25+", icon: "🌍", delay: 4.5 },
-    { label: "Customer Connects", value: "500+", icon: "👥", delay: 6 },
-  ];
-
   return (
     <>
-      <ParticleCursor />
       <div className="market-access-page">
         
-        {/* Hero Section - Dark Greenish Premium */}
-        <section className="market-hero">
-          {/* Animated Background */}
-          <div className="hero-animated-bg">
-            <div className="gradient-orb orb-1"></div>
-            <div className="gradient-orb orb-2"></div>
-            <div className="gradient-orb orb-3"></div>
-          </div>
-
-          {/* Floating Grid Pattern with Stars */}
-          <div className="hero-grid-pattern"></div>
-
-          <div className="container">
-            <div className="hero-content">
-              <motion.h1 
-                className="hero-title"
-                initial={{ opacity: 0, y: 30 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.8 }}
-              >
-                From Idea Validation to <br/>
-                <span className="hero-highlight">Real-World Market Exposure</span>
-              </motion.h1>
-              
-              <motion.p 
-                className="hero-description"
-                initial={{ opacity: 0, y: 30 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.8, delay: 0.2 }}
-              >
-                Market Access is the bridge connecting startup ideas with real customers, industries, and markets. 
-                We help startups test, validate, and enter the market through structured support, curated exposure, 
-                and meaningful partnerships.
-              </motion.p>
-              
-              <motion.div 
-                className="hero-features"
-                initial={{ opacity: 0, y: 30 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.8, delay: 0.4 }}
-              >
-                <div className="hero-feature">
-                  <div className="feature-icon">
-                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                      <circle cx="12" cy="12" r="10"/>
-                      <path d="M12 6v6l4 2"/>
-                    </svg>
-                  </div>
-                  <div className="feature-text">
-                    <h3>Structured Process</h3>
-                    <p>5-step guided approach</p>
-                  </div>
-                </div>
-                <div className="hero-feature">
-                  <div className="feature-icon">
-                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                      <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/>
-                      <circle cx="9" cy="7" r="4"/>
-                      <path d="M22 21v-2a4 4 0 0 0-3-3.87"/>
-                      <path d="M16 3.13a4 4 0 0 1 0 7.75"/>
-                    </svg>
-                  </div>
-                  <div className="feature-text">
-                    <h3>Industry Partners</h3>
-                    <p>Connect with real markets</p>
-                  </div>
-                </div>
-                <div className="hero-feature">
-                  <div className="feature-icon">
-                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                      <line x1="12" y1="20" x2="12" y2="10"/>
-                      <line x1="18" y1="20" x2="18" y2="4"/>
-                      <line x1="6" y1="20" x2="6" y2="16"/>
-                    </svg>
-                  </div>
-                  <div className="feature-text">
-                    <h3>Validation & Feedback</h3>
-                    <p>Real-world insights</p>
-                  </div>
-                </div>
-              </motion.div>
-            </div>
-
-            {/* Floating Market Opportunity Cards */}
-            <div className="market-cards-container">
-              {marketCards.map((card, index) => (
-                <motion.div
-                  key={index}
-                  className={`market-card market-card-${index + 1}`}
-                  initial={{ opacity: 0, x: -50, y: 50, scale: 0.9 }}
-                  animate={{ 
-                    opacity: [0, 1, 1, 0],
-                    x: [-50, 0, 0, 50],
-                    y: [50, 0, -30, -80],
-                    scale: [0.9, 1, 1, 0.95]
-                  }}
-                  transition={{
-                    duration: 4,
-                    delay: card.delay,
-                    repeat: Infinity,
-                    repeatDelay: 2,
-                    ease: [0.43, 0.13, 0.23, 0.96]
-                  }}
-                >
-                  <div className="market-card-icon">{card.icon}</div>
-                  <div className="market-card-value">{card.value}</div>
-                  <div className="market-card-label">{card.label}</div>
-                </motion.div>
-              ))}
-            </div>
-          </div>
-        </section>
+        <MarketAccessHero />
 
         {/* What is Market Access - Dark */}
         <section className="what-section">
@@ -595,42 +474,7 @@ export default function MarketAccessPage() {
             </motion.div>
           </div>
         </section>
-        {/* Social Connect - Premium */}
-        <section className="social-connect-premium">
-          <div className="container">
-            <motion.div
-              initial={{ opacity: 0, scale: 0.9 }}
-              whileInView={{ opacity: 1, scale: 1 }}
-              transition={{ duration: 0.6 }}
-              viewport={{ once: true }}
-            >
-              <div className="social-tagline">STAY CONNECTED WITH US</div>
-              <div className="social-icons-wrapper">
-                <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer" className="social-icon-box si-linkedin">
-                  <svg viewBox="0 0 24 24" fill="currentColor">
-                    <path d="M16 8a6 6 0 016 6v7h-4v-7a2 2 0 00-2-2 2 2 0 00-2 2v7h-4v-7a6 6 0 016-6zM2 9h4v12H2z" />
-                    <circle cx="4" cy="4" r="2" />
-                  </svg>
-                </a>
-                <a href="https://twitter.com" target="_blank" rel="noopener noreferrer" className="social-icon-box si-twitter">
-                  <svg viewBox="0 0 24 24" fill="currentColor">
-                    <path d="M23 3a10.9 10.9 0 01-3.14 1.53 4.48 4.48 0 00-7.86 3v1A10.66 10.66 0 013 4s-4 9 5 13a11.64 11.64 0 01-7 2c9 5 20 0 20-11.5a4.5 4.5 0 00-.08-.83A7.72 7.72 0 0023 3z" />
-                  </svg>
-                </a>
-                <a href="https://instagram.com" target="_blank" rel="noopener noreferrer" className="social-icon-box si-instagram">
-                  <svg viewBox="0 0 24 24" fill="currentColor">
-                    <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/>
-                  </svg>
-                </a>
-                <a href="https://youtube.com" target="_blank" rel="noopener noreferrer" className="social-icon-box si-youtube">
-                  <svg viewBox="0 0 24 24" fill="currentColor">
-                    <path d="M19.615 3.184c-3.604-.246-11.631-.245-15.23 0-3.897.266-4.356 2.62-4.385 8.816.029 6.185.484 8.549 4.385 8.816 3.6.245 11.626.246 15.23 0 3.897-.266 4.356-2.62 4.385-8.816-.029-6.185-.484-8.549-4.385-8.816zm-10.615 12.816v-8l8 3.993-8 4.007z"/>
-                  </svg>
-                </a>
-              </div>
-            </motion.div>
-          </div>
-        </section>
+
 
         {/* Disclaimer - Premium Dark */}
         <section className="disclaimer-section-premium">

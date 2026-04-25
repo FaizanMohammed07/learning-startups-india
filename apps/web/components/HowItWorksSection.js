@@ -1,8 +1,8 @@
 'use client';
 
 import { useState, useEffect, useRef, useCallback } from 'react';
-import { motion } from 'framer-motion';
-import { Rocket, FileEdit, UserCheck, Zap, TrendingUp } from 'lucide-react';
+import { motion, AnimatePresence } from 'framer-motion';
+import { Rocket, FileEdit, UserCheck, Zap, TrendingUp, ChevronLeft, ChevronRight } from 'lucide-react';
 import '../styles/how-it-works.css';
 
 const steps = [
@@ -41,6 +41,8 @@ export default function HowItWorksSection() {
   const [activeStep, setActiveStep] = useState(0);
   const [isHovering, setIsHovering] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
+  const [mobileStep, setMobileStep] = useState(0);
+  const [direction, setDirection] = useState(0);
 
   useEffect(() => {
     const handleResize = () => setIsMobile(window.innerWidth < 768);
@@ -79,6 +81,33 @@ export default function HowItWorksSection() {
     setActiveStep(idx);
     setRocketPct(NODE_POSITIONS_PCT[idx]);
   }, []);
+
+  const nextMobileStep = () => {
+    setDirection(1);
+    setMobileStep((prev) => (prev === steps.length - 1 ? 0 : prev + 1));
+  };
+
+  const prevMobileStep = () => {
+    setDirection(-1);
+    setMobileStep((prev) => (prev === 0 ? steps.length - 1 : prev - 1));
+  };
+
+  const variants = {
+    enter: (direction) => ({
+      x: direction > 0 ? 100 : -100,
+      opacity: 0,
+    }),
+    center: {
+      zIndex: 1,
+      x: 0,
+      opacity: 1,
+    },
+    exit: (direction) => ({
+      zIndex: 0,
+      x: direction < 0 ? 100 : -100,
+      opacity: 0,
+    }),
+  };
 
   return (
     <section className="how-it-works-modern">
@@ -145,30 +174,69 @@ export default function HowItWorksSection() {
               </div>
             </>
           ) : (
-            /* ── Mobile View: Vertical Step Items (Aligned) ── */
-            <div className="roadmap-mobile-list">
-              {steps.map((step, idx) => (
-                <motion.div 
-                  key={idx} 
-                  className="mobile-step-item"
-                  initial={{ opacity: 0, x: -20 }}
-                  whileInView={{ opacity: 1, x: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ delay: idx * 0.1 }}
-                >
-                  <div className="mobile-step-node-col">
-                    <div className="roadmap-node-item active">
-                      <span className="node-number">{idx + 1}</span>
+            /* ── Mobile View: Carousel Format ── */
+            <div className="mobile-carousel-container">
+              <div className="mobile-carousel-viewport">
+                <AnimatePresence initial={false} custom={direction} mode="wait">
+                  <motion.div
+                    key={mobileStep}
+                    custom={direction}
+                    variants={variants}
+                    initial="enter"
+                    animate="center"
+                    exit="exit"
+                    transition={{
+                      x: { type: 'spring', stiffness: 300, damping: 30 },
+                      opacity: { duration: 0.2 },
+                    }}
+                    className="mobile-carousel-card"
+                  >
+                    <div className="mobile-card-inner">
+                      <div className="mobile-card-header">
+                        <div className="mobile-step-pill">STEP {steps[mobileStep].number}</div>
+                        <div className="mobile-card-icon">{steps[mobileStep].icon}</div>
+                      </div>
+                      <h3 className="mobile-card-title">{steps[mobileStep].title}</h3>
+                      <p className="mobile-card-desc">{steps[mobileStep].description}</p>
                     </div>
-                    {idx < steps.length - 1 && <div className="mobile-step-line" />}
+                  </motion.div>
+                </AnimatePresence>
+              </div>
+
+              {/* Carousel Controls matching reference */}
+              <div className="mobile-carousel-controls">
+                <div className="mobile-progress-wrapper">
+                  <span className="mobile-progress-text">0{mobileStep + 1}</span>
+                  <div className="mobile-progress-track" style={{ position: 'relative' }}>
+                    <div 
+                      className="mobile-progress-fill" 
+                      style={{ width: `${((mobileStep + 1) / steps.length) * 100}%` }}
+                    />
+                    {/* Rocket Cursor for mobile progress bar */}
+                    <div
+                      className="rocket-pilot visible"
+                      style={{ 
+                        left: `${((mobileStep + 1) / steps.length) * 100}%`,
+                        transition: 'left 0.3s ease',
+                        width: '24px',
+                        height: '24px'
+                      }}
+                    >
+                      <Rocket size={12} style={{ transform: 'rotate(90deg)' }} />
+                    </div>
                   </div>
-                  <div className="roadmap-step-card-glass">
-                    <div className="step-card-icon">{step.icon}</div>
-                    <h4 className="step-card-title">{step.title}</h4>
-                    <p className="step-card-desc">{step.description}</p>
-                  </div>
-                </motion.div>
-              ))}
+                  <span className="mobile-progress-text">0{steps.length}</span>
+                </div>
+                
+                <div className="mobile-nav-buttons">
+                  <button className="mobile-nav-btn" onClick={prevMobileStep} aria-label="Previous step">
+                    <ChevronLeft size={16} />
+                  </button>
+                  <button className="mobile-nav-btn" onClick={nextMobileStep} aria-label="Next step">
+                    <ChevronRight size={16} />
+                  </button>
+                </div>
+              </div>
             </div>
           )}
         </div>

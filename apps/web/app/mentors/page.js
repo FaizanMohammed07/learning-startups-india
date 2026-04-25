@@ -355,19 +355,6 @@ export default function MentorsPage() {
 
       {/* Role of Mentors Section */}
       <section className="role-section">
-        {/* Background Asset Integration */}
-        <div
-          className="role-bg-asset opacity-20"
-          style={{
-            backgroundImage: 'url("/assets/images/mentors-role-bg.png")',
-            backgroundSize: 'cover',
-            backgroundPosition: 'center',
-            position: 'absolute',
-            inset: 0,
-            zIndex: 0,
-            pointerEvents: 'none',
-          }}
-        />
         <div className="container">
           <motion.div
             className="role-header"
@@ -816,8 +803,8 @@ export default function MentorsPage() {
             whileHover="open"
             animate="closed"
             variants={{
-              closed: { opacity: 0, scale: 0.95 },
-              open: { opacity: 1, scale: 1 },
+              closed: { opacity: 1, scale: 1 },
+              open: { opacity: 1, scale: 1.01 },
             }}
             whileInView={{ opacity: 1, scale: 1 }}
             transition={{ duration: 0.8, ease: 'easeOut' }}

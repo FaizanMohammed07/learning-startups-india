@@ -3,6 +3,7 @@ const enrollmentsService = require('../enrollments/enrollments.service');
 
 async function listCourses(req, res) {
   const result = await service.listCourses(req.query);
+  res.set('Cache-Control', 'public, max-age=300'); // Cache for 5 minutes
   res.json({
     success: true,
     message: 'Courses fetched successfully',

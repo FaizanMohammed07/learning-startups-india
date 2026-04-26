@@ -33,13 +33,8 @@
 .sidebar-logo {
   display: inline-flex;
   align-items: center;
-  justify-content: center;
-  padding: 8px 14px;
   margin-left: 22px; /* Shifting further to the right as requested */
-  background: #ffffff;
-  border-radius: 10px;
   text-decoration: none;
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
   transition: transform 0.2s ease;
 }
 
@@ -48,8 +43,8 @@
 }
 
 .sidebar-logo-img {
-  /* Logo is now on white, so we remove the inversion filter if it was applied */
-  max-width: 100%;
+  height: 42px;
+  width: auto;
 }
 
 /* Sidebar Navigation */
@@ -68,6 +63,22 @@
 
 .nav-section {
   margin-bottom: 8px;
+}
+
+.nav-section-header-btn {
+  font-size: 13px;
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.7);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  padding: 8px 1.25rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  cursor: pointer;
+  width: 100%;
+  text-decoration: none;
+  transition: all 0.2s ease;
 }
 
 .nav-section-label {

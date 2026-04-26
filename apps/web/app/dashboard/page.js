@@ -1429,7 +1429,7 @@ export default function DashboardPage() {
             </div>
           </div>
           <Link
-            href="/profile"
+            href="/dashboard/settings/profile"
             style={{
               display: 'flex',
               alignItems: 'center',

@@ -15,6 +15,7 @@ import '../../styles/dashboard-navbar-fix.css';
 import '../../styles/sidebar-responsive.css';
 import '../../styles/dashboard-navbar-premium.css';
 import '../../styles/dashboard-content-spacing.css';
+import '../../styles/dashboard-responsive-v2.css';
 
 export default function DashboardLayout({ children }) {
   const pathname = usePathname();

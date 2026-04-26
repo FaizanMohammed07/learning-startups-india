@@ -1,0 +1,182 @@
+/* ============================================================
+   DASHBOARD RESPONSIVE V2 & THEME SYNC
+   Global responsive overrides and theme consistency
+   ============================================================ */
+
+/* 0. Global Theme Overrides */
+.platform-page {
+  background: var(--color-dashboard-bg, #f2e9ea) !important;
+  min-height: 100vh !important;
+  font-family: 'Poppins', var(--font-primary) !important;
+  color: var(--color-gray-900, #111827) !important;
+}
+
+.platform-page-title,
+.page-standard-title {
+  color: var(--color-brand-maroon, #7A1F2B) !important;
+  font-family: 'Poppins', sans-serif !important;
+}
+
+.platform-page-subtitle,
+.page-standard-subtitle {
+  color: var(--color-gray-500, #64748b) !important;
+  font-family: 'Poppins', sans-serif !important;
+}
+
+
+/* 1. Base Layout & Content Scaling */
+@media (max-width: 1060px) {
+  .platform-page {
+    padding: 1.5rem !important;
+  }
+  
+  .platform-page-header {
+    flex-direction: column !important;
+    align-items: flex-start !important;
+    gap: 1.5rem !important;
+    margin-bottom: 2rem !important;
+  }
+  
+  .platform-page-title {
+    font-size: 2rem !important;
+  }
+  
+  .platform-page-subtitle {
+    font-size: 1rem !important;
+  }
+}
+
+/* 2. Grid & Column Systems */
+@media (max-width: 1024px) {
+  /* Generic grid stacker */
+  [style*="display: grid"][style*="grid-template-columns"] {
+    grid-template-columns: 1fr !important;
+    gap: 1.5rem !important;
+  }
+  
+  /* Specific Analytics Grid */
+  .analytics-grid {
+    grid-template-columns: 1fr !important;
+    gap: 1.5rem !important;
+  }
+  
+  .analytics-grid > .col-8,
+  .analytics-grid > .col-4,
+  .analytics-grid > .col-6 {
+    grid-column: span 12 !important;
+  }
+  
+  /* Results/Assessments Grid */
+  .assessments-results-grid,
+  [style*="grid-template-columns: repeat(3, 1fr)"],
+  [style*="grid-template-columns: repeat(auto-fill, minmax(450px, 1fr))"] {
+    grid-template-columns: 1fr !important;
+  }
+}
+
+/* 3. Card & Inner Component Adjustments */
+@media (max-width: 768px) {
+  /* Padding reductions for cards */
+  .glass-card-v2,
+  .settings-card,
+  .platform-card-v,
+  [style*="padding: 4rem"],
+  [style*="padding: 3.5rem"],
+  [style*="padding: 3rem"] {
+    padding: 1.5rem !important;
+  }
+  
+  /* Flex containers that should stack */
+  .flex-stack-mobile,
+  [style*="display: flex"][style*="gap: 4rem"],
+  [style*="display: flex"][style*="gap: 5rem"],
+  [style*="display: flex"][style*="gap: 3.5rem"] {
+    flex-direction: column !important;
+    align-items: flex-start !important;
+    gap: 1.5rem !important;
+  }
+  
+  /* Circle Charts / Progress Bars */
+  [style*="width: 260px"][style*="height: 260px"] {
+    width: 200px !important;
+    height: 200px !important;
+    margin: 0 auto;
+  }
+  
+  [style*="width: 260px"] svg {
+    width: 200px !important;
+    height: 200px !important;
+  }
+  
+  /* Bar Charts (Horizontal scrolling on small screens if too many bars) */
+  .bar-chart-container {
+    overflow-x: auto;
+    padding-bottom: 1rem;
+  }
+  
+  /* Form groups */
+  .input-group-row,
+  [style*="display: grid"][style*="grid-template-columns: 1fr 2fr"],
+  [style*="display: grid"][style*="grid-template-columns: 1fr 1fr"] {
+    grid-template-columns: 1fr !important;
+  }
+  
+  /* Hide heavy decorative elements on mobile */
+  .mobile-hide {
+    display: none !important;
+  }
+}
+
+/* 4. Special Page Overrides */
+
+/* Learning Time Page Specifics */
+@media (max-width: 768px) {
+  .weekly-velocity-chart {
+    height: auto !important;
+    overflow-x: auto !important;
+    padding-bottom: 1rem !important;
+  }
+  
+  .weekly-velocity-chart > div {
+    min-width: 40px !important;
+  }
+  
+  [style*="grid-template-columns: 1.2fr 1fr"] {
+    grid-template-columns: 1fr !important;
+    gap: 2rem !important;
+  }
+}
+
+/* Result Card Responsive */
+@media (max-width: 480px) {
+  [style*="display: flex"][style*="gap: 2rem"] {
+    flex-direction: column !important;
+    align-items: center !important;
+    text-align: center;
+  }
+  
+  .result-card-header {
+    flex-direction: column;
+    gap: 10px;
+    align-items: flex-start;
+  }
+}
+
+/* 5. Utility Classes for Fluidity */
+.responsive-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: var(--card-gap, 1.5rem);
+}
+
+.responsive-flex {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1.5rem;
+}
+
+@media (max-width: 640px) {
+  .responsive-flex {
+    flex-direction: column;
+  }
+}

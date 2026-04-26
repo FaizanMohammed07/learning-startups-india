@@ -63,14 +63,24 @@ app.set('trust proxy', 1); // Trust first proxy for correct client IPs (if behin
 // );
 
 // Parse CORS origins from environment variable or use defaults
-const corsOriginsList = env.CORS_ORIGIN 
-  ? env.CORS_ORIGIN.split(',').map(origin => origin.trim())
-  : [
-      'https://learning-startups-india.vercel.app',
-      'https://startupsindia.in',
-      'https://www.startupsindia.in',
-      'http://localhost:3000',
-    ];
+// const corsOriginsList = env.CORS_ORIGIN
+//   ? env.CORS_ORIGIN.split(',').map(origin => origin.trim())
+//   : [
+//       'https://learning-startups-india.vercel.app',
+//       'https://startupsindia.in',
+//       'https://www.startupsindia.in',
+//       'http://localhost:3000',
+//     ];
+
+const allowedOrigins = [
+  'https://learning-startups-india.vercel.app',
+  'https://startupsindia.in',
+  'https://www.startupsindia.in',
+  'http://localhost:3000',
+  'http://localhost:8080',
+  'http://127.0.0.1:3000',
+  'http://127.0.0.1:8080',
+];
 
 app.use(
   cors({
@@ -78,10 +88,14 @@ app.use(
       // allow requests with no origin (like Postman / mobile apps)
       if (!origin) return callback(null, true);
 
-      if (corsOriginsList.includes(origin)) {
+      if (allowedOrigins.includes(origin)) {
         return callback(null, true);
       } else {
-        return callback(new Error('Not allowed by CORS'));
+        // Allow all in dev, strict in production
+        if (process.env.NODE_ENV === 'production') {
+          return callback(new Error('Not allowed by CORS'));
+        }
+        return callback(null, true);
       }
     },
     credentials: true,

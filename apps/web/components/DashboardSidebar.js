@@ -18,12 +18,16 @@ export default function DashboardSidebar({
   const navigation = [
     {
       id: 'main',
-      items: [{ id: 'dashboard', label: 'Dashboard', path: '/dashboard', icon: 'dashboard' }],
+      label: 'Dashboard',
+      path: '/dashboard',
+      icon: 'dashboard',
+      items: [],
     },
     {
       id: 'courses',
       label: 'Courses',
       isDropdown: true,
+      icon: 'courses',
       items: [
         { id: 'explore', label: 'Explore Courses', path: '/dashboard/explore', icon: 'explore' },
         {
@@ -45,6 +49,7 @@ export default function DashboardSidebar({
       id: 'learning-experience',
       label: 'Learning Experience',
       isDropdown: true,
+      icon: 'explore',
       items: [
         {
           id: 'continue',
@@ -71,6 +76,7 @@ export default function DashboardSidebar({
       id: 'assessments',
       label: 'Assessments',
       isDropdown: true,
+      icon: 'award',
       items: [
         {
           id: 'quizzes',
@@ -92,6 +98,7 @@ export default function DashboardSidebar({
       id: 'analytics',
       label: 'Analytics',
       isDropdown: true,
+      icon: 'stats',
       items: [
         {
           id: 'progress-overview',
@@ -123,6 +130,7 @@ export default function DashboardSidebar({
       id: 'achievements',
       label: 'Achievements',
       isDropdown: true,
+      icon: 'streak',
       items: [
         {
           id: 'certificates',
@@ -143,6 +151,7 @@ export default function DashboardSidebar({
       id: 'community',
       label: 'Community',
       isDropdown: true,
+      icon: 'profile',
       items: [
         {
           id: 'discussions',
@@ -163,6 +172,7 @@ export default function DashboardSidebar({
       id: 'payments',
       label: 'Payments',
       isDropdown: true,
+      icon: 'tracking',
       items: [
         {
           id: 'purchases',
@@ -188,6 +198,7 @@ export default function DashboardSidebar({
       id: 'settings',
       label: 'Settings',
       isDropdown: true,
+      icon: 'settings',
       items: [
         { id: 'profile', label: 'Profile', path: '/dashboard/settings/profile', icon: 'profile' },
         {
@@ -206,12 +217,12 @@ export default function DashboardSidebar({
     return pathname === path || pathname.startsWith(path + '/');
   };
 
-  const renderIcon = (icon, isOpen = false) => {
+  const renderIcon = (icon, size = 18, isOpen = false) => {
     const icons = {
       home: (
         <svg
-          width="18"
-          height="18"
+          width={size}
+          height={size}
           viewBox="0 0 24 24"
           fill="none"
           stroke="currentColor"
@@ -223,8 +234,8 @@ export default function DashboardSidebar({
       ),
       dashboard: (
         <svg
-          width="18"
-          height="18"
+          width={size}
+          height={size}
           viewBox="0 0 24 24"
           fill="none"
           stroke="currentColor"
@@ -238,8 +249,8 @@ export default function DashboardSidebar({
       ),
       courses: (
         <svg
-          width="18"
-          height="18"
+          width={size}
+          height={size}
           viewBox="0 0 24 24"
           fill="none"
           stroke="currentColor"
@@ -251,8 +262,8 @@ export default function DashboardSidebar({
       ),
       certificates: (
         <svg
-          width="18"
-          height="18"
+          width={size}
+          height={size}
           viewBox="0 0 24 24"
           fill="none"
           stroke="currentColor"
@@ -267,8 +278,8 @@ export default function DashboardSidebar({
       ),
       explore: (
         <svg
-          width="18"
-          height="18"
+          width={size}
+          height={size}
           viewBox="0 0 24 24"
           fill="none"
           stroke="currentColor"
@@ -280,8 +291,8 @@ export default function DashboardSidebar({
       ),
       profile: (
         <svg
-          width="18"
-          height="18"
+          width={size}
+          height={size}
           viewBox="0 0 24 24"
           fill="none"
           stroke="currentColor"
@@ -293,8 +304,8 @@ export default function DashboardSidebar({
       ),
       wishlist: (
         <svg
-          width="18"
-          height="18"
+          width={size}
+          height={size}
           viewBox="0 0 24 24"
           fill="none"
           stroke="currentColor"
@@ -305,8 +316,8 @@ export default function DashboardSidebar({
       ),
       completed: (
         <svg
-          width="18"
-          height="18"
+          width={size}
+          height={size}
           viewBox="0 0 24 24"
           fill="none"
           stroke="currentColor"
@@ -318,8 +329,8 @@ export default function DashboardSidebar({
       ),
       settings: (
         <svg
-          width="18"
-          height="18"
+          width={size}
+          height={size}
           viewBox="0 0 24 24"
           fill="none"
           stroke="currentColor"
@@ -331,8 +342,8 @@ export default function DashboardSidebar({
       ),
       logout: (
         <svg
-          width="18"
-          height="18"
+          width={size}
+          height={size}
           viewBox="0 0 24 24"
           fill="none"
           stroke="currentColor"
@@ -345,8 +356,8 @@ export default function DashboardSidebar({
       ),
       contact: (
         <svg
-          width="18"
-          height="18"
+          width={size}
+          height={size}
           viewBox="0 0 24 24"
           fill="none"
           stroke="currentColor"
@@ -375,8 +386,8 @@ export default function DashboardSidebar({
       ),
       award: (
         <svg
-          width="18"
-          height="18"
+          width={size}
+          height={size}
           viewBox="0 0 24 24"
           fill="none"
           stroke="currentColor"
@@ -388,8 +399,8 @@ export default function DashboardSidebar({
       ),
       streak: (
         <svg
-          width="18"
-          height="18"
+          width={size}
+          height={size}
           viewBox="0 0 24 24"
           fill="none"
           stroke="currentColor"
@@ -400,8 +411,8 @@ export default function DashboardSidebar({
       ),
       stats: (
         <svg
-          width="18"
-          height="18"
+          width={size}
+          height={size}
           viewBox="0 0 24 24"
           fill="none"
           stroke="currentColor"
@@ -414,8 +425,8 @@ export default function DashboardSidebar({
       ),
       calendar: (
         <svg
-          width="18"
-          height="18"
+          width={size}
+          height={size}
           viewBox="0 0 24 24"
           fill="none"
           stroke="currentColor"
@@ -429,8 +440,8 @@ export default function DashboardSidebar({
       ),
       tracking: (
         <svg
-          width="18"
-          height="18"
+          width={size}
+          height={size}
           viewBox="0 0 24 24"
           fill="none"
           stroke="currentColor"
@@ -441,8 +452,8 @@ export default function DashboardSidebar({
       ),
       results: (
         <svg
-          width="18"
-          height="18"
+          width={size}
+          height={size}
           viewBox="0 0 24 24"
           fill="none"
           stroke="currentColor"
@@ -491,50 +502,79 @@ export default function DashboardSidebar({
           {navigation.map(section => {
             const isCollapsible = section.isCollapsible;
             const isDropdown = section.isDropdown;
+            const isSectionLink = section.path;
             const isSectionOpen = openSectionId === section.id;
+
+            const headerContent = (
+              <div style={{ display: 'flex', alignItems: 'center', gap: '14px' }}>
+                {section.icon && (
+                  <span style={{ display: 'flex', alignItems: 'center' }}>
+                    {renderIcon(section.icon, 20)}
+                  </span>
+                )}
+                <div style={{ padding: 0 }}>{section.label}</div>
+              </div>
+            );
+
+            const headerStyle = {
+              fontSize: '13px',
+              fontWeight: 600,
+              color: 'rgba(255, 255, 255, 0.7)',
+              textTransform: 'uppercase',
+              letterSpacing: '0.05em',
+              padding: '8px 1.25rem',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'space-between',
+              cursor: 'pointer',
+              width: '100%',
+              textDecoration: 'none',
+              transition: 'all 0.2s ease',
+              background: isSectionLink && isActive(section.path) ? 'rgba(255, 255, 255, 0.12)' : 'transparent',
+            };
 
             return (
               <div key={section.id} className="nav-section">
                 {section.label && (
-                  <div
-                    className={`nav-section-header ${isCollapsible ? 'collapsible' : ''}`}
-                    onClick={() => {
-                      setOpenSectionId(openSectionId === section.id ? null : section.id);
-                    }}
-                    style={
-                      isDropdown
-                        ? {
-                            display: 'flex',
-                            alignItems: 'center',
-                            justifyContent: 'space-between',
-                            cursor: 'pointer',
-                            padding: '11px 1.25rem',
-                            fontSize: '0.95rem',
-                            fontWeight: 800,
-                            color: 'rgba(255, 255, 255, 0.6)',
-                            textTransform: 'uppercase',
-                            letterSpacing: '0.05em',
-                          }
-                        : undefined
-                    }
-                  >
-                    <div className="nav-section-label">{section.label}</div>
-                    {isCollapsible && (
-                      <span className={`chevron-icon ${isSectionOpen ? 'expanded' : ''}`}>
-                        <svg
-                          width="12"
-                          height="12"
-                          viewBox="0 0 24 24"
-                          fill="none"
-                          stroke="currentColor"
-                          strokeWidth="3"
-                        >
-                          <path d="M6 9l6 6 6-6" />
-                        </svg>
-                      </span>
-                    )}
-                    {isDropdown && renderIcon('chevron', isSectionOpen)}
-                  </div>
+                  isSectionLink ? (
+                    <Link
+                      href={section.path}
+                      style={headerStyle}
+                      onClick={(e) => {
+                        onClose();
+                        setOpenSectionId(section.id);
+                      }}
+                    >
+                      {headerContent}
+                    </Link>
+                  ) : (
+                    <div
+                      className={`nav-section-header ${isCollapsible ? 'collapsible' : ''}`}
+                      onClick={() => {
+                        if (isCollapsible || isDropdown) {
+                          setOpenSectionId(isSectionOpen ? null : section.id);
+                        }
+                      }}
+                      style={headerStyle}
+                    >
+                      {headerContent}
+                      {isCollapsible && (
+                        <span className={`chevron-icon ${isSectionOpen ? 'expanded' : ''}`}>
+                          <svg
+                            width="12"
+                            height="12"
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            stroke="currentColor"
+                            strokeWidth="3"
+                          >
+                            <path d="M6 9l6 6 6-6" />
+                          </svg>
+                        </span>
+                      )}
+                      {isDropdown && renderIcon('chevron', isSectionOpen)}
+                    </div>
+                  )
                 )}
 
                 <div
@@ -568,7 +608,6 @@ export default function DashboardSidebar({
                           fontFamily: 'inherit',
                         }}
                       >
-                        <span className="nav-item-icon">{renderIcon(item.icon)}</span>
                         <span className="nav-item-label">{item.label}</span>
                       </button>
                     ) : (
@@ -579,7 +618,6 @@ export default function DashboardSidebar({
                         prefetch={true}
                         onClick={onClose}
                       >
-                        <span className="nav-item-icon">{renderIcon(item.icon)}</span>
                         <span className="nav-item-label">{item.label}</span>
                         {item.badge}
                       </Link>

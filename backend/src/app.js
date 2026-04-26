@@ -21,18 +21,19 @@ app.use(
     contentSecurityPolicy: {
       directives: {
         defaultSrc: ["'self'"],
-        scriptSrc: ["'self'"],
+        scriptSrc: ["'self'", 'https://accounts.google.com'],
         styleSrc: ["'self'", "'unsafe-inline'"],
         imgSrc: ["'self'", 'data:', 'https:'],
-        connectSrc: ["'self'"],
+        connectSrc: ["'self'", 'https://accounts.google.com', 'https://oauth2.googleapis.com'],
         fontSrc: ["'self'"],
         objectSrc: ["'none'"],
-        frameSrc: ["'none'"],
+        frameSrc: ["'self'", 'https://accounts.google.com'],
         baseUri: ["'self'"],
         formAction: ["'self'"],
       },
     },
     crossOriginEmbedderPolicy: false, // Allow cross-origin resources (S3 videos)
+    crossOriginOpenerPolicy: { policy: 'same-origin-allow-popups' }, // Allow Google OAuth popups
     hsts: { maxAge: 63072000, includeSubDomains: true, preload: true },
   })
 );
@@ -61,15 +62,15 @@ app.set('trust proxy', 1); // Trust first proxy for correct client IPs (if behin
 //   })
 // );
 
-const allowedOrigins = [
-  'https://learning-startups-india.vercel.app',
-  'https://startupsindia.in',
-  'https://www.startupsindia.in',
-  'http://localhost:3000',
-  // local dev (optional)
-];
-
-// console.log('mohammed sufiyan');
+// Parse CORS origins from environment variable or use defaults
+const corsOriginsList = env.CORS_ORIGIN 
+  ? env.CORS_ORIGIN.split(',').map(origin => origin.trim())
+  : [
+      'https://learning-startups-india.vercel.app',
+      'https://startupsindia.in',
+      'https://www.startupsindia.in',
+      'http://localhost:3000',
+    ];
 
 app.use(
   cors({
@@ -77,14 +78,14 @@ app.use(
       // allow requests with no origin (like Postman / mobile apps)
       if (!origin) return callback(null, true);
 
-      if (allowedOrigins.includes(origin)) {
+      if (corsOriginsList.includes(origin)) {
         return callback(null, true);
       } else {
         return callback(new Error('Not allowed by CORS'));
       }
     },
     credentials: true,
-    methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE'],
+    methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
     allowedHeaders: ['Content-Type', 'Authorization', 'X-Request-Id'],
     maxAge: 86400,
   })

@@ -488,14 +488,23 @@ export default function DashboardSidebar({
       <aside className={`premium-sidebar ${isOpen ? 'mobile-open' : ''}`}>
         {/* Logo and Branding */}
         <div className="sidebar-header">
-          <Link href="/dashboard" className="sidebar-logo" onClick={onClose}>
-            <img
-              src="/assets/images/logo.png"
-              alt="Startups India Logo"
-              className="sidebar-logo-img"
-              style={{ height: '32px', width: 'auto' }}
-            />
-          </Link>
+          <div className="sidebar-header-flex">
+            <Link href="/dashboard" className="sidebar-logo" onClick={onClose}>
+              <img
+                src="/assets/images/logo-new.png"
+                alt="Startups India Logo"
+                className="sidebar-logo-img"
+              />
+            </Link>
+            
+            {/* Mobile Close Button */}
+            <button className="sidebar-close-btn mobile-only" onClick={onClose}>
+              <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3">
+                <line x1="18" y1="6" x2="6" y2="18" />
+                <line x1="6" y1="6" x2="18" y2="18" />
+              </svg>
+            </button>
+          </div>
         </div>
 
         <nav className="sidebar-nav">
@@ -517,19 +526,6 @@ export default function DashboardSidebar({
             );
 
             const headerStyle = {
-              fontSize: '13px',
-              fontWeight: 600,
-              color: 'rgba(255, 255, 255, 0.7)',
-              textTransform: 'uppercase',
-              letterSpacing: '0.05em',
-              padding: '8px 1.25rem',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'space-between',
-              cursor: 'pointer',
-              width: '100%',
-              textDecoration: 'none',
-              transition: 'all 0.2s ease',
               background: isSectionLink && isActive(section.path) ? 'rgba(255, 255, 255, 0.12)' : 'transparent',
             };
 
@@ -539,6 +535,7 @@ export default function DashboardSidebar({
                   isSectionLink ? (
                     <Link
                       href={section.path}
+                      className={`nav-section-header-btn ${isActive(section.path) ? 'active' : ''}`}
                       style={headerStyle}
                       onClick={(e) => {
                         onClose();
@@ -549,7 +546,7 @@ export default function DashboardSidebar({
                     </Link>
                   ) : (
                     <div
-                      className={`nav-section-header ${isCollapsible ? 'collapsible' : ''}`}
+                      className={`nav-section-header-btn ${isCollapsible ? 'collapsible' : ''}`}
                       onClick={() => {
                         if (isCollapsible || isDropdown) {
                           setOpenSectionId(isSectionOpen ? null : section.id);

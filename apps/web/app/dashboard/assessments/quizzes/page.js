@@ -100,7 +100,7 @@ export default function QuizzesPage() {
                 )) : (
                   <motion.div 
                     initial={{ opacity: 0 }} animate={{ opacity: 1 }}
-                    style={{ gridColumn: '1 / -1', textAlign: 'center', padding: '6rem 2rem', background: '#fff', borderRadius: '24px', border: '2px dashed #E5E7EB' }}
+                    style={{ gridColumn: '1 / -1', textAlign: 'center', padding: '6rem 2rem', background: 'var(--dashboard-bg)', borderRadius: '24px', border: '2px dashed #E5E7EB' }}
                   >
                     <Icon name="pencil" size={48} color="#cbd5e1" style={{ marginBottom: '1rem' }} />
                     <h3 style={{ fontSize: '1.25rem', fontWeight: 800, color: '#64748B' }}>No quizzes found</h3>

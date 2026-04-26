@@ -51,7 +51,7 @@ export default function SubscriptionsPage() {
   ];
 
   if (loading) return (
-    <div style={{ height: '80vh', display: 'flex', alignItems: 'center', justifyContent: 'center', background: '#fff' }}>
+    <div style={{ height: '80vh', display: 'flex', alignItems: 'center', justifyContent: 'center', background: 'var(--dashboard-bg)' }}>
       <div className="spinner" style={{ width: '40px', height: '40px', border: '4px solid #f3f3f3', borderTop: '4px solid #ef4444', borderRadius: '50%', animation: 'spin 1s linear infinite' }} />
       <style jsx>{` @keyframes spin { to { transform: rotate(360deg); } } `}</style>
     </div>
@@ -72,7 +72,7 @@ export default function SubscriptionsPage() {
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(320px, 1fr))', gap: '2rem' }}>
           {tiers.map((tier) => (
             <div key={tier.name} className="glass-card" style={{ 
-                background: '#fff', borderRadius: '40px', padding: '3rem', 
+                background: 'var(--dashboard-bg)', borderRadius: '40px', padding: '3rem', 
                 border: '1.5px solid', borderColor: tier.isPopular ? '#ef4444' : 'rgba(0,0,0,0.06)',
                 display: 'flex', flexDirection: 'column', position: 'relative',
                 boxShadow: tier.isPopular ? '0 25px 60px rgba(239, 68, 68, 0.1)' : '0 10px 30px rgba(0,0,0,0.03)',

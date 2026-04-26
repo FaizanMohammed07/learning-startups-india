@@ -47,7 +47,7 @@ const FlippableBadge = ({ badge }) => {
         {/* Front Side */}
         <div style={{ 
           position: 'absolute', inset: 0, backfaceVisibility: 'hidden',
-          background: '#fff', borderRadius: '32px', padding: '2.5rem 1.5rem', textAlign: 'center',
+          background: 'var(--dashboard-bg)', borderRadius: '32px', padding: '2.5rem 1.5rem', textAlign: 'center',
           boxShadow: '0 10px 30px rgba(0,0,0,0.04)', border: '1px solid #f1f5f9',
           display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center'
         }}>
@@ -222,7 +222,7 @@ export default function BadgesPage() {
         .milestone-pathway { margin-left: 16px; color: #cbd5e1; font-size: 0.7rem; }
         
         .milestone-log { max-height: 700px; overflow-y: auto; padding-right: 2rem; display: flex; flex-direction: column; gap: 1.5rem; }
-        .milestone-item { background: #fff; border-radius: 32px; padding: 2rem 3rem; display: flex; align-items: center; gap: 3rem; border: 1.5px solid #f1f5f9; transition: all 0.3s ease; }
+        .milestone-item { background: var(--dashboard-bg); border-radius: 32px; padding: 2rem 3rem; display: flex; align-items: center; gap: 3rem; border: 1.5px solid #f1f5f9; transition: all 0.3s ease; }
         .milestone-item:hover { border-color: rgba(239, 68, 68, 0.15); transform: translateY(-4px); box-shadow: 0 20px 40px rgba(0,0,0,0.03); }
         
         .milestone-icon-wrap { position: relative; }

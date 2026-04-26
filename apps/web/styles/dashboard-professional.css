@@ -34,7 +34,7 @@
 /* ── Page Container ── */
 .prof-dashboard-container {
   min-height: 100vh;
-  background: #fff8f8;
+  background: #ffffff;
   padding: 1.5rem 3rem 3rem;
   font-family: 'Outfit', -apple-system, sans-serif;
   color: var(--text-main);
@@ -1164,7 +1164,7 @@
 }
 
 /* -------------------------------------
-   MOMENTUM DASHBOARD � NEW ERA
+   MOMENTUM DASHBOARD � NEW ERA
    ------------------------------------- */
 
 .momentum-hero-card {
@@ -1682,8 +1682,8 @@
 .ticker-track { display: block !important; overflow: hidden !important; width: 100% !important; }
 .ticker-inner { display: flex !important; width: max-content !important; min-width: 200vw !important; }
 
-:root { --bg-page: #fff0f0 !important; }
-.prof-dashboard-container { background: var(--bg-page) !important; }
+:root { --bg-page: #ffffff !important; }
+.prof-dashboard-container { background: #ffffff !important; }
 
 :root { --bg-page: #fff2f2 !important; }
 .prof-dashboard-container { background: var(--bg-page) !important; }

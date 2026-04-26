@@ -32,7 +32,7 @@ export default function PurchasesPage() {
   }, [activeTab, purchases]);
 
   if (loading) return (
-    <div style={{ height: '80vh', display: 'flex', alignItems: 'center', justifyContent: 'center', background: '#fff' }}>
+    <div style={{ height: '80vh', display: 'flex', alignItems: 'center', justifyContent: 'center', background: 'var(--dashboard-bg)' }}>
       <div className="spinner" style={{ width: '40px', height: '40px', border: '4px solid #f3f3f3', borderTop: '4px solid #ef4444', borderRadius: '50%', animation: 'spin 1s linear infinite' }} />
       <style jsx>{` @keyframes spin { to { transform: rotate(360deg); } } `}</style>
     </div>
@@ -47,7 +47,7 @@ export default function PurchasesPage() {
           <h1 className="platform-page-title">My Purchases</h1>
           <p className="platform-page-subtitle">Your unlocked premium startup curriculum.</p>
         </div>
-        <div style={{ display: 'flex', background: '#fff', border: '1px solid #e2e8f0', borderRadius: '14px', overflow: 'hidden' }}>
+        <div style={{ display: 'flex', background: 'var(--dashboard-bg)', border: '1px solid #e2e8f0', borderRadius: '14px', overflow: 'hidden' }}>
             <button 
               onClick={() => setActiveTab('ACTIVE')}
               style={{ padding: '10px 22px', border: 'none', background: activeTab === 'ACTIVE' ? '#ef4444' : 'transparent', color: activeTab === 'ACTIVE' ? '#fff' : '#64748b', fontSize: '0.75rem', fontWeight: 950, cursor: 'pointer', transition: '0.2s' }}
@@ -78,7 +78,7 @@ export default function PurchasesPage() {
               key={p._id} 
               className="glass-card"
               style={{ 
-                  background: '#fff', borderRadius: '32px', overflow: 'hidden', border: '1px solid #f1f5f9',
+                  background: 'var(--dashboard-bg)', borderRadius: '32px', overflow: 'hidden', border: '1px solid #f1f5f9',
                   boxShadow: '0 4px 20px rgba(0,0,0,0.02)', cursor: 'pointer', transition: '0.3s'
               }}
             >
@@ -130,7 +130,7 @@ export default function PurchasesPage() {
 
         {/* UPSELL CARD */}
         <div style={{ background: 'rgba(239, 68, 68, 0.03)', borderRadius: '32px', border: '2.5px dashed rgba(239, 68, 68, 0.1)', padding: '2.5rem', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', textAlign: 'center' }}>
-            <div style={{ width: 64, height: 64, borderRadius: '22px', background: '#fff', color: '#ef4444', display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: '1.5rem', boxShadow: '0 8px 20px rgba(239, 68, 68, 0.1)' }}>
+            <div style={{ width: 64, height: 64, borderRadius: '22px', background: 'var(--dashboard-bg)', color: '#ef4444', display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: '1.5rem', boxShadow: '0 8px 20px rgba(239, 68, 68, 0.1)' }}>
                 <Icon name="plus" size={32} stroke={3} />
             </div>
             <h3 style={{ margin: 0, fontSize: '1.2rem', fontWeight: 950, color: '#0f172a' }}>Expand Your Mind</h3>

@@ -17,7 +17,7 @@ function LiveClassCard({ cls, onJoin }) {
       height: '100%', 
       display: 'flex',
       flexDirection: 'column',
-      background: '#fff',
+      background: 'var(--dashboard-bg)',
     }}>
       {/* Thumbnail Placeholder */}
       <div style={{ 
@@ -151,7 +151,7 @@ export default function LiveClassesPage() {
           <p style={{ color: '#64748B', fontSize: '1.1rem', fontWeight: 500 }}>Join interactive live sessions with Top Mentors & Founders.</p>
         </div>
         
-        <form onSubmit={handleJoinByCode} style={{ background: '#fff', padding: '1rem', borderRadius: '16px', boxShadow: '0 8px 30px rgba(0,0,0,0.04)', border: '1px solid #f1f5f9', display: 'flex', alignItems: 'center', gap: '12px', minWidth: '350px' }}>
+        <form onSubmit={handleJoinByCode} style={{ background: 'var(--dashboard-bg)', padding: '1rem', borderRadius: '16px', boxShadow: '0 8px 30px rgba(0,0,0,0.04)', border: '1px solid #f1f5f9', display: 'flex', alignItems: 'center', gap: '12px', minWidth: '350px' }}>
             <div style={{ flex: 1 }}>
               <label style={{ display: 'block', fontSize: '0.7rem', fontWeight: 800, color: '#94A3B8', textTransform: 'uppercase', marginBottom: '6px' }}>Join with Code</label>
               <input 
@@ -171,7 +171,7 @@ export default function LiveClassesPage() {
         </form>
       </div>
 
-      <div style={{ display: 'flex', flexWrap: 'wrap', gap: '1.5rem', justifyContent: 'space-between', alignItems: 'center', marginBottom: '2.5rem', background: '#fff', padding: '0.75rem', borderRadius: '16px', border: '1px solid #f1f5f9' }}>
+      <div style={{ display: 'flex', flexWrap: 'wrap', gap: '1.5rem', justifyContent: 'space-between', alignItems: 'center', marginBottom: '2.5rem', background: 'var(--dashboard-bg)', padding: '0.75rem', borderRadius: '16px', border: '1px solid #f1f5f9' }}>
         <div style={{ display: 'flex', gap: '6px' }}>
           {['all', 'live', 'upcoming'].map(f => (
             <button 

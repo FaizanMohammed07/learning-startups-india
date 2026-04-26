@@ -57,7 +57,7 @@ export default function DoubtsPage() {
   });
 
   if (loading) return (
-    <div style={{ height: '80vh', display: 'flex', alignItems: 'center', justifyContent: 'center', background: '#fff' }}>
+    <div style={{ height: '80vh', display: 'flex', alignItems: 'center', justifyContent: 'center', background: 'var(--dashboard-bg)' }}>
       <div className="spinner" style={{ width: '40px', height: '40px', border: '4px solid #f3f3f3', borderTop: '4px solid #ef4444', borderRadius: '50%', animation: 'spin 1s linear infinite' }} />
       <style jsx>{` @keyframes spin { to { transform: rotate(360deg); } } `}</style>
     </div>
@@ -228,10 +228,10 @@ export default function DoubtsPage() {
       </AnimatePresence>
 
       <style jsx global>{`
-        .doubts-hub-page { background: #fff; min-height: 100vh; font-family: 'Poppins', sans-serif; }
+        .doubts-hub-page { background: var(--dashboard-bg); min-height: 100vh; font-family: 'Poppins', sans-serif; }
         .doubts-main { width: 100%; overflow-y: auto; height: calc(100vh - 4.5rem); }
         
-        .doubts-hero-header { padding: 3rem 4rem 2rem; display: flex; justify-content: space-between; align-items: flex-end; flex-wrap: wrap; gap: 2rem; background: #fff; }
+        .doubts-hero-header { padding: 3rem 4rem 2rem; display: flex; justify-content: space-between; align-items: flex-end; flex-wrap: wrap; gap: 2rem; background: var(--dashboard-bg); }
         .hero-title { font-size: 3.5rem; font-weight: 950; color: #0f172a; margin: 0; letter-spacing: -0.05em; }
         .red-glow { color: #ef4444; text-shadow: 0 0 30px rgba(239, 68, 68, 0.1); }
         .resolution-metrics-pill { background: #fef2f2; border: 1.5px solid #fef2f2; padding: 10px 24px; border-radius: 20px; display: inline-flex; align-items: center; gap: 12px; margin-top: 1.25rem; }
@@ -249,7 +249,7 @@ export default function DoubtsPage() {
 
         .performance-stats-strip { padding: 0 4rem 3rem; }
         .performance-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2.5rem; }
-        .performance-card { background: #fff; padding: 2.5rem; border-radius: 40px; border: 1.5px solid #f1f5f9; box-shadow: 0 10px 30px rgba(0,0,0,0.01); transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); }
+        .performance-card { background: var(--dashboard-bg); padding: 2.5rem; border-radius: 40px; border: 1.5px solid #f1f5f9; box-shadow: 0 10px 30px rgba(0,0,0,0.01); transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); }
         .performance-card:hover { transform: translateY(-8px); border-color: #ef4444; box-shadow: 0 30px 60px rgba(239, 68, 68, 0.08); }
         .perf-label { font-size: 0.8rem; font-weight: 950; color: #94a3b8; letter-spacing: 0.15em; margin-bottom: 12px; }
         .perf-value { font-size: 2.25rem; font-weight: 950; color: #0f172a; letter-spacing: -0.03em; margin-bottom: 8px; }
@@ -265,7 +265,7 @@ export default function DoubtsPage() {
         .feed-sort { font-size: 0.9rem; font-weight: 850; color: #64748b; display: flex; align-items: center; gap: 8px; cursor: pointer; }
         
         .tickets-stack { display: flex; flex-direction: column; gap: 1.5rem; max-width: 1400px; }
-        .ticket-interactive-card { background: #fff; border-radius: 32px; padding: 1.8rem 2.2rem; border: 1px solid #f1f5f9; display: flex; gap: 2rem; cursor: pointer; transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1); }
+        .ticket-interactive-card { background: var(--dashboard-bg); border-radius: 32px; padding: 1.8rem 2.2rem; border: 1px solid #f1f5f9; display: flex; gap: 2rem; cursor: pointer; transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1); }
         .ticket-interactive-card:hover { border-color: #ef4444; box-shadow: 0 40px 80px rgba(239, 68, 68, 0.08); }
         
         .ticket-avatar-status { display: flex; flex-direction: column; align-items: center; gap: 1rem; }
@@ -286,27 +286,27 @@ export default function DoubtsPage() {
 
         .ticket-row-footer { display: flex; align-items: center; gap: 3rem; flex-wrap: wrap; }
         .expert-assignment { display: flex; align-items: center; gap: 16px; }
-        .assignee-avatar { width: 44px; height: 44px; border-radius: 14px; background: #f8fafc; display: flex; align-items: center; justify-content: center; font-size: 1.1rem; font-weight: 950; color: #0f172a; border: 1.5px solid #f1f5f9; }
+        .assignee-avatar { width: 44px; height: 44px; border-radius: 14px; background: var(--dashboard-bg); display: flex; align-items: center; justify-content: center; font-size: 1.1rem; font-weight: 950; color: #0f172a; border: 1.5px solid #f1f5f9; }
         .assignee-meta { display: flex; flex-direction: column; }
         .assignee-name { font-size: 1rem; font-weight: 950; color: #0f172a; }
         .assignee-role { font-size: 0.75rem; color: #94a3b8; font-weight: 850; }
         
         .ticket-meta-pills { display: flex; align-items: center; gap: 16px; flex-wrap: wrap; }
-        .meta-pill-item { display: flex; align-items: center; gap: 8px; font-size: 0.9rem; font-weight: 850; color: #64748b; background: #f8fafc; padding: 8px 16px; border-radius: 14px; border: 1.5px solid #f1f5f9; }
+        .meta-pill-item { display: flex; align-items: center; gap: 8px; font-size: 0.9rem; font-weight: 850; color: #64748b; background: var(--dashboard-bg); padding: 8px 16px; border-radius: 14px; border: 1.5px solid #f1f5f9; }
         
         .view-resolution-btn { margin-left: auto; background: transparent; border: none; font-size: 0.9rem; font-weight: 950; color: #0f172a; display: flex; align-items: center; gap: 10px; cursor: pointer; transition: all 0.2s; padding: 12px 24px; border-radius: 16px; }
-        .view-resolution-btn:hover { background: #f8fafc; color: #ef4444; }
+        .view-resolution-btn:hover { background: var(--dashboard-bg); color: #ef4444; }
 
         /* MODAL */
         .modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.6); backdrop-filter: blur(8px); display: flex; align-items: center; justify-content: center; z-index: 2000; }
-        .modal-content { background: #fff; width: 600px; max-width: 90vw; padding: 3rem; border-radius: 40px; box-shadow: 0 40px 100px rgba(0,0,0,0.2); }
+        .modal-content { background: var(--dashboard-bg); width: 600px; max-width: 90vw; padding: 3rem; border-radius: 40px; box-shadow: 0 40px 100px rgba(0,0,0,0.2); }
         .modal-title { font-size: 2rem; font-weight: 950; color: #0f172a; margin-bottom: 2rem; }
         .input-group { margin-bottom: 1.5rem; display: flex; flex-direction: column; gap: 8px; }
         .input-group label { font-size: 0.8rem; font-weight: 950; color: #94a3b8; letter-spacing: 0.1em; }
-        .input-group input, .input-group textarea { padding: 16px 20px; border-radius: 16px; border: 1.5px solid #f1f5f9; background: #f8fafc; font-size: 1rem; font-weight: 700; color: #0f172a; outline: none; }
-        .input-group input:focus, .input-group textarea:focus { border-color: #ef4444; background: #fff; }
+        .input-group input, .input-group textarea { padding: 16px 20px; border-radius: 16px; border: 1.5px solid #f1f5f9; background: var(--dashboard-bg); font-size: 1rem; font-weight: 700; color: #0f172a; outline: none; }
+        .input-group input:focus, .input-group textarea:focus { border-color: #ef4444; background: var(--dashboard-bg); }
         .modal-actions { display: flex; gap: 1rem; margin-top: 2rem; }
-        .cancel-btn { flex: 1; padding: 18px; border-radius: 20px; border: 1.5px solid #f1f5f9; background: #fff; color: #64748b; font-weight: 950; cursor: pointer; }
+        .cancel-btn { flex: 1; padding: 18px; border-radius: 20px; border: 1.5px solid #f1f5f9; background: var(--dashboard-bg); color: #64748b; font-weight: 950; cursor: pointer; }
         .submit-btn { flex: 2; padding: 18px; border-radius: 20px; border: none; background: #ef4444; color: #fff; font-weight: 950; cursor: pointer; box-shadow: 0 10px 25px rgba(239, 68, 68, 0.2); }
 
         @media (max-width: 1060px) {

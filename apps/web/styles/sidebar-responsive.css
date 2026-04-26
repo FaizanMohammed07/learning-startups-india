@@ -146,13 +146,14 @@ html, body {
   
   /* Dashboard content - ensure vertical scroll */
   .dashboard-content {
-    padding: 10px 16px !important; /* Reduced top padding from 20px */
+    padding: 10px 16px; 
+    padding-top: 70px !important; /* Force space for mobile header */
     max-width: 100vw !important;
     width: 100% !important;
     overflow-x: hidden !important;
     overflow-y: visible !important;
     height: auto !important;
-    min-height: calc(100vh - 60px);
+    min-height: calc(100vh - 70px);
   }
   
   /* Dashboard layout - ensure scroll works */
@@ -536,18 +537,13 @@ html, body {
     z-index: 999999 !important;
   }
   
-  /* Hide entire desktop header on mobile */
-  .desktop-header,
-  .dashboard-header.desktop-header {
+  /* Only hide elements explicitly marked as desktop-only */
+  .desktop-only {
     display: none !important;
   }
-  
-  /* Also hide individual desktop header elements */
-  .categories-dropdown,
-  .header-search,
-  .header-actions {
-    display: none !important;
-  }
+  /* DashboardHeader handles its own mobile layout via scoped CSS —
+     do NOT hide .header-search or .header-actions here, they must
+     remain visible for the mobile header (search + profile) to work. */
   
   /* Featured Program & Assessment - Stack vertically */
   .new-course-split-grid {

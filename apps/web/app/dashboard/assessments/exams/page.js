@@ -113,7 +113,7 @@ function ExamRow({ exam }) {
       exit={{ opacity: 0, x: 20 }}
       style={{
         display: 'flex', alignItems: 'center', gap: '2rem', padding: '1.5rem 2rem',
-        background: '#fff', borderRadius: '20px', border: '1px solid #F1F5F9',
+        background: 'var(--dashboard-bg)', borderRadius: '20px', border: '1px solid #F1F5F9',
         boxShadow: '0 4px 6px rgba(0,0,0,0.02)', transition: '0.3s'
       }}
     >

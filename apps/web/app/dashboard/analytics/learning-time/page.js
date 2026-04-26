@@ -176,12 +176,12 @@ export default function LearningTimePage() {
                         <span style={{ fontSize: '0.8rem', fontWeight: 950, color: 'var(--brand-red)' }}>PROGRESS: 82%</span>
                         <span style={{ fontSize: '0.8rem', fontWeight: 950, color: '#94a3b8' }}>1.64h / 2.0h</span>
                      </div>
-                     <div style={{ height: '14px', background: '#fff', borderRadius: '20px', border: '1.5px solid #f1f5f9', overflow: 'hidden' }}>
+                     <div style={{ height: '14px', background: 'var(--dashboard-bg)', borderRadius: '20px', border: '1.5px solid #f1f5f9', overflow: 'hidden' }}>
                         <motion.div initial={{ width: 0 }} animate={{ width: '82%' }} transition={{ duration: 2 }} style={{ height: '100%', background: 'var(--brand-red)', borderRadius: '20px' }} />
                      </div>
                   </div>
                   
-                  <div style={{ padding: '1.25rem', background: '#fff', border: '1.5px solid rgba(122, 31, 43, 0.1)', borderRadius: '24px', textAlign: 'center', boxShadow: '0 10px 30px rgba(122, 31, 43, 0.05)' }}>
+                  <div style={{ padding: '1.25rem', background: 'var(--dashboard-bg)', border: '1.5px solid rgba(122, 31, 43, 0.1)', borderRadius: '24px', textAlign: 'center', boxShadow: '0 10px 30px rgba(122, 31, 43, 0.05)' }}>
                      <p style={{ fontSize: '0.9rem', fontWeight: 900, color: 'var(--brand-red)', margin: 0 }}>You are only 22 mins away from your goal!</p>
                   </div>
                </div>

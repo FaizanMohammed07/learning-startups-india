@@ -54,7 +54,7 @@ export default function ResultsPage() {
           { label: 'Certifications Earned', val: stats.total, color: '#111827' },
           { label: 'Academic Velocity', val: stats.velocity, color: '#059669' },
         ].map((s, i) => (
-          <div key={i} style={{ flex: 1, background: '#fff', padding: '1.5rem', borderRadius: '24px', border: '1px solid #F1F5F9', boxShadow: '0 4px 6px rgba(0,0,0,0.02)' }}>
+          <div key={i} style={{ flex: 1, background: 'var(--dashboard-bg)', padding: '1.5rem', borderRadius: '24px', border: '1px solid #F1F5F9', boxShadow: '0 4px 6px rgba(0,0,0,0.02)' }}>
             <div style={{ fontSize: '0.65rem', fontWeight: 900, color: '#94A3B8', textTransform: 'uppercase', letterSpacing: '0.1em', marginBottom: '8px' }}>{s.label}</div>
             <div style={{ fontSize: '2rem', fontWeight: 900, color: s.color }}>{s.val}</div>
           </div>
@@ -110,7 +110,7 @@ function ResultCard({ result }) {
       layout initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }}
       className="result-card"
       style={{
-        background: '#fff', padding: '2rem', borderRadius: '32px', border: '1px solid #F1F5F9',
+        background: 'var(--dashboard-bg)', padding: '2rem', borderRadius: '32px', border: '1px solid #F1F5F9',
         boxShadow: '0 10px 30px rgba(0,0,0,0.03)', position: 'relative', overflow: 'hidden'
       }}
     >

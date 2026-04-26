@@ -92,7 +92,7 @@ export default function NotesPage() {
             placeholder="Query your insights..."
             value={search}
             onChange={(e) => setSearch(e.target.value)}
-            style={{ width: '100%', border: '1.5px solid #f1f5f9', padding: '12px 16px 12px 42px', borderRadius: '12px', fontSize: '0.95rem', outline: 'none', background: '#fff' }}
+            style={{ width: '100%', border: '1.5px solid #f1f5f9', padding: '12px 16px 12px 42px', borderRadius: '12px', fontSize: '0.95rem', outline: 'none', background: 'var(--dashboard-bg)' }}
           />
           <div style={{ position: 'absolute', left: '16px', top: '50%', transform: 'translateY(-50%)', opacity: 0.4 }}>
             <Icon name="search" size={18} />
@@ -139,7 +139,7 @@ export default function NotesPage() {
           <motion.div key="notes" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
             {showForm && (
               <motion.div initial={{ height: 0, opacity: 0 }} animate={{ height: 'auto', opacity: 1 }} style={{ overflow: 'hidden', marginBottom: '2.5rem' }}>
-                <div style={{ background: '#fff', padding: '2rem', borderRadius: '20px', border: '1px solid #f1f5f9', boxShadow: '0 10px 30px rgba(0,0,0,0.02)' }}>
+                <div style={{ background: 'var(--dashboard-bg)', padding: '2rem', borderRadius: '20px', border: '1px solid #f1f5f9', boxShadow: '0 10px 30px rgba(0,0,0,0.02)' }}>
                    <div style={{ display:'flex', flexDirection:'column', gap:'1.5rem' }}>
                       <input 
                         type="text" 
@@ -157,7 +157,7 @@ export default function NotesPage() {
                         />
                       </div>
                       <div style={{ display:'flex', gap:'12px' }}>
-                        <button onClick={() => setShowForm(false)} style={{ padding:'10px 20px', borderRadius:'10px', border:'1px solid #f1f5f9', background:'#fff', fontWeight:700, cursor:'pointer' }}>Cancel</button>
+                        <button onClick={() => setShowForm(false)} style={{ padding:'10px 20px', borderRadius:'10px', border:'1px solid #f1f5f9', background:'var(--dashboard-bg)', fontWeight:700, cursor:'pointer' }}>Cancel</button>
                         <button onClick={handleSaveNote} style={{ padding:'10px 24px', borderRadius:'10px', border:'none', background:'#7A1F2B', color:'#fff', fontWeight:700, cursor:'pointer' }}>Save Insight</button>
                       </div>
                    </div>
@@ -201,7 +201,7 @@ export default function NotesPage() {
           <motion.div key="bookmarks" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
              <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
                 {notes.filter(n => n.timestamp).map((b) => (
-                  <div key={b._id} style={{ padding: '1.5rem 2rem', borderRadius: '16px', background: '#fff', border: '1px solid #f1f5f9', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                  <div key={b._id} style={{ padding: '1.5rem 2rem', borderRadius: '16px', background: 'var(--dashboard-bg)', border: '1px solid #f1f5f9', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
                     <div style={{ display: 'flex', alignItems: 'center', gap: '1.5rem' }}>
                        <div style={{ width: 44, height: 44, borderRadius: '12px', background: '#fff5f5', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                           <Icon name="recorded" size={20} color="#7A1F2B" />
@@ -211,7 +211,7 @@ export default function NotesPage() {
                           <span style={{ fontSize: '0.8rem', fontWeight: 600, color: '#94A3B8' }}>Timestamp: {Math.floor(b.timestamp / 60)}:{(b.timestamp % 60).toString().padStart(2, '0')}</span>
                        </div>
                     </div>
-                    <button style={{ background: '#fff', border: '1px solid #f1f5f9', padding: '8px 20px', borderRadius: '10px', fontSize: '0.85rem', fontWeight: 800, color: '#111', cursor: 'pointer' }}>View</button>
+                    <button style={{ background: 'var(--dashboard-bg)', border: '1px solid #f1f5f9', padding: '8px 20px', borderRadius: '10px', fontSize: '0.85rem', fontWeight: 800, color: '#111', cursor: 'pointer' }}>View</button>
                   </div>
                 ))}
              </div>

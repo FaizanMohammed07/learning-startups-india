@@ -170,7 +170,7 @@ export default function SkillGraphPage() {
                    { title: 'Memory Refresher', desc: 'Revise Unit Economics concepts from last week.', type: 'Notes' }
                  ].map((a, i) => (
                     <div key={i} style={{ display: 'flex', gap: '2rem', padding: '2rem', background: '#f8fafc', borderRadius: '32px', border: '1.5px solid #f1f5f9' }}>
-                       <div style={{ width: 48, height: 48, borderRadius: '14px', background: '#fff', display: 'flex', alignItems: 'center', justifyContent: 'center', border: '1.5px solid #f1f5f9' }}>
+                       <div style={{ width: 48, height: 48, borderRadius: '14px', background: 'var(--dashboard-bg)', display: 'flex', alignItems: 'center', justifyContent: 'center', border: '1.5px solid #f1f5f9' }}>
                           <Icon name={a.type === 'Quizzes' ? 'zap' : 'fileText'} size={22} color="var(--brand-red)" />
                        </div>
                        <div>

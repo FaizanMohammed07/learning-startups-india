@@ -17,7 +17,7 @@ function RecordedCard({ cls, layout = 'grid' }) {
         display: 'flex',
         flexDirection: isList ? 'row' : 'column',
         overflow: 'hidden',
-        background: '#fff',
+        background: 'var(--dashboard-bg)',
         transition: 'all 0.3s ease'
       }}>
         {/* Thumbnail */}
@@ -133,7 +133,7 @@ export default function RecordedClassesPage() {
             placeholder="Search by topic or title..."
             value={search}
             onChange={(e) => setSearch(e.target.value)}
-            style={{ width: '100%', border: '1.5px solid #f1f5f9', padding: '12px 16px 12px 42px', borderRadius: '12px', fontSize: '0.95rem', outline: 'none', background: '#fff' }}
+            style={{ width: '100%', border: '1.5px solid #f1f5f9', padding: '12px 16px 12px 42px', borderRadius: '12px', fontSize: '0.95rem', outline: 'none', background: 'var(--dashboard-bg)' }}
           />
           <div style={{ position: 'absolute', left: '16px', top: '50%', transform: 'translateY(-50%)', opacity: 0.4 }}>
             <Icon name="search" size={18} />
@@ -141,7 +141,7 @@ export default function RecordedClassesPage() {
         </div>
       </header>
 
-      <div style={{ display: 'flex', flexWrap: 'wrap', gap: '1rem', alignItems: 'center', marginBottom: '2rem', padding: '0.75rem', background: '#fff', borderRadius: '16px', border: '1px solid #f1f5f9' }}>
+      <div style={{ display: 'flex', flexWrap: 'wrap', gap: '1rem', alignItems: 'center', marginBottom: '2rem', padding: '0.75rem', background: 'var(--dashboard-bg)', borderRadius: '16px', border: '1px solid #f1f5f9' }}>
         <div style={{ display: 'flex', gap: '6px' }}>
           {['all', 'in-progress', 'watched'].map(f => (
             <button
@@ -167,7 +167,7 @@ export default function RecordedClassesPage() {
         <select 
           value={categoryFilter} 
           onChange={(e) => setCategoryFilter(e.target.value)}
-          style={{ padding: '10px 16px', borderRadius: '10px', border: '1.5px solid #f1f5f9', background: '#fff', fontSize: '0.9rem', fontWeight: 700, color: '#111', outline: 'none', cursor: 'pointer' }}
+          style={{ padding: '10px 16px', borderRadius: '10px', border: '1.5px solid #f1f5f9', background: 'var(--dashboard-bg)', fontSize: '0.9rem', fontWeight: 700, color: '#111', outline: 'none', cursor: 'pointer' }}
         >
            {categories.map(s => <option key={s} value={s}>{s}</option>)}
         </select>

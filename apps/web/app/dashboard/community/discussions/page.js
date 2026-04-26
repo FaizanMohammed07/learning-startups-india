@@ -91,7 +91,7 @@ export default function DiscussionsPage() {
   }, [posts]);
 
   if (loading) return (
-    <div style={{ height: '80vh', display: 'flex', alignItems: 'center', justifyContent: 'center', background: '#fff' }}>
+    <div style={{ height: '80vh', display: 'flex', alignItems: 'center', justifyContent: 'center', background: 'var(--dashboard-bg)' }}>
       <div className="spinner" style={{ width: '40px', height: '40px', border: '4px solid #f3f3f3', borderTop: '4px solid #ef4444', borderRadius: '50%', animation: 'spin 1s linear infinite' }} />
       <style jsx>{` @keyframes spin { to { transform: rotate(360deg); } } `}</style>
     </div>
@@ -258,7 +258,7 @@ export default function DiscussionsPage() {
       </main>
 
       <style jsx global>{`
-        .discussions-page { display: flex; background: #fff; overflow: hidden; height: 100vh; font-family: 'Poppins', sans-serif; }
+        .discussions-page { display: flex; background: var(--dashboard-bg); overflow: hidden; height: 100vh; font-family: 'Poppins', sans-serif; }
         
         .communities-sidebar { width: 300px; background: #fcfdfe; border-right: 1.5px solid #f1f5f9; display: flex; flex-direction: column; height: 100%; transition: all 0.3s; }
         .sidebar-header { padding: 2.5rem 2rem; border-bottom: 1px solid #f8fafc; }
@@ -270,15 +270,15 @@ export default function DiscussionsPage() {
         .category-btn.secondary { font-weight: 750; color: #94a3b8; }
         .category-btn:hover { background: #fef2f2; color: #ef4444; }
 
-        .discussions-main { flex: 1; background: #fff; display: flex; flex-direction: column; min-width: 0; }
-        .feed-header { padding: 1.5rem 3rem; border-bottom: 1.5px solid #f8fafc; display: flex; justify-content: space-between; align-items: center; background: #fff; }
+        .discussions-main { flex: 1; background: var(--dashboard-bg); display: flex; flex-direction: column; min-width: 0; }
+        .feed-header { padding: 1.5rem 3rem; border-bottom: 1.5px solid #f8fafc; display: flex; justify-content: space-between; align-items: center; background: var(--dashboard-bg); }
         .feed-title { margin: 0; font-size: 1.5rem; font-weight: 950; color: #0f172a; letter-spacing: -0.02em; }
         .feed-subtitle { margin: 2px 0 0; font-size: 0.85rem; color: #94a3b8; font-weight: 750; }
         
         .feed-actions { display: flex; gap: 16px; align-items: center; }
         .filter-posts-btn { padding: 10px 20px; border-radius: 14px; border: 1.5px solid #f1f5f9; background: #fff; color: #64748b; font-size: 0.8rem; font-weight: 950; cursor: pointer; transition: all 0.2s; white-space: nowrap; }
         
-        .posts-container { flex: 1; padding: 2.5rem 3rem; overflow-y: auto; background: #fff; }
+        .posts-container { flex: 1; padding: 2.5rem 3rem; overflow-y: auto; background: var(--dashboard-bg); }
         .posts-stack { display: flex; flex-direction: column; gap: 2rem; max-width: 900px; margin: 0 auto; }
         .post-card { background: #fff; border-radius: 36px; padding: 2.5rem; border: 1.5px solid #f1f5f9; box-shadow: 0 10px 40px rgba(0,0,0,0.01); }
         .post-user-info { display: flex; gap: 20px; margin-bottom: 1.75rem; }

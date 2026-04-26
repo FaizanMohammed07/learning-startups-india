@@ -17,6 +17,8 @@
 
 .platform-page {
   animation: fadeIn 0.5s ease-out;
+  background: #ffffff;
+  min-height: 100vh;
 }
 
 @keyframes fadeIn {
@@ -25,7 +27,7 @@
 }
 
 .platform-page-header {
-  margin-bottom: 3rem;
+  margin-bottom: 1rem;
 }
 
 .platform-page-title {

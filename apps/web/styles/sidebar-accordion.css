@@ -418,7 +418,7 @@
 .nav-item-row.active { background: rgba(255, 255, 255, 0.2) !important; color: #ffffff !important; border-left: 4px solid #ffffff !important; font-weight: 950 !important; }
 .nav-item-row.active .nav-item-label, .nav-item-row.active .icon-frame svg, .nav-item-row.active .icon-frame { color: #ffffff !important; }
 
-.dashboard-layout:not(.learning-mode) .dashboard-main { background: #fff0f0 !important; }
+.dashboard-layout:not(.learning-mode) .dashboard-main { background: #ffffff !important; }
 
 /* MAROON THEME OVERRIDE */
 .premium-sidebar.light-theme, .sidebar-drawer-content { background: #8E1C1F !important; }

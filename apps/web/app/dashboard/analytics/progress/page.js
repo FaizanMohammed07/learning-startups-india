@@ -86,7 +86,7 @@ export default function ProgressOverviewPage() {
 
       <div className="analytics-grid">
         {/* Stats Grid */}
-        <div className="col-12" style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '2.5rem' }}>
+        <div className="col-12 stats-grid">
            {[
              { label: 'Total Hours Learned', val: (timeData?.totalHours || 0) + 'h', icon: 'clock', color: 'var(--brand-gold)' },
              { label: 'Modules Cleared', val: data?.completedItems || 0, icon: 'bookOpen', color: 'var(--brand-red)' },

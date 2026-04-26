@@ -194,7 +194,7 @@ export default function LeaderboardPage() {
       </div>
 
       <style jsx global>{`
-        .leaderboard-page { padding: 4rem 4rem 10rem; background: #fff; font-family: 'Poppins', sans-serif; }
+        .leaderboard-page { padding: 4rem 4rem 10rem; background: var(--dashboard-bg); font-family: 'Poppins', sans-serif; }
         .leaderboard-header { margin-bottom: 6rem; display: flex; justify-content: space-between; align-items: flex-end; }
         .red-glow-main { color: #ef4444; }
         
@@ -206,7 +206,7 @@ export default function LeaderboardPage() {
         .podium-slot { flex: 1; max-width: 320px; text-align: center; }
         
         .avatar-frame { position: relative; display: inline-block; margin-bottom: 3rem; }
-        .avatar-main { width: 140px; height: 140px; border-radius: 48px; background: #fff; border: 4px solid #f1f5f9; display: flex; align-items: center; justify-content: center; font-size: 3rem; font-weight: 950; color: #0f172a; box-shadow: 0 20px 50px rgba(0,0,0,0.05); }
+        .avatar-main { width: 140px; height: 140px; border-radius: 48px; background: var(--dashboard-bg); border: 4px solid #f1f5f9; display: flex; align-items: center; justify-content: center; font-size: 3rem; font-weight: 950; color: #0f172a; box-shadow: 0 20px 50px rgba(0,0,0,0.05); }
         
         .gold-frame .avatar-main { width: 200px; height: 200px; border-radius: 64px; border-color: #fbbf24; border-width: 8px; font-size: 4.5rem; }
         .tier-silver .avatar-main { border-color: #cbd5e1; }
@@ -224,14 +224,14 @@ export default function LeaderboardPage() {
         
         .crown-icon { margin-bottom: -15px; filter: drop-shadow(0 15px 25px rgba(251, 191, 36, 0.4)); }
         
-        .table-container-glass { border-radius: 48px; border: 1.5px solid #f1f5f9; overflow: hidden; background: #fff; }
+        .table-container-glass { border-radius: 48px; border: 1.5px solid #f1f5f9; overflow: hidden; background: var(--dashboard-bg); }
         .leader-table { width: 100%; border-collapse: collapse; }
         .leader-table th { padding: 2.5rem 3.5rem; text-align: left; background: #f8fafc; font-size: 0.8rem; font-weight: 950; color: #94a3b8; letter-spacing: 0.15em; border-bottom: 2px solid #f1f5f9; }
         .leader-table td { padding: 2.5rem 3.5rem; border-bottom: 1.5px solid #f8fafc; }
         
         .rank-pill { padding: 10px 18px; background: #f8fafc; border-radius: 12px; font-weight: 950; color: #94a3b8; font-size: 0.9rem; }
         .builder-info { display: flex; align-items: center; gap: 2rem; }
-        .builder-avatar { width: 60px; height: 60px; border-radius: 18px; background: #f1f5f9; border: 1.5px solid #e2e8f0; display: flex; align-items: center; justify-content: center; font-weight: 950; font-size: 1.4rem; }
+        .builder-avatar { width: 60px; height: 60px; border-radius: 18px; background: var(--dashboard-bg); border: 1.5px solid #e2e8f0; display: flex; align-items: center; justify-content: center; font-weight: 950; font-size: 1.4rem; }
         .builder-name { font-size: 1.25rem; font-weight: 950; color: #0f172a; }
         .builder-status { font-size: 0.85rem; font-weight: 700; color: #94a3b8; margin-top: 4px; }
         

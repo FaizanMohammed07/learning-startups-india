@@ -26,17 +26,17 @@ export default function BillingPage() {
   const lastPayment = history.length > 0 ? history[0] : null;
 
   if (loading) return (
-    <div style={{ height: '80vh', display: 'flex', alignItems: 'center', justifyContent: 'center', background: '#fff' }}>
+    <div style={{ height: '80vh', display: 'flex', alignItems: 'center', justifyContent: 'center', background: 'var(--dashboard-bg)' }}>
       <div className="spinner" style={{ width: '40px', height: '40px', border: '4px solid #f3f3f3', borderTop: '4px solid #ef4444', borderRadius: '50%', animation: 'spin 1s linear infinite' }} />
       <style jsx>{` @keyframes spin { to { transform: rotate(360deg); } } `}</style>
     </div>
   );
 
   return (
-    <div className="flex bg-white overflow-hidden justify-center" style={{ height: '100vh', fontFamily: "'Poppins', sans-serif" }}>
+    <div className="flex overflow-hidden justify-center" style={{ minHeight: '100vh', background: 'var(--dashboard-bg)', fontFamily: "'Poppins', sans-serif" }}>
       
       {/* ── MAIN CONTENT ── */}
-      <main style={{ width: '100%', maxWidth: '1200px', background: '#f8fafc', display: 'flex', flexDirection: 'column', position: 'relative', overflowY: 'auto' }} className="custom-scrollbar">
+      <main style={{ width: '100%', maxWidth: '1200px', background: 'var(--dashboard-bg)', display: 'flex', flexDirection: 'column', position: 'relative', overflowY: 'auto' }} className="custom-scrollbar">
         
         {/* HEADER */}
         <header style={{ padding: '2.5rem 4rem 1.5rem', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
@@ -44,7 +44,7 @@ export default function BillingPage() {
             <h2 style={{ fontSize: '1.25rem', fontWeight: 950, color: '#0f172a', margin: 0, letterSpacing: '-0.02em' }}>Purchase and Billing History</h2>
             <p style={{ margin: '6px 0 0', fontSize: '0.8rem', color: '#94a3b8', fontWeight: 750 }}>Review your investment in your startup journey.</p>
           </div>
-          <button style={{ background: '#fff', border: '1.5px solid #e2e8f0', padding: '10px 20px', borderRadius: '12px', fontSize: '0.75rem', fontWeight: 950, color: '#64748b', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '8px' }} className="hover-red-border">
+          <button style={{ background: 'var(--dashboard-bg)', border: '1.5px solid #e2e8f0', padding: '10px 20px', borderRadius: '12px', fontSize: '0.75rem', fontWeight: 950, color: '#64748b', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '8px' }} className="hover-red-border">
             <Icon name="download" size={14} /> EXPORT ALL
           </button>
         </header>
@@ -60,7 +60,7 @@ export default function BillingPage() {
                   <span style={{ fontSize: '0.65rem', fontWeight: 800, color: '#ef4444', opacity: 0.8 }}>{history.length} lifetime transactions</span>
                </div>
             </div>
-            <div style={{ background: '#fff', padding: '1.75rem', borderRadius: '28px', border: '1px solid #f1f5f9', boxShadow: '0 4px 12px rgba(0,0,0,0.02)' }}>
+            <div style={{ background: 'var(--dashboard-bg)', padding: '1.75rem', borderRadius: '28px', border: '1px solid #f1f5f9', boxShadow: '0 4px 12px rgba(0,0,0,0.02)' }}>
                <div style={{ fontSize: '0.65rem', fontWeight: 950, color: '#94a3b8', letterSpacing: '0.1em', marginBottom: '10px' }}>LAST PAYMENT</div>
                <div style={{ fontSize: '1.8rem', fontWeight: 950, color: '#0f172a' }}>₹{lastPayment?.amount?.toLocaleString() || '0'}</div>
                <div style={{ marginTop: '12px', fontSize: '0.7rem', color: '#10b981', fontWeight: 900 }}>{lastPayment ? `Successfully paid on ${new Date(lastPayment.createdAt).toLocaleDateString()}` : 'No payments yet'}</div>
@@ -80,7 +80,7 @@ export default function BillingPage() {
           <h3 style={{ fontSize: '1rem', fontWeight: 950, color: '#0f172a', marginBottom: '1.5rem', display: 'flex', alignItems: 'center', gap: '10px' }}>
               <Icon name="list" size={18} color="#ef4444" /> Past History
            </h3>
-          <div style={{ background: '#fff', borderRadius: '32px', border: '1px solid #f1f5f9', overflow: 'hidden', boxShadow: '0 4px 20px rgba(0,0,0,0.01)' }}>
+          <div style={{ background: 'var(--dashboard-bg)', borderRadius: '32px', border: '1px solid #f1f5f9', overflow: 'hidden', boxShadow: '0 4px 20px rgba(0,0,0,0.01)' }}>
             <table style={{ width: '100%', borderCollapse: 'collapse', textAlign: 'left' }}>
                <thead>
                   <tr style={{ background: '#f9fafb', borderBottom: '1px solid #f1f5f9' }}>
@@ -121,7 +121,7 @@ export default function BillingPage() {
           </div>
 
           {/* NEED HELP SECTION */}
-          <div style={{ marginTop: '2.5rem', display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '2rem', borderRadius: '28px', background: '#fff', border: '1px solid #f1f5f9' }}>
+          <div style={{ marginTop: '2.5rem', display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '2rem', borderRadius: '28px', background: 'var(--dashboard-bg)', border: '1px solid #f1f5f9' }}>
             <div style={{ display: 'flex', alignItems: 'center', gap: '20px' }}>
                 <div style={{ width: 56, height: 56, borderRadius: '18px', background: '#fef2f2', color: '#ef4444', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                     <Icon name="lifeBuoy" size={28} />

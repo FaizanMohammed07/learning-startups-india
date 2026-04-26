@@ -12,16 +12,8 @@ export default function DashboardSidebar({
   onClose = () => {},
 }) {
   const pathname = usePathname();
-  const [openSectionId, setOpenSectionId] = useState(null);
+  const [openSectionId, setOpenSectionId] = useState('courses');
   const [showLogoutModal, setShowLogoutModal] = useState(false);
-  const [expandedSections, setExpandedSections] = useState({ courses: true });
-
-  const toggleSection = sectionId => {
-    setExpandedSections(prev => ({
-      ...prev,
-      [sectionId]: !prev[sectionId],
-    }));
-  };
 
   const navigation = [
     {
@@ -31,7 +23,7 @@ export default function DashboardSidebar({
     {
       id: 'courses',
       label: 'Courses',
-      isCollapsible: true,
+      isDropdown: true,
       items: [
         { id: 'explore', label: 'Explore Courses', path: '/dashboard/explore', icon: 'explore' },
         {
@@ -199,32 +191,12 @@ export default function DashboardSidebar({
       items: [
         { id: 'profile', label: 'Profile', path: '/dashboard/settings/profile', icon: 'profile' },
         {
-          id: 'account',
-          label: 'Account Settings',
-          path: '/dashboard/settings/account',
-          icon: 'settings',
-        },
-        {
           id: 'notifications',
           label: 'Notifications',
           path: '/dashboard/settings/notifications',
           icon: 'wishlist',
         },
         { id: 'privacy', label: 'Privacy', path: '/dashboard/settings/privacy', icon: 'tracking' },
-      ],
-    },
-    {
-      id: 'support',
-      label: 'Support & Account',
-      items: [
-        {
-          id: 'settings',
-          label: 'Account Settings',
-          path: '/dashboard/settings',
-          icon: 'settings',
-        },
-        { id: 'contact', label: 'Contact Support', path: '/dashboard/contact', icon: 'contact' },
-        { id: 'logout', label: 'Logout', path: '/logout', icon: 'logout', isAction: true },
       ],
     },
   ];
@@ -519,8 +491,7 @@ export default function DashboardSidebar({
           {navigation.map(section => {
             const isCollapsible = section.isCollapsible;
             const isDropdown = section.isDropdown;
-            const isSectionOpen = isDropdown && openSectionId === section.id;
-            const isSectionExpanded = isCollapsible && expandedSections[section.id];
+            const isSectionOpen = openSectionId === section.id;
 
             return (
               <div key={section.id} className="nav-section">
@@ -528,9 +499,7 @@ export default function DashboardSidebar({
                   <div
                     className={`nav-section-header ${isCollapsible ? 'collapsible' : ''}`}
                     onClick={() => {
-                      if (isCollapsible) toggleSection(section.id);
-                      if (isDropdown)
-                        setOpenSectionId(openSectionId === section.id ? null : section.id);
+                      setOpenSectionId(openSectionId === section.id ? null : section.id);
                     }}
                     style={
                       isDropdown
@@ -539,10 +508,10 @@ export default function DashboardSidebar({
                             alignItems: 'center',
                             justifyContent: 'space-between',
                             cursor: 'pointer',
-                            padding: '0.75rem 1.25rem',
-                            fontSize: '0.7rem',
+                            padding: '11px 1.25rem',
+                            fontSize: '0.95rem',
                             fontWeight: 800,
-                            color: '#9ca3af',
+                            color: 'rgba(255, 255, 255, 0.6)',
                             textTransform: 'uppercase',
                             letterSpacing: '0.05em',
                           }
@@ -551,7 +520,7 @@ export default function DashboardSidebar({
                   >
                     <div className="nav-section-label">{section.label}</div>
                     {isCollapsible && (
-                      <span className={`chevron-icon ${isSectionExpanded ? 'expanded' : ''}`}>
+                      <span className={`chevron-icon ${isSectionOpen ? 'expanded' : ''}`}>
                         <svg
                           width="12"
                           height="12"
@@ -569,9 +538,7 @@ export default function DashboardSidebar({
                 )}
 
                 <div
-                  className={`nav-items ${isCollapsible && !isSectionExpanded ? 'collapsed' : ''} ${
-                    isDropdown && !isSectionOpen ? 'collapsed' : ''
-                  }`}
+                  className={`nav-items ${!isSectionOpen ? 'collapsed' : ''}`}
                   style={
                     isDropdown
                       ? {
@@ -624,18 +591,7 @@ export default function DashboardSidebar({
           })}
         </nav>
 
-        {/* Keep desktop bottom sidebar - but hidden on mobile to avoid double buttons */}
-        <div className="sidebar-bottom desktop-only">
-          <style
-            dangerouslySetInnerHTML={{
-              __html: `
-          @media (max-width: 1060px) {
-            .desktop-only { display: none !important; }
-          }
-        `,
-            }}
-          />
-
+        <div className="sidebar-bottom">
           <div className="bottom-actions">
             <Link href="/dashboard/settings" className="bottom-action" onClick={onClose}>
               <svg

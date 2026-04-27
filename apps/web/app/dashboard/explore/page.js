@@ -1,6 +1,7 @@
 'use client';
 
-import { useState, useMemo, useRef } from 'react';
+import { useState, useMemo, useRef, useEffect } from 'react';
+import { useSearchParams } from 'next/navigation';
 import Link from 'next/link';
 import Image from 'next/image';
 import { useDashboard } from '@/contexts/DashboardProvider';
@@ -68,11 +69,86 @@ const SORT_OPTIONS = [
   { value: 'price-high', label: 'Price: High to Low' },
 ];
 
+const DUMMY_COURSES = [
+  {
+    _id: 'dummy-1',
+    title: 'GenAI & DeepTech: 2025 Roadmap',
+    description: 'Master the fundamentals of Generative AI and build scalable DeepTech solutions for the Indian ecosystem.',
+    category: 'Technology',
+    priceInr: 4999,
+    level: 'Intermediate',
+    rating: 4.9,
+    enrolledCount: 1240,
+    instructor: 'Dr. Arpit Jain',
+    thumbnailUrl: 'https://images.unsplash.com/photo-1677442136019-21780ecad995?auto=format&fit=crop&q=80&w=800',
+  },
+  {
+    _id: 'dummy-2',
+    title: 'VC Funding: The Pitch Deck Masterclass',
+    description: 'Learn how to raise capital from top VCs in India. Includes templates for Series A and Seed rounds.',
+    category: 'Finance',
+    priceInr: 2999,
+    level: 'Advanced',
+    rating: 4.8,
+    enrolledCount: 850,
+    instructor: 'Sneha Kapoor (Founder, CapitalX)',
+    thumbnailUrl: 'https://images.unsplash.com/photo-1553729459-efe14ef6055d?auto=format&fit=crop&q=80&w=800',
+  },
+  {
+    _id: 'dummy-3',
+    title: 'Startup India: DPIIT & Govt Schemes',
+    description: 'Navigate the benefits of DPIIT recognition, tax exemptions, and government procurement portals.',
+    category: 'Government',
+    priceInr: 0,
+    level: 'Beginner',
+    rating: 4.7,
+    enrolledCount: 3200,
+    instructor: 'Ministry of Commerce',
+    thumbnailUrl: 'https://images.unsplash.com/photo-1532375810709-75b1da00537c?auto=format&fit=crop&q=80&w=800',
+  },
+  {
+    _id: 'dummy-4',
+    title: 'Scaling Operations in Tier-2 Markets',
+    description: 'Strategies for expansion into Bharat. Logistics, talent acquisition, and regional marketing.',
+    category: 'Operations',
+    priceInr: 1499,
+    level: 'Intermediate',
+    rating: 4.6,
+    enrolledCount: 420,
+    instructor: 'Rahul Verma',
+    thumbnailUrl: 'https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&q=80&w=800',
+  },
+  {
+    _id: 'dummy-5',
+    title: 'Product Management for SaaS Founders',
+    description: 'Build products that customers love. Metrics, user research, and agile execution for early-stage teams.',
+    category: 'Product',
+    priceInr: 3499,
+    level: 'Beginner',
+    rating: 4.9,
+    enrolledCount: 2100,
+    instructor: 'Ananya S.',
+    thumbnailUrl: 'https://images.unsplash.com/photo-1552664730-d307ca884978?auto=format&fit=crop&q=80&w=800',
+  },
+  {
+    _id: 'dummy-6',
+    title: 'Legal & Intellectual Property Foundations',
+    description: 'Protect your innovation. Everything you need to know about patents, trademarks, and founder agreements.',
+    category: 'Legal',
+    priceInr: 1999,
+    level: 'Beginner',
+    rating: 4.5,
+    enrolledCount: 680,
+    instructor: 'Adv. Rohan Mehra',
+    thumbnailUrl: 'https://images.unsplash.com/photo-1589829545856-d10d557cf95f?auto=format&fit=crop&q=80&w=800',
+  }
+];
+
 function SkeletonCard() {
   return (
     <div
       style={{
-        background: '#fff',
+        background: 'var(--dashboard-bg)',
         borderRadius: '24px',
         border: '1px solid #f3f4f6',
         overflow: 'hidden',
@@ -110,9 +186,17 @@ function SkeletonCard() {
 }
 
 export default function ExplorePage() {
+  const searchParams = useSearchParams();
+  const initialSearch = searchParams.get('search') || '';
+
   const { courses, enrolledCourses, wishlist, setWishlist, certificates, isLoading, refresh } =
     useDashboard();
-  const [search, setSearch] = useState('');
+  const [search, setSearch] = useState(initialSearch);
+
+  useEffect(() => {
+    const q = searchParams.get('search');
+    if (q !== null) setSearch(q);
+  }, [searchParams]);
   const [activeCategory, setActiveCategory] = useState('All');
   const [sortBy, setSortBy] = useState('default');
   const [viewMode, setViewMode] = useState('grid');
@@ -140,13 +224,14 @@ export default function ExplorePage() {
   );
 
   const categories = useMemo(() => {
-    const cats = new Set(courses?.map(c => c.category).filter(Boolean));
+    const allCourses = [...(courses || []), ...DUMMY_COURSES];
+    const cats = new Set(allCourses.map(c => c.category).filter(Boolean));
     return ['All', ...Array.from(cats)];
   }, [courses]);
 
   const filtered = useMemo(() => {
-    if (!courses) return [];
-    let result = courses.filter(c => {
+    const allCourses = [...(courses || []), ...DUMMY_COURSES];
+    let result = allCourses.filter(c => {
       const q = search.toLowerCase();
       const matchesSearch =
         !q ||
@@ -187,7 +272,8 @@ export default function ExplorePage() {
 
   const totalEnrolled = enrolledCourses?.length || 0;
   const totalCerts = certificates?.length || 0;
-  const freeCount = courses?.filter(c => !(c.priceInr || c.price)).length || 0;
+  const allCourses = [...(courses || []), ...DUMMY_COURSES];
+  const freeCount = allCourses.filter(c => !(c.priceInr || c.price)).length || 0;
 
   if (isLoading) {
     return (
@@ -319,7 +405,7 @@ export default function ExplorePage() {
               position: 'relative',
               flex: '1 1 320px',
               minWidth: '280px',
-              background: '#fff',
+              background: 'var(--dashboard-bg)',
               border: '2px solid #e5e7eb',
               borderRadius: '16px',
               display: 'flex',
@@ -408,7 +494,7 @@ export default function ExplorePage() {
 
           {/* View Toggle */}
           <div
-            style={{ display: 'flex', background: '#f3f4f6', borderRadius: '12px', padding: '4px' }}
+            style={{ display: 'flex', background: 'var(--dashboard-bg)', borderRadius: '12px', padding: '4px' }}
           >
             <button
               className="view-btn"
@@ -484,10 +570,11 @@ export default function ExplorePage() {
         >
           {categories.map(cat => {
             const isActive = activeCategory === cat;
+            const allCourses = [...(courses || []), ...DUMMY_COURSES];
             const count =
               cat === 'All'
-                ? courses?.length || 0
-                : courses?.filter(c => c.category === cat).length || 0;
+                ? allCourses.length
+                : allCourses.filter(c => c.category === cat).length;
             return (
               <button
                 key={cat}
@@ -500,7 +587,7 @@ export default function ExplorePage() {
                   fontSize: '0.85rem',
                   whiteSpace: 'nowrap',
                   border: isActive ? '2px solid #111827' : '2px solid #e5e7eb',
-                  background: isActive ? '#111827' : '#fff',
+                  background: isActive ? '#111827' : 'var(--dashboard-bg)',
                   color: isActive ? '#fff' : '#4b5563',
                   display: 'flex',
                   alignItems: 'center',
@@ -539,7 +626,7 @@ export default function ExplorePage() {
           <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', flexWrap: 'wrap' }}>
             <span style={{ fontSize: '0.9rem', color: '#6b7280', fontWeight: 600 }}>
               Showing <span style={{ color: '#111827', fontWeight: 800 }}>{filtered.length}</span>{' '}
-              of {courses?.length || 0} courses
+              of {[...(courses || []), ...DUMMY_COURSES].length} courses
             </span>
             {(search || activeCategory !== 'All' || sortBy !== 'default') && (
               <button
@@ -684,7 +771,7 @@ export default function ExplorePage() {
                       ? 'linear-gradient(135deg, #fffbeb, #fff)'
                       : isEnrolled
                         ? 'linear-gradient(135deg, #f0fdf4, #fff)'
-                        : '#fff',
+                        : 'var(--dashboard-bg)',
                     borderRadius: '24px',
                     border: isCertified
                       ? '2px solid #fbbf24'
@@ -1122,7 +1209,7 @@ export default function ExplorePage() {
                       </Link>
                     ) : (
                       <Link
-                        href={'/courses/' + (course.slug || course._id)}
+                        href={`/checkout?courseId=${course._id}`}
                         style={{ textDecoration: 'none' }}
                       >
                         <button
@@ -1181,7 +1268,7 @@ export default function ExplorePage() {
                   key={course._id}
                   className="ex-card"
                   style={{
-                    background: '#fff',
+                    background: 'var(--dashboard-bg)',
                     borderRadius: '20px',
                     border: isEnrolled ? '2px solid #86efac' : '1px solid #e5e7eb',
                     overflow: 'hidden',

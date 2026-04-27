@@ -168,7 +168,7 @@ export default function PerformanceAnalyticsPage() {
                  {(data?.history || []).slice(0, 3).map((a, i) => (
                    <div key={i} style={{ padding: '1.75rem', borderRadius: '28px', background: '#f8fafc', border: '1.5px solid #f1f5f9', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                       <div style={{ display: 'flex', gap: '1.5rem', alignItems: 'center' }}>
-                         <div style={{ width: 52, height: 52, borderRadius: '16px', background: '#fff', display: 'flex', alignItems: 'center', justifyContent: 'center', border: '1.5px solid #f1f5f9' }}>
+                         <div style={{ width: 52, height: 52, borderRadius: '16px', background: 'var(--dashboard-bg)', display: 'flex', alignItems: 'center', justifyContent: 'center', border: '1.5px solid #f1f5f9' }}>
                             <Icon name="fileText" size={24} color="#94a3b8" />
                          </div>
                          <div>

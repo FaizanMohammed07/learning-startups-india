@@ -97,7 +97,7 @@ export default function AssignmentsPage() {
 
         <div style={{ display: 'grid', gridTemplateColumns: '1fr 350px', gap: '3rem' }}>
           <div style={{ display: 'flex', flexDirection: 'column', gap: '2rem' }}>
-            <div style={{ background: '#fff', padding: '3rem', borderRadius: '24px', border: '1px solid #f1f5f9', boxShadow: '0 10px 30px rgba(0,0,0,0.02)' }}>
+            <div style={{ background: '#ffffff', padding: '3rem', borderRadius: '24px', border: '1px solid #f1f5f9', boxShadow: '0 10px 30px rgba(0,0,0,0.02)' }}>
                <h1 style={{ fontSize: '2.25rem', fontWeight: 900, color: '#111', marginBottom: '0.5rem' }}>{selectedTask.title}</h1>
                <p style={{ color: '#7A1F2B', fontWeight: 800, fontSize: '0.9rem', textTransform: 'uppercase', marginBottom: '2rem' }}>Phase Critical Task</p>
                
@@ -134,7 +134,7 @@ export default function AssignmentsPage() {
           </div>
 
           <div style={{ display: 'flex', flexDirection: 'column', gap: '2rem' }}>
-            <div style={{ background: '#fff', padding: '2rem', borderRadius: '24px', border: '1px solid #f1f5f9', boxShadow: '0 10px 30px rgba(0,0,0,0.02)' }}>
+            <div style={{ background: '#ffffff', padding: '2rem', borderRadius: '24px', border: '1px solid #f1f5f9', boxShadow: '0 10px 30px rgba(0,0,0,0.02)' }}>
               <h3 style={{ fontSize: '1.1rem', fontWeight: 800, color: '#111', marginBottom: '1.5rem' }}>Submission</h3>
               
               {selectedTask.submissionStatus === 'Pending' ? (
@@ -169,7 +169,7 @@ export default function AssignmentsPage() {
               )}
             </div>
 
-            <div style={{ background: '#FFF5F5', padding: '2rem', borderRadius: '24px', border: '1px solid #FEE2E2' }}>
+            <div style={{ background: '#ffffff', padding: '2rem', borderRadius: '24px', border: '1px solid #f1f5f9' }}>
                <h4 style={{ margin: '0 0 1rem', fontSize: '0.75rem', fontWeight: 900, color: '#7A1F2B', textTransform: 'uppercase', letterSpacing: '0.1em' }}>Deadlines</h4>
                <div style={{ display: 'flex', alignItems: 'center', gap: '12px', color: '#7A1F2B' }}>
                   <Icon name="clock" size={20} />
@@ -186,8 +186,8 @@ export default function AssignmentsPage() {
   }
 
   return (
-    <div className="platform-page" style={{ padding: '2.5rem' }}>
-      <header className="platform-page-header">
+    <div className="platform-page" style={{ padding: '2.5rem', background: '#ffffff' }}>
+      <header className="platform-page-header" style={{ marginBottom: '1rem' }}>
         <h1 className="platform-page-title">Critical Assignments</h1>
         <p className="platform-page-subtitle">Apply your learning to real-world scenarios and receive personalized founder feedback.</p>
       </header>
@@ -228,7 +228,7 @@ export default function AssignmentsPage() {
                 )) : (
                   <motion.div 
                     initial={{ opacity: 0 }} animate={{ opacity: 1 }}
-                    style={{ gridColumn: '1 / -1', textAlign: 'center', padding: '6rem 2rem', background: '#fff', borderRadius: '24px', border: '2px dashed #E5E7EB' }}
+                    style={{ gridColumn: '1 / -1', textAlign: 'center', padding: '6rem 2rem', background: '#ffffff', borderRadius: '24px', border: '2px dashed #E5E7EB' }}
                   >
                     <Icon name="pencil" size={48} color="#cbd5e1" style={{ marginBottom: '1rem' }} />
                     <h3 style={{ fontSize: '1.25rem', fontWeight: 800, color: '#64748B' }}>No tasks found</h3>

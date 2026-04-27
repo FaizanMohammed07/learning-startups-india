@@ -106,7 +106,7 @@ export default function GroupsPage() {
   [allGroups, activeChannelId]);
 
   if (loading) return (
-    <div style={{ height: '80vh', display: 'flex', alignItems: 'center', justifyContent: 'center', background: '#fff' }}>
+    <div style={{ height: '80vh', display: 'flex', alignItems: 'center', justifyContent: 'center', background: 'var(--dashboard-bg)' }}>
       <div className="spinner" style={{ width: '40px', height: '40px', border: '4px solid #f3f3f3', borderTop: '4px solid #ef4444', borderRadius: '50%', animation: 'spin 1s linear infinite' }} />
       <style jsx>{` @keyframes spin { to { transform: rotate(360deg); } } `}</style>
     </div>
@@ -323,7 +323,7 @@ export default function GroupsPage() {
       </AnimatePresence>
 
       <style jsx global>{`
-        .tribes-page { display: flex; background: #fff; overflow: hidden; height: 100vh; font-family: 'Poppins', sans-serif; }
+        .tribes-page { display: flex; background: var(--dashboard-bg); overflow: hidden; height: 100vh; font-family: 'Poppins', sans-serif; }
         
         .tribes-sidebar { width: 300px; background: #fcfdfe; border-right: 1.5px solid #f1f5f9; display: flex; flex-direction: column; height: 100%; transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1); z-index: 1000; }
         .sidebar-header { padding: 2.5rem 2rem; border-bottom: 1px solid #f8fafc; }
@@ -346,8 +346,8 @@ export default function GroupsPage() {
         .channel-label { font-size: 0.9rem; font-weight: 850; letter-spacing: -0.01em; }
         .channel-mem-count { font-size: 0.65rem; color: #94a3b8; font-weight: 700; }
         
-        .tribes-main { flex: 1; background: #fff; display: flex; flex-direction: column; min-width: 0; }
-        .chat-header { padding: 1rem 2.5rem; border-bottom: 1.5px solid #f8fafc; background: #fff; display: flex; align-items: center; z-index: 10; }
+        .tribes-main { flex: 1; background: var(--dashboard-bg); display: flex; flex-direction: column; min-width: 0; }
+        .chat-header { padding: 1rem 2.5rem; border-bottom: 1.5px solid #f8fafc; background: var(--dashboard-bg); display: flex; align-items: center; z-index: 10; }
         .chat-header-left { display: flex; align-items: center; gap: 20px; width: 100%; }
         .mobile-menu-btn { display: none; background: transparent; border: none; cursor: pointer; padding: 8px; border-radius: 12px; transition: background 0.2s; }
         .mobile-menu-btn:hover { background: #f8fafc; }
@@ -358,7 +358,7 @@ export default function GroupsPage() {
         .host-name { color: #ef4444; }
         .meta-sep { opacity: 0.3; }
 
-        .chat-feed { flex: 1; padding: 2.5rem; overflow-y: auto; display: flex; flex-direction: column; gap: 2rem; background: #fff; }
+        .chat-feed { flex: 1; padding: 2.5rem; overflow-y: auto; display: flex; flex-direction: column; gap: 2rem; background: var(--dashboard-bg); }
         .message-row { display: flex; flex-direction: column; max-width: 85%; }
         .message-row.me { align-self: flex-end; align-items: flex-end; }
         .message-row.other { align-self: flex-start; align-items: flex-start; }
@@ -370,7 +370,7 @@ export default function GroupsPage() {
         .message-row.me .message-bubble { background: #0f172a; color: #fff; border-bottom-right-radius: 6px; box-shadow: 0 10px 25px rgba(15, 23, 42, 0.12); }
         .message-row.other .message-bubble { background: #f8fafc; color: #334155; border-bottom-left-radius: 6px; border: 1.5px solid #f1f5f9; }
 
-        .chat-footer { padding: 1.5rem 2.5rem; border-top: 1.5px solid #f8fafc; background: #fff; z-index: 100; }
+        .chat-footer { padding: 1.5rem 2.5rem; border-top: 1.5px solid #f8fafc; background: var(--dashboard-bg); z-index: 100; }
         .input-pill { background: #f8fafc; border-radius: 32px; padding: 8px 12px; display: flex; align-items: center; border: 1.5px solid #f1f5f9; max-width: 1000px; margin: 0 auto; transition: all 0.3s; }
         .input-pill:focus-within { background: #fff; border-color: #ef4444; box-shadow: 0 10px 30px rgba(239, 68, 68, 0.08); }
         .plus-btn { width: 44px; height: 44px; display: flex; align-items: center; justify-content: center; cursor: pointer; transition: background 0.2s; border-radius: 50%; }
